@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Digital Hustler Academy — Inscription</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600;700&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --bg: #050914;
+  --card: #080e1f;
+  --blue: #1E64FF;
+  --cyan: #00D4FF;
+  --gold: #FFD700;
+  --green: #00FF88;
+  --purple: #9D4EDD;
+  --white: #E8F4FF;
+  --dim: rgba(232,244,255,0.4);
+  --border: rgba(30,100,255,0.15);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: var(--bg);
+  font-family: 'Exo 2', sans-serif;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* BG */
+.bg-grid {
+  position: fixed; inset: 0;
+  background-image:
+    linear-gradient(rgba(30,100,255,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(30,100,255,0.04) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+}
+.bg-glow-1 {
+  position: fixed; top: -200px; left: -200px;
+  width: 600px; height: 600px;
+  background: radial-gradient(ellipse, rgba(30,100,255,0.12) 0%, transparent 70%);
+  pointer-events: none;
+}
+.bg-glow-2 {
+  position: fixed; bottom: -200px; right: -200px;
+  width: 600px; height: 600px;
+  background: radial-gradient(ellipse, rgba(0,212,255,0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+.scanlines {
+  position: fixed; inset: 0;
+  background-image: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,0,0,0.02) 3px, rgba(0,0,0,0.02) 6px);
+  pointer-events: none; z-index: 0;
+}
+
+/* PARTICLES */
+.particle {
+  position: fixed; border-radius: 50%;
+  animation: float-up linear infinite; pointer-events: none;
+}
+@keyframes float-up {
+  0% { transform: translateY(100vh) scale(1); opacity: 0; }
+  10% { opacity: 0.6; }
+  90% { opacity: 0.3; }
+  100% { transform: translateY(-100px) scale(0.3); opacity: 0; }
+}
+
+/* MAIN CONTAINER */
+.container {
+  position: relative; z-index: 10;
+  width: 100%; max-width: 520px;
+  padding: 24px 20px;
+  display: flex; flex-direction: column; align-items: center;
+  gap: 0;
+}
+
+/* LOGO */
+.logo-wrap {
+  text-align: center; margin-bottom: 32px;
+  animation: fadeup .6s ease both;
+}
+.logo-dha {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 48px; font-weight: 900; letter-spacing: 8px;
+  color: var(--white);
+  text-shadow: 0 0 40px rgba(30,100,255,0.8), 0 0 80px rgba(30,100,255,0.3);
+  line-height: 1;
+}
+.logo-sub {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 8px; letter-spacing: 5px;
+  color: rgba(0,212,255,0.6); margin-top: 6px;
+  text-shadow: 0 0 10px rgba(0,212,255,0.4);
+}
+
+/* STEP INDICATOR */
+.steps {
+  display: flex; align-items: center; gap: 0;
+  margin-bottom: 28px; width: 100%; justify-content: center;
+  animation: fadeup .6s .1s ease both;
+}
+.step {
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
+}
+.step-circle {
+  width: 36px; height: 36px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Orbitron', sans-serif; font-size: 11px; font-weight: 900;
+  transition: all .3s;
+}
+.step-circle.active {
+  background: linear-gradient(135deg, var(--blue), var(--cyan));
+  color: #000; box-shadow: 0 0 20px rgba(0,212,255,0.4);
+}
+.step-circle.done {
+  background: rgba(0,255,136,0.15); border: 1px solid rgba(0,255,136,0.4);
+  color: var(--green);
+}
+.step-circle.inactive {
+  background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+  color: rgba(255,255,255,0.25);
+}
+.step-label {
+  font-family: 'Orbitron', sans-serif; font-size: 7px; letter-spacing: 1px;
+  color: rgba(255,255,255,0.3); text-align: center;
+}
+.step-label.active { color: var(--cyan); }
+.step-line {
+  width: 60px; height: 1px; margin-bottom: 18px;
+  background: linear-gradient(90deg, rgba(30,100,255,0.3), rgba(0,212,255,0.3));
+}
+
+/* CARD */
+.card {
+  width: 100%; background: var(--card);
+  border: 1px solid var(--border); border-radius: 24px;
+  padding: 36px 32px; position: relative; overflow: hidden;
+  animation: fadeup .6s .2s ease both;
+}
+.card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+}
+.corner { position: absolute; width: 20px; height: 20px; }
+.corner-tl { top: 12px; left: 12px; border-top: 1px solid rgba(0,212,255,0.3); border-left: 1px solid rgba(0,212,255,0.3); }
+.corner-tr { top: 12px; right: 12px; border-top: 1px solid rgba(0,212,255,0.3); border-right: 1px solid rgba(0,212,255,0.3); }
+.corner-bl { bottom: 12px; left: 12px; border-bottom: 1px solid rgba(0,212,255,0.3); border-left: 1px solid rgba(0,212,255,0.3); }
+.corner-br { bottom: 12px; right: 12px; border-bottom: 1px solid rgba(0,212,255,0.3); border-right: 1px solid rgba(0,212,255,0.3); }
+
+.card-title {
+  font-family: 'Orbitron', sans-serif; font-size: 18px; font-weight: 900;
+  color: var(--white); margin-bottom: 6px; letter-spacing: 1px;
+}
+.card-sub {
+  font-size: 13px; color: var(--dim); margin-bottom: 28px; line-height: 1.5;
+}
+
+/* FORM */
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+.form-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 12px; }
+.form-label {
+  font-family: 'Orbitron', sans-serif; font-size: 8px; letter-spacing: 2px;
+  color: var(--dim);
+}
+.form-input {
+  padding: 13px 16px; border-radius: 12px;
+  background: rgba(255,255,255,0.04); border: 1px solid var(--border);
+  color: var(--white); font-family: 'Exo 2', sans-serif; font-size: 14px;
+  outline: none; transition: all .2s; width: 100%;
+}
+.form-input::placeholder { color: rgba(255,255,255,0.2); }
+.form-input:focus { border-color: rgba(0,212,255,0.4); background: rgba(0,212,255,0.04); box-shadow: 0 0 0 3px rgba(0,212,255,0.06); }
+.form-input.error { border-color: rgba(255,68,102,0.5); }
+
+.form-select {
+  padding: 13px 16px; border-radius: 12px;
+  background: #080e1f; border: 1px solid var(--border);
+  color: var(--white); font-family: 'Exo 2', sans-serif; font-size: 14px;
+  outline: none; transition: all .2s; width: 100%; cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%2300D4FF' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 16px center;
+}
+.form-select:focus { border-color: rgba(0,212,255,0.4); }
+.form-select option { background: #080e1f; }
+
+/* CLASSE SELECTOR */
+.classe-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+.classe-card {
+  padding: 14px 12px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.03); cursor: pointer; transition: all .2s;
+  display: flex; flex-direction: column; align-items: center; gap: 8px; text-align: center;
+  position: relative;
+}
+.classe-card:hover { transform: translateY(-2px); }
+.classe-card.selected { border-color: currentColor; }
+.classe-card.trading { color: var(--cyan); }
+.classe-card.trading.selected { background: rgba(0,212,255,0.08); box-shadow: 0 0 20px rgba(0,212,255,0.1); }
+.classe-card.ugc { color: var(--purple); }
+.classe-card.ugc.selected { background: rgba(157,78,221,0.08); box-shadow: 0 0 20px rgba(157,78,221,0.1); }
+.classe-card.marketing { color: var(--green); }
+.classe-card.marketing.selected { background: rgba(0,255,136,0.08); box-shadow: 0 0 20px rgba(0,255,136,0.1); }
+.classe-card.ecommerce { color: #FF8C00; }
+.classe-card.ecommerce.selected { background: rgba(255,140,0,0.08); box-shadow: 0 0 20px rgba(255,140,0,0.1); }
+.classe-icon { font-size: 28px; }
+.classe-name { font-family: 'Orbitron', sans-serif; font-size: 9px; font-weight: 900; letter-spacing: 1px; }
+.classe-desc { font-size: 10px; color: rgba(255,255,255,0.35); line-height: 1.4; }
+.classe-check {
+  position: absolute; top: 8px; right: 8px;
+  width: 16px; height: 16px; border-radius: 50%;
+  background: currentColor; display: none;
+  align-items: center; justify-content: center; font-size: 9px; color: #000;
+}
+.classe-card.selected .classe-check { display: flex; }
+
+/* PASSWORD STRENGTH */
+.password-strength { margin-top: 6px; }
+.strength-bar { height: 3px; border-radius: 99px; background: rgba(255,255,255,0.08); overflow: hidden; margin-bottom: 4px; }
+.strength-fill { height: 100%; border-radius: 99px; transition: all .3s; width: 0%; }
+.strength-text { font-family: 'Orbitron', sans-serif; font-size: 8px; letter-spacing: 1px; color: var(--dim); }
+
+/* DIVIDER */
+.form-divider {
+  height: 1px; background: linear-gradient(90deg, transparent, var(--border), transparent);
+  margin: 20px 0;
+}
+.form-divider-label {
+  text-align: center; font-family: 'Orbitron', sans-serif;
+  font-size: 8px; letter-spacing: 3px; color: var(--dim); margin: -20px 0 0;
+  position: relative;
+}
+.form-divider-label span {
+  background: var(--card); padding: 0 12px; position: relative; top: -4px;
+}
+
+/* SUBMIT BTN */
+.btn-submit {
+  width: 100%; padding: 16px; border-radius: 14px;
+  background: linear-gradient(135deg, var(--blue), var(--cyan));
+  color: #000; font-family: 'Orbitron', sans-serif;
+  font-size: 12px; font-weight: 900; letter-spacing: 2px;
+  border: none; cursor: pointer; margin-top: 8px;
+  box-shadow: 0 6px 30px rgba(0,212,255,0.3);
+  transition: all .2s; position: relative; overflow: hidden;
+}
+.btn-submit:hover { transform: translateY(-2px); box-shadow: 0 10px 40px rgba(0,212,255,0.4); }
+.btn-submit:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+.btn-submit::after {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+  transform: translateX(-100%); transition: transform .5s;
+}
+.btn-submit:hover::after { transform: translateX(100%); }
+
+/* LOGIN LINK */
+.login-link {
+  text-align: center; margin-top: 20px;
+  font-size: 13px; color: var(--dim);
+  animation: fadeup .6s .3s ease both;
+}
+.login-link a { color: var(--cyan); text-decoration: none; font-weight: 600; }
+.login-link a:hover { text-shadow: 0 0 10px rgba(0,212,255,0.5); }
+
+/* ÉTAPE 2 — CLASSE */
+.step2 { display: none; }
+.step2.active { display: block; }
+.step1 { display: block; }
+.step1.hidden { display: none; }
+
+/* SUCCESS */
+.success-screen {
+  display: none; text-align: center; padding: 20px 0;
+}
+.success-screen.active { display: block; }
+.success-icon { font-size: 64px; margin-bottom: 20px; animation: bounce .6s ease; }
+@keyframes bounce { 0%,100%{transform:scale(1);}50%{transform:scale(1.2);} }
+.success-title {
+  font-family: 'Orbitron', sans-serif; font-size: 22px; font-weight: 900;
+  color: var(--white); margin-bottom: 10px;
+}
+.success-title span { color: var(--cyan); }
+.success-sub { font-size: 14px; color: var(--dim); line-height: 1.7; margin-bottom: 28px; }
+.btn-dashboard {
+  display: inline-block; padding: 14px 32px; border-radius: 12px;
+  background: linear-gradient(135deg, var(--blue), var(--cyan));
+  color: #000; font-family: 'Orbitron', sans-serif;
+  font-size: 11px; font-weight: 900; letter-spacing: 2px;
+  text-decoration: none; box-shadow: 0 6px 30px rgba(0,212,255,0.3);
+}
+
+/* LOADING BAR */
+.loading-bar {
+  position: fixed; top: 0; left: 0; height: 2px; width: 0%;
+  background: linear-gradient(90deg, var(--blue), var(--cyan));
+  z-index: 9999; transition: width .3s; box-shadow: 0 0 10px var(--cyan);
+}
+
+@keyframes fadeup {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* MOBILE */
+@media (max-width: 480px) {
+  .card { padding: 24px 20px; }
+  .form-grid { grid-template-columns: 1fr; }
+  .logo-dha { font-size: 36px; }
+  .step-line { width: 40px; }
+}
+</style>
+</head>
+<body>
+
+<div class="bg-grid"></div>
+<div class="bg-glow-1"></div>
+<div class="bg-glow-2"></div>
+<div class="scanlines"></div>
+<div class="loading-bar" id="loading-bar"></div>
+
+<div class="container">
+
+  <!-- LOGO -->
+  <div class="logo-wrap">
+    <div class="logo-dha">DHA</div>
+    <div class="logo-sub">DIGITAL HUSTLER ACADEMY</div>
+  </div>
+
+  <!-- STEPS -->
+  <div class="steps">
+    <div class="step">
+      <div class="step-circle active" id="step-circle-1">1</div>
+      <div class="step-label active" id="step-label-1">PROFIL</div>
+    </div>
+    <div class="step-line"></div>
+    <div class="step">
+      <div class="step-circle inactive" id="step-circle-2">2</div>
+      <div class="step-label" id="step-label-2">CLASSE</div>
+    </div>
+    <div class="step-line"></div>
+    <div class="step">
+      <div class="step-circle inactive" id="step-circle-3">3</div>
+      <div class="step-label" id="step-label-3">ACCÈS</div>
+    </div>
+  </div>
+
+  <!-- CARD -->
+  <div class="card">
+    <div class="corner corner-tl"></div>
+    <div class="corner corner-tr"></div>
+    <div class="corner corner-bl"></div>
+    <div class="corner corner-br"></div>
+
+    <!-- ÉTAPE 1 — PROFIL -->
+    <div class="step1" id="step1">
+      <div class="card-title">Crée ton profil</div>
+      <div class="card-sub">Entre tes informations pour rejoindre l'académie.</div>
+
+      <div class="form-grid">
+        <div class="form-group" style="margin-bottom:0">
+          <label class="form-label">PRÉNOM</label>
+          <input class="form-input" id="prenom" type="text" placeholder="Ton prénom"/>
+        </div>
+        <div class="form-group" style="margin-bottom:0">
+          <label class="form-label">NOM</label>
+          <input class="form-input" id="nom" type="text" placeholder="Ton nom"/>
+        </div>
+      </div>
+
+      <div class="form-group" style="margin-top:12px">
+        <label class="form-label">PSEUDO (UNIQUE)</label>
+        <input class="form-input" id="pseudo" type="text" placeholder="@tonpseudo"/>
+      </div>
+
+      <div class="form-divider"></div>
+
+      <div class="form-group">
+        <label class="form-label">EMAIL</label>
+        <input class="form-input" id="email" type="email" placeholder="ton@email.com"/>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">TÉLÉPHONE</label>
+        <input class="form-input" id="telephone" type="tel" placeholder="+33 6 00 00 00 00"/>
+      </div>
+
+      <div class="form-divider"></div>
+
+      <div class="form-group">
+        <label class="form-label">PAYS</label>
+        <select class="form-select" id="pays">
+          <option value="">Sélectionne ton pays</option>
+          <option value="FR">🇫🇷 France</option>
+          <option value="BE">🇧🇪 Belgique</option>
+          <option value="CH">🇨🇭 Suisse</option>
+          <option value="MA">🇲🇦 Maroc</option>
+          <option value="SN">🇸🇳 Sénégal</option>
+          <option value="CI">🇨🇮 Côte d'Ivoire</option>
+          <option value="CM">🇨🇲 Cameroun</option>
+          <option value="DZ">🇩🇿 Algérie</option>
+          <option value="TN">🇹🇳 Tunisie</option>
+          <option value="OTHER">🌍 Autre</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">VILLE</label>
+        <input class="form-input" id="ville" type="text" placeholder="Ta ville"/>
+      </div>
+
+      <div class="form-divider"></div>
+
+      <div class="form-group">
+        <label class="form-label">MOT DE PASSE</label>
+        <div style="position:relative;">
+          <input class="form-input" id="password" type="password" placeholder="Minimum 8 caractères" oninput="checkStrength(this.value)" style="padding-right:44px;"/>
+          <div onclick="togglePwd('password','eye1')" style="position:absolute;right:14px;top:50%;transform:translateY(-50%);cursor:pointer;color:var(--dim);font-size:18px;user-select:none;" id="eye1">👁</div>
+        </div>
+        <div class="password-strength">
+          <div class="strength-bar"><div class="strength-fill" id="strength-fill"></div></div>
+          <div class="strength-text" id="strength-text">Saisis un mot de passe</div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">CONFIRMER LE MOT DE PASSE</label>
+        <div style="position:relative;">
+          <input class="form-input" id="password2" type="password" placeholder="Répète ton mot de passe" style="padding-right:44px;"/>
+          <div onclick="togglePwd('password2','eye2')" style="position:absolute;right:14px;top:50%;transform:translateY(-50%);cursor:pointer;color:var(--dim);font-size:18px;user-select:none;" id="eye2">👁</div>
+        </div>
+      </div>
+
+      <button class="btn-submit" onclick="goStep2()">ÉTAPE SUIVANTE →</button>
+    </div>
+
+    <!-- ÉTAPE 2 — CLASSE -->
+    <div class="step2" id="step2">
+      <div class="card-title">Choisis ta classe</div>
+      <div class="card-sub">Ton domaine de formation principal. Tu pourras accéder au module Mindset dans tous les cas.</div>
+
+      <div class="classe-grid">
+        <div class="classe-card trading" onclick="selectClasse('trading', this)">
+          <div class="classe-check">✓</div>
+          <div class="classe-icon">📈</div>
+          <div class="classe-name">TRADING</div>
+          <div class="classe-desc">Analyse, gestion du risque, live sessions</div>
+        </div>
+        <div class="classe-card ugc" onclick="showLockedClasse()" style="opacity:0.4;cursor:not-allowed;position:relative;">
+          <div style="position:absolute;top:8px;right:8px;font-size:14px;">🔒</div>
+          <div class="classe-icon">🎬</div>
+          <div class="classe-name">UGC CREATOR</div>
+          <div class="classe-desc">Bientôt disponible</div>
+        </div>
+        <div class="classe-card marketing" onclick="showLockedClasse()" style="opacity:0.4;cursor:not-allowed;position:relative;">
+          <div style="position:absolute;top:8px;right:8px;font-size:14px;">🔒</div>
+          <div class="classe-icon">🚀</div>
+          <div class="classe-name">MARKETING</div>
+          <div class="classe-desc">Bientôt disponible</div>
+        </div>
+        <div class="classe-card ecommerce" onclick="showLockedClasse()" style="opacity:0.4;cursor:not-allowed;position:relative;">
+          <div style="position:absolute;top:8px;right:8px;font-size:14px;">🔒</div>
+          <div class="classe-icon">🛒</div>
+          <div class="classe-name">E-COMMERCE</div>
+          <div class="classe-desc">Bientôt disponible</div>
+        </div>
+      </div>
+
+      <!-- MINDSET -->
+      <div style="padding:14px 16px;border-radius:14px;background:rgba(157,78,221,0.08);border:1px solid rgba(157,78,221,0.2);display:flex;align-items:center;gap:12px;margin-bottom:24px;">
+        <div style="font-size:24px;">🧠</div>
+        <div>
+          <div style="font-family:'Orbitron',sans-serif;font-size:10px;font-weight:900;color:var(--purple);letter-spacing:1px;margin-bottom:2px;">MODULE MINDSET — INCLUS POUR TOUS</div>
+          <div style="font-size:11px;color:var(--dim);">Obligatoire. La fondation de tout succès. Débloque le reste.</div>
+        </div>
+      </div>
+
+      <div style="display:flex;gap:10px;">
+        <button class="btn-submit" style="background:rgba(255,255,255,0.05);border:1px solid var(--border);color:var(--dim);box-shadow:none;flex:0 0 auto;width:auto;padding:16px 20px;" onclick="goStep1()">← RETOUR</button>
+        <button class="btn-submit" style="flex:1" onclick="goStep3()" id="btn-step3">CRÉER MON COMPTE →</button>
+      </div>
+    </div>
+
+    <!-- SUCCÈS -->
+    <div class="success-screen" id="success">
+      <div class="success-icon">🚀</div>
+      <div class="success-title">Bienvenue dans la <span>DHA</span> !</div>
+      <div class="success-sub" id="success-sub">
+        Ton compte a été créé avec succès.<br/>
+        Prépare-toi — l'aventure commence maintenant.
+      </div>
+      <a href="dha-dashboard.html" class="btn-dashboard">▶ ACCÉDER AU DASHBOARD</a>
+    </div>
+
+  </div>
+
+  <!-- LOGIN LINK -->
+  <div class="login-link" id="login-link">
+    Déjà membre ? <a href="dha-connexion.html">Connecte-toi →</a>
+  </div>
+
+</div>
+
+<script>
+let selectedClasse = '';
+let userData = {};
+
+// PARTICLES
+const colors = ['#1E64FF','#00D4FF','#ffffff','#FFD700'];
+for(let i=0;i<15;i++){
+  const p = document.createElement('div');
+  p.className = 'particle';
+  const s = Math.random()*3+1;
+  p.style.cssText = `width:${s}px;height:${s}px;background:${colors[Math.floor(Math.random()*colors.length)]};left:${Math.random()*100}%;bottom:-10px;opacity:0;animation-duration:${Math.random()*12+8}s;animation-delay:${Math.random()*8}s;box-shadow:0 0 ${s*2}px currentColor;`;
+  document.body.appendChild(p);
+}
+
+// SUPABASE CONFIG
+const SUPABASE_URL = 'https://kdetwppxsfoagyndrlzr.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtkZXR3cHB4c2ZvYWd5bmRybHpyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzcyMzM3NjQsImV4cCI6MjA5MjgwOTc2NH0.OodaFQKEHcncDYdO6uM121NAUbyxD4UxpptSjzzZOi0';
+
+async function supabaseInsert(table, data) {
+  const res = await fetch(SUPABASE_URL + '/rest/v1/' + table, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'apikey': SUPABASE_KEY,
+      'Authorization': 'Bearer ' + SUPABASE_KEY,
+      'Prefer': 'return=representation'
+    },
+    body: JSON.stringify(data)
+  });
+  const result = await res.json();
+  if (!res.ok) throw new Error((result.message || result.error || 'Erreur Supabase'));
+  return result;
+}
+
+// BREVO CONFIG
+const BREVO_KEY = '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';
+
+async function addToBrevo(prenom, nom, email) {
+  try {
+    // Créer ou mettre à jour le contact
+    await fetch('https://api.brevo.com/v3/contacts', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'api-key': BREVO_KEY
+      },
+      body: JSON.stringify({
+        email: email,
+        attributes: { PRENOM: prenom, NOM: nom },
+        listIds: [5],
+        updateEnabled: true
+      })
+    });
+  } catch(e) {
+    console.log('Brevo error:', e);
+  }
+}
+
+function showLockedClasse() {
+  alert('🔒 Cette classe n\'est pas encore disponible.\n\nPour le moment seul le Trading est accessible.\nLes autres domaines arrivent très bientôt ! 🔥');
+}
+
+function togglePwd(inputId, eyeId) {
+  const input = document.getElementById(inputId);
+  const eye = document.getElementById(eyeId);
+  if(input.type === 'password') {
+    input.type = 'text';
+    eye.style.color = 'var(--cyan)';
+  } else {
+    input.type = 'password';
+    eye.style.color = 'var(--dim)';
+  }
+}
+
+// PASSWORD STRENGTH
+function checkStrength(val) {
+  const fill = document.getElementById('strength-fill');
+  const text = document.getElementById('strength-text');
+  if(!val) { fill.style.width='0%'; text.textContent='Saisis un mot de passe'; fill.style.background=''; return; }
+  let score = 0;
+  if(val.length >= 8) score++;
+  if(val.length >= 12) score++;
+  if(/[A-Z]/.test(val)) score++;
+  if(/[0-9]/.test(val)) score++;
+  if(/[^A-Za-z0-9]/.test(val)) score++;
+  const levels = [
+    { w:'20%', c:'#FF4466', t:'Trop faible' },
+    { w:'40%', c:'#FF8C00', t:'Faible' },
+    { w:'60%', c:'#FFD700', t:'Moyen' },
+    { w:'80%', c:'#00D4FF', t:'Fort' },
+    { w:'100%', c:'#00FF88', t:'Excellent ✓' }
+  ];
+  const l = levels[Math.min(score, 4)];
+  fill.style.width = l.w; fill.style.background = l.c; text.textContent = l.t;
+  text.style.color = l.c;
+}
+
+// CLASSE SELECTION
+function selectClasse(classe, el) {
+  document.querySelectorAll('.classe-card').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedClasse = classe;
+  console.log('Classe sélectionnée:', selectedClasse);
+}
+
+// STEP 1 → 2
+function goStep2() {
+  const prenom = document.getElementById('prenom').value.trim();
+  const nom = document.getElementById('nom').value.trim();
+  const pseudo = document.getElementById('pseudo').value.trim();
+  const email = document.getElementById('email').value.trim();
+  const telephone = document.getElementById('telephone').value.trim();
+  const password = document.getElementById('password').value;
+  const password2 = document.getElementById('password2').value;
+  const paysSelect = document.getElementById('pays');
+  const pays = paysSelect.options[paysSelect.selectedIndex].text;
+  const ville = document.getElementById('ville').value.trim();
+
+  if(!prenom||!nom||!pseudo||!email||!password||!paysSelect.value||!ville) {
+    shake(); return;
+  }
+  if(password.length < 8) { alert('Le mot de passe doit faire au moins 8 caractères.'); return; }
+  if(password !== password2) { alert('Les mots de passe ne correspondent pas.'); return; }
+  if(!email.includes('@')) { alert('Email invalide.'); return; }
+
+  userData = { prenom, nom, pseudo, email, telephone, password, pays, ville };
+
+  document.getElementById('step1').classList.add('hidden');
+  document.getElementById('step2').classList.add('active');
+  document.getElementById('step-circle-1').className = 'step-circle done';
+  document.getElementById('step-circle-1').textContent = '✓';
+  document.getElementById('step-circle-2').className = 'step-circle active';
+  document.getElementById('step-label-2').className = 'step-label active';
+  window.scrollTo(0,0);
+}
+
+// STEP 2 → 1
+function goStep1() {
+  document.getElementById('step2').classList.remove('active');
+  document.getElementById('step1').classList.remove('hidden');
+  document.getElementById('step-circle-1').className = 'step-circle active';
+  document.getElementById('step-circle-1').textContent = '1';
+  document.getElementById('step-circle-2').className = 'step-circle inactive';
+  document.getElementById('step-label-2').className = 'step-label';
+}
+
+// STEP 3 — CRÉATION COMPTE
+async function goStep3() {
+  if(!selectedClasse) { alert('Choisis ta classe pour continuer.'); return; }
+
+  const btn = document.getElementById('btn-step3');
+  btn.textContent = 'CRÉATION EN COURS...';
+  btn.disabled = true;
+
+  const bar = document.getElementById('loading-bar');
+  bar.style.width = '0%';
+  setTimeout(()=>bar.style.width='40%',100);
+  setTimeout(()=>bar.style.width='70%',500);
+  setTimeout(()=>bar.style.width='90%',900);
+
+  try {
+    const classeChoisie = selectedClasse;
+    const membre = {
+      prenom: userData.prenom,
+      nom: userData.nom,
+      pseudo: userData.pseudo,
+      email: userData.email,
+      telephone: userData.telephone || '',
+      pays: userData.pays,
+      ville: userData.ville,
+      classe: classeChoisie,
+      xp: 10,
+      level: 1,
+      rang: 'NEW HUSTLER',
+      statut: 'membre'
+    };
+
+    await supabaseInsert('membres', membre);
+    bar.style.width = '100%';
+
+    // Ajouter à Brevo → email de bienvenue automatique
+    await addToBrevo(userData.prenom, userData.nom, userData.email);
+
+    localStorage.setItem('dha_member', JSON.stringify(membre));
+
+    setTimeout(() => {
+      document.getElementById('step2').classList.remove('active');
+      document.getElementById('success').classList.add('active');
+      document.getElementById('login-link').style.display = 'none';
+      document.getElementById('step-circle-2').className = 'step-circle done';
+      document.getElementById('step-circle-2').textContent = '✓';
+      document.getElementById('step-circle-3').className = 'step-circle active';
+      document.getElementById('step-label-3').className = 'step-label active';
+
+      const classeNames = { trading:'Trading 📈', ugc:'UGC Creator 🎬', marketing:'Marketing Digital 🚀', ecommerce:'E-Commerce 🛒' };
+      document.getElementById('success-sub').innerHTML =
+        'Bienvenue <strong style="color:var(--cyan)">' + userData.prenom + '</strong> ! 🔥<br/>' +
+        'Classe choisie : <strong style="color:var(--gold)">' + classeNames[selectedClasse] + '</strong><br/>' +
+        'Tu as gagné <strong style="color:var(--green)">+10 XP</strong> pour ta connexion. L\'aventure commence maintenant.';
+    }, 400);
+
+  } catch(err) {
+    bar.style.width = '0%';
+    btn.textContent = 'CRÉER MON COMPTE →';
+    btn.disabled = false;
+    const msg = err.message || '';
+    if(msg.includes('pseudo')) alert('Ce pseudo est déjà pris. Choisis-en un autre.');
+    else if(msg.includes('email')) alert('Cet email est déjà utilisé.');
+    else alert('Erreur : ' + msg);
+  }
+}
+
+function shake() {
+  const card = document.querySelector('.card');
+  card.style.animation = 'none';
+  card.style.transform = 'translateX(-8px)';
+  setTimeout(()=>card.style.transform='translateX(8px)',100);
+  setTimeout(()=>card.style.transform='translateX(-4px)',200);
+  setTimeout(()=>card.style.transform='translateX(0)',300);
+  alert('Remplis tous les champs obligatoires.');
+}
+</script>
+</body>
+</html>

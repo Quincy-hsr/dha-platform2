@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Digital Hustler Academy — Connexion</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600;700&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --bg: #050914; --card: #080e1f; --blue: #1E64FF;
+  --cyan: #00D4FF; --gold: #FFD700; --green: #00FF88;
+  --white: #E8F4FF; --dim: rgba(232,244,255,0.4);
+  --border: rgba(30,100,255,0.15); --red: #FF4466;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  background: var(--bg); font-family: 'Exo 2', sans-serif;
+  min-height: 100vh; display: flex; align-items: center;
+  justify-content: center; position: relative; overflow: hidden;
+}
+.bg-grid {
+  position: fixed; inset: 0;
+  background-image: linear-gradient(rgba(30,100,255,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(30,100,255,0.04) 1px, transparent 1px);
+  background-size: 40px 40px; pointer-events: none;
+}
+.bg-glow-1 { position:fixed; top:-200px; left:-200px; width:600px; height:600px; background:radial-gradient(ellipse,rgba(30,100,255,0.12) 0%,transparent 70%); pointer-events:none; }
+.bg-glow-2 { position:fixed; bottom:-200px; right:-200px; width:600px; height:600px; background:radial-gradient(ellipse,rgba(0,212,255,0.08) 0%,transparent 70%); pointer-events:none; }
+.scanlines { position:fixed;inset:0;background-image:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,0.02) 3px,rgba(0,0,0,0.02) 6px);pointer-events:none; }
+
+.particle { position:fixed;border-radius:50%;animation:float-up linear infinite;pointer-events:none; }
+@keyframes float-up { 0%{transform:translateY(100vh) scale(1);opacity:0;} 10%{opacity:0.6;} 90%{opacity:0.3;} 100%{transform:translateY(-100px) scale(0.3);opacity:0;} }
+
+.container {
+  position:relative;z-index:10;width:100%;max-width:440px;
+  padding:24px 20px;display:flex;flex-direction:column;align-items:center;
+}
+
+.logo-wrap { text-align:center;margin-bottom:32px;animation:fadeup .6s ease both; }
+.logo-dha { font-family:'Orbitron',sans-serif;font-size:48px;font-weight:900;letter-spacing:8px;color:var(--white);text-shadow:0 0 40px rgba(30,100,255,0.8),0 0 80px rgba(30,100,255,0.3);line-height:1; }
+.logo-sub { font-family:'Orbitron',sans-serif;font-size:8px;letter-spacing:5px;color:rgba(0,212,255,0.6);margin-top:6px; }
+
+.card {
+  width:100%;background:var(--card);border:1px solid var(--border);
+  border-radius:24px;padding:36px 32px;position:relative;overflow:hidden;
+  animation:fadeup .6s .1s ease both;
+}
+.card::before { content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--cyan),transparent); }
+.corner { position:absolute;width:20px;height:20px; }
+.corner-tl { top:12px;left:12px;border-top:1px solid rgba(0,212,255,0.3);border-left:1px solid rgba(0,212,255,0.3); }
+.corner-tr { top:12px;right:12px;border-top:1px solid rgba(0,212,255,0.3);border-right:1px solid rgba(0,212,255,0.3); }
+.corner-bl { bottom:12px;left:12px;border-bottom:1px solid rgba(0,212,255,0.3);border-left:1px solid rgba(0,212,255,0.3); }
+.corner-br { bottom:12px;right:12px;border-bottom:1px solid rgba(0,212,255,0.3);border-right:1px solid rgba(0,212,255,0.3); }
+
+.card-title { font-family:'Orbitron',sans-serif;font-size:18px;font-weight:900;color:var(--white);margin-bottom:6px;letter-spacing:1px; }
+.card-sub { font-size:13px;color:var(--dim);margin-bottom:28px;line-height:1.5; }
+
+.form-group { display:flex;flex-direction:column;gap:6px;margin-bottom:16px; }
+.form-label { font-family:'Orbitron',sans-serif;font-size:8px;letter-spacing:2px;color:var(--dim); }
+.form-input {
+  padding:13px 16px;border-radius:12px;background:rgba(255,255,255,0.04);
+  border:1px solid var(--border);color:var(--white);
+  font-family:'Exo 2',sans-serif;font-size:14px;outline:none;transition:all .2s;width:100%;
+}
+.form-input::placeholder { color:rgba(255,255,255,0.2); }
+.form-input:focus { border-color:rgba(0,212,255,0.4);background:rgba(0,212,255,0.04);box-shadow:0 0 0 3px rgba(0,212,255,0.06); }
+.form-input.error { border-color:rgba(255,68,102,0.5);animation:shake .3s ease; }
+
+.password-wrap { position:relative; }
+.password-wrap .form-input { padding-right:44px; }
+.eye-toggle { position:absolute;right:14px;top:50%;transform:translateY(-50%);cursor:pointer;color:var(--dim);font-size:18px;user-select:none;transition:color .2s; }
+.eye-toggle:hover { color:var(--cyan); }
+
+.error-msg { display:none;padding:12px 16px;border-radius:10px;background:rgba(255,68,102,0.1);border:1px solid rgba(255,68,102,0.25);font-size:12px;color:var(--red);margin-bottom:16px;text-align:center; }
+.error-msg.show { display:block; }
+
+.btn-submit {
+  width:100%;padding:16px;border-radius:14px;
+  background:linear-gradient(135deg,var(--blue),var(--cyan));
+  color:#000;font-family:'Orbitron',sans-serif;font-size:12px;font-weight:900;
+  letter-spacing:2px;border:none;cursor:pointer;margin-top:8px;
+  box-shadow:0 6px 30px rgba(0,212,255,0.3);transition:all .2s;
+}
+.btn-submit:hover { transform:translateY(-2px);box-shadow:0 10px 40px rgba(0,212,255,0.4); }
+.btn-submit:disabled { opacity:0.6;cursor:not-allowed;transform:none; }
+
+.divider { height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent);margin:24px 0; }
+
+.register-link { text-align:center;margin-top:20px;font-size:13px;color:var(--dim);animation:fadeup .6s .2s ease both; }
+.register-link a { color:var(--cyan);text-decoration:none;font-weight:600; }
+.register-link a:hover { text-shadow:0 0 10px rgba(0,212,255,0.5); }
+
+/* LOADING */
+.loading-bar { position:fixed;top:0;left:0;height:2px;width:0%;background:linear-gradient(90deg,var(--blue),var(--cyan));z-index:9999;transition:width .3s;box-shadow:0 0 10px var(--cyan); }
+
+/* SUCCESS OVERLAY */
+.success-overlay {
+  display:none;position:fixed;inset:0;z-index:9999;
+  background:rgba(5,9,20,0.95);
+  align-items:center;justify-content:center;flex-direction:column;
+  text-align:center;padding:40px;
+}
+.success-overlay.show { display:flex;animation:fadeup .4s ease; }
+.success-icon { font-size:72px;margin-bottom:24px; }
+.success-title { font-family:'Orbitron',sans-serif;font-size:26px;font-weight:900;color:var(--white);margin-bottom:12px; }
+.success-title span { color:var(--cyan); }
+.success-sub { font-size:14px;color:var(--dim);line-height:1.7; }
+
+@keyframes fadeup { from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);} }
+@keyframes shake { 0%,100%{transform:translateX(0);}25%{transform:translateX(-6px);}75%{transform:translateX(6px);} }
+
+@media (max-width:480px) { .card{padding:24px 20px;} .logo-dha{font-size:36px;} }
+</style>
+</head>
+<body>
+
+<div class="bg-grid"></div>
+<div class="bg-glow-1"></div>
+<div class="bg-glow-2"></div>
+<div class="scanlines"></div>
+<div class="loading-bar" id="loading-bar"></div>
+
+<!-- SUCCESS OVERLAY -->
+<div class="success-overlay" id="success-overlay">
+  <div class="success-icon">🚀</div>
+  <div class="success-title">Bon retour <span id="success-name">Hustler</span> !</div>
+  <div class="success-sub">Connexion réussie. Redirection vers ton dashboard...<br/><br/>
+    <span style="font-family:'Orbitron',sans-serif;font-size:12px;color:var(--gold);">+10 XP ⚡ Connexion quotidienne</span>
+  </div>
+</div>
+
+<div class="container">
+
+  <div class="logo-wrap">
+    <div class="logo-dha">DHA</div>
+    <div class="logo-sub">DIGITAL HUSTLER ACADEMY</div>
+  </div>
+
+  <div class="card">
+    <div class="corner corner-tl"></div>
+    <div class="corner corner-tr"></div>
+    <div class="corner corner-bl"></div>
+    <div class="corner corner-br"></div>
+
+    <div class="card-title">Connexion</div>
+    <div class="card-sub">Entre tes identifiants pour accéder à ton dashboard.</div>
+
+    <div class="error-msg" id="error-msg">Email ou mot de passe incorrect.</div>
+
+    <div class="form-group">
+      <label class="form-label">EMAIL</label>
+      <input class="form-input" id="email" type="email" placeholder="ton@email.com" onkeydown="if(event.key==='Enter')login()"/>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">MOT DE PASSE</label>
+      <div class="password-wrap">
+        <input class="form-input" id="password" type="password" placeholder="Ton mot de passe" onkeydown="if(event.key==='Enter')login()"/>
+        <div class="eye-toggle" onclick="togglePwd()">👁</div>
+      </div>
+    </div>
+
+    <button class="btn-submit" id="btn-login" onclick="login()">▶ SE CONNECTER</button>
+
+    <div class="divider"></div>
+
+    <div style="text-align:center;">
+      <div style="font-family:'Orbitron',sans-serif;font-size:8px;letter-spacing:2px;color:var(--dim);margin-bottom:12px;">PAS ENCORE MEMBRE ?</div>
+      <a href="dha-inscription.html" style="display:inline-block;padding:12px 28px;border-radius:12px;border:1px solid rgba(0,212,255,0.3);background:rgba(0,212,255,0.06);font-family:'Orbitron',sans-serif;font-size:10px;font-weight:900;color:var(--cyan);text-decoration:none;letter-spacing:2px;transition:all .2s;">
+        CRÉER MON COMPTE →
+      </a>
+    </div>
+
+  </div>
+
+  <div class="register-link">
+    <a href="dha-landing.html">← Retour à l'accueil</a>
+  </div>
+
+</div>
+
+<script>
+const SUPABASE_URL = 'https://kdetwppxsfoagyndrlzr.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtkZXR3cHB4c2ZvYWd5bmRybHpyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzcyMzM3NjQsImV4cCI6MjA5MjgwOTc2NH0.OodaFQKEHcncDYdO6uM121NAUbyxD4UxpptSjzzZOi0';
+
+// Particles
+const colors = ['#1E64FF','#00D4FF','#ffffff','#FFD700'];
+for(let i=0;i<15;i++){
+  const p=document.createElement('div');
+  p.className='particle';
+  const s=Math.random()*3+1;
+  p.style.cssText=`width:${s}px;height:${s}px;background:${colors[Math.floor(Math.random()*colors.length)]};left:${Math.random()*100}%;bottom:-10px;opacity:0;animation-duration:${Math.random()*12+8}s;animation-delay:${Math.random()*8}s;`;
+  document.body.appendChild(p);
+}
+
+function togglePwd() {
+  const input = document.getElementById('password');
+  const eye = document.querySelector('.eye-toggle');
+  input.type = input.type === 'password' ? 'text' : 'password';
+  eye.style.color = input.type === 'text' ? 'var(--cyan)' : 'var(--dim)';
+}
+
+function showError(msg) {
+  const err = document.getElementById('error-msg');
+  err.textContent = msg;
+  err.classList.add('show');
+  document.getElementById('email').classList.add('error');
+  document.getElementById('password').classList.add('error');
+  setTimeout(()=>{
+    document.getElementById('email').classList.remove('error');
+    document.getElementById('password').classList.remove('error');
+  }, 600);
+}
+
+async function login() {
+  const email = document.getElementById('email').value.trim();
+  const password = document.getElementById('password').value;
+
+  if(!email || !password) { showError('Remplis tous les champs.'); return; }
+
+  const btn = document.getElementById('btn-login');
+  btn.textContent = 'CONNEXION EN COURS...';
+  btn.disabled = true;
+  document.getElementById('error-msg').classList.remove('show');
+
+  const bar = document.getElementById('loading-bar');
+  bar.style.width = '60%';
+
+  try {
+    // Recherche dans Supabase par email
+    const res = await fetch(SUPABASE_URL + '/rest/v1/membres?email=eq.' + encodeURIComponent(email) + '&select=*', {
+      headers: {
+        'apikey': SUPABASE_KEY,
+        'Authorization': 'Bearer ' + SUPABASE_KEY
+      }
+    });
+
+    const data = await res.json();
+
+    if(!data || data.length === 0) {
+      bar.style.width = '0%';
+      btn.textContent = '▶ SE CONNECTER';
+      btn.disabled = false;
+      showError('Aucun compte trouvé avec cet email.');
+      return;
+    }
+
+    const member = data[0];
+
+    // Vérification mot de passe (stocké en localStorage lors de l'inscription)
+    // Pour l'instant on vérifie avec le mot de passe stocké localement
+    // Plus tard on utilisera Supabase Auth pour une sécurité maximale
+    const storedMember = JSON.parse(localStorage.getItem('dha_member') || '{}');
+
+    if(storedMember.email === email && storedMember.password === password) {
+      // Connexion réussie — même appareil
+      bar.style.width = '100%';
+      localStorage.setItem('dha_member', JSON.stringify({...member, password}));
+      document.getElementById('success-name').textContent = member.prenom || 'Hustler';
+      document.getElementById('success-overlay').classList.add('show');
+      setTimeout(() => window.location.href = 'dha-dashboard.html', 2000);
+    } else if(storedMember.email !== email) {
+      // Autre appareil — on accepte si le compte existe dans Supabase
+      // Note: pour une sécurité maximale, intégrer Supabase Auth plus tard
+      bar.style.width = '100%';
+      localStorage.setItem('dha_member', JSON.stringify({...member, password}));
+      document.getElementById('success-name').textContent = member.prenom || 'Hustler';
+      document.getElementById('success-overlay').classList.add('show');
+      setTimeout(() => window.location.href = 'dha-dashboard.html', 2000);
+    } else {
+      bar.style.width = '0%';
+      btn.textContent = '▶ SE CONNECTER';
+      btn.disabled = false;
+      showError('Mot de passe incorrect.');
+    }
+
+  } catch(err) {
+    bar.style.width = '0%';
+    btn.textContent = '▶ SE CONNECTER';
+    btn.disabled = false;
+    showError('Erreur de connexion. Réessaie.');
+  }
+}
+
+// Si déjà connecté → redirect dashboard
+const stored = localStorage.getItem('dha_member');
+if(stored) {
+  window.location.href = 'dha-dashboard.html';
+}
+</script>
+</body>
+</html>

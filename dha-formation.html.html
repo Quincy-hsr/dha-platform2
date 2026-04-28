@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>DHA — Formation Trading</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600;700&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --bg:#050914;--card:#080e1f;--blue:#1E64FF;--cyan:#00D4FF;
+  --gold:#FFD700;--green:#00FF88;--purple:#9D4EDD;--red:#FF4466;
+  --white:#E8F4FF;--dim:rgba(232,244,255,0.45);--border:rgba(30,100,255,0.15);
+  --sidebar-w:240px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-height:100vh;display:flex;}
+.bg-grid{position:fixed;inset:0;z-index:0;background-image:linear-gradient(rgba(30,100,255,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(30,100,255,0.03) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;}
+
+/* SIDEBAR */
+.sidebar{position:fixed;left:0;top:0;bottom:0;width:var(--sidebar-w);background:rgba(8,14,31,0.95);border-right:1px solid var(--border);display:flex;flex-direction:column;z-index:100;backdrop-filter:blur(20px);padding:24px 0;}
+.sidebar-logo{padding:0 24px 24px;border-bottom:1px solid var(--border);margin-bottom:16px;}
+.sidebar-logo-text{font-family:'Orbitron',sans-serif;font-size:28px;font-weight:900;letter-spacing:4px;color:var(--white);text-shadow:0 0 20px rgba(30,100,255,0.6);}
+.sidebar-logo-sub{font-family:'Orbitron',sans-serif;font-size:6px;letter-spacing:3px;color:rgba(0,212,255,0.5);margin-top:2px;}
+.sidebar-section{padding:8px 24px 4px;font-family:'Orbitron',sans-serif;font-size:7px;letter-spacing:3px;color:rgba(255,255,255,0.2);margin-top:8px;}
+.nav-item{display:flex;align-items:center;gap:12px;padding:11px 24px;cursor:pointer;transition:all .2s;font-size:13px;color:var(--dim);text-decoration:none;}
+.nav-item:hover{background:rgba(30,100,255,0.08);color:var(--white);}
+.nav-item.active{background:rgba(30,100,255,0.12);color:var(--cyan);border-right:2px solid var(--cyan);}
+.nav-icon{font-size:16px;width:20px;text-align:center;flex-shrink:0;}
+.locked-nav{display:flex;align-items:center;gap:12px;padding:11px 24px;cursor:pointer;transition:all .2s;font-size:13px;color:rgba(232,244,255,0.2);}
+.locked-nav:hover{background:rgba(255,255,255,0.03);}
+.notif-dot{width:8px;height:8px;border-radius:50%;background:var(--red);margin-left:auto;box-shadow:0 0 6px var(--red);animation:pulse-dot 1.5s infinite;}
+@keyframes pulse-dot{0%,100%{opacity:1;}50%{opacity:0.5;}}
+.sidebar-bottom{margin-top:auto;padding:16px 24px;border-top:1px solid var(--border);}
+.sidebar-member{display:flex;align-items:center;gap:12px;}
+.sidebar-avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--cyan));display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;box-shadow:0 0 15px rgba(0,212,255,0.3);}
+.sidebar-member-name{font-family:'Orbitron',sans-serif;font-size:10px;font-weight:900;color:var(--white);letter-spacing:1px;}
+.sidebar-member-rang{font-size:10px;color:var(--dim);margin-top:2px;}
+
+/* MAIN */
+.main{margin-left:var(--sidebar-w);flex:1;padding:28px;position:relative;z-index:1;}
+
+/* TOPBAR */
+.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;}
+.topbar-title{font-family:'Orbitron',sans-serif;font-size:20px;font-weight:900;color:var(--white);letter-spacing:2px;}
+.topbar-title span{color:var(--cyan);}
+.topbar-xp{display:flex;align-items:center;gap:8px;padding:8px 16px;border-radius:99px;background:rgba(255,215,0,0.1);border:1px solid rgba(255,215,0,0.25);}
+.topbar-xp-val{font-family:'Orbitron',sans-serif;font-size:12px;font-weight:900;color:var(--gold);}
+
+/* MODULES LIST */
+.modules-layout{display:grid;grid-template-columns:280px 1fr;gap:24px;}
+
+.modules-sidebar{display:flex;flex-direction:column;gap:8px;}
+.module-nav-item{padding:14px 16px;border-radius:14px;border:1px solid var(--border);background:var(--card);cursor:pointer;transition:all .2s;}
+.module-nav-item:hover{border-color:rgba(0,212,255,0.3);background:rgba(0,212,255,0.05);}
+.module-nav-item.active{border-color:rgba(0,212,255,0.4);background:rgba(0,212,255,0.08);}
+.module-nav-item.locked{opacity:0.4;cursor:not-allowed;}
+.module-nav-num{font-family:'Orbitron',sans-serif;font-size:8px;letter-spacing:2px;color:var(--dim);margin-bottom:4px;}
+.module-nav-name{font-family:'Orbitron',sans-serif;font-size:11px;font-weight:900;color:var(--white);letter-spacing:1px;}
+.module-nav-progress{height:3px;border-radius:99px;background:rgba(255,255,255,0.08);margin-top:8px;overflow:hidden;}
+.module-nav-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--blue),var(--cyan));transition:width .5s;}
+
+/* CONTENT */
+.content-area{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:32px;position:relative;overflow:hidden;}
+.content-area::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--cyan),transparent);}
+
+.content-header{margin-bottom:28px;}
+.content-module-label{font-family:'Orbitron',sans-serif;font-size:8px;letter-spacing:3px;color:var(--cyan);margin-bottom:8px;}
+.content-module-title{font-family:'Orbitron',sans-serif;font-size:24px;font-weight:900;color:var(--white);margin-bottom:8px;line-height:1.2;}
+.content-module-desc{font-size:14px;color:var(--dim);line-height:1.7;}
+
+/* SECTIONS */
+.section-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:16px;padding:24px;margin-bottom:16px;}
+.section-num{font-family:'Orbitron',sans-serif;font-size:8px;letter-spacing:2px;color:var(--cyan);margin-bottom:8px;}
+.section-title{font-family:'Orbitron',sans-serif;font-size:14px;font-weight:900;color:var(--white);margin-bottom:14px;letter-spacing:1px;}
+.section-text{font-size:14px;color:rgba(232,244,255,0.7);line-height:1.9;}
+
+/* INTERACTIVE QUESTION */
+.question-card{background:linear-gradient(135deg,rgba(30,100,255,0.1),rgba(0,212,255,0.05));border:1px solid rgba(30,100,255,0.25);border-radius:14px;padding:20px;margin-top:16px;}
+.question-label{font-family:'Orbitron',sans-serif;font-size:8px;letter-spacing:2px;color:var(--cyan);margin-bottom:10px;}
+.question-text{font-size:14px;color:var(--white);line-height:1.7;margin-bottom:16px;}
+.question-btns{display:flex;gap:10px;flex-wrap:wrap;}
+.question-btn{padding:10px 20px;border-radius:10px;border:1px solid rgba(0,212,255,0.3);background:rgba(0,212,255,0.08);font-family:'Exo 2',sans-serif;font-size:13px;color:var(--cyan);cursor:pointer;transition:all .2s;}
+.question-btn:hover,.question-btn.selected{background:rgba(0,212,255,0.2);border-color:var(--cyan);transform:translateY(-1px);}
+.question-response{display:none;margin-top:14px;padding:14px;border-radius:10px;background:rgba(0,255,136,0.08);border:1px solid rgba(0,255,136,0.2);font-size:13px;color:rgba(232,244,255,0.7);line-height:1.6;}
+.question-response.show{display:block;}
+
+/* CANDLE WIDGET */
+.candle-widget{background:rgba(5,9,20,0.8);border:1px solid rgba(30,100,255,0.2);border-radius:14px;padding:20px;margin-top:16px;}
+.candle-widget-title{font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:2px;color:var(--cyan);margin-bottom:16px;}
+.candle-area{display:flex;align-items:center;gap:32px;flex-wrap:wrap;}
+.candle-svg-wrap{position:relative;flex-shrink:0;}
+.candle-info{flex:1;min-width:200px;}
+.candle-info-item{padding:10px 14px;border-radius:10px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);margin-bottom:8px;font-size:13px;color:var(--dim);cursor:pointer;transition:all .2s;}
+.candle-info-item:hover,.candle-info-item.active{background:rgba(0,212,255,0.08);border-color:rgba(0,212,255,0.3);color:var(--white);}
+.candle-info-item strong{color:var(--cyan);font-family:'Orbitron',sans-serif;font-size:10px;display:block;margin-bottom:2px;}
+.candle-toggle{display:flex;gap:8px;margin-top:12px;}
+.candle-toggle-btn{padding:8px 16px;border-radius:8px;border:1px solid;font-family:'Orbitron',sans-serif;font-size:9px;font-weight:900;cursor:pointer;transition:all .2s;letter-spacing:1px;}
+
+/* TREND WIDGET */
+.trend-widget{background:rgba(5,9,20,0.8);border:1px solid rgba(30,100,255,0.2);border-radius:14px;padding:20px;margin-top:16px;}
+.trend-btns{display:flex;gap:8px;margin-bottom:16px;}
+.trend-btn{padding:10px 20px;border-radius:10px;border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.04);font-family:'Orbitron',sans-serif;font-size:9px;font-weight:900;cursor:pointer;transition:all .2s;letter-spacing:1px;color:var(--dim);}
+.trend-btn.active-bull{background:rgba(0,255,136,0.15);border-color:rgba(0,255,136,0.4);color:var(--green);}
+.trend-btn.active-bear{background:rgba(255,68,102,0.15);border-color:rgba(255,68,102,0.4);color:var(--red);}
+.trend-btn.active-range{background:rgba(255,215,0,0.15);border-color:rgba(255,215,0,0.4);color:var(--gold);}
+
+/* STEP WIDGET */
+.step-widget{background:rgba(5,9,20,0.8);border:1px solid rgba(30,100,255,0.2);border-radius:14px;padding:20px;margin-top:16px;}
+.step-btns{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px;}
+.step-btn{padding:8px 14px;border-radius:8px;border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.04);font-family:'Orbitron',sans-serif;font-size:8px;font-weight:900;cursor:pointer;transition:all .2s;color:var(--dim);}
+.step-btn.active{background:rgba(0,212,255,0.15);border-color:rgba(0,212,255,0.4);color:var(--cyan);}
+.step-desc{padding:12px 16px;border-radius:10px;background:rgba(0,212,255,0.06);border:1px solid rgba(0,212,255,0.15);font-size:13px;color:rgba(232,244,255,0.7);line-height:1.6;min-height:60px;}
+
+/* XP BADGE */
+.xp-badge{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:99px;background:rgba(255,215,0,0.1);border:1px solid rgba(255,215,0,0.3);font-family:'Orbitron',sans-serif;font-size:10px;font-weight:900;color:var(--gold);margin-bottom:16px;}
+
+/* COMPLETE BTN */
+.complete-btn{width:100%;padding:14px;border-radius:12px;background:linear-gradient(135deg,var(--blue),var(--cyan));color:#000;font-family:'Orbitron',sans-serif;font-size:11px;font-weight:900;letter-spacing:2px;border:none;cursor:pointer;margin-top:20px;box-shadow:0 6px 20px rgba(0,212,255,0.3);transition:all .2s;}
+.complete-btn:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(0,212,255,0.4);}
+.complete-btn:disabled{opacity:0.5;cursor:not-allowed;transform:none;}
+
+/* LOCKED MODAL */
+.locked-modal{display:none;position:fixed;inset:0;z-index:9999;background:rgba(5,9,20,0.85);backdrop-filter:blur(10px);align-items:center;justify-content:center;}
+.locked-modal.show{display:flex;}
+.locked-modal-card{background:var(--card);border:1px solid rgba(255,215,0,0.2);border-radius:20px;padding:36px;max-width:380px;width:90%;text-align:center;position:relative;}
+.locked-modal-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent);}
+.locked-modal-btn{padding:12px 28px;border-radius:12px;background:rgba(255,215,0,0.1);border:1px solid rgba(255,215,0,0.3);font-family:'Orbitron',sans-serif;font-size:10px;font-weight:900;color:var(--gold);cursor:pointer;letter-spacing:2px;}
+
+@media(max-width:768px){.sidebar{display:none;}.main{margin-left:0;padding:16px;}.modules-layout{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<div class="bg-grid"></div>
+
+<div class="locked-modal" id="locked-modal" onclick="hideLocked()">
+  <div class="locked-modal-card" onclick="event.stopPropagation()">
+    <div style="font-size:48px;margin-bottom:16px;">🔒</div>
+    <div style="font-family:'Orbitron',sans-serif;font-size:16px;font-weight:900;color:var(--white);margin-bottom:8px;" id="locked-title">BIENTÔT DISPONIBLE</div>
+    <div style="font-size:13px;color:var(--dim);line-height:1.7;margin-bottom:24px;">Cette section n'est pas encore disponible.<br/>Elle sera débloquée très prochainement. 🔥</div>
+    <div class="locked-modal-btn" onclick="hideLocked()">COMPRIS 👊</div>
+  </div>
+</div>
+
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <div class="sidebar-logo-text">DHA</div>
+    <div class="sidebar-logo-sub">DIGITAL HUSTLER ACADEMY</div>
+  </div>
+  <div class="sidebar-section">MAIN</div>
+  <a class="nav-item" href="dha-dashboard.html"><span class="nav-icon">🎮</span> Dashboard</a>
+  <div class="sidebar-section">LEARN</div>
+  <a class="nav-item active" href="dha-formation.html"><span class="nav-icon">📈</span> Formation Trading</a>
+  <a class="nav-item" href="dha-mindset.html"><span class="nav-icon">🧠</span> Mindset</a>
+  <a class="nav-item" href="dha-live.html"><span class="nav-icon">📡</span> Live Hub<span class="notif-dot"></span></a>
+  <div class="sidebar-section">NETWORK</div>
+  <a class="nav-item" href="dha-squad.html"><span class="nav-icon">👥</span> Mon Squad</a>
+  <a class="nav-item" href="dha-leaderboard.html"><span class="nav-icon">🏆</span> Leaderboard</a>
+  <div class="sidebar-section">EARN</div>
+  <a class="nav-item" href="dha-affiliation.html"><span class="nav-icon">💰</span> Affiliation</a>
+  <div class="sidebar-section">TOOLS</div>
+  <a class="nav-item" href="dha-mentor.html"><span class="nav-icon">📞</span> Appel Mentor</a>
+  <div class="sidebar-bottom">
+    <div class="sidebar-member">
+      <div class="sidebar-avatar" id="sb-avatar">📈</div>
+      <div>
+        <div class="sidebar-member-name" id="sb-pseudo">HUSTLER</div>
+        <div class="sidebar-member-rang" id="sb-rang">NEW HUSTLER</div>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<main class="main">
+  <div class="topbar">
+    <div>
+      <div class="topbar-title">FORMATION <span>TRADING</span></div>
+      <div style="font-size:12px;color:var(--dim);margin-top:2px;">Module 1 & 2 — Introduction + Lecture de graphiques</div>
+    </div>
+    <div class="topbar-xp">
+      <span style="font-size:16px;">⚡</span>
+      <span class="topbar-xp-val" id="topbar-xp">0 XP</span>
+    </div>
+  </div>
+
+  <div class="modules-layout">
+
+    <div class="modules-sidebar">
+      <div class="module-nav-item active" onclick="showModule(1)">
+        <div class="module-nav-num">MODULE 01</div>
+        <div class="module-nav-name">INTRODUCTION AU TRADING</div>
+        <div class="module-nav-progress"><div class="module-nav-fill" id="m1-fill" style="width:0%"></div></div>
+      </div>
+      <div class="module-nav-item" onclick="showModule(2)" id="m2-nav">
+        <div class="module-nav-num">MODULE 02</div>
+        <div class="module-nav-name">LIRE UN GRAPHIQUE</div>
+        <div class="module-nav-progress"><div class="module-nav-fill" id="m2-fill" style="width:0%"></div></div>
+      </div>
+      <div class="module-nav-item locked" onclick="showLocked('Module 3')">
+        <div class="module-nav-num">MODULE 03</div>
+        <div class="module-nav-name">🔒 BIENTÔT</div>
+      </div>
+      <div class="module-nav-item locked" onclick="showLocked('Module 4')">
+        <div class="module-nav-num">MODULE 04</div>
+        <div class="module-nav-name">🔒 BIENTÔT</div>
+      </div>
+
+      <div style="padding:16px;border-radius:14px;background:rgba(255,215,0,0.06);border:1px solid rgba(255,215,0,0.15);margin-top:8px;">
+        <div style="font-family:'Orbitron',sans-serif;font-size:7px;letter-spacing:2px;color:rgba(255,215,0,0.5);margin-bottom:8px;">XP FORMATION</div>
+        <div style="font-family:'Orbitron',sans-serif;font-size:28px;font-weight:900;color:var(--gold);" id="formation-xp">0 XP</div>
+        <div style="font-size:11px;color:var(--dim);margin-top:4px;">sur 500 XP disponibles</div>
+      </div>
+    </div>
+
+    <div class="content-area" id="content-area">
+      
+      <div id="module-1">
+        <div class="content-header">
+          <div class="content-module-label">MODULE 01 — INTRODUCTION</div>
+          <div class="content-module-title">L'introduction<br/>au trading</div>
+          <div class="content-module-desc">Comprends les bases avant de toucher quoi que ce soit. C'est ici que tout commence.</div>
+        </div>
+
+        <div class="section-card" id="s1-1">
+          <div class="section-num">SECTION 01</div>
+          <div class="section-title">C'est quoi les marchés financiers ?</div>
+          <div class="section-text">
+            Imagine le marché du coin — mais en ligne, 24h/24. Y'a des acheteurs, des vendeurs, et des prix qui bougent tout le temps. Toi quand t'arrives là-dedans, t'es pas un touriste. T'es un hustler.<br/><br/>
+            Ton objectif c'est de faire du bénef intelligemment. Ça veut dire que tu vas pas acheter ou vendre à tout va comme tout le monde. Toi tu vas analyser. Tu vas observer. Et tu vas agir au bon moment.<br/><br/>
+            La règle de base c'est simple : tu achètes quand les prix sont bas et que tu sais qu'ils vont monter. Tu vends quand les prix sont hauts et que tu sais qu'ils vont baisser.
+          </div>
+          <div style="margin-top:16px;padding:12px 16px;border-radius:10px;background:rgba(0,212,255,0.06);border-left:3px solid var(--cyan);font-size:13px;color:var(--dim);font-style:italic;">
+            Et là tu te demandes sûrement — on achète quoi exactement ? On voit ça juste après. 👇
+          </div>
+        </div>
+
+        <div class="section-card" id="s1-2">
+          <div class="section-num">SECTION 02</div>
+          <div class="section-title">Comment tu fais de l'argent avec ça ?</div>
+          <div class="section-text">
+            Tu connais le Monopoly ? À chaque fois que quelqu'un gagne, quelqu'un d'autre perd. Le trading c'est exactement ça.<br/><br/>
+            À partir du moment où tu crées ton compte et que tu déposes de l'argent — cet argent entre dans le jeu. Ton objectif en tant que hustler c'est simple : conserver ce que t'as mis, et le faire grandir.<br/><br/>
+            L'argent que tu gagnes ? Il vient directement de traders en face de toi qui ont mal analysé le marché. <strong style="color:var(--cyan);">Leur erreur devient ton bénéf.</strong><br/><br/>
+            C'est pour ça que l'analyse c'est pas une option — c'est ta survie. Tant que ton compte est pas à zéro, t'es encore dans la partie. Et tant que t'es dans la partie, t'as une chance de gagner.
+          </div>
+          <div style="margin-top:16px;padding:12px 16px;border-radius:10px;background:rgba(255,215,0,0.06);border-left:3px solid var(--gold);font-size:13px;color:rgba(255,215,0,0.8);">
+            💡 Est-ce qu'on peut gagner même quand les prix baissent ? Oui. On appelle ça le <strong>short</strong>. On en parlera plus tard.
+          </div>
+        </div>
+
+        <div class="section-card" id="s1-3">
+          <div class="section-num">SECTION 03</div>
+          <div class="section-title">Au bout de combien de temps tes premiers revenus ?</div>
+          <div class="section-text">
+            Je vais être honnête avec toi — et c'est rare dans ce milieu.<br/><br/>
+            Techniquement ? Tu peux gagner de l'argent dès aujourd'hui. Mais je te le déconseille fortement.<br/><br/>
+            Pourquoi ? Parce que sans stratégie tu sais pas quand entrer. Sans psychologie tu sais pas quand sortir. Et sans les deux — tu vas brûler ton compte. C'est pas une menace, c'est une statistique.<br/><br/>
+            Alors voilà ce que je te demande avant de toucher à quoi que ce soit : construis ta stratégie. Développe ton mental. Et seulement après — tu joues.
+          </div>
+
+          <div class="question-card">
+            <div class="question-label">❓ QUESTION — DIS-MOI CE QUI TE CORRESPOND</div>
+            <div class="question-text">Tu préfères t'entraîner d'abord avec de l'argent fictif — zéro risque, tu apprends sans perdre un centime — ou tu préfères te lancer avec un petit capital réel dès le départ pour ressentir les vraies émotions du marché ?</div>
+            <div class="question-btns">
+              <div class="question-btn" onclick="answerQuestion(this, 'fictif')">💻 Argent fictif d'abord</div>
+              <div class="question-btn" onclick="answerQuestion(this, 'reel')">💰 Capital réel dès le départ</div>
+            </div>
+            <div class="question-response" id="q-response">
+              Y'a pas de bonne ou mauvaise réponse. Les deux chemins mènent au même endroit. Mais ton choix va définir comment on va travailler ensemble. 💪
+            </div>
+          </div>
+        </div>
+
+        <div class="section-card" id="s1-4">
+          <div class="section-num">SECTION 04</div>
+          <div class="section-title">Qui peut faire du trading ?</div>
+          <div class="section-text">
+            Étudiant. Salarié. Au chômage. Peu importe ta situation. Le trading a pas de profil type. Il demande pas de diplôme, pas d'expérience, pas de réseau. Il demande juste une chose — que tu sois prêt à apprendre sérieusement.<br/><br/>
+            Par contre je vais être direct avec toi. Si ton plan c'est de quitter ton taff demain pour trader à temps plein — c'est non. Pas maintenant. Pas avant d'avoir une stratégie prouvée, un mental solide, et un capital qui tient la route.<br/><br/>
+            <strong style="color:var(--cyan);">Le mec le plus intelligent que tu peux être dans cette situation c'est celui qui garde ses revenus fixes, met de côté une somme chaque mois, et construit son trading en parallèle.</strong> Tranquillement. Solidement.
+          </div>
+        </div>
+
+        <div class="section-card" id="s1-5">
+          <div class="section-num">SECTION 05</div>
+          <div class="section-title">Combien de temps ça prend dans ta journée ?</div>
+          <div class="section-text">
+            <strong style="color:var(--gold);">Phase d'apprentissage</strong> — compte 30 minutes à 1 heure par jour minimum. Tous les jours. Sans exception. C'est là que tu construis ta stratégie, tu comprends les marchés, tu développes ton mental.<br/><br/>
+            <strong style="color:var(--green);">Une fois que t'as compris comment trader ?</strong> 15 à 30 minutes par jour maximum. Tu analyses, tu prends tes positions, tu passes à autre chose.<br/><br/>
+            Le trading bien fait c'est pas être collé à un écran 8 heures. C'est analyser vite, décider bien, et vivre ta vie.
+          </div>
+        </div>
+
+        <div style="padding:24px;border-radius:16px;background:linear-gradient(135deg,rgba(30,100,255,0.12),rgba(0,212,255,0.06));border:1px solid rgba(0,212,255,0.2);margin-bottom:20px;">
+          <div style="font-family:'Orbitron',sans-serif;font-size:10px;letter-spacing:2px;color:var(--cyan);margin-bottom:10px;">🎯 CONCLUSION MODULE 1</div>
+          <div style="font-size:14px;color:rgba(232,244,255,0.8);line-height:1.8;">
+            Tu viens de faire quelque chose que 90% des gens font jamais. T'as pris le temps de comprendre avant d'agir. C'est déjà ça qui te différencie.<br/><br/>
+            La suite ? On rentre dans le concret. Stratégie. Analyse. Positions. C'est là que ça devient sérieux — et c'est là que tout commence vraiment.
+          </div>
+        </div>
+
+        <div class="xp-badge">⚡ +100 XP — MODULE COMPLÉTÉ</div>
+        <button class="complete-btn" id="btn-complete-m1" onclick="completeModule(1)">✓ VALIDER LE MODULE 1 — +100 XP</button>
+      </div>
+
+      <div id="module-2" style="display:none;">
+        <div class="content-header">
+          <div class="content-module-label">MODULE 02 — GRAPHIQUES</div>
+          <div class="content-module-title">Lire un graphique<br/>comme un pro</div>
+          <div class="content-module-desc">7 blocs essentiels. Maîtrise-les et tu verras les marchés différemment.</div>
+        </div>
+
+        <div class="section-card">
+          <div class="section-num">BLOC 01</div>
+          <div class="section-title">Les bougies japonaises</div>
+          <div class="section-text">
+            Sur un graphique, chaque bougie raconte une histoire. C'est le résultat d'un combat entre acheteurs et vendeurs sur une période de temps précise.<br/><br/>
+            Une bougie c'est 4 informations : le prix d'ouverture, le prix de fermeture, la mèche haute, la mèche basse. La couleur te dit qui a gagné — <strong style="color:var(--green);">bougie verte : acheteurs gagnants</strong>, <strong style="color:var(--red);">bougie rouge : vendeurs gagnants</strong>.<br/><br/>
+            Les mèches te racontent les tentatives — la mèche haute montre jusqu'où les acheteurs ont poussé sans tenir, la mèche basse montre jusqu'où les vendeurs ont poussé sans tenir.
+          </div>
+
+          <div class="candle-widget">
+            <div class="candle-widget-title">🕯️ BOUGIE INTERACTIVE — CLIQUE POUR EXPLORER</div>
+            <div class="candle-area">
+              <div class="candle-svg-wrap">
+                <svg id="candle-svg" width="120" height="200" viewBox="0 0 120 200">
+                  
+                  <line id="c-wick-top" x1="60" y1="10" x2="60" y2="50" stroke="#00FF88" stroke-width="3" stroke-linecap="round" style="cursor:pointer" onclick="highlightCandle('top')"/>
+                  
+                  <rect id="c-body" x="30" y="50" width="60" height="100" rx="4" fill="#00FF88" style="cursor:pointer" onclick="highlightCandle('body')"/>
+                  
+                  <line id="c-wick-bot" x1="60" y1="150" x2="60" y2="190" stroke="#00FF88" stroke-width="3" stroke-linecap="round" style="cursor:pointer" onclick="highlightCandle('bot')"/>
+                  
+                  <text x="90" y="32" fill="rgba(232,244,255,0.4)" font-size="9" font-family="Orbitron">MÈCHE H.</text>
+                  <text x="90" y="105" fill="rgba(232,244,255,0.4)" font-size="9" font-family="Orbitron">CORPS</text>
+                  <text x="90" y="172" fill="rgba(232,244,255,0.4)" font-size="9" font-family="Orbitron">MÈCHE B.</text>
+                </svg>
+              </div>
+              <div class="candle-info">
+                <div class="candle-info-item" onclick="highlightCandle('top')" id="ci-top">
+                  <strong>MÈCHE HAUTE</strong>
+                  Clique pour voir l'explication
+                </div>
+                <div class="candle-info-item" onclick="highlightCandle('body')" id="ci-body">
+                  <strong>CORPS</strong>
+                  Clique pour voir l'explication
+                </div>
+                <div class="candle-info-item" onclick="highlightCandle('bot')" id="ci-bot">
+                  <strong>MÈCHE BASSE</strong>
+                  Clique pour voir l'explication
+                </div>
+                <div class="candle-toggle">
+                  <button class="candle-toggle-btn" style="border-color:rgba(0,255,136,0.4);color:var(--green);background:rgba(0,255,136,0.1);" onclick="setCandle('green')">🟢 HAUSSIÈRE</button>
+                  <button class="candle-toggle-btn" style="border-color:rgba(255,68,102,0.4);color:var(--red);background:rgba(255,68,102,0.1);" onclick="setCandle('red')">🔴 BAISSIÈRE</button>
+                </div>
+              </div>
+            </div>
+            <div id="candle-msg" style="margin-top:12px;padding:12px 14px;border-radius:10px;background:rgba(0,212,255,0.06);border:1px solid rgba(0,212,255,0.15);font-size:13px;color:var(--dim);display:none;"></div>
+          </div>
+        </div>
+
+        <div class="section-card">
+          <div class="section-num">BLOC 02</div>
+          <div class="section-title">Les tendances</div>
+          <div class="section-text">
+            Avant de prendre une position, y'a une question que tu dois toujours te poser en premier : <strong style="color:var(--cyan);">dans quel sens va le marché en ce moment ?</strong><br/><br/>
+            Le marché a seulement 3 mouvements possibles. Tu vas pas nager à contre-courant. Si le marché est baissier, tu cherches pas à acheter. Tu suis le sens du marché. Lire la tendance c'est la première chose que tu fais avant chaque analyse. Toujours.
+          </div>
+
+          <div class="trend-widget">
+            <div style="font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:2px;color:var(--cyan);margin-bottom:12px;">📊 CLIQUE SUR UNE TENDANCE</div>
+            <div class="trend-btns">
+              <button class="trend-btn" onclick="showTrend('bull')">📈 HAUSSIER</button>
+              <button class="trend-btn" onclick="showTrend('bear')">📉 BAISSIER</button>
+              <button class="trend-btn" onclick="showTrend('range')">↔️ RANGE</button>
+            </div>
+            <canvas id="trend-canvas" width="500" height="160" style="width:100%;border-radius:10px;background:rgba(5,9,20,0.8);border:1px solid rgba(255,255,255,0.06);"></canvas>
+            <div id="trend-desc" style="margin-top:10px;padding:12px;border-radius:10px;background:rgba(255,255,255,0.04);font-size:13px;color:var(--dim);min-height:40px;"></div>
+          </div>
+        </div>
+
+        <div class="section-card">
+          <div class="section-num">BLOC 03</div>
+          <div class="section-title">Le BOS — Break of Structure</div>
+          <div class="section-text">
+            Le BOS c'est ta confirmation que la tendance continue. En tendance haussière, le marché monte mais pas en ligne droite — il retrace. Ce retracement crée un High et un Low.<br/><br/>
+            Si le marché repart et dépasse le dernier High — c'est un BOS. La structure est cassée vers le haut. La tendance haussière est confirmée.<br/><br/>
+            <strong style="color:var(--cyan);">Le BOS c'est ta confirmation. Tu rentres pas dans le marché parce que t'as une intuition. Tu rentres parce que la structure te le dit.</strong>
+          </div>
+
+          <div class="step-widget">
+            <div style="font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:2px;color:var(--cyan);margin-bottom:12px;">⚡ BOS — ÉTAPE PAR ÉTAPE</div>
+            <div class="step-btns">
+              <button class="step-btn" onclick="showStep('bos',1,this)">1 — Le marché monte</button>
+              <button class="step-btn" onclick="showStep('bos',2,this)">2 — Il retrace</button>
+              <button class="step-btn" onclick="showStep('bos',3,this)">3 — High & Low formés</button>
+              <button class="step-btn" onclick="showStep('bos',4,this)">4 — BOS confirmé ✅</button>
+            </div>
+            <canvas id="bos-canvas" width="500" height="160" style="width:100%;border-radius:10px;background:rgba(5,9,20,0.8);border:1px solid rgba(255,255,255,0.06);margin-bottom:10px;"></canvas>
+            <div class="step-desc" id="bos-desc">Clique sur une étape pour voir le mouvement.</div>
+          </div>
+        </div>
+
+        <div class="section-card">
+          <div class="section-num">BLOC 04</div>
+          <div class="section-title">Le CHOCH — Change of Character</div>
+          <div class="section-text">
+            Le CHOCH c'est l'inverse du BOS. En tendance haussière, au lieu de casser le High, le marché continue de descendre et casse le Low.<br/><br/>
+            C'est un signal — pas une certitude — que le marché est en train de changer de direction. Les vendeurs commencent à prendre le contrôle.<br/><br/>
+            <strong style="color:var(--red);">Le CHOCH t'alerte. À toi ensuite de confirmer avec d'autres éléments avant d'agir.</strong> Un bon trader c'est pas quelqu'un qui réagit à tout. C'est quelqu'un qui sait lire les signaux et attendre la confirmation.
+          </div>
+
+          <div class="step-widget">
+            <div style="font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:2px;color:var(--red);margin-bottom:12px;">⚠️ CHOCH — ÉTAPE PAR ÉTAPE</div>
+            <div class="step-btns">
+              <button class="step-btn" onclick="showStep('choch',1,this)">1 — Tendance haussière</button>
+              <button class="step-btn" onclick="showStep('choch',2,this)">2 — Retracement</button>
+              <button class="step-btn" onclick="showStep('choch',3,this)">3 — High & Low formés</button>
+              <button class="step-btn" onclick="showStep('choch',4,this)">4 — CHOCH ⚠️</button>
+            </div>
+            <canvas id="choch-canvas" width="500" height="160" style="width:100%;border-radius:10px;background:rgba(5,9,20,0.8);border:1px solid rgba(255,255,255,0.06);margin-bottom:10px;"></canvas>
+            <div class="step-desc" id="choch-desc">Clique sur une étape pour voir le mouvement.</div>
+          </div>
+        </div>
+
+        <div class="section-card">
+          <div class="section-num">BLOC 05</div>
+          <div class="section-title">Les Order Blocks</div>
+          <div class="section-text">
+            En tendance haussière, l'Order Block c'est la dernière bougie rouge juste avant que le marché parte fort à la hausse et casse un High. C'est là que les institutionnels ont placé leurs gros ordres d'achat.<br/><br/>
+            <strong style="color:var(--gold);">Comment tu rentres ?</strong> Tu attends que le marché retrace jusqu'à la zone de l'Order Block. Tu rentres au 50% de la zone — le milieu. Ton stop loss tu le places juste en dessous du Low de l'Order Block.
+          </div>
+
+          <div class="step-widget">
+            <div style="font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:2px;color:var(--gold);margin-bottom:12px;">📦 ORDER BLOCK — SCHÉMA</div>
+            <canvas id="ob-canvas" width="500" height="200" style="width:100%;border-radius:10px;background:rgba(5,9,20,0.8);border:1px solid rgba(255,255,255,0.06);"></canvas>
+            <div style="margin-top:10px;display:flex;gap:12px;flex-wrap:wrap;">
+              <div style="display:flex;align-items:center;gap:6px;font-size:11px;color:var(--dim);"><div style="width:12px;height:12px;border-radius:2px;background:var(--gold);opacity:0.6;"></div>Order Block</div>
+              <div style="display:flex;align-items:center;gap:6px;font-size:11px;color:var(--dim);"><div style="width:12px;height:3px;background:var(--cyan);"></div>Entrée 50%</div>
+              <div style="display:flex;align-items:center;gap:6px;font-size:11px;color:var(--dim);"><div style="width:12px;height:3px;background:var(--red);"></div>Stop Loss</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="section-card">
+          <div class="section-num">BLOC 06</div>
+          <div class="section-title">La prise de liquidité</div>
+          <div class="section-text">
+            Dans un range, des ordres s'accumulent sous le support. La prise de liquidité c'est quand le marché crée une longue mèche qui perce le support vers le bas — faux mouvement — puis referme au-dessus et repart à la hausse.<br/><br/>
+            <strong style="color:var(--cyan);">Tu la repères :</strong> longue mèche qui perce le support, bougie qui referme au-dessus.<br/><br/>
+            Tu rentres pas pendant la mèche — tu attends que le prix referme au-dessus du support avant de rentrer. Stop loss sous le bas de la mèche.
+          </div>
+
+          <div class="step-widget">
+            <div style="font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:2px;color:var(--cyan);margin-bottom:12px;">💧 PRISE DE LIQUIDITÉ — ÉTAPE PAR ÉTAPE</div>
+            <div class="step-btns">
+              <button class="step-btn" onclick="showStep('liq',1,this)">1 — Le range</button>
+              <button class="step-btn" onclick="showStep('liq',2,this)">2 — Ordres accumulés</button>
+              <button class="step-btn" onclick="showStep('liq',3,this)">3 — La mèche piège</button>
+              <button class="step-btn" onclick="showStep('liq',4,this)">4 — Reprise haussière</button>
+            </div>
+            <canvas id="liq-canvas" width="500" height="160" style="width:100%;border-radius:10px;background:rgba(5,9,20,0.8);border:1px solid rgba(255,255,255,0.06);margin-bottom:10px;"></canvas>
+            <div class="step-desc" id="liq-desc">Clique sur une étape pour voir le mouvement.</div>
+          </div>
+        </div>
+
+        <div class="section-card">
+          <div class="section-num">BLOC 07</div>
+          <div class="section-title">Le FVG — Fair Value Gap</div>
+          <div class="section-text">
+            Quand le marché part fort, il crée des espaces entre les bougies — des zones où le prix est passé trop vite. On appelle ça un Fair Value Gap.<br/><br/>
+            <strong style="color:var(--purple);">Comment tu l'identifies :</strong> prends 3 bougies consécutives. Si la mèche haute de la 1ère et la mèche basse de la 3ème ne se touchent pas — t'as un FVG.<br/><br/>
+            Le marché déteste les déséquilibres. Dans la majorité des cas il revient combler cet espace. Tu attends que le marché revienne sur la zone du FVG. Tu rentres au 50% du gap.
+          </div>
+
+          <div class="step-widget">
+            <div style="font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:2px;color:var(--purple);margin-bottom:12px;">🔮 FVG — ÉTAPE PAR ÉTAPE</div>
+            <div class="step-btns">
+              <button class="step-btn" onclick="showStep('fvg',1,this)">1 — Mouvement fort</button>
+              <button class="step-btn" onclick="showStep('fvg',2,this)">2 — FVG identifié</button>
+              <button class="step-btn" onclick="showStep('fvg',3,this)">3 — Retour sur le gap</button>
+              <button class="step-btn" onclick="showStep('fvg',4,this)">4 — Entrée au 50%</button>
+            </div>
+            <canvas id="fvg-canvas" width="500" height="160" style="width:100%;border-radius:10px;background:rgba(5,9,20,0.8);border:1px solid rgba(255,255,255,0.06);margin-bottom:10px;"></canvas>
+            <div class="step-desc" id="fvg-desc">Clique sur une étape pour voir le mouvement.</div>
+          </div>
+        </div>
+
+        <div class="xp-badge">⚡ +200 XP — MODULE COMPLÉTÉ</div>
+        <button class="complete-btn" id="btn-complete-m2" onclick="completeModule(2)">✓ VALIDER LE MODULE 2 — +200 XP</button>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script>
+const SUPABASE_URL='https://kdetwppxsfoagyndrlzr.supabase.co';
+const SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtkZXR3cHB4c2ZvYWd5bmRybHpyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzcyMzM3NjQsImV4cCI6MjA5MjgwOTc2NH0.OodaFQKEHcncDYdO6uM121NAUbyxD4UxpptSjzzZOi0';
+
+let member=null;
+let formationXP=0;
+let completedModules=[];
+
+function showLocked(n){document.getElementById('locked-title').textContent='🔒 '+n.toUpperCase()+' — BIENTÔT';document.getElementById('locked-modal').classList.add('show');}
+function hideLocked(){document.getElementById('locked-modal').classList.remove('show');}
+
+// MODULE NAV
+function showModule(n){
+  document.querySelectorAll('.module-nav-item:not(.locked)').forEach(i=>i.classList.remove('active'));
+  event.currentTarget&&event.currentTarget.classList.add('active');
+  document.getElementById('module-1').style.display=n===1?'block':'none';
+  document.getElementById('module-2').style.display=n===2?'block':'none';
+  if(n===2)setTimeout(()=>{drawOB();drawTrend('bull');},100);
+}
+
+// COMPLETE MODULE
+async function completeModule(n){
+  if(completedModules.includes(n))return;
+  completedModules.push(n);
+  const xp=n===1?100:200;
+  formationXP+=xp;
+  document.getElementById('formation-xp').textContent=formationXP+' XP';
+  document.getElementById('btn-complete-m'+n).textContent='✅ MODULE '+n+' VALIDÉ !';
+  document.getElementById('btn-complete-m'+n).disabled=true;
+  document.getElementById('m'+n+'-fill').style.width='100%';
+
+  // Flash XP
+  const flash=document.createElement('div');
+  flash.textContent='+'+xp+' XP ⚡';
+  flash.style.cssText='position:fixed;top:40%;left:50%;transform:translate(-50%,-50%);font-family:Orbitron,sans-serif;font-size:40px;font-weight:900;color:#FFD700;text-shadow:0 0 40px rgba(255,215,0,0.8);z-index:9999;pointer-events:none;animation:xp-pop .8s ease forwards;';
+  document.body.appendChild(flash);
+  setTimeout(()=>flash.remove(),800);
+
+  if(member){
+    member.xp=(member.xp||0)+xp;
+    member.level=Math.floor(member.xp/500)+1;
+    localStorage.setItem('dha_member',JSON.stringify(member));
+    document.getElementById('topbar-xp').textContent=member.xp+' XP';
+    try{
+      await fetch(SUPABASE_URL+'/rest/v1/membres?email=eq.'+encodeURIComponent(member.email),{
+        method:'PATCH',headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY},
+        body:JSON.stringify({xp:member.xp,level:member.level})
+      });
+    }catch(e){}
+  }
+}
+
+// QUESTION
+function answerQuestion(btn,choice){
+  document.querySelectorAll('.question-btn').forEach(b=>b.classList.remove('selected'));
+  btn.classList.add('selected');
+  const r=document.getElementById('q-response');
+  if(choice==='fictif')r.innerHTML="Excellent choix. Le paper trading te permet de construire ta stratégie sans risque. Tu vas développer les bons réflexes avant de jouer avec du vrai argent. C'est le chemin le plus sage. 💪";
+  else r.innerHTML="Respect pour l'audace. Mais garde ça en tête : commence avec un montant que tu peux te permettre de perdre entièrement. Le marché va t'apprendre des leçons — autant que ça coûte le moins possible au début. 🎯";
+  r.classList.add('show');
+}
+
+// CANDLE WIDGET
+function highlightCandle(part){
+  const svg=document.getElementById('candle-svg');
+  const msg=document.getElementById('candle-msg');
+  const isGreen=document.getElementById('c-body').getAttribute('fill')==='#00FF88';
+  document.querySelectorAll('.candle-info-item').forEach(i=>i.classList.remove('active'));
+  const messages={
+    top:isGreen?"Le prix est monté jusqu'ici — mais les vendeurs ont repoussé. Plus la mèche est longue, plus le combat a été intense. Les acheteurs ont essayé fort, mais n'ont pas tenu.":"Le prix est monté jusqu'ici après une bougie baissière. Les acheteurs ont tenté de reprendre le contrôle mais les vendeurs ont dominé.",
+    body:isGreen?"Zone entre l'ouverture (bas du corps) et la fermeture (haut du corps). Grand corps vert = victoire nette des acheteurs. Ils ont pris le contrôle et l'ont gardé sur toute la période.":"Zone entre l'ouverture (haut du corps) et la fermeture (bas du corps). Grand corps rouge = victoire nette des vendeurs. Ils ont dominé toute la période.",
+    bot:isGreen?"Le prix est descendu jusqu'ici — mais les acheteurs ont repoussé. C'est un signal de force haussière. Les vendeurs ont essayé de prendre le contrôle mais ont échoué.":"Le prix est descendu jusqu'ici. Les vendeurs ont poussé très bas — signe de forte pression baissière sur la période."
+  };
+  document.getElementById('ci-'+part).classList.add('active');
+  msg.textContent=messages[part];
+  msg.style.display='block';
+}
+function setCandle(color){
+  const c=color==='red'?'#FF4466':'#00FF88';
+  document.getElementById('c-body').setAttribute('fill',c);
+  document.getElementById('c-wick-top').setAttribute('stroke',c);
+  document.getElementById('c-wick-bot').setAttribute('stroke',c);
+  document.getElementById('candle-msg').style.display='none';
+  document.querySelectorAll('.candle-info-item').forEach(i=>i.classList.remove('active'));
+}
+
+// TREND CANVAS
+function drawTrend(type){
+  const canvas=document.getElementById('trend-canvas');
+  const ctx=canvas.getContext('2d');
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  canvas.width=canvas.offsetWidth*2;canvas.height=160*2;
+  ctx.scale(2,2);
+  const w=canvas.width/2,h=canvas.height/2;
+  ctx.strokeStyle='rgba(255,255,255,0.05)';ctx.lineWidth=1;
+  for(let i=0;i<w;i+=40){ctx.beginPath();ctx.moveTo(i,0);ctx.lineTo(i,h);ctx.stroke();}
+  for(let i=0;i<h;i+=40){ctx.beginPath();ctx.moveTo(0,i);ctx.lineTo(w,i);ctx.stroke();}
+
+  if(type==='bull'){
+    const pts=[[20,130],[60,115],[80,120],[120,95],[140,100],[180,70],[200,75],[240,45],[260,50],[300,25]];
+    ctx.strokeStyle='#00FF88';ctx.lineWidth=2.5;ctx.shadowBlur=8;ctx.shadowColor='#00FF88';
+    ctx.beginPath();pts.forEach((p,i)=>i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]));ctx.stroke();
+    ctx.shadowBlur=0;
+    // Bougies vertes
+    pts.forEach((p,i)=>{if(i%2===0){ctx.fillStyle='#00FF88';ctx.fillRect(p[0]-6,p[1],12,15);}});
+  } else if(type==='bear'){
+    const pts=[[20,25],[60,40],[80,35],[120,60],[140,55],[180,85],[200,80],[240,110],[260,105],[300,135]];
+    ctx.strokeStyle='#FF4466';ctx.lineWidth=2.5;ctx.shadowBlur=8;ctx.shadowColor='#FF4466';
+    ctx.beginPath();pts.forEach((p,i)=>i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]));ctx.stroke();
+    ctx.shadowBlur=0;
+    pts.forEach((p,i)=>{if(i%2===0){ctx.fillStyle='#FF4466';ctx.fillRect(p[0]-6,p[1]-15,12,15);}});
+  } else {
+    // Range
+    ctx.strokeStyle='rgba(255,215,0,0.5)';ctx.lineWidth=1.5;ctx.setLineDash([6,4]);
+    ctx.beginPath();ctx.moveTo(20,55);ctx.lineTo(w-20,55);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(20,105);ctx.lineTo(w-20,105);ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle='rgba(255,215,0,0.05)';ctx.fillRect(20,55,w-40,50);
+    ctx.fillStyle='rgba(255,215,0,0.5)';ctx.font='bold 10px Orbitron';
+    ctx.fillText('RÉSISTANCE',25,50);ctx.fillText('SUPPORT',25,120);
+    const pts=[[20,80],[50,65],[80,95],[110,70],[140,85],[170,60],[200,90],[230,75],[260,95],[290,70]];
+    ctx.strokeStyle='#FFD700';ctx.lineWidth=2;ctx.shadowBlur=6;ctx.shadowColor='#FFD700';
+    ctx.beginPath();pts.forEach((p,i)=>i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]));ctx.stroke();
+    ctx.shadowBlur=0;
+  }
+}
+
+function showTrend(type){
+  document.querySelectorAll('.trend-btn').forEach(b=>b.className='trend-btn');
+  const btn=event.currentTarget;
+  const descs={
+    bull:'📈 HAUSSIER — Les acheteurs ont le contrôle. Le marché fait des Higher Highs et Higher Lows. Tu cherches uniquement des opportunités à l\'achat dans ce contexte.',
+    bear:'📉 BAISSIER — Les vendeurs ont le contrôle. Lower Highs et Lower Lows se succèdent. Tu cherches uniquement des opportunités à la vente (short).',
+    range:'↔️ RANGE — Le marché stagne entre un support et une résistance. Pas de tendance claire. Tu attends une cassure nette avant d\'agir.'
+  };
+  const classes={bull:'active-bull',bear:'active-bear',range:'active-range'};
+  btn.classList.add(classes[type]);
+  document.getElementById('trend-desc').textContent=descs[type];
+  drawTrend(type);
+}
+
+// STEP WIDGETS
+const stepData={
+  bos:{
+    1:{desc:"Le marché est en tendance haussière. Les bougies vertes s'enchaînent. Les acheteurs ont clairement le contrôle.",draw:(ctx,w,h)=>{drawBosStep(ctx,w,h,1);}},
+    2:{desc:"Le marché retrace. Normal — il ne monte jamais en ligne droite. Les vendeurs tentent de reprendre le contrôle temporairement.",draw:(ctx,w,h)=>{drawBosStep(ctx,w,h,2);}},
+    3:{desc:"Un High (sommet avant la baisse) et un Low (creux du retracement) se forment. Ces deux points vont être déterminants.",draw:(ctx,w,h)=>{drawBosStep(ctx,w,h,3);}},
+    4:{desc:"✅ BOS CONFIRMÉ — Le marché repart et dépasse le dernier High. La structure est cassée vers le haut. La tendance haussière est confirmée. Tu peux envisager une entrée.",draw:(ctx,w,h)=>{drawBosStep(ctx,w,h,4);}}
+  },
+  choch:{
+    1:{desc:"Le marché est en tendance haussière. Higher Highs, Higher Lows. Les acheteurs dominent.",draw:(ctx,w,h)=>{drawChochStep(ctx,w,h,1);}},
+    2:{desc:"Le marché retrace normalement. Rien d'alarmant pour l'instant.",draw:(ctx,w,h)=>{drawChochStep(ctx,w,h,2);}},
+    3:{desc:"Un High et un Low se forment. Même schéma que le BOS pour l'instant.",draw:(ctx,w,h)=>{drawChochStep(ctx,w,h,3);}},
+    4:{desc:"⚠️ CHOCH — Au lieu de casser le High, le marché casse le Low. C'est un signal d'alerte. Les vendeurs commencent à prendre le contrôle. Sois vigilant.",draw:(ctx,w,h)=>{drawChochStep(ctx,w,h,4);}}
+  },
+  liq:{
+    1:{desc:"Le marché est dans un range. Il oscille entre le support (bas) et la résistance (haut) sans tendance claire.",draw:(ctx,w,h)=>{drawLiqStep(ctx,w,h,1);}},
+    2:{desc:"Des stop loss s'accumulent sous le support. Les traders qui sont à l'achat ont placé leurs stops là — c'est de la liquidité.",draw:(ctx,w,h)=>{drawLiqStep(ctx,w,h,2);}},
+    3:{desc:"⚡ La mèche piège — Le marché plonge sous le support, déclenche tous les stops, puis referme AU-DESSUS. C'est un faux mouvement pour collecter la liquidité.",draw:(ctx,w,h)=>{drawLiqStep(ctx,w,h,3);}},
+    4:{desc:"✅ Reprise haussière — Après avoir collecté la liquidité, le marché repart fort à la hausse. Tu rentres quand la bougie referme au-dessus du support.",draw:(ctx,w,h)=>{drawLiqStep(ctx,w,h,4);}}
+  },
+  fvg:{
+    1:{desc:"Le marché fait un mouvement fort et rapide. Il monte (ou descend) très vite, laissant peu de temps aux échanges.",draw:(ctx,w,h)=>{drawFvgStep(ctx,w,h,1);}},
+    2:{desc:"🔮 Le FVG est identifié — Entre la 1ère et la 3ème bougie, il y a un espace que le prix n'a pas comblé. C'est le Fair Value Gap.",draw:(ctx,w,h)=>{drawFvgStep(ctx,w,h,2);}},
+    3:{desc:"Le marché retrace vers la zone du FVG. Le déséquilibre attire le prix comme un aimant. C'est normal et prévisible.",draw:(ctx,w,h)=>{drawFvgStep(ctx,w,h,3);}},
+    4:{desc:"✅ Entrée au 50% — Tu rentres au milieu du gap. Stop loss sous le FVG. Le marché repart à la hausse après avoir comblé le déséquilibre.",draw:(ctx,w,h)=>{drawFvgStep(ctx,w,h,4);}}
+  }
+};
+
+function showStep(type,step,btn){
+  document.querySelectorAll('#'+type+'-canvas').forEach(()=>{});
+  const btns=btn.closest('.step-btns').querySelectorAll('.step-btn');
+  btns.forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  const canvas=document.getElementById(type+'-canvas');
+  const ctx=canvas.getContext('2d');
+  canvas.width=canvas.offsetWidth*2;canvas.height=160*2;
+  ctx.scale(2,2);
+  const w=canvas.width/2,h=canvas.height/2;
+  ctx.clearRect(0,0,w,h);
+  drawGrid(ctx,w,h);
+  stepData[type][step].draw(ctx,w,h);
+  document.getElementById(type+'-desc').textContent=stepData[type][step].desc;
+}
+
+function drawGrid(ctx,w,h){
+  ctx.strokeStyle='rgba(255,255,255,0.04)';ctx.lineWidth=1;
+  for(let i=0;i<w;i+=30){ctx.beginPath();ctx.moveTo(i,0);ctx.lineTo(i,h);ctx.stroke();}
+  for(let i=0;i<h;i+=30){ctx.beginPath();ctx.moveTo(0,i);ctx.lineTo(w,i);ctx.stroke();}
+}
+
+function drawBosStep(ctx,w,h,step){
+  const greenC='#00FF88';const redC='#FF4466';
+  // Phase montante
+  if(step>=1){drawCandles(ctx,[[20,120,30,100],[50,105,30,85],[80,90,30,70]],greenC);}
+  if(step>=2){drawCandles(ctx,[[110,75,20,90],[130,85,20,100]],redC);} // retracement
+  if(step>=3){
+    ctx.fillStyle='rgba(0,212,255,0.8)';ctx.font='bold 10px Orbitron';ctx.fillText('HIGH',80,62);
+    ctx.fillStyle='rgba(255,68,102,0.8)';ctx.fillText('LOW',130,108);
+    ctx.strokeStyle='rgba(0,212,255,0.4)';ctx.setLineDash([4,3]);
+    ctx.beginPath();ctx.moveTo(80,65);ctx.lineTo(250,65);ctx.stroke();ctx.setLineDash([]);
+  }
+  if(step>=4){
+    drawCandles(ctx,[[160,100,30,80],[190,85,30,65],[220,70,30,45],[250,50,30,30]],greenC);
+    ctx.fillStyle='rgba(0,255,136,0.9)';ctx.font='bold 11px Orbitron';ctx.fillText('BOS ✅',210,30);
+    ctx.strokeStyle='#00FF88';ctx.lineWidth=2;ctx.shadowBlur=8;ctx.shadowColor='#00FF88';
+    ctx.beginPath();ctx.moveTo(250,65);ctx.lineTo(250,45);ctx.stroke();ctx.shadowBlur=0;
+  }
+}
+
+function drawChochStep(ctx,w,h,step){
+  if(step>=1){drawCandles(ctx,[[20,120,30,100],[50,105,30,85],[80,90,30,70]],`#00FF88`);}
+  if(step>=2){drawCandles(ctx,[[110,75,20,90]],`#FF4466`);}
+  if(step>=3){
+    ctx.fillStyle='rgba(0,212,255,0.8)';ctx.font='bold 10px Orbitron';ctx.fillText('HIGH',80,62);
+    ctx.fillStyle='rgba(255,68,102,0.8)';ctx.fillText('LOW',115,98);
+    ctx.strokeStyle='rgba(255,68,102,0.4)';ctx.setLineDash([4,3]);
+    ctx.beginPath();ctx.moveTo(115,92);ctx.lineTo(280,92);ctx.stroke();ctx.setLineDash([]);
+  }
+  if(step>=4){
+    drawCandles(ctx,[[140,90,30,110],[170,105,30,125],[200,120,30,140]],`#FF4466`);
+    ctx.fillStyle='rgba(255,68,102,0.9)';ctx.font='bold 11px Orbitron';ctx.fillText('CHOCH ⚠️',170,150);
+    ctx.strokeStyle='#FF4466';ctx.lineWidth=2.5;ctx.shadowBlur=8;ctx.shadowColor='#FF4466';
+    ctx.beginPath();ctx.moveTo(200,92);ctx.lineTo(200,140);ctx.stroke();ctx.shadowBlur=0;
+  }
+}
+
+function drawLiqStep(ctx,w,h,step){
+  ctx.strokeStyle='rgba(255,215,0,0.4)';ctx.lineWidth=1.5;ctx.setLineDash([6,4]);
+  ctx.beginPath();ctx.moveTo(10,40);ctx.lineTo(w-10,40);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(10,100);ctx.lineTo(w-10,100);ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.fillStyle='rgba(255,215,0,0.5)';ctx.font='9px Orbitron';ctx.fillText('RÉSISTANCE',12,36);ctx.fillText('SUPPORT',12,96);
+  // Range candles
+  const rangeC=[[20,65,15,75],[40,55,15,70],[60,70,15,80],[80,60,15,72],[100,65,15,78]];
+  rangeC.forEach(c=>{const col=Math.random()>0.5?'#00FF88':'#FF4466';drawCandle(ctx,c[0],c[1],c[2],c[3],col);});
+  if(step>=2){
+    for(let i=0;i<5;i++){ctx.fillStyle='rgba(255,68,102,0.6)';ctx.font='8px Arial';ctx.fillText('×',115+i*10,108);}
+    ctx.fillStyle='rgba(255,68,102,0.6)';ctx.font='8px Orbitron';ctx.fillText('STOPS',112,120);
+  }
+  if(step>=3){
+    ctx.strokeStyle='#FF4466';ctx.lineWidth=2;ctx.shadowBlur=6;ctx.shadowColor='#FF4466';
+    ctx.beginPath();ctx.moveTo(170,65);ctx.lineTo(170,130);ctx.stroke();ctx.shadowBlur=0;
+    drawCandle(ctx,165,100,10,125,'#FF4466');
+    ctx.fillStyle='rgba(255,68,102,0.8)';ctx.font='8px Orbitron';ctx.fillText('MÈCHE PIÈGE',140,140);
+  }
+  if(step>=4){
+    drawCandles(ctx,[[190,100,20,80],[215,85,20,65],[240,70,20,50]],`#00FF88`);
+    ctx.fillStyle='rgba(0,255,136,0.8)';ctx.font='9px Orbitron';ctx.fillText('REPRISE ✅',200,45);
+  }
+}
+
+function drawFvgStep(ctx,w,h,step){
+  if(step>=1){
+    drawCandles(ctx,[[20,110,20,90],[50,95,20,75],[80,80,20,55],[110,60,20,35]],`#00FF88`);
+  }
+  if(step>=2){
+    ctx.fillStyle='rgba(157,78,221,0.15)';ctx.fillRect(50,35,30,50);
+    ctx.strokeStyle='rgba(157,78,221,0.6)';ctx.lineWidth=1.5;ctx.setLineDash([4,3]);
+    ctx.strokeRect(50,35,30,50);ctx.setLineDash([]);
+    ctx.fillStyle='rgba(157,78,221,0.8)';ctx.font='bold 9px Orbitron';ctx.fillText('FVG',55,30);
+    ctx.fillText('50%',55,62);
+    ctx.strokeStyle='rgba(157,78,221,0.5)';ctx.lineWidth=1;
+    ctx.beginPath();ctx.moveTo(50,60);ctx.lineTo(80,60);ctx.stroke();
+  }
+  if(step>=3){
+    drawCandles(ctx,[[140,35,20,55],[165,50,20,70],[190,65,20,80]],`#FF4466`);
+    ctx.fillStyle='rgba(255,68,102,0.6)';ctx.font='9px Orbitron';ctx.fillText('RETRACE',145,90);
+  }
+  if(step>=4){
+    ctx.strokeStyle='var(--cyan)';ctx.lineWidth=2;ctx.setLineDash([4,3]);
+    ctx.beginPath();ctx.moveTo(50,60);ctx.lineTo(260,60);ctx.stroke();ctx.setLineDash([]);
+    ctx.fillStyle='rgba(0,212,255,0.8)';ctx.font='9px Orbitron';ctx.fillText('ENTRÉE 50%',170,55);
+    ctx.strokeStyle='#FF4466';ctx.lineWidth=1.5;ctx.setLineDash([4,3]);
+    ctx.beginPath();ctx.moveTo(50,85);ctx.lineTo(260,85);ctx.stroke();ctx.setLineDash([]);
+    ctx.fillStyle='rgba(255,68,102,0.7)';ctx.fillText('STOP LOSS',170,80);
+    drawCandles(ctx,[[215,70,20,45],[240,50,20,30]],`#00FF88`);
+    ctx.fillStyle='rgba(0,255,136,0.8)';ctx.font='bold 9px Orbitron';ctx.fillText('CONTINUATION ✅',215,25);
+  }
+}
+
+function drawCandle(ctx,x,open,w,close,color){
+  const top=Math.min(open,close),bot=Math.max(open,close),bodyH=Math.abs(close-open)||4;
+  ctx.fillStyle=color;ctx.fillRect(x,top,w,bodyH);
+  ctx.strokeStyle=color;ctx.lineWidth=1.5;
+  ctx.beginPath();ctx.moveTo(x+w/2,top-8);ctx.lineTo(x+w/2,top);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(x+w/2,bot);ctx.lineTo(x+w/2,bot+8);ctx.stroke();
+}
+function drawCandles(ctx,arr,color){arr.forEach(c=>drawCandle(ctx,c[0],c[1],c[2],c[3],color));}
+
+// ORDER BLOCK
+function drawOB(){
+  const canvas=document.getElementById('ob-canvas');
+  if(!canvas)return;
+  const ctx=canvas.getContext('2d');
+  canvas.width=canvas.offsetWidth*2;canvas.height=200*2;
+  ctx.scale(2,2);const w=canvas.width/2,h=canvas.height/2;
+  drawGrid(ctx,w,h);
+  // Initial move up
+  drawCandles(ctx,[[20,160,20,140],[45,145,20,125],[70,130,20,110]],`#00FF88`);
+  // OB (last red before big move)
+  drawCandle(ctx,95,115,20,130,'#FF4466');
+  // Big move up = BOS
+  drawCandles(ctx,[[120,125,20,95],[145,100,20,70],[170,75,20,45]],`#00FF88`);
+  // OB zone
+  ctx.fillStyle='rgba(255,215,0,0.12)';ctx.fillRect(95,110,20,25);
+  ctx.strokeStyle='rgba(255,215,0,0.6)';ctx.lineWidth=1.5;ctx.setLineDash([4,3]);
+  ctx.strokeRect(95,110,20,25);ctx.setLineDash([]);
+  ctx.fillStyle='rgba(255,215,0,0.8)';ctx.font='bold 9px Orbitron';ctx.fillText('ORDER BLOCK',65,108);
+  // BOS line
+  ctx.strokeStyle='rgba(0,212,255,0.5)';ctx.lineWidth=1;ctx.setLineDash([5,4]);
+  ctx.beginPath();ctx.moveTo(70,110);ctx.lineTo(w-10,110);ctx.stroke();ctx.setLineDash([]);
+  ctx.fillStyle='rgba(0,212,255,0.6)';ctx.font='9px Orbitron';ctx.fillText('BOS',175,107);
+  // Retrace to OB
+  drawCandles(ctx,[[200,45,18,65],[222,60,18,75],[244,70,18,85],[266,80,18,118]],`#FF4466`);
+  // Entry
+  ctx.strokeStyle='var(--cyan)';ctx.lineWidth=2;ctx.setLineDash([4,3]);
+  ctx.beginPath();ctx.moveTo(95,122);ctx.lineTo(w-5,122);ctx.stroke();ctx.setLineDash([]);
+  ctx.fillStyle='rgba(0,212,255,0.9)';ctx.font='bold 9px Orbitron';ctx.fillText('ENTRÉE 50%',w-80,119);
+  // SL
+  ctx.strokeStyle='#FF4466';ctx.lineWidth=1.5;ctx.setLineDash([4,3]);
+  ctx.beginPath();ctx.moveTo(95,135);ctx.lineTo(w-5,135);ctx.stroke();ctx.setLineDash([]);
+  ctx.fillStyle='rgba(255,68,102,0.8)';ctx.fillText('STOP LOSS',w-80,132);
+  // Continuation
+  drawCandles(ctx,[[285,118,18,98],[308,102,18,82],[330,86,18,66]],`#00FF88`);
+}
+
+// INIT
+function init(){
+  const stored=localStorage.getItem('dha_member');
+  if(!stored){window.location.href='dha-connexion.html';return;}
+  member=JSON.parse(stored);
+  document.getElementById('sb-pseudo').textContent=('@'+(member.pseudo||'HUSTLER')).toUpperCase();
+  document.getElementById('topbar-xp').textContent=(member.xp||0)+' XP';
+  setTimeout(()=>{drawTrend('bull');drawOB();},300);
+}
+
+// XP pop animation
+const style=document.createElement('style');
+style.textContent='@keyframes xp-pop{0%{opacity:1;transform:translate(-50%,-50%) scale(0.8);}60%{opacity:1;transform:translate(-50%,-70%) scale(1.2);}100%{opacity:0;transform:translate(-50%,-90%) scale(0.9);}}';
+document.head.appendChild(style);
+
+init();
+</script>
+</body>
+</html>
