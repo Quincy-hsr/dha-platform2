@@ -1,2 +1,2 @@
-# dha-platform2
+# dha-platform
 Digital Hustler Academy
