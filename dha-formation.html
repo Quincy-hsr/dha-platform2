@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>DHA — Formation Trading</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600;700&display=swap" rel="stylesheet"/>
+<style>
+:root{--bg:#050914;--card:#080e1f;--blue:#1E64FF;--cyan:#00D4FF;--gold:#FFD700;--green:#00FF88;--red:#FF4466;--purple:#9D4EDD;--white:#E8F4FF;--dim:rgba(232,244,255,0.45);--border:rgba(30,100,255,0.15);--sidebar-w:240px;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-height:100vh;display:flex;}
+.bg-grid{position:fixed;inset:0;z-index:0;background-image:linear-gradient(rgba(30,100,255,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(30,100,255,0.03) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;}
+.sidebar{position:fixed;left:0;top:0;bottom:0;width:var(--sidebar-w);background:rgba(8,14,31,0.97);border-right:1px solid var(--border);display:flex;flex-direction:column;z-index:100;padding:24px 0;}
+.sidebar-logo{padding:0 24px 24px;border-bottom:1px solid var(--border);margin-bottom:16px;}
+.sidebar-logo-text{font-family:'Orbitron',sans-serif;font-size:28px;font-weight:900;letter-spacing:4px;color:var(--white);text-shadow:0 0 20px rgba(30,100,255,0.6);}
+.sidebar-logo-sub{font-family:'Orbitron',sans-serif;font-size:6px;letter-spacing:3px;color:rgba(0,212,255,0.5);margin-top:2px;}
+.sidebar-section{padding:8px 24px 4px;font-family:'Orbitron',sans-serif;font-size:7px;letter-spacing:3px;color:rgba(255,255,255,0.2);margin-top:8px;}
+.nav-item{display:flex;align-items:center;gap:12px;padding:11px 24px;cursor:pointer;transition:all .2s;font-size:13px;color:var(--dim);text-decoration:none;}
+.nav-item:hover{background:rgba(30,100,255,0.08);color:var(--white);}
+.nav-item.active{background:rgba(30,100,255,0.12);color:var(--cyan);border-right:2px solid var(--cyan);}
+.nav-icon{font-size:16px;width:20px;text-align:center;flex-shrink:0;}
+.notif-dot{width:8px;height:8px;border-radius:50%;background:var(--red);margin-left:auto;animation:pulse-dot 1.5s infinite;}
+@keyframes pulse-dot{0%,100%{opacity:1;}50%{opacity:0.4;}}
+.sidebar-bottom{margin-top:auto;padding:16px 24px;border-top:1px solid var(--border);}
+.sidebar-member{display:flex;align-items:center;gap:12px;}
+.sidebar-avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--cyan));display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;}
+.sidebar-member-name{font-family:'Orbitron',sans-serif;font-size:10px;font-weight:900;color:var(--white);}
+.sidebar-member-rang{font-size:10px;color:var(--dim);margin-top:2px;}
+.main{margin-left:var(--sidebar-w);flex:1;padding:32px;position:relative;z-index:1;}
+.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:32px;}
+.topbar-title{font-family:'Orbitron',sans-serif;font-size:20px;font-weight:900;color:var(--white);letter-spacing:2px;}
+.topbar-title span{color:var(--cyan);}
+.xp-pill{display:flex;align-items:center;gap:8px;padding:8px 16px;border-radius:99px;background:rgba(255,215,0,0.1);border:1px solid rgba(255,215,0,0.25);}
+.xp-pill-val{font-family:'Orbitron',sans-serif;font-size:12px;font-weight:900;color:var(--gold);}
+.formation-header{background:linear-gradient(135deg,#0a1428,#080e1f);border:1px solid rgba(30,100,255,0.25);border-radius:20px;padding:32px;margin-bottom:32px;position:relative;overflow:hidden;}
+.formation-header::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--cyan),transparent);}
+.formation-glow{position:absolute;top:-60px;right:-60px;width:300px;height:300px;background:radial-gradient(ellipse,rgba(30,100,255,0.15) 0%,transparent 70%);pointer-events:none;}
+.formation-tag{font-family:'Orbitron',sans-serif;font-size:8px;letter-spacing:3px;color:var(--cyan);margin-bottom:10px;}
+.formation-title{font-family:'Orbitron',sans-serif;font-size:28px;font-weight:900;color:var(--white);margin-bottom:8px;}
+.formation-desc{font-size:14px;color:var(--dim);line-height:1.7;}
+.formation-stats{display:flex;gap:20px;margin-top:20px;flex-wrap:wrap;}
+.formation-stat{padding:12px 20px;border-radius:12px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);text-align:center;}
+.formation-stat-val{font-family:'Orbitron',sans-serif;font-size:22px;font-weight:900;color:var(--gold);}
+.formation-stat-label{font-family:'Orbitron',sans-serif;font-size:7px;letter-spacing:2px;color:var(--dim);margin-top:4px;}
+.progress-global{margin-top:20px;}
+.progress-label{display:flex;justify-content:space-between;font-family:'Orbitron',sans-serif;font-size:8px;color:var(--dim);margin-bottom:8px;}
+.progress-bar{height:6px;border-radius:99px;background:rgba(255,255,255,0.08);overflow:hidden;}
+.progress-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--blue),var(--cyan));box-shadow:0 0 10px rgba(0,212,255,0.4);transition:width 1s ease;}
+.modules-grid{display:flex;flex-direction:column;gap:16px;}
+.module-card{background:var(--card);border:1px solid var(--border);border-radius:20px;overflow:hidden;transition:all .3s;cursor:pointer;text-decoration:none;display:block;}
+.module-card:hover{border-color:rgba(0,212,255,0.3);transform:translateY(-2px);box-shadow:0 8px 30px rgba(30,100,255,0.15);}
+.module-card.locked{opacity:0.5;cursor:not-allowed;}
+.module-card.locked:hover{transform:none;box-shadow:none;border-color:var(--border);}
+.module-card.completed{border-color:rgba(0,255,136,0.3);}
+.module-card-inner{display:flex;align-items:center;gap:20px;padding:24px;}
+.module-num{width:56px;height:56px;border-radius:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:'Orbitron',sans-serif;font-size:18px;font-weight:900;}
+.module-num.active{background:linear-gradient(135deg,var(--blue),var(--cyan));color:#000;box-shadow:0 0 20px rgba(0,212,255,0.3);}
+.module-num.completed{background:rgba(0,255,136,0.15);border:1px solid rgba(0,255,136,0.4);color:var(--green);}
+.module-num.locked{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);color:var(--dim);}
+.module-content{flex:1;}
+.module-tag{font-family:'Orbitron',sans-serif;font-size:7px;letter-spacing:3px;color:var(--cyan);margin-bottom:6px;}
+.module-title{font-family:'Orbitron',sans-serif;font-size:15px;font-weight:900;color:var(--white);margin-bottom:6px;letter-spacing:1px;}
+.module-desc{font-size:13px;color:var(--dim);line-height:1.5;margin-bottom:12px;}
+.module-meta{display:flex;gap:10px;flex-wrap:wrap;}
+.module-meta-item{font-family:'Orbitron',sans-serif;font-size:7px;letter-spacing:1px;color:var(--dim);padding:4px 10px;border-radius:6px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);}
+.module-right{display:flex;flex-direction:column;align-items:flex-end;gap:10px;flex-shrink:0;}
+.module-badge{padding:6px 14px;border-radius:8px;font-family:'Orbitron',sans-serif;font-size:9px;font-weight:900;letter-spacing:1px;}
+.module-badge.available{background:rgba(30,100,255,0.15);color:var(--cyan);border:1px solid rgba(30,100,255,0.3);}
+.module-badge.completed{background:rgba(0,255,136,0.15);color:var(--green);border:1px solid rgba(0,255,136,0.3);}
+.module-badge.locked{background:rgba(255,255,255,0.05);color:var(--dim);border:1px solid rgba(255,255,255,0.08);}
+.module-xp{font-family:'Orbitron',sans-serif;font-size:11px;color:var(--gold);}
+.module-progress{width:80px;}
+.module-progress-bar{height:4px;border-radius:99px;background:rgba(255,255,255,0.08);overflow:hidden;margin-top:4px;}
+.module-progress-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--blue),var(--cyan));transition:width .5s;}
+.module-progress-label{font-family:'Orbitron',sans-serif;font-size:7px;color:var(--dim);letter-spacing:1px;}
+.module-card-bottom{padding:0 24px 20px;display:flex;align-items:center;gap:12px;}
+.bloc-dot{width:8px;height:8px;border-radius:50%;}
+.bloc-dot.done{background:var(--green);box-shadow:0 0 6px rgba(0,255,136,0.5);}
+.bloc-dot.active{background:var(--cyan);box-shadow:0 0 6px rgba(0,212,255,0.5);animation:pulse-dot 1.5s infinite;}
+.bloc-dot.pending{background:rgba(255,255,255,0.15);}
+.bloc-dot-label{font-family:'Orbitron',sans-serif;font-size:7px;color:var(--dim);letter-spacing:1px;}
+@media(max-width:768px){.sidebar{display:none;}.main{margin-left:0;padding:16px;}.module-card-inner{flex-wrap:wrap;}.module-right{align-items:flex-start;}}
+</style>
+</head><body>
+<div class="bg-grid"></div>
+<aside class="sidebar">
+  <div class="sidebar-logo"><div class="sidebar-logo-text">DHA</div><div class="sidebar-logo-sub">DIGITAL HUSTLER ACADEMY</div></div>
+  <div class="sidebar-section">MAIN</div>
+  <a class="nav-item" href="dha-dashboard.html"><span class="nav-icon">🎮</span> Dashboard</a>
+  <div class="sidebar-section">LEARN</div>
+  <a class="nav-item active" href="dha-formation.html"><span class="nav-icon">📈</span> Formation Trading</a>
+  <a class="nav-item" href="dha-mindset.html"><span class="nav-icon">🧠</span> Mindset</a>
+  <a class="nav-item" href="dha-live.html"><span class="nav-icon">📡</span> Live Hub<span class="notif-dot"></span></a>
+  <div class="sidebar-section">NETWORK</div>
+  <a class="nav-item" href="dha-squad.html"><span class="nav-icon">👥</span> Mon Squad</a>
+  <a class="nav-item" href="dha-leaderboard.html"><span class="nav-icon">🏆</span> Leaderboard</a>
+  <div class="sidebar-section">EARN</div>
+  <a class="nav-item" href="dha-affiliation.html"><span class="nav-icon">💰</span> Affiliation</a>
+  <div class="sidebar-section">TOOLS</div>
+  <a class="nav-item" href="dha-mentor.html"><span class="nav-icon">📞</span> Appel Mentor</a>
+  <div class="sidebar-bottom">
+    <div class="sidebar-member">
+      <div class="sidebar-avatar" id="sb-avatar">📈</div>
+      <div><div class="sidebar-member-name" id="sb-pseudo">HUSTLER</div><div class="sidebar-member-rang" id="sb-rang">NEW HUSTLER</div></div>
+    </div>
+  </div>
+</aside>
+
+<main class="main">
+  <div class="topbar">
+    <div><div class="topbar-title">FORMATION <span>TRADING</span></div><div style="font-size:12px;color:var(--dim);margin-top:2px;">Choisis ton module et commence à progresser</div></div>
+    <div class="xp-pill"><span>⚡</span><span class="xp-pill-val" id="topbar-xp">0 XP</span></div>
+  </div>
+
+  <div class="formation-header">
+    <div class="formation-glow"></div>
+    <div class="formation-tag">📈 TRADING · PARCOURS COMPLET</div>
+    <div class="formation-title">Ta formation Trading</div>
+    <div class="formation-desc">Chaque module est construit pour te donner des compétences réelles. Commence par le Module 1 et progresse à ton rythme.</div>
+    <div class="formation-stats">
+      <div class="formation-stat"><div class="formation-stat-val" id="stat-modules">0/3</div><div class="formation-stat-label">MODULES</div></div>
+      <div class="formation-stat"><div class="formation-stat-val" id="stat-xp-total">0</div><div class="formation-stat-label">XP GAGNÉS</div></div>
+      <div class="formation-stat"><div class="formation-stat-val" id="stat-pct">0%</div><div class="formation-stat-label">COMPLÉTÉ</div></div>
+    </div>
+    <div class="progress-global">
+      <div class="progress-label"><span>PROGRESSION GLOBALE</span><span id="progress-text">0%</span></div>
+      <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+    </div>
+  </div>
+
+  <div class="modules-grid">
+
+    <!-- MODULE 1 — DISPONIBLE -->
+    <a class="module-card" href="dha-module1.html" id="card-m1">
+      <div class="module-card-inner">
+        <div class="module-num active" id="num-m1">01</div>
+        <div class="module-content">
+          <div class="module-tag">MODULE 01 · INTRODUCTION</div>
+          <div class="module-title">Introduction au Trading</div>
+          <div class="module-desc">Comprends comment fonctionne le marché, comment gagner de l'argent, et les bases du stop loss.</div>
+          <div class="module-meta">
+            <div class="module-meta-item">📚 1 Bloc</div>
+            <div class="module-meta-item">⚡ 175 XP max</div>
+            <div class="module-meta-item">⏱️ 15 min</div>
+          </div>
+        </div>
+        <div class="module-right">
+          <div class="module-badge available" id="badge-m1">▶ COMMENCER</div>
+          <div class="module-xp" id="xp-m1">+175 XP</div>
+          <div class="module-progress">
+            <div class="module-progress-label">PROGRESSION</div>
+            <div class="module-progress-bar"><div class="module-progress-fill" id="fill-m1" style="width:0%"></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="module-card-bottom">
+        <div class="bloc-dot active" id="dot-m1-b1"></div>
+        <div class="bloc-dot-label">Bloc 1 — Comment ça marche</div>
+      </div>
+    </a>
+
+    <!-- MODULE 2 — VERROUILLÉ -->
+    <div class="module-card locked" id="card-m2" onclick="showLockedModule(2)">
+      <div class="module-card-inner">
+        <div class="module-num locked" id="num-m2">🔒</div>
+        <div class="module-content">
+          <div class="module-tag">MODULE 02 · GRAPHIQUES</div>
+          <div class="module-title">Lire un graphique comme un pro</div>
+          <div class="module-desc">Bougies japonaises, tendances, BOS, CHOCH — les outils de base de tout trader sérieux.</div>
+          <div class="module-meta">
+            <div class="module-meta-item">📚 4 Blocs</div>
+            <div class="module-meta-item">⚡ 600 XP max</div>
+            <div class="module-meta-item">⏱️ 45 min</div>
+          </div>
+        </div>
+        <div class="module-right">
+          <div class="module-badge locked">🔒 VERROUILLÉ</div>
+          <div style="font-family:'Orbitron',sans-serif;font-size:8px;color:var(--dim);">Termine le M1</div>
+        </div>
+      </div>
+      <div class="module-card-bottom">
+        <div class="bloc-dot pending"></div>
+        <div class="bloc-dot pending"></div>
+        <div class="bloc-dot pending"></div>
+        <div class="bloc-dot pending"></div>
+        <div class="bloc-dot-label">4 blocs · Bougies · Tendances · BOS · CHOCH</div>
+      </div>
+    </div>
+
+    <!-- MODULE 3 — VERROUILLÉ -->
+    <div class="module-card locked" id="card-m3" onclick="showLockedModule(3)">
+      <div class="module-card-inner">
+        <div class="module-num locked" id="num-m3">🔒</div>
+        <div class="module-content">
+          <div class="module-tag">MODULE 03 · STRATÉGIES</div>
+          <div class="module-title">Stratégies avancées</div>
+          <div class="module-desc">Order Blocks, prise de liquidité, FVG — les outils des traders institutionnels.</div>
+          <div class="module-meta">
+            <div class="module-meta-item">📚 3 Blocs</div>
+            <div class="module-meta-item">⚡ 450 XP max</div>
+            <div class="module-meta-item">⏱️ 35 min</div>
+          </div>
+        </div>
+        <div class="module-right">
+          <div class="module-badge locked">🔒 VERROUILLÉ</div>
+          <div style="font-family:'Orbitron',sans-serif;font-size:8px;color:var(--dim);">Termine le M2</div>
+        </div>
+      </div>
+      <div class="module-card-bottom">
+        <div class="bloc-dot pending"></div>
+        <div class="bloc-dot pending"></div>
+        <div class="bloc-dot pending"></div>
+        <div class="bloc-dot-label">3 blocs · Order Blocks · Liquidité · FVG</div>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<!-- LOCKED MODAL -->
+<div id="locked-modal" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(5,9,20,0.85);backdrop-filter:blur(10px);align-items:center;justify-content:center;" onclick="document.getElementById('locked-modal').style.display='none'">
+  <div style="background:var(--card);border:1px solid rgba(255,215,0,0.2);border-radius:20px;padding:36px;max-width:380px;width:90%;text-align:center;position:relative;" onclick="event.stopPropagation()">
+    <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent);border-radius:20px 20px 0 0;"></div>
+    <div style="font-size:48px;margin-bottom:16px;">🔒</div>
+    <div style="font-family:'Orbitron',sans-serif;font-size:16px;font-weight:900;color:var(--white);margin-bottom:8px;" id="locked-msg">MODULE VERROUILLÉ</div>
+    <div style="font-size:13px;color:var(--dim);line-height:1.7;margin-bottom:24px;" id="locked-sub">Termine le module précédent pour débloquer celui-ci.</div>
+    <div style="padding:12px 28px;border-radius:12px;background:rgba(255,215,0,0.1);border:1px solid rgba(255,215,0,0.3);font-family:'Orbitron',sans-serif;font-size:10px;font-weight:900;color:var(--gold);cursor:pointer;letter-spacing:2px;display:inline-block;" onclick="document.getElementById('locked-modal').style.display='none'">COMPRIS 👊</div>
+  </div>
+</div><script>
+const SUPABASE_URL='https://kdetwppxsfoagyndrlzr.supabase.co';
+const SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtkZXR3cHB4c2ZvYWd5bmRybHpyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzcyMzM3NjQsImV4cCI6MjA5MjgwOTc2NH0.OodaFQKEHcncDYdO6uM121NAUbyxD4UxpptSjzzZOi0';
+let member=null;
+
+function showLockedModule(n){
+  const msgs={2:'Termine le Module 1 pour débloquer celui-ci. 💪',3:'Termine le Module 2 pour débloquer celui-ci. 💪'};
+  document.getElementById('locked-msg').textContent='🔒 MODULE '+n+' — VERROUILLÉ';
+  document.getElementById('locked-sub').textContent=msgs[n];
+  document.getElementById('locked-modal').style.display='flex';
+}
+
+function updateFormationStats(){
+  if(!member)return;
+  const xp=member.xp||0;
+  const m1Done=xp>=25;
+  const m2Done=xp>=625;
+  const m3Done=xp>=1075;
+  let completed=0;
+  if(m1Done)completed++;
+  if(m2Done)completed++;
+  if(m3Done)completed++;
+  const pct=Math.round((completed/3)*100);
+  document.getElementById('stat-modules').textContent=completed+'/3';
+  document.getElementById('stat-xp-total').textContent=xp;
+  document.getElementById('stat-pct').textContent=pct+'%';
+  document.getElementById('progress-fill').style.width=pct+'%';
+  document.getElementById('progress-text').textContent=pct+'%';
+
+  // Module 1 status
+  if(m1Done){
+    document.getElementById('badge-m1').textContent='✅ COMPLÉTÉ';
+    document.getElementById('badge-m1').className='module-badge completed';
+    document.getElementById('num-m1').textContent='✓';
+    document.getElementById('num-m1').className='module-num completed';
+    document.getElementById('fill-m1').style.width='100%';
+    document.getElementById('dot-m1-b1').className='bloc-dot done';
+  }
+
+  // Module 2 unlock
+  if(m1Done){
+    const card2=document.getElementById('card-m2');
+    card2.className='module-card';
+    card2.onclick=null;
+    card2.style.cursor='pointer';
+    document.getElementById('num-m2').textContent='02';
+    document.getElementById('num-m2').className='module-num active';
+    card2.addEventListener('click',()=>window.location.href='dha-module2.html');
+    const badge2=card2.querySelector('.module-badge');
+    badge2.textContent='▶ COMMENCER';
+    badge2.className='module-badge available';
+  }
+
+  // Module 3 unlock
+  if(m2Done){
+    const card3=document.getElementById('card-m3');
+    card3.className='module-card';
+    card3.onclick=null;
+    document.getElementById('num-m3').textContent='03';
+    document.getElementById('num-m3').className='module-num active';
+    card3.addEventListener('click',()=>window.location.href='dha-module3.html');
+    const badge3=card3.querySelector('.module-badge');
+    badge3.textContent='▶ COMMENCER';
+    badge3.className='module-badge available';
+  }
+}
+
+function init(){
+  const stored=localStorage.getItem('dha_member');
+  if(!stored){window.location.href='dha-connexion.html';return;}
+  member=JSON.parse(stored);
+  document.getElementById('sb-pseudo').textContent=('@'+(member.pseudo||'HUSTLER')).toUpperCase();
+  document.getElementById('topbar-xp').textContent=(member.xp||0)+' XP';
+  updateFormationStats();
+}
+
+init();
+</script>
+</body>
+</html>
