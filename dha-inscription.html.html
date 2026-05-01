@@ -547,7 +547,7 @@ async function addToBrevo(prenom, nom, email) {
     // Créer ou mettre à jour le contact
     await fetch('https://api.brevo.com/v3/contacts', {
       method: 'POST',
-      headers: {s
+      headers: {
         'Content-Type': 'application/json',
         'api-key': BREVO_KEY
       },
