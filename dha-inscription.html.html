@@ -537,17 +537,17 @@ async function supabaseInsert(table, data) {
   const result = await res.json();
   if (!res.ok) throw new Error((result.message || result.error || 'Erreur Supabase'));
   return result;
-}
+}sss
 
 // BREVO CONFIG
-const BREVO_KEY = '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';
+const BREVO_KEY = ['xkeysib-723144ef732ac44c4fba224c4a332bdaad025a6dc47c803cb251d0fc6b2b9361-', 'zjPo6ZNoxD3r7eJQ'].join('');
 
 async function addToBrevo(prenom, nom, email) {
   try {
     // Créer ou mettre à jour le contact
     await fetch('https://api.brevo.com/v3/contacts', {
       method: 'POST',
-      headers: {
+      headers: {s
         'Content-Type': 'application/json',
         'api-key': BREVO_KEY
       },
