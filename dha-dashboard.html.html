@@ -873,7 +873,7 @@ function triggerAvatarUpload(){
 async function uploadAvatar(event){
   const file=event.target.files[0];
   if(!file)return;
-  if(file.size>2000000){alert('Image trop lourde. Max 2MB.');return;}
+  if(file.size>5000000){alert('Image trop lourde. Max 5MB.');return;}
   const ext=file.name.split('.').pop();
   const fileName=member.email.replace('@','_').replace('.','_')+'.'+ext;
   try{
