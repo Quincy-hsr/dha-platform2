@@ -813,6 +813,7 @@ function renderMember() {
   document.getElementById('player-classe').textContent = icon + ' ' + (classeNames[classe] || 'TRADING');
   document.getElementById('player-rang').textContent = rang.icon + ' ' + rang.name;
   document.getElementById('player-avatar').textContent = icon;
+  if(member.avatar)showAvatar(member.avatar);
   document.getElementById('stat-xp').textContent = xp;
   document.getElementById('stat-level').textContent = level;
 
