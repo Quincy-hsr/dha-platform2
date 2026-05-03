@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>DHA — Mes Amis</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600;700&display=swap" rel="stylesheet"/>
+<style>
+:root{--bg:#050914;--card:#080e1f;--blue:#1E64FF;--cyan:#00D4FF;--gold:#FFD700;--green:#00FF88;--red:#FF4466;--purple:#9D4EDD;--white:#E8F4FF;--dim:rgba(232,244,255,0.45);--border:rgba(30,100,255,0.15);--sidebar-w:240px;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-height:100vh;display:flex;}
+.bg-grid{position:fixed;inset:0;z-index:0;background-image:linear-gradient(rgba(30,100,255,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(30,100,255,0.03) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;}
+.sidebar{position:fixed;left:0;top:0;bottom:0;width:var(--sidebar-w);background:rgba(8,14,31,0.97);border-right:1px solid var(--border);display:flex;flex-direction:column;z-index:100;padding:24px 0;}
+.sidebar-logo{padding:0 24px 24px;border-bottom:1px solid var(--border);margin-bottom:16px;}
+.sidebar-logo-text{font-family:'Orbitron',sans-serif;font-size:28px;font-weight:900;letter-spacing:4px;color:var(--white);text-shadow:0 0 20px rgba(30,100,255,0.6);}
+.sidebar-logo-sub{font-family:'Orbitron',sans-serif;font-size:6px;letter-spacing:3px;color:rgba(0,212,255,0.5);margin-top:2px;}
+.sidebar-section{padding:8px 24px 4px;font-family:'Orbitron',sans-serif;font-size:7px;letter-spacing:3px;color:rgba(255,255,255,0.2);margin-top:8px;}
+.nav-item{display:flex;align-items:center;gap:12px;padding:11px 24px;cursor:pointer;transition:all .2s;font-size:13px;color:var(--dim);text-decoration:none;}
+.nav-item:hover{background:rgba(30,100,255,0.08);color:var(--white);}
+.nav-item.active{background:rgba(30,100,255,0.12);color:var(--cyan);border-right:2px solid var(--cyan);}
+.nav-icon{font-size:16px;width:20px;text-align:center;flex-shrink:0;}
+.sidebar-bottom{margin-top:auto;padding:16px 24px;border-top:1px solid var(--border);}
+.sidebar-member{display:flex;align-items:center;gap:12px;}
+.sidebar-avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--cyan));display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;overflow:hidden;}
+.sidebar-member-name{font-family:'Orbitron',sans-serif;font-size:10px;font-weight:900;color:var(--white);}
+.sidebar-member-rang{font-size:10px;color:var(--dim);margin-top:2px;}
+.main{margin-left:var(--sidebar-w);flex:1;padding:32px;position:relative;z-index:1;}
+.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:32px;}
+.topbar-title{font-family:'Orbitron',sans-serif;font-size:20px;font-weight:900;color:var(--white);letter-spacing:2px;}
+.topbar-title span{color:var(--cyan);}
+.xp-pill{display:flex;align-items:center;gap:8px;padding:8px 16px;border-radius:99px;background:rgba(255,215,0,0.1);border:1px solid rgba(255,215,0,0.25);}
+.xp-pill-val{font-family:'Orbitron',sans-serif;font-size:12px;font-weight:900;color:var(--gold);}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:24px;}
+.card{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:24px;}
+.card-label{font-family:'Orbitron',sans-serif;font-size:8px;letter-spacing:3px;color:var(--dim);margin-bottom:16px;}
+.search-wrap{display:flex;gap:10px;margin-bottom:20px;}
+.search-input{flex:1;padding:12px 16px;border-radius:12px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);color:var(--white);font-family:'Exo 2',sans-serif;font-size:14px;outline:none;transition:border-color .2s;}
+.search-input:focus{border-color:rgba(0,212,255,0.4);}
+.search-input::placeholder{color:rgba(255,255,255,0.2);}
+.search-btn{padding:12px 20px;border-radius:12px;background:linear-gradient(135deg,var(--blue),var(--cyan));color:#000;font-family:'Orbitron',sans-serif;font-size:10px;font-weight:900;letter-spacing:1px;border:none;cursor:pointer;}
+.search-result{padding:16px;border-radius:14px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);display:none;}
+.search-result.show{display:block;}
+.member-card{display:flex;align-items:center;gap:14px;}
+.member-avatar{width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,var(--blue),var(--cyan));display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;overflow:hidden;}
+.member-avatar img{width:100%;height:100%;object-fit:cover;}
+.member-info{flex:1;}
+.member-pseudo{font-family:'Orbitron',sans-serif;font-size:13px;font-weight:900;color:var(--white);letter-spacing:1px;}
+.member-rang{font-size:12px;color:var(--dim);margin-top:2px;}
+.add-btn{padding:10px 18px;border-radius:10px;background:rgba(0,255,136,0.15);border:1px solid rgba(0,255,136,0.3);color:var(--green);font-family:'Orbitron',sans-serif;font-size:9px;font-weight:900;cursor:pointer;letter-spacing:1px;transition:all .2s;}
+.add-btn:hover{background:rgba(0,255,136,0.25);}
+.add-btn:disabled{opacity:0.5;cursor:not-allowed;}
+.ami-item{display:flex;align-items:center;gap:14px;padding:14px 0;border-bottom:1px solid rgba(255,255,255,0.05);}
+.ami-item:last-child{border-bottom:none;}
+.ami-avatar{width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,var(--blue),var(--cyan));display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;overflow:hidden;}
+.ami-avatar img{width:100%;height:100%;object-fit:cover;}
+.ami-info{flex:1;}
+.ami-pseudo{font-family:'Orbitron',sans-serif;font-size:11px;font-weight:900;color:var(--white);letter-spacing:1px;}
+.ami-rang{font-size:11px;color:var(--dim);margin-top:2px;}
+.ami-xp{font-family:'Orbitron',sans-serif;font-size:12px;color:var(--gold);}
+.msg-btn{padding:8px 14px;border-radius:8px;background:rgba(0,212,255,0.1);border:1px solid rgba(0,212,255,0.25);color:var(--cyan);font-family:'Orbitron',sans-serif;font-size:8px;font-weight:900;cursor:pointer;letter-spacing:1px;}
+.empty{text-align:center;padding:32px;font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:2px;color:var(--dim);}
+.notif{display:none;padding:12px 16px;border-radius:10px;font-size:13px;margin-top:12px;text-align:center;}
+.notif.show{display:block;}
+.notif.success{background:rgba(0,255,136,0.08);border:1px solid rgba(0,255,136,0.2);color:var(--green);}
+.notif.error{background:rgba(255,68,102,0.08);border:1px solid rgba(255,68,102,0.2);color:var(--red);}
+@media(max-width:768px){.sidebar{display:none;}.main{margin-left:0;padding:16px;}.grid-2{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<div class="bg-grid"></div>
+<aside class="sidebar">
+  <div class="sidebar-logo"><div class="sidebar-logo-text">DHA</div><div class="sidebar-logo-sub">DIGITAL HUSTLER ACADEMY</div></div>
+  <div class="sidebar-section">MAIN</div>
+  <a class="nav-item" href="dha-dashboard.html"><span class="nav-icon">🎮</span> Dashboard</a>
+  <div class="sidebar-section">LEARN</div>
+  <a class="nav-item" href="dha-formation.html"><span class="nav-icon">📈</span> Formation Trading</a>
+  <a class="nav-item" href="dha-mindset.html"><span class="nav-icon">🧠</span> Mindset</a>
+  <div class="sidebar-section">NETWORK</div>
+  <a class="nav-item" href="dha-squad.html"><span class="nav-icon">👥</span> Mon Squad</a>
+  <a class="nav-item" href="dha-leaderboard.html"><span class="nav-icon">🏆</span> Leaderboard</a>
+  <a class="nav-item active" href="dha-amis.html"><span class="nav-icon">🤝</span> Mes Amis</a>
+  <div class="sidebar-section">EARN</div>
+  <a class="nav-item" href="dha-affiliation.html"><span class="nav-icon">💰</span> Affiliation</a>
+  <div class="sidebar-section">TOOLS</div>
+  <a class="nav-item" href="dha-mentor.html"><span class="nav-icon">📞</span> Appel Mentor</a>
+  <div class="sidebar-bottom">
+    <div class="sidebar-member">
+      <div class="sidebar-avatar" id="sb-avatar">📈</div>
+      <div><div class="sidebar-member-name" id="sb-pseudo">HUSTLER</div><div class="sidebar-member-rang" id="sb-rang">NEW HUSTLER</div></div>
+    </div>
+  </div>
+</aside>
+
+<main class="main">
+  <div class="topbar">
+    <div><div class="topbar-title">MES <span>AMIS</span></div><div style="font-size:12px;color:var(--dim);margin-top:2px;">Ajoute des membres et gagne +25 XP par ami</div></div>
+    <div class="xp-pill"><span>⚡</span><span class="xp-pill-val" id="topbar-xp">0 XP</span></div>
+  </div>
+
+  <div class="grid-2">
+    <!-- RECHERCHE -->
+    <div class="card">
+      <div class="card-label">🔍 RECHERCHER UN MEMBRE</div>
+      <div class="search-wrap">
+        <input class="search-input" id="search-input" placeholder="@pseudo du membre..." onkeydown="if(event.key==='Enter')searchMember()"/>
+        <button class="search-btn" onclick="searchMember()">CHERCHER</button>
+      </div>
+      <div class="search-result" id="search-result">
+        <div class="member-card" id="search-member-card"></div>
+      </div>
+      <div class="notif" id="search-notif"></div>
+    </div>
+
+    <!-- MES AMIS -->
+    <div class="card">
+      <div class="card-label">🤝 MES AMIS (<span id="amis-count">0</span>)</div>
+      <div id="amis-list"><div class="empty">Tu n'as pas encore d'amis.<br/>Recherche un pseudo pour commencer ! 🔥</div></div>
+    </div>
+  </div>
+</main>
+
+<script>
+const SUPABASE_URL='https://kdetwppxsfoagyndrlzr.supabase.co';
+const SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtkZXR3cHB4c2ZvYWd5bmRybHpyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzcyMzM3NjQsImV4cCI6MjA5MjgwOTc2NH0.OodaFQKEHcncDYdO6uM121NAUbyxD4UxpptSjzzZOi0';
+let member=null;
+const RANGS=[{min:0,max:499,name:'NEW HUSTLER',icon:'🎮'},{min:500,max:1499,name:'HUSTLER',icon:'⚡'},{min:1500,max:2999,name:'PRO HUSTLER',icon:'🚀'},{min:3000,max:5999,name:'AMBASSADEUR',icon:'👑'},{min:6000,max:999999,name:'LEGEND',icon:'💎'}];
+function getRang(xp){return RANGS.find(r=>xp>=r.min&&xp<=r.max)||RANGS[0];}
+
+async function searchMember(){
+  const pseudo=document.getElementById('search-input').value.trim().replace('@','');
+  if(!pseudo)return;
+  if(pseudo===member.pseudo){showNotif('search-notif','Tu ne peux pas t\'ajouter toi-même 😅','error');return;}
+  try{
+    const res=await fetch(SUPABASE_URL+'/rest/v1/membres?pseudo=eq.'+encodeURIComponent(pseudo)+'&select=pseudo,xp,avatar,rang',{headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY}});
+    const data=await res.json();
+    if(!data||data.length===0){showNotif('search-notif','Aucun membre trouvé avec ce pseudo.','error');document.getElementById('search-result').classList.remove('show');return;}
+    const m=data[0];
+    const rang=getRang(m.xp||0);
+    const avatarHtml=m.avatar?`<img src="${m.avatar}"/>`:'⚡';
+    document.getElementById('search-member-card').innerHTML=`
+      <div class="member-avatar">${avatarHtml}</div>
+      <div class="member-info">
+        <div class="member-pseudo">@${m.pseudo}</div>
+        <div class="member-rang">${rang.icon} ${rang.name} · ${m.xp||0} XP</div>
+      </div>
+      <button class="add-btn" id="add-btn" onclick="addAmi('${m.pseudo}')">+ AJOUTER</button>`;
+    document.getElementById('search-result').classList.add('show');
+    document.getElementById('search-notif').classList.remove('show');
+  }catch(e){showNotif('search-notif','Erreur de recherche. Réessaie.','error');}
+}
+
+async function addAmi(pseudo){
+  const btn=document.getElementById('add-btn');
+  btn.disabled=true;
+  try{
+    const checkRes=await fetch(SUPABASE_URL+'/rest/v1/amis?pseudo_from=eq.'+encodeURIComponent(member.pseudo)+'&pseudo_to=eq.'+encodeURIComponent(pseudo),{headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY}});
+    const existing=await checkRes.json();
+    if(existing&&existing.length>0){showNotif('search-notif','Vous êtes déjà amis ! 🤝','error');btn.disabled=false;return;}
+    await fetch(SUPABASE_URL+'/rest/v1/amis',{method:'POST',headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY,'Prefer':'return=minimal'},body:JSON.stringify({pseudo_from:member.pseudo,pseudo_to:pseudo})});
+    await addXP(25);
+    showNotif('search-notif','@'+pseudo+' ajouté ! +25 XP 🔥','success');
+    document.getElementById('search-result').classList.remove('show');
+    document.getElementById('search-input').value='';
+    loadAmis();
+  }catch(e){showNotif('search-notif','Erreur. Réessaie.','error');btn.disabled=false;}
+}
+
+async function addXP(amount){
+  member.xp=(member.xp||0)+amount;
+  member.xp_semaine=(member.xp_semaine||0)+amount;
+  member.level=Math.floor(member.xp/500)+1;
+  localStorage.setItem('dha_member',JSON.stringify(member));
+  document.getElementById('topbar-xp').textContent=member.xp+' XP';
+  try{
+    await fetch(SUPABASE_URL+'/rest/v1/membres?email=eq.'+encodeURIComponent(member.email),{method:'PATCH',headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY},body:JSON.stringify({xp:member.xp,xp_semaine:member.xp_semaine,level:member.level})});
+  }catch(e){}
+}
+
+async function loadAmis(){
+  try{
+    const res=await fetch(SUPABASE_URL+'/rest/v1/amis?pseudo_from=eq.'+encodeURIComponent(member.pseudo)+'&select=pseudo_to',{headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY}});
+    const data=await res.json();
+    document.getElementById('amis-count').textContent=data.length;
+    if(!data||data.length===0){document.getElementById('amis-list').innerHTML='<div class="empty">Tu n\'as pas encore d\'amis.<br/>Recherche un pseudo pour commencer ! 🔥</div>';return;}
+    const pseudos=data.map(a=>a.pseudo_to);
+    const membersRes=await fetch(SUPABASE_URL+'/rest/v1/membres?pseudo=in.('+pseudos.map(p=>'"'+p+'"').join(',')+')'+'&select=pseudo,xp,avatar',{headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY}});
+    const members=await membersRes.json();
+    const list=document.getElementById('amis-list');
+    list.innerHTML='';
+    members.forEach(m=>{
+      const rang=getRang(m.xp||0);
+      const avatarHtml=m.avatar?`<img src="${m.avatar}"/>`:'⚡';
+      list.innerHTML+=`
+        <div class="ami-item">
+          <div class="ami-avatar">${avatarHtml}</div>
+          <div class="ami-info">
+            <div class="ami-pseudo">@${m.pseudo}</div>
+            <div class="ami-rang">${rang.icon} ${rang.name}</div>
+          </div>
+          <div class="ami-xp">${m.xp||0} XP</div>
+          <button class="msg-btn" onclick="window.location.href='dha-squad.html'">💬 CHAT</button>
+        </div>`;
+    });
+  }catch(e){console.log('Load amis error:',e);}
+}
+
+function showNotif(id,msg,type){
+  const el=document.getElementById(id);
+  el.textContent=msg;
+  el.className='notif show '+type;
+  setTimeout(()=>el.classList.remove('show'),3000);
+}
+
+function init(){
+  const stored=localStorage.getItem('dha_member');
+  if(!stored){window.location.href='dha-connexion.html';return;}
+  member=JSON.parse(stored);
+  document.getElementById('sb-pseudo').textContent=('@'+(member.pseudo||'HUSTLER')).toUpperCase();
+  document.getElementById('topbar-xp').textContent=(member.xp||0)+' XP';
+  if(member.avatar){document.getElementById('sb-avatar').innerHTML='<img src="'+member.avatar+'" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"/>';}
+  loadAmis();
+}
+
+init();
+</script>
+</body>
+</html>
