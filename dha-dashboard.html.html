@@ -724,6 +724,7 @@ async function updateXP(amount) {
   const oldXP = member.xp || 0;
   member.xp = oldXP + amount;
   member.level = Math.floor(member.xp / 500) + 1;
+  member.xp_semaine = (member.xp_semaine||0) + amount;
   localStorage.setItem('dha_member', JSON.stringify(member));
 
   // Animation XP
@@ -754,7 +755,7 @@ async function updateXP(amount) {
     await fetch(SUPABASE_URL + '/rest/v1/membres?email=eq.' + encodeURIComponent(member.email), {
       method: 'PATCH',
       headers: {'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY},
-      body: JSON.stringify({xp:member.xp, level:member.level, rang:getRang(member.xp).name})
+     body: JSON.stringify({xp: member.xp, level: member.level, rang: getRang(member.xp).name, xp_semaine: member.xp_semaine})
     });
   } catch(e) { console.log('XP update error:', e); }
 }
