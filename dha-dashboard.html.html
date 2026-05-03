@@ -824,6 +824,8 @@ async function loadLeaderboard() {
     });
   } catch(e) { console.log('Leaderboard error:', e); }
 }
+const SUPABASE_URL = 'https://kdetwppxsfoagyndrlzr.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtkZXR3cHB4c2ZvYWd5bmRybHpyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzcyMzM3NjQsImV4cCI6MjA5MjgwOTc2NH0.OodaFQKEHcncDYdO6uM121NAUbyxD4UxpptSjzzZOi0';
 
 function logout() {
   if(confirm('Tu veux vraiment te déconnecter ?')) {
