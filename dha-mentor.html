@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>DHA — Appel Mentor</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600;700&display=swap" rel="stylesheet"/>
+<link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet"/>
+<style>
+:root{--bg:#050914;--card:#080e1f;--blue:#1E64FF;--cyan:#00D4FF;--gold:#FFD700;--green:#00FF88;--red:#FF4466;--white:#E8F4FF;--dim:rgba(232,244,255,0.45);--border:rgba(30,100,255,0.15);--sidebar-w:240px;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-height:100vh;display:flex;}
+.bg-grid{position:fixed;inset:0;z-index:0;background-image:linear-gradient(rgba(30,100,255,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(30,100,255,0.03) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;}
+.sidebar{position:fixed;left:0;top:0;bottom:0;width:var(--sidebar-w);background:rgba(8,14,31,0.97);border-right:1px solid var(--border);display:flex;flex-direction:column;z-index:100;padding:24px 0;}
+.sidebar-logo{padding:0 24px 24px;border-bottom:1px solid var(--border);margin-bottom:16px;}
+.sidebar-logo-text{font-family:'Orbitron',sans-serif;font-size:28px;font-weight:900;letter-spacing:4px;color:var(--white);text-shadow:0 0 20px rgba(30,100,255,0.6);}
+.sidebar-logo-sub{font-family:'Orbitron',sans-serif;font-size:6px;letter-spacing:3px;color:rgba(0,212,255,0.5);margin-top:2px;}
+.sidebar-section{padding:8px 24px 4px;font-family:'Orbitron',sans-serif;font-size:7px;letter-spacing:3px;color:rgba(255,255,255,0.2);margin-top:8px;}
+.nav-item{display:flex;align-items:center;gap:12px;padding:11px 24px;cursor:pointer;transition:all .2s;font-size:13px;color:var(--dim);text-decoration:none;}
+.nav-item:hover{background:rgba(30,100,255,0.08);color:var(--white);}
+.nav-item.active{background:rgba(30,100,255,0.12);color:var(--cyan);border-right:2px solid var(--cyan);}
+.nav-icon{font-size:16px;width:20px;text-align:center;flex-shrink:0;}
+.sidebar-bottom{margin-top:auto;padding:16px 24px;border-top:1px solid var(--border);}
+.sidebar-member{display:flex;align-items:center;gap:12px;}
+.sidebar-avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--cyan));display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;}
+.sidebar-member-name{font-family:'Orbitron',sans-serif;font-size:10px;font-weight:900;color:var(--white);}
+.sidebar-member-rang{font-size:10px;color:var(--dim);margin-top:2px;}
+.main{margin-left:var(--sidebar-w);flex:1;padding:32px;position:relative;z-index:1;}
+.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:32px;}
+.topbar-title{font-family:'Orbitron',sans-serif;font-size:20px;font-weight:900;color:var(--white);letter-spacing:2px;}
+.topbar-title span{color:var(--cyan);}
+.header-card{background:linear-gradient(135deg,#0a1428,#080e1f);border:1px solid rgba(30,100,255,0.25);border-radius:20px;padding:32px;margin-bottom:28px;position:relative;overflow:hidden;}
+.header-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--cyan),transparent);}
+.header-glow{position:absolute;top:-60px;right:-60px;width:300px;height:300px;background:radial-gradient(ellipse,rgba(30,100,255,0.15) 0%,transparent 70%);pointer-events:none;}
+.header-tag{font-family:'Orbitron',sans-serif;font-size:8px;letter-spacing:3px;color:var(--cyan);margin-bottom:10px;}
+.header-title{font-family:'Orbitron',sans-serif;font-size:26px;font-weight:900;color:var(--white);margin-bottom:8px;}
+.header-desc{font-size:14px;color:var(--dim);line-height:1.7;}
+.info-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-top:24px;}
+.info-item{padding:16px;border-radius:12px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);text-align:center;}
+.info-icon{font-size:24px;margin-bottom:8px;}
+.info-label{font-family:'Orbitron',sans-serif;font-size:8px;letter-spacing:2px;color:var(--dim);margin-bottom:4px;}
+.info-val{font-size:13px;color:var(--white);font-weight:600;}
+.calendly-wrap{background:var(--card);border:1px solid var(--border);border-radius:20px;overflow:hidden;min-height:700px;}
+@media(max-width:768px){.sidebar{display:none;}.main{margin-left:0;padding:16px;}.info-grid{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<div class="bg-grid"></div>
+<aside class="sidebar">
+  <div class="sidebar-logo"><div class="sidebar-logo-text">DHA</div><div class="sidebar-logo-sub">DIGITAL HUSTLER ACADEMY</div></div>
+  <div class="sidebar-section">MAIN</div>
+  <a class="nav-item" href="dha-dashboard.html"><span class="nav-icon">🎮</span> Dashboard</a>
+  <div class="sidebar-section">LEARN</div>
+  <a class="nav-item" href="dha-formation.html"><span class="nav-icon">📈</span> Formation Trading</a>
+  <a class="nav-item" href="dha-mindset.html"><span class="nav-icon">🧠</span> Mindset</a>
+  <div class="sidebar-section">NETWORK</div>
+  <a class="nav-item" href="dha-squad.html"><span class="nav-icon">👥</span> Mon Squad</a>
+  <a class="nav-item" href="dha-leaderboard.html"><span class="nav-icon">🏆</span> Leaderboard</a>
+  <div class="sidebar-section">EARN</div>
+  <a class="nav-item" href="dha-affiliation.html"><span class="nav-icon">💰</span> Affiliation</a>
+  <div class="sidebar-section">TOOLS</div>
+  <a class="nav-item active" href="dha-mentor.html"><span class="nav-icon">📞</span> Appel Mentor</a>
+  <div class="sidebar-bottom">
+    <div class="sidebar-member">
+      <div class="sidebar-avatar" id="sb-avatar">📈</div>
+      <div><div class="sidebar-member-name" id="sb-pseudo">HUSTLER</div><div class="sidebar-member-rang" id="sb-rang">NEW HUSTLER</div></div>
+    </div>
+  </div>
+</aside>
+<main class="main">
+  <div class="topbar">
+    <div><div class="topbar-title">APPEL <span>MENTOR</span></div><div style="font-size:12px;color:var(--dim);margin-top:2px;">Réserve ton appel stratégique</div></div>
+  </div>
+
+  <div class="header-card">
+    <div class="header-glow"></div>
+    <div class="header-tag">📞 COACHING · 1 ON 1</div>
+    <div class="header-title">Réserve ton appel avec Quincy</div>
+    <div class="header-desc">Tu bloques sur un concept ? Tu veux valider ta stratégie ? Tu as besoin d'un regard extérieur sur tes trades ? Réserve un appel et on travaille ensemble.</div>
+    <div class="info-grid">
+      <div class="info-item"><div class="info-icon">⏱️</div><div class="info-label">DURÉE</div><div class="info-val">30 minutes</div></div>
+      <div class="info-item"><div class="info-icon">🎯</div><div class="info-label">FORMAT</div><div class="info-val">Visio 1 on 1</div></div>
+      <div class="info-item"><div class="info-icon">🔥</div><div class="info-label">OBJECTIF</div><div class="info-val">Débloquer ta progression</div></div>
+    </div>
+  </div>
+
+  <div class="calendly-wrap">
+    <div class="calendly-inline-widget" data-url="https://calendly.com/quincy-massol/appel-pour-huslter" style="min-width:320px;height:700px;"></div>
+  </div>
+</main>
+<script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript" async></script>
+<script>
+function init(){
+  const stored=localStorage.getItem('dha_member');
+  if(!stored){window.location.href='dha-connexion.html';return;}
+  const member=JSON.parse(stored);
+  document.getElementById('sb-pseudo').textContent=('@'+(member.pseudo||'HUSTLER')).toUpperCase();
+}
+init();
+</script>
+</body>
+</html>
