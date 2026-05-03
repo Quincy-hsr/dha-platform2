@@ -288,9 +288,15 @@ function selectOption(el,qId,letter){
 }
 
 function submitQuiz(){
+  const quizKey='dha_quiz_m1_b1_done';
   if(quizDone)return;
+  if(localStorage.getItem(quizKey)){
+    alert('Tu as déjà fait ce quiz ! 💪');
+    return;
+  }
   if(Object.values(quizAnswers).filter(v=>v===null).length>0){alert('Réponds à toutes les questions !');return;}
   quizDone=true;
+  localStorage.setItem(quizKey,'true');
   let score=0;
   Object.keys(quizAnswers).forEach(qId=>{
     const ans=quizAnswers[qId];
@@ -318,8 +324,14 @@ function submitQuiz(){
 }
 
 function validateExercice(){
+  const exerciceKey='dha_exercice_m1_b1_done';
   if(exerciceDone)return;
+  if(localStorage.getItem(exerciceKey)){
+    alert('Tu as déjà validé cet exercice ! 💪');
+    return;
+  }
   exerciceDone=true;
+  localStorage.setItem(exerciceKey,'true');
   document.getElementById('exercice-btn').disabled=true;
   document.getElementById('exercice-btn').textContent='✅ EXERCICE VALIDÉ !';
   addXP(75);
@@ -334,6 +346,12 @@ function sendQuestion(){
 }
 
 function completeBloc(){
+  const blocKey='dha_bloc_m1_b1_done';
+  if(localStorage.getItem(blocKey)){
+    alert('Tu as déjà terminé ce bloc ! Les XP ont déjà été comptabilisés. 💪');
+    return;
+  }
+  localStorage.setItem(blocKey,'true');
   addXP(25);
   document.getElementById('complete-btn').textContent='✅ BLOC 1 TERMINÉ !';
   document.getElementById('complete-btn').disabled=true;
