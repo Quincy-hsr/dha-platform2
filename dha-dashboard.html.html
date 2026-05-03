@@ -399,9 +399,9 @@ body {
 }
 .locked-modal-btn:hover { background:rgba(255,215,0,0.2); }
 
-@keyframes fadeup {
-  from { opacity: 0; transform: translateY(12px); }
-  to { opacity: 1; transform: translateY(0); }
+@keyframes xp-float {
+  0%{opacity:1;transform:translateY(0);}
+  100%{opacity:0;transform:translateY(-60px);}
 }
 .fadeup { animation: fadeup .5s ease both; }
 .fadeup-1 { animation-delay: .1s; }
@@ -723,9 +723,43 @@ function getRang(xp) {
 
 async function updateXP(amount) {
   if(!member) return;
-  member.xp = (member.xp || 0) + amount;
+  const oldXP = member.xp || 0;
+  member.xp = oldXP + amount;
   member.level = Math.floor(member.xp / 500) + 1;
   localStorage.setItem('dha_member', JSON.stringify(member));
+
+  // Animation XP
+  const flash = document.createElement('div');
+  flash.textContent = '+' + amount + ' XP ⚡';
+  flash.style.cssText = 'position:fixed;top:80px;right:24px;font-family:Orbitron,sans-serif;font-size:20px;font-weight:900;color:#FFD700;text-shadow:0 0 20px rgba(255,215,0,0.8);z-index:9999;pointer-events:none;animation:xp-float 1.5s ease forwards;';
+  document.body.appendChild(flash);
+  setTimeout(()=>flash.remove(), 1500);
+
+  // Anime la jauge progressivement
+  const startXP = oldXP % 500;
+  const endXP = member.xp % 500;
+  const duration = 1000;
+  const startTime = performance.now();
+  function animateBar(currentTime) {
+    const elapsed = currentTime - startTime;
+    const progress = Math.min(elapsed / duration, 1);
+    const currentPct = (startXP + (endXP - startXP) * progress) / 500 * 100;
+    document.getElementById('xp-fill').style.width = currentPct + '%';
+    document.getElementById('xp-next').textContent = Math.round(startXP + (endXP - startXP) * progress) + ' / 500 XP';
+    document.getElementById('topbar-xp').textContent = Math.round(oldXP + amount * progress) + ' XP';
+    if(progress < 1) requestAnimationFrame(animateBar);
+    else renderMember();
+  }
+  requestAnimationFrame(animateBar);
+
+  try {
+    await fetch(SUPABASE_URL + '/rest/v1/membres?email=eq.' + encodeURIComponent(member.email), {
+      method: 'PATCH',
+      headers: {'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY},
+      body: JSON.stringify({xp:member.xp, level:member.level, rang:getRang(member.xp).name})
+    });
+  } catch(e) { console.log('XP update error:', e); }
+}
 
   // Update Supabase
   try {
