@@ -729,7 +729,7 @@ async function updateXP(amount) {
 
   // Update Supabase
   try {
-    await fetch(SUPABASE_URL + '/rest/v1/membres?email=eq.' + encodeURIComponent(member.email), {
+    await fetch(SUPABASE_URL + '/rest/v1/membres?email=eq.' +encodeURIComponent(member.email), {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
