@@ -132,7 +132,6 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
   <div class="sidebar-section">LEARN</div>
   <a class="nav-item active" href="dha-formation.html"><span class="nav-icon">📈</span> Formation Trading</a>
   <a class="nav-item" href="dha-mindset.html"><span class="nav-icon">🧠</span> Mindset</a>
-  <a class="nav-item" href="dha-live.html"><span class="nav-icon">📡</span> Live Hub<span class="notif-dot"></span></a>
   <div class="sidebar-section">NETWORK</div>
   <a class="nav-item" href="dha-squad.html"><span class="nav-icon">👥</span> Mon Squad</a>
   <a class="nav-item" href="dha-leaderboard.html"><span class="nav-icon">🏆</span> Leaderboard</a>
@@ -378,7 +377,7 @@ function drawChart(canvasId,type){
   const ctx=canvas.getContext('2d');
   const dpr=window.devicePixelRatio||1;
   const w=canvas.offsetWidth;
-  const h=160;
+  const h=220;
   canvas.width=w*dpr;canvas.height=h*dpr;canvas.style.height=h+'px';
   ctx.scale(dpr,dpr);
 
@@ -463,8 +462,9 @@ function init(){
   if(!stored){window.location.href='dha-connexion.html';return;}
   member=JSON.parse(stored);
   document.getElementById('sb-pseudo').textContent=('@'+(member.pseudo||'HUSTLER')).toUpperCase();
+  if(member.avatar){document.getElementById('sb-avatar').innerHTML='<img src="'+member.avatar+'" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"/>';}
   document.getElementById('topbar-xp').textContent=(member.xp||0)+' XP';
-  setTimeout(()=>{drawChart('chart-buy','buy');drawChart('chart-sell','sell');drawChart('chart-loss','loss');},200);
+  setTimeout(()=>{drawChart('chart-buy','buy');drawChart('chart-sell','sell');drawChart('chart-loss','loss');},50);
 }
 
 window.addEventListener('resize',()=>{drawChart('chart-buy','buy');drawChart('chart-sell','sell');drawChart('chart-loss','loss');});
