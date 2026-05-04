@@ -381,48 +381,81 @@ function drawChart(canvasId,type){
   const h=160;
   canvas.width=w*dpr;canvas.height=h*dpr;canvas.style.height=h+'px';
   ctx.scale(dpr,dpr);
-  ctx.strokeStyle='rgba(255,255,255,0.04)';ctx.lineWidth=1;
-  for(let i=0;i<w;i+=50){ctx.beginPath();ctx.moveTo(i,0);ctx.lineTo(i,h);ctx.stroke();}
-  for(let i=0;i<h;i+=30){ctx.beginPath();ctx.moveTo(0,i);ctx.lineTo(w,i);ctx.stroke();}
-  const cw=Math.max(8,Math.floor(w/22));
-  const gap=Math.floor(w/18);
-  function drawCandle(x,o,c,hi,lo,color){
-    ctx.fillStyle=color;ctx.fillRect(x,Math.min(o,c),cw*0.75,Math.max(Math.abs(c-o),3));
-    ctx.strokeStyle=color;ctx.lineWidth=1.5;
-    ctx.beginPath();ctx.moveTo(x+cw*0.375,hi);ctx.lineTo(x+cw*0.375,Math.min(o,c));ctx.stroke();
-    ctx.beginPath();ctx.moveTo(x+cw*0.375,Math.max(o,c));ctx.lineTo(x+cw*0.375,lo);ctx.stroke();
+
+  let scale=1,offsetX=0,isDragging=false,startX=0,startOffset=0;
+
+  function draw(){
+    ctx.clearRect(0,0,w,h);
+    ctx.save();
+    ctx.translate(offsetX,0);
+    ctx.scale(scale,1);
+    ctx.strokeStyle='rgba(255,255,255,0.04)';ctx.lineWidth=1;
+    for(let i=0;i<w*2;i+=50){ctx.beginPath();ctx.moveTo(i,0);ctx.lineTo(i,h);ctx.stroke();}
+    for(let i=0;i<h;i+=30){ctx.beginPath();ctx.moveTo(0,i);ctx.lineTo(w*2,i);ctx.stroke();}
+    const cw=Math.max(8,Math.floor(w/22));
+    const gap=Math.floor(w/18);
+    function drawCandle(x,o,c,hi,lo,color){
+      ctx.fillStyle=color;ctx.fillRect(x,Math.min(o,c),cw*0.75,Math.max(Math.abs(c-o),3));
+      ctx.strokeStyle=color;ctx.lineWidth=1.5;
+      ctx.beginPath();ctx.moveTo(x+cw*0.375,hi);ctx.lineTo(x+cw*0.375,Math.min(o,c));ctx.stroke();
+      ctx.beginPath();ctx.moveTo(x+cw*0.375,Math.max(o,c));ctx.lineTo(x+cw*0.375,lo);ctx.stroke();
+    }
+    if(type==='buy'){
+      [[1,100,92,104,88],[2,94,86,98,82],[3,88,80,92,76],[4,82,76,86,72],[5,78,68,82,64],[6,68,56,72,52],[7,56,44,60,40],[8,44,32,48,28],[9,32,22,36,18],[10,22,14,26,10]].forEach(([i,o,c,hi,lo])=>{
+        drawCandle(gap*i,o,c,hi,lo,c<o?'#00FF88':'#FF4466');
+      });
+      ctx.strokeStyle='rgba(0,212,255,0.5)';ctx.lineWidth=1.5;ctx.setLineDash([4,3]);
+      ctx.beginPath();ctx.moveTo(gap*5,70);ctx.lineTo(w*2,70);ctx.stroke();ctx.setLineDash([]);
+      ctx.fillStyle='rgba(0,212,255,0.8)';ctx.font='bold 9px Orbitron';ctx.fillText('ACHAT 1.0780',gap*5+5,65);
+      ctx.strokeStyle='rgba(255,215,0,0.5)';ctx.lineWidth=1.5;ctx.setLineDash([4,3]);
+      ctx.beginPath();ctx.moveTo(gap*5,14);ctx.lineTo(w*2,14);ctx.stroke();ctx.setLineDash([]);
+      ctx.fillStyle='rgba(255,215,0,0.9)';ctx.fillText('+140€ 🎯  1.0850',gap*8,11);
+    }else if(type==='sell'){
+      [[1,50,58,46,62],[2,56,64,52,68],[3,62,70,58,74],[4,68,76,64,80],[5,72,80,68,84],[6,78,88,74,92],[7,86,96,82,100],[8,94,104,90,108],[9,102,110,98,114],[10,108,116,104,120]].forEach(([i,o,c,hi,lo])=>{
+        drawCandle(gap*i,o,c,hi,lo,c>o?'#FF4466':'#00FF88');
+      });
+      ctx.strokeStyle='rgba(255,68,102,0.5)';ctx.lineWidth=1.5;ctx.setLineDash([4,3]);
+      ctx.beginPath();ctx.moveTo(gap*5,78);ctx.lineTo(w*2,78);ctx.stroke();ctx.setLineDash([]);
+      ctx.fillStyle='rgba(255,68,102,0.8)';ctx.font='bold 9px Orbitron';ctx.fillText('VENTE 1.0750',gap*5+5,74);
+      ctx.strokeStyle='rgba(255,215,0,0.5)';ctx.lineWidth=1.5;ctx.setLineDash([4,3]);
+      ctx.beginPath();ctx.moveTo(gap*5,116);ctx.lineTo(w*2,116);ctx.stroke();ctx.setLineDash([]);
+      ctx.fillStyle='rgba(255,215,0,0.9)';ctx.fillText('+140€ 🎯  1.0680',gap*8,128);
+    }else if(type==='loss'){
+      [[1,90,82,94,78],[2,84,76,88,72],[3,78,68,82,64],[4,72,78,68,82],[5,76,84,72,88],[6,82,92,78,96],[7,90,100,86,104],[8,98,108,94,112]].forEach(([i,o,c,hi,lo])=>{
+        drawCandle(gap*i,o,c,hi,lo,c<o?'#00FF88':'#FF4466');
+      });
+      ctx.strokeStyle='rgba(0,212,255,0.5)';ctx.lineWidth=1.5;ctx.setLineDash([4,3]);
+      ctx.beginPath();ctx.moveTo(gap*3,72);ctx.lineTo(w*2,72);ctx.stroke();ctx.setLineDash([]);
+      ctx.fillStyle='rgba(0,212,255,0.8)';ctx.font='bold 9px Orbitron';ctx.fillText('ACHAT 1.0780',gap*3+5,68);
+      ctx.strokeStyle='rgba(255,68,102,0.7)';ctx.lineWidth=2;ctx.setLineDash([4,3]);
+      ctx.beginPath();ctx.moveTo(gap*3,108);ctx.lineTo(w*2,108);ctx.stroke();ctx.setLineDash([]);
+      ctx.fillStyle='rgba(255,68,102,0.9)';ctx.fillText('STOP LOSS -30€',gap*6,104);
+    }
+    ctx.restore();
+    // Zoom hint
+    ctx.fillStyle='rgba(255,255,255,0.15)';ctx.font='9px Exo 2';
+    ctx.fillText('🔍 Molette pour zoomer · Glisser pour naviguer',8,h-8);
   }
-  if(type==='buy'){
-    [[1,100,92,104,88],[2,94,86,98,82],[3,88,80,92,76],[4,82,76,86,72],[5,78,68,82,64],[6,68,56,72,52],[7,56,44,60,40],[8,44,32,48,28],[9,32,22,36,18],[10,22,14,26,10]].forEach(([i,o,c,hi,lo])=>{
-      drawCandle(gap*i,o,c,hi,lo,c<o?'#00FF88':'#FF4466');
-    });
-    ctx.strokeStyle='rgba(0,212,255,0.5)';ctx.lineWidth=1.5;ctx.setLineDash([4,3]);
-    ctx.beginPath();ctx.moveTo(gap*5,70);ctx.lineTo(w-10,70);ctx.stroke();ctx.setLineDash([]);
-    ctx.fillStyle='rgba(0,212,255,0.8)';ctx.font='bold 9px Orbitron';ctx.fillText('ACHAT 1.0780',gap*5+5,65);
-    ctx.strokeStyle='rgba(255,215,0,0.5)';ctx.lineWidth=1.5;ctx.setLineDash([4,3]);
-    ctx.beginPath();ctx.moveTo(gap*5,14);ctx.lineTo(w-10,14);ctx.stroke();ctx.setLineDash([]);
-    ctx.fillStyle='rgba(255,215,0,0.9)';ctx.fillText('+140€ 🎯  1.0850',gap*8,11);
-  } else if(type==='sell'){
-    [[1,50,58,46,62],[2,56,64,52,68],[3,62,70,58,74],[4,68,76,64,80],[5,72,80,68,84],[6,78,88,74,92],[7,86,96,82,100],[8,94,104,90,108],[9,102,110,98,114],[10,108,116,104,120]].forEach(([i,o,c,hi,lo])=>{
-      drawCandle(gap*i,o,c,hi,lo,c>o?'#FF4466':'#00FF88');
-    });
-    ctx.strokeStyle='rgba(255,68,102,0.5)';ctx.lineWidth=1.5;ctx.setLineDash([4,3]);
-    ctx.beginPath();ctx.moveTo(gap*5,78);ctx.lineTo(w-10,78);ctx.stroke();ctx.setLineDash([]);
-    ctx.fillStyle='rgba(255,68,102,0.8)';ctx.font='bold 9px Orbitron';ctx.fillText('VENTE 1.0750',gap*5+5,74);
-    ctx.strokeStyle='rgba(255,215,0,0.5)';ctx.lineWidth=1.5;ctx.setLineDash([4,3]);
-    ctx.beginPath();ctx.moveTo(gap*5,116);ctx.lineTo(w-10,116);ctx.stroke();ctx.setLineDash([]);
-    ctx.fillStyle='rgba(255,215,0,0.9)';ctx.fillText('+140€ 🎯  1.0680',gap*8,128);
-  } else if(type==='loss'){
-    [[1,90,82,94,78],[2,84,76,88,72],[3,78,68,82,64],[4,72,78,68,82],[5,76,84,72,88],[6,82,92,78,96],[7,90,100,86,104],[8,98,108,94,112]].forEach(([i,o,c,hi,lo])=>{
-      drawCandle(gap*i,o,c,hi,lo,c<o?'#00FF88':'#FF4466');
-    });
-    ctx.strokeStyle='rgba(0,212,255,0.5)';ctx.lineWidth=1.5;ctx.setLineDash([4,3]);
-    ctx.beginPath();ctx.moveTo(gap*3,72);ctx.lineTo(w-10,72);ctx.stroke();ctx.setLineDash([]);
-    ctx.fillStyle='rgba(0,212,255,0.8)';ctx.font='bold 9px Orbitron';ctx.fillText('ACHAT 1.0780',gap*3+5,68);
-    ctx.strokeStyle='rgba(255,68,102,0.7)';ctx.lineWidth=2;ctx.setLineDash([4,3]);
-    ctx.beginPath();ctx.moveTo(gap*3,108);ctx.lineTo(w-10,108);ctx.stroke();ctx.setLineDash([]);
-    ctx.fillStyle='rgba(255,68,102,0.9)';ctx.fillText('STOP LOSS -30€',gap*6,104);
-  }
+
+  draw();
+
+  // Zoom molette
+  canvas.addEventListener('wheel',(e)=>{
+    e.preventDefault();
+    const delta=e.deltaY>0?0.9:1.1;
+    scale=Math.max(0.5,Math.min(4,scale*delta));
+    draw();
+  },{passive:false});
+
+  // Drag
+  canvas.addEventListener('mousedown',(e)=>{isDragging=true;startX=e.clientX;startOffset=offsetX;canvas.style.cursor='grabbing';});
+  canvas.addEventListener('mousemove',(e)=>{if(!isDragging)return;offsetX=startOffset+(e.clientX-startX);draw();});
+  canvas.addEventListener('mouseup',()=>{isDragging=false;canvas.style.cursor='grab';});
+  canvas.addEventListener('mouseleave',()=>{isDragging=false;canvas.style.cursor='grab';});
+  canvas.style.cursor='grab';
+
+  // Double-clic reset
+  canvas.addEventListener('dblclick',()=>{scale=1;offsetX=0;draw();});
 }
 
 function init(){
