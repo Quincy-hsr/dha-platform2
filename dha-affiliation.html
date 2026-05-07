@@ -340,27 +340,25 @@ if(member.rib){
   document.getElementById('rib-form').style.display='none';
 }
 
-updateRevenus();
+async function updateRevenus(){
+  try{
+    const res=await fetch(SUPABASE_URL+'/rest/v1/membres?email=eq.'+encodeURIComponent(member.email)+'&select=commissions_total,commissions_encours,commissions_versees,nb_affilies,statut_affiliation',{
+      headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY}
+    });
+    const data=await res.json();
+    if(data&&data.length>0){
+      member.commissions_total=data[0].commissions_total||0;
+      member.commissions_encours=data[0].commissions_encours||0;
+      member.commissions_versees=data[0].commissions_versees||0;
+      member.nb_affilies=data[0].nb_affilies||0;
+      member.statut_affiliation=data[0].statut_affiliation||'membre_simple';
+      localStorage.setItem('dha_member',JSON.stringify(member));
+    }
+  }catch(e){}
+  document.getElementById('rev-total').textContent=(member.commissions_total||0)+'€';
+  document.getElementById('rev-encours').textContent=(member.commissions_encours||0)+'€';
+  document.getElementById('rev-verse').textContent=(member.commissions_versees||0)+'€';
 }
-function updateRevenus(){
-  const nb=member.nb_affilies||0;
-  const statut=member.statut_affiliation||'membre_simple';
-  let commission=0;
-  if(statut==='affilie')commission=0.20;
-  else if(statut==='ambassadeur')commission=0.25;
-  const prixMoyen=150;
-  const totalGagne=Math.round(nb*prixMoyen*commission);
-  document.getElementById('rev-total').textContent=totalGagne+'€';
-  document.getElementById('rev-encours').textContent=totalGagne+'€';
-  document.getElementById('rev-verse').textContent='0€';
-}
-    member.rib=rib;
-    localStorage.setItem('dha_member',JSON.stringify(member));
-    document.getElementById('rib-text').textContent=rib;
-    document.getElementById('rib-display').style.display='block';
-    document.getElementById('rib-form').style.display='none';
-    alert('RIB sauvegardé ! ✅');
-  }catch(e){alert('Erreur. Réessaie.');}
 }
 
 function editRib(){
