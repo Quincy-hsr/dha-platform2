@@ -179,6 +179,38 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
       <div class="palier-status" id="palier-3-status" style="background:rgba(255,255,255,0.05);color:var(--dim);border:1px solid rgba(255,255,255,0.1);">🔒 10 AFFILIÉS</div>
     </div>
   </div>
+  <!-- DASHBOARD REVENUS -->
+<div class="card" style="margin-bottom:24px;">
+  <div class="card-label">💳 MES REVENUS & PAIEMENT</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:24px;">
+    <div style="padding:16px;border-radius:12px;background:rgba(0,255,136,0.06);border:1px solid rgba(0,255,136,0.2);text-align:center;">
+      <div style="font-family:'Orbitron',sans-serif;font-size:28px;font-weight:900;color:var(--green);" id="rev-total">0€</div>
+      <div style="font-family:'Orbitron',sans-serif;font-size:7px;letter-spacing:2px;color:var(--dim);margin-top:4px;">TOTAL GAGNÉ</div>
+    </div>
+    <div style="padding:16px;border-radius:12px;background:rgba(255,215,0,0.06);border:1px solid rgba(255,215,0,0.2);text-align:center;">
+      <div style="font-family:'Orbitron',sans-serif;font-size:28px;font-weight:900;color:var(--gold);" id="rev-encours">0€</div>
+      <div style="font-family:'Orbitron',sans-serif;font-size:7px;letter-spacing:2px;color:var(--dim);margin-top:4px;">EN COURS</div>
+    </div>
+    <div style="padding:16px;border-radius:12px;background:rgba(0,212,255,0.06);border:1px solid rgba(0,212,255,0.2);text-align:center;">
+      <div style="font-family:'Orbitron',sans-serif;font-size:28px;font-weight:900;color:var(--cyan);" id="rev-verse">0€</div>
+      <div style="font-family:'Orbitron',sans-serif;font-size:7px;letter-spacing:2px;color:var(--dim);margin-top:4px;">DÉJÀ VERSÉ</div>
+    </div>
+  </div>
+
+  <!-- RIB -->
+  <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:20px;">
+    <div style="font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:2px;color:var(--dim);margin-bottom:12px;">🏦 TON RIB — POUR RECEVOIR TES PAIEMENTS</div>
+    <div id="rib-display" style="display:none;">
+      <div style="padding:12px 16px;border-radius:10px;background:rgba(0,255,136,0.06);border:1px solid rgba(0,255,136,0.2);font-size:13px;color:var(--green);margin-bottom:12px;" id="rib-text"></div>
+      <button onclick="editRib()" style="padding:10px 20px;border-radius:10px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);color:var(--dim);font-family:'Orbitron',sans-serif;font-size:9px;cursor:pointer;">✏️ MODIFIER</button>
+    </div>
+    <div id="rib-form">
+      <input id="rib-input" placeholder="FR76 XXXX XXXX XXXX XXXX XXXX XXX" style="width:100%;padding:12px 16px;border-radius:10px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);color:var(--white);font-family:'Exo 2',sans-serif;font-size:14px;outline:none;margin-bottom:10px;"/>
+      <button onclick="saveRib()" style="width:100%;padding:13px;border-radius:12px;background:linear-gradient(135deg,var(--blue),var(--cyan));color:#000;font-family:'Orbitron',sans-serif;font-size:10px;font-weight:900;letter-spacing:2px;border:none;cursor:pointer;">💾 SAUVEGARDER MON RIB</button>
+    </div>
+    <div style="margin-top:10px;font-size:11px;color:var(--dim);line-height:1.6;">🔒 Ton RIB est sécurisé et uniquement visible par l'équipe DHA pour le versement de tes commissions.</div>
+  </div>
+</div>
 </main>
 
 <script>
@@ -301,8 +333,48 @@ function init(){
   document.getElementById('affili-link').textContent=affiliLink;
   checkUpgradeAmbassadeur();
   renderStatut();
+  // Charger RIB
+if(member.rib){
+  document.getElementById('rib-text').textContent=member.rib;
+  document.getElementById('rib-display').style.display='block';
+  document.getElementById('rib-form').style.display='none';
 }
 
+// Stats revenus
+const nb=member.nb_affilies||0;
+const statut=member.statut_affiliation||'membre_simple';
+let commission=0;
+if(statut==='affilie')commission=0.20;
+else if(statut==='ambassadeur')commission=0.25;
+const prixMoyen=150;
+const totalGagne=Math.round(nb*prixMoyen*commission);
+document.getElementById('rev-total').textContent=totalGagne+'€';
+document.getElementById('rev-encours').textContent=totalGagne+'€';
+document.getElementById('rev-verse').textContent='0€';
+}
+async function saveRib(){
+  const rib=document.getElementById('rib-input').value.trim();
+  if(!rib){alert('Entre ton RIB.');return;}
+  try{
+    await fetch(SUPABASE_URL+'/rest/v1/membres?email=eq.'+encodeURIComponent(member.email),{
+      method:'PATCH',
+      headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY},
+      body:JSON.stringify({rib:rib})
+    });
+    member.rib=rib;
+    localStorage.setItem('dha_member',JSON.stringify(member));
+    document.getElementById('rib-text').textContent=rib;
+    document.getElementById('rib-display').style.display='block';
+    document.getElementById('rib-form').style.display='none';
+    alert('RIB sauvegardé ! ✅');
+  }catch(e){alert('Erreur. Réessaie.');}
+}
+
+function editRib(){
+  document.getElementById('rib-display').style.display='none';
+  document.getElementById('rib-form').style.display='block';
+  document.getElementById('rib-input').value=member.rib||'';
+}
 init();
 </script>
 </body>
