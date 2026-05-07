@@ -340,27 +340,20 @@ if(member.rib){
   document.getElementById('rib-form').style.display='none';
 }
 
-// Stats revenus
-const nb=member.nb_affilies||0;
-const statut=member.statut_affiliation||'membre_simple';
-let commission=0;
-if(statut==='affilie')commission=0.20;
-else if(statut==='ambassadeur')commission=0.25;
-const prixMoyen=150;
-const totalGagne=Math.round(nb*prixMoyen*commission);
-document.getElementById('rev-total').textContent=totalGagne+'€';
-document.getElementById('rev-encours').textContent=totalGagne+'€';
-document.getElementById('rev-verse').textContent='0€';
+updateRevenus();
 }
-async function saveRib(){
-  const rib=document.getElementById('rib-input').value.trim();
-  if(!rib){alert('Entre ton RIB.');return;}
-  try{
-    await fetch(SUPABASE_URL+'/rest/v1/membres?email=eq.'+encodeURIComponent(member.email),{
-      method:'PATCH',
-      headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY},
-      body:JSON.stringify({rib:rib})
-    });
+function updateRevenus(){
+  const nb=member.nb_affilies||0;
+  const statut=member.statut_affiliation||'membre_simple';
+  let commission=0;
+  if(statut==='affilie')commission=0.20;
+  else if(statut==='ambassadeur')commission=0.25;
+  const prixMoyen=150;
+  const totalGagne=Math.round(nb*prixMoyen*commission);
+  document.getElementById('rev-total').textContent=totalGagne+'€';
+  document.getElementById('rev-encours').textContent=totalGagne+'€';
+  document.getElementById('rev-verse').textContent='0€';
+}
     member.rib=rib;
     localStorage.setItem('dha_member',JSON.stringify(member));
     document.getElementById('rib-text').textContent=rib;
