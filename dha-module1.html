@@ -225,7 +225,6 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
       <div class="bloc-text">Tu analyses le marché. Tu décides d'<strong>acheter</strong> à un prix que tu juges intéressant. Le prix monte. Tu revends plus haut. Tu encaisses la différence.</div>
       <div class="trade-example buy">
         <div class="trade-header"><div class="trade-badge buy">🟢 ACHAT</div><div style="font-size:13px;color:var(--dim);">EUR/USD · H1</div></div>
-        <div class="trading-widget">
           <div class="tw-header"><span class="tw-pair">EUR/USD</span><div class="tw-timeframes"><span class="tw-tf">1m</span><span class="tw-tf">5m</span><span class="tw-tf active">1H</span><span class="tw-tf">4H</span></div><span class="tw-price up">1.0850 ▲</span></div>
           <canvas id="chart-buy" class="tw-canvas" height="160"></canvas>
         </div>
@@ -291,7 +290,6 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
 </div>
       <div class="trade-example sell">
         <div class="trade-header"><div class="trade-badge sell">🔴 VENTE (SHORT)</div><div style="font-size:13px;color:var(--dim);">EUR/USD · H1</div></div>
-        <div class="trading-widget">
           <div class="tw-header"><span class="tw-pair">EUR/USD</span><div class="tw-timeframes"><span class="tw-tf">1m</span><span class="tw-tf">5m</span><span class="tw-tf active">1H</span><span class="tw-tf">4H</span></div><span class="tw-price down">1.0680 ▼</span></div>
           <canvas id="chart-sell" class="tw-canvas" height="160"></canvas>
         </div>
@@ -364,7 +362,6 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
 </div>
       <div class="trade-example loss">
         <div class="trade-header"><div class="trade-badge loss">⚠️ PERTE</div><div style="font-size:13px;color:var(--dim);">EUR/USD · H1</div></div>
-        <div class="trading-widget">
           <div class="tw-header"><span class="tw-pair">EUR/USD</span><div class="tw-timeframes"><span class="tw-tf">1m</span><span class="tw-tf">5m</span><span class="tw-tf active">1H</span><span class="tw-tf">4H</span></div><span class="tw-price down">1.0720 ▼</span></div>
           <canvas id="chart-loss" class="tw-canvas" height="160"></canvas>
         </div>
@@ -525,34 +522,6 @@ async function addXP(amount){
   setTimeout(()=>flash.remove(),900);
   try{await fetch(SUPABASE_URL+'/rest/v1/membres?email=eq.'+encodeURIComponent(member.email),{method:'PATCH',headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY},body:JSON.stringify({xp:member.xp,level:member.level})});}catch(e){}
 }
-
-function drawChart(canvasId,type){
-  const canvas=document.getElementById(canvasId);
-  if(!canvas)return;
-  const ctx=canvas.getContext('2d');
-  const dpr=window.devicePixelRatio||1;
-  const w=canvas.offsetWidth;
-  const h=220;
-  canvas.width=w*dpr;canvas.height=h*dpr;canvas.style.height=h+'px';
-  ctx.scale(dpr,dpr);
-
-  let scale=1,offsetX=0,isDragging=false,startX=0,startOffset=0;
-
-  function draw(){
-    ctx.clearRect(0,0,w,h);
-    ctx.save();
-    ctx.translate(offsetX,0);
-    ctx.scale(scale,1);
-    ctx.strokeStyle='rgba(255,255,255,0.04)';ctx.lineWidth=1;
-    for(let i=0;i<w*2;i+=50){ctx.beginPath();ctx.moveTo(i,0);ctx.lineTo(i,h);ctx.stroke();}
-    for(let i=0;i<h;i+=30){ctx.beginPath();ctx.moveTo(0,i);ctx.lineTo(w*2,i);ctx.stroke();}
-    const cw=Math.max(8,Math.floor(w/22));
-    const gap=Math.floor(w/18);
-    function drawCandle(x,o,c,hi,lo,color){
-      ctx.fillStyle=color;ctx.fillRect(x,Math.min(o,c),cw*0.75,Math.max(Math.abs(c-o),3));
-      ctx.strokeStyle=color;ctx.lineWidth=1.5;
-      ctx.beginPath();ctx.moveTo(x+cw*0.375,hi);ctx.lineTo(x+cw*0.375,Math.min(o,c));ctx.stroke();
-      ctx.beginPath();ctx.moveTo(x+cw*0.375,Math.max(o,c));ctx.lineTo(x+cw*0.375,lo);ctx.stroke();
     }
  if(type==='buy'){
   [[1,100,92,104,88],[2,94,86,98,82],[3,88,80,92,76],[4,82,76,86,72],[5,78,68,82,64],[6,68,56,72,52],[7,56,44,60,40],[8,44,32,48,28],[9,32,22,36,18],[10,22,14,26,10]].forEach(([i,o,c,hi,lo])=>{
@@ -624,8 +593,6 @@ function init(){
   document.getElementById('topbar-xp').textContent=(member.xp||0)+' XP';
   setTimeout(()=>{drawChart('chart-buy','buy');drawChart('chart-sell','sell');drawChart('chart-loss','loss');},50);
 }
-
-window.addEventListener('resize',()=>{drawChart('chart-buy','buy');drawChart('chart-sell','sell');drawChart('chart-loss','loss');});
 init();
 </script>
 </body>
