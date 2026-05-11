@@ -666,6 +666,7 @@ async function goStep3() {
   setTimeout(()=>bar.style.width='90%',900);
 
   try {
+    const refParam = new URLSearchParams(window.location.search).get('ref') || localStorage.getItem('dha_ref') || '';
     const classeChoisie = selectedClasse;
     const membre = {
       prenom: userData.prenom,
