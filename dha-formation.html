@@ -129,87 +129,213 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
 
   <div class="modules-grid">
 
-    <!-- MODULE 1 — DISPONIBLE -->
-    <a class="module-card" href="dha-module1.html" id="card-m1">
+  <!-- MODULE 1 — DISPO -->
+    <a class="module-card" href="dha-module1.html">
       <div class="module-card-inner">
-        <div class="module-num active" id="num-m1">01</div>
+        <div class="module-num active">01</div>
         <div class="module-content">
           <div class="module-tag">MODULE 01 · INTRODUCTION</div>
           <div class="module-title">Introduction au Trading</div>
-          <div class="module-desc">Comprends comment fonctionne le marché, comment gagner de l'argent, et les bases du stop loss.</div>
-          <div class="module-meta">
-            <div class="module-meta-item">📚 1 Bloc</div>
-            <div class="module-meta-item">⚡ 175 XP max</div>
-            <div class="module-meta-item">⏱️ 15 min</div>
-          </div>
+          <div class="module-desc">Les bases du trading, comment gagner, le stop loss.</div>
+          <div class="module-meta"><div class="module-meta-item">📚 1 Bloc</div><div class="module-meta-item">⚡ 175 XP</div><div class="module-meta-item">⏱️ 15 min</div></div>
         </div>
-        <div class="module-right">
-          <div class="module-badge available" id="badge-m1">▶ COMMENCER</div>
-          <div class="module-xp" id="xp-m1">+175 XP</div>
-          <div class="module-progress">
-            <div class="module-progress-label">PROGRESSION</div>
-            <div class="module-progress-bar"><div class="module-progress-fill" id="fill-m1" style="width:0%"></div></div>
-          </div>
-        </div>
-      </div>
-      <div class="module-card-bottom">
-        <div class="bloc-dot active" id="dot-m1-b1"></div>
-        <div class="bloc-dot-label">Bloc 1 — Comment ça marche</div>
+        <div class="module-right"><div class="module-badge available">▶ COMMENCER</div></div>
       </div>
     </a>
 
-    <!-- MODULE 2 — VERROUILLÉ -->
-    <div class="module-card locked" id="card-m2" onclick="showLockedModule(2)">
+    <!-- MODULE 2 — DISPO -->
+    <a class="module-card" href="dha-module2.html">
       <div class="module-card-inner">
-        <div class="module-num locked" id="num-m2">🔒</div>
+        <div class="module-num active">02</div>
         <div class="module-content">
           <div class="module-tag">MODULE 02 · GRAPHIQUES</div>
-          <div class="module-title">Lire un graphique comme un pro</div>
-          <div class="module-desc">Bougies japonaises, tendances, BOS, CHOCH — les outils de base de tout trader sérieux.</div>
-          <div class="module-meta">
-            <div class="module-meta-item">📚 4 Blocs</div>
-            <div class="module-meta-item">⚡ 600 XP max</div>
-            <div class="module-meta-item">⏱️ 45 min</div>
-          </div>
+          <div class="module-title">Les bougies japonaises</div>
+          <div class="module-desc">Lire une bougie, types de traders, bougies d'indécision.</div>
+          <div class="module-meta"><div class="module-meta-item">📚 1 Bloc</div><div class="module-meta-item">⚡ 175 XP</div><div class="module-meta-item">⏱️ 15 min</div></div>
         </div>
-        <div class="module-right">
-          <div class="module-badge locked">🔒 VERROUILLÉ</div>
-          <div style="font-family:'Orbitron',sans-serif;font-size:8px;color:var(--dim);">Termine le M1</div>
-        </div>
+        <div class="module-right"><div class="module-badge available">▶ COMMENCER</div></div>
       </div>
-      <div class="module-card-bottom">
-        <div class="bloc-dot pending"></div>
-        <div class="bloc-dot pending"></div>
-        <div class="bloc-dot pending"></div>
-        <div class="bloc-dot pending"></div>
-        <div class="bloc-dot-label">4 blocs · Bougies · Tendances · BOS · CHOCH</div>
+    </a>
+
+    <!-- MODULE 3 — CADENAS -->
+    <div class="module-card locked" onclick="showLockedModule(3)">
+      <div class="module-card-inner">
+        <div class="module-num locked">🔒</div>
+        <div class="module-content">
+          <div class="module-tag">MODULE 03 · OUTILS</div>
+          <div class="module-title">Outils de trading</div>
+          <div class="module-desc">MetaTrader, TradingView — maîtrise tes outils.</div>
+          <div class="module-meta"><div class="module-meta-item">🔒 BIENTÔT</div></div>
+        </div>
+        <div class="module-right"><div class="module-badge locked">🔒 BIENTÔT</div></div>
       </div>
     </div>
 
-    <!-- MODULE 3 — VERROUILLÉ -->
-    <div class="module-card locked" id="card-m3" onclick="showLockedModule(3)">
+    <!-- MODULE 4 — CADENAS -->
+    <div class="module-card locked" onclick="showLockedModule(4)">
       <div class="module-card-inner">
-        <div class="module-num locked" id="num-m3">🔒</div>
+        <div class="module-num locked">🔒</div>
         <div class="module-content">
-          <div class="module-tag">MODULE 03 · STRATÉGIES</div>
-          <div class="module-title">Stratégies avancées</div>
-          <div class="module-desc">Order Blocks, prise de liquidité, FVG — les outils des traders institutionnels.</div>
-          <div class="module-meta">
-            <div class="module-meta-item">📚 3 Blocs</div>
-            <div class="module-meta-item">⚡ 450 XP max</div>
-            <div class="module-meta-item">⏱️ 35 min</div>
-          </div>
+          <div class="module-tag">MODULE 04 · ANALYSE</div>
+          <div class="module-title">Les tendances</div>
+          <div class="module-desc">Higher Highs, Higher Lows — lire la direction du marché.</div>
+          <div class="module-meta"><div class="module-meta-item">🔒 BIENTÔT</div></div>
         </div>
-        <div class="module-right">
-          <div class="module-badge locked">🔒 VERROUILLÉ</div>
-          <div style="font-family:'Orbitron',sans-serif;font-size:8px;color:var(--dim);">Termine le M2</div>
-        </div>
+        <div class="module-right"><div class="module-badge locked">🔒 BIENTÔT</div></div>
       </div>
-      <div class="module-card-bottom">
-        <div class="bloc-dot pending"></div>
-        <div class="bloc-dot pending"></div>
-        <div class="bloc-dot pending"></div>
-        <div class="bloc-dot-label">3 blocs · Order Blocks · Liquidité · FVG</div>
+    </div>
+
+    <!-- MODULE 5 — CADENAS -->
+    <div class="module-card locked" onclick="showLockedModule(5)">
+      <div class="module-card-inner">
+        <div class="module-num locked">🔒</div>
+        <div class="module-content">
+          <div class="module-tag">MODULE 05 · STRUCTURE</div>
+          <div class="module-title">BOS & CHOCH</div>
+          <div class="module-desc">Break of Structure et Change of Character.</div>
+          <div class="module-meta"><div class="module-meta-item">🔒 BIENTÔT</div></div>
+        </div>
+        <div class="module-right"><div class="module-badge locked">🔒 BIENTÔT</div></div>
+      </div>
+    </div>
+
+    <!-- MODULE 6 — CADENAS -->
+    <div class="module-card locked" onclick="showLockedModule(6)">
+      <div class="module-card-inner">
+        <div class="module-num locked">🔒</div>
+        <div class="module-content">
+          <div class="module-tag">MODULE 06 · CONCEPTS</div>
+          <div class="module-title">Equilibrium</div>
+          <div class="module-desc">Le point d'équilibre du marché et son importance.</div>
+          <div class="module-meta"><div class="module-meta-item">🔒 BIENTÔT</div></div>
+        </div>
+        <div class="module-right"><div class="module-badge locked">🔒 BIENTÔT</div></div>
+      </div>
+    </div>
+
+    <!-- MODULE 7 — CADENAS -->
+    <div class="module-card locked" onclick="showLockedModule(7)">
+      <div class="module-card-inner">
+        <div class="module-num locked">🔒</div>
+        <div class="module-content">
+          <div class="module-tag">MODULE 07 · ZONES</div>
+          <div class="module-title">Order Blocks</div>
+          <div class="module-desc">Les zones institutionnelles — où les gros joueurs achètent.</div>
+          <div class="module-meta"><div class="module-meta-item">🔒 BIENTÔT</div></div>
+        </div>
+        <div class="module-right"><div class="module-badge locked">🔒 BIENTÔT</div></div>
+      </div>
+    </div>
+
+    <!-- MODULE 8 — CADENAS -->
+    <div class="module-card locked" onclick="showLockedModule(8)">
+      <div class="module-card-inner">
+        <div class="module-num locked">🔒</div>
+        <div class="module-content">
+          <div class="module-tag">MODULE 08 · ZONES</div>
+          <div class="module-title">Imbalance / FVG</div>
+          <div class="module-desc">Fair Value Gap — les déséquilibres que le marché comble.</div>
+          <div class="module-meta"><div class="module-meta-item">🔒 BIENTÔT</div></div>
+        </div>
+        <div class="module-right"><div class="module-badge locked">🔒 BIENTÔT</div></div>
+      </div>
+    </div>
+
+    <!-- MODULE 9 — CADENAS -->
+    <div class="module-card locked" onclick="showLockedModule(9)">
+      <div class="module-card-inner">
+        <div class="module-num locked">🔒</div>
+        <div class="module-content">
+          <div class="module-tag">MODULE 09 · LIQUIDITÉ</div>
+          <div class="module-title">Prise de liquidité</div>
+          <div class="module-desc">Comment le marché piège les traders avant de repartir.</div>
+          <div class="module-meta"><div class="module-meta-item">🔒 BIENTÔT</div></div>
+        </div>
+        <div class="module-right"><div class="module-badge locked">🔒 BIENTÔT</div></div>
+      </div>
+    </div>
+
+    <!-- MODULE 10 — CADENAS -->
+    <div class="module-card locked" onclick="showLockedModule(10)">
+      <div class="module-card-inner">
+        <div class="module-num locked">🔒</div>
+        <div class="module-content">
+          <div class="module-tag">MODULE 10 · MACRO</div>
+          <div class="module-title">Annonces économiques</div>
+          <div class="module-desc">NFP, CPI, taux directeurs — comment éviter les pièges.</div>
+          <div class="module-meta"><div class="module-meta-item">🔒 BIENTÔT</div></div>
+        </div>
+        <div class="module-right"><div class="module-badge locked">🔒 BIENTÔT</div></div>
+      </div>
+    </div>
+
+    <!-- MODULE 11 — CADENAS -->
+    <div class="module-card locked" onclick="showLockedModule(11)">
+      <div class="module-card-inner">
+        <div class="module-num locked">🔒</div>
+        <div class="module-content">
+          <div class="module-tag">MODULE 11 · RISK</div>
+          <div class="module-title">Risk Management</div>
+          <div class="module-desc">Calcul des lots, ratio R/R, ne jamais exploser son compte.</div>
+          <div class="module-meta"><div class="module-meta-item">🔒 BIENTÔT</div></div>
+        </div>
+        <div class="module-right"><div class="module-badge locked">🔒 BIENTÔT</div></div>
+      </div>
+    </div>
+
+    <!-- MODULE 12 — CADENAS -->
+    <div class="module-card locked" onclick="showLockedModule(12)">
+      <div class="module-card-inner">
+        <div class="module-num locked">🔒</div>
+        <div class="module-content">
+          <div class="module-tag">MODULE 12 · GESTION</div>
+          <div class="module-title">Gestion d'un trade</div>
+          <div class="module-desc">Entrée, gestion en cours, sortie — le cycle complet.</div>
+          <div class="module-meta"><div class="module-meta-item">🔒 BIENTÔT</div></div>
+        </div>
+        <div class="module-right"><div class="module-badge locked">🔒 BIENTÔT</div></div>
+      </div>
+    </div>
+
+    <!-- MODULE 13 — CADENAS -->
+    <div class="module-card locked" onclick="showLockedModule(13)">
+      <div class="module-card-inner">
+        <div class="module-num locked">🔒</div>
+        <div class="module-content">
+          <div class="module-tag">MODULE 13 · STRATÉGIE</div>
+          <div class="module-title">Plan de trading</div>
+          <div class="module-desc">Construire et suivre un plan de trading solide.</div>
+          <div class="module-meta"><div class="module-meta-item">🔒 BIENTÔT</div></div>
+        </div>
+        <div class="module-right"><div class="module-badge locked">🔒 BIENTÔT</div></div>
+      </div>
+    </div>
+
+    <!-- MODULE 14 — CADENAS -->
+    <div class="module-card locked" onclick="showLockedModule(14)">
+      <div class="module-card-inner">
+        <div class="module-num locked">🔒</div>
+        <div class="module-content">
+          <div class="module-tag">MODULE 14 · SUIVI</div>
+          <div class="module-title">Journal de trading</div>
+          <div class="module-desc">Analyser ses trades pour progresser en continu.</div>
+          <div class="module-meta"><div class="module-meta-item">🔒 BIENTÔT</div></div>
+        </div>
+        <div class="module-right"><div class="module-badge locked">🔒 BIENTÔT</div></div>
+      </div>
+    </div>
+
+    <!-- MODULE 15 — CADENAS -->
+    <div class="module-card locked" onclick="showLockedModule(15)">
+      <div class="module-card-inner">
+        <div class="module-num locked">🔒</div>
+        <div class="module-content">
+          <div class="module-tag">MODULE 15 · SYNTHÈSE</div>
+          <div class="module-title">Exécution complète</div>
+          <div class="module-desc">La synthèse finale — tout assembler pour trader comme un pro.</div>
+          <div class="module-meta"><div class="module-meta-item">🔒 BIENTÔT</div></div>
+        </div>
+        <div class="module-right"><div class="module-badge locked">🔒 BIENTÔT</div></div>
       </div>
     </div>
 
