@@ -360,6 +360,12 @@ body {
     <div class="step1" id="step1">
       <div class="card-title">Crée ton profil</div>
       <div class="card-sub">Entre tes informations pour rejoindre l'académie.</div>
+      <!-- BANDEAU PARRAIN -->
+<div id="parrain-banner" style="display:none;padding:12px 16px;border-radius:12px;background:rgba(0,255,136,0.08);border:1px solid rgba(0,255,136,0.2);margin-bottom:16px;text-align:center;">
+  <div style="font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:2px;color:var(--green);margin-bottom:4px;">🤝 TU AS ÉTÉ INVITÉ PAR</div>
+  <div style="font-family:'Orbitron',sans-serif;font-size:16px;font-weight:900;color:var(--white);" id="parrain-pseudo">---</div>
+  <div style="font-size:11px;color:var(--dim);margin-top:4px;">Bienvenue dans la DHA ! 🔥</div>
+</div>
 
       <div class="form-grid">
         <div class="form-group" style="margin-bottom:0">
@@ -729,8 +735,12 @@ function shake() {
   alert('Remplis tous les champs obligatoires.');
 }
   // Sauvegarde le ref d'affiliation
-const urlRef = new URLSearchParams(window.location.search).get('ref');
-if(urlRef) localStorage.setItem('dha_ref', urlRef);
+const urlRef=new URLSearchParams(window.location.search).get('ref')||localStorage.getItem('dha_ref')||'';
+if(urlRef){
+  localStorage.setItem('dha_ref',urlRef);
+  document.getElementById('parrain-banner').style.display='block';
+  document.getElementById('parrain-pseudo').textContent='@'+urlRef;
+}
 </script>
 </body>
 </html>
