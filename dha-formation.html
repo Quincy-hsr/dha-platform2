@@ -368,20 +368,15 @@ function showLockedModule(n){
 
 function updateFormationStats(){
   if(!member)return;
-  const xp=member.xp||0;
-  const m1Done=xp>=25;
-  const m2Done=xp>=625;
-  const m3Done=xp>=1075;
-  let completed=0;
-  if(m1Done)completed++;
-  if(m2Done)completed++;
-  if(m3Done)completed++;
-  const pct=Math.round((completed/3)*100);
-  document.getElementById('stat-modules').textContent=completed+'/3';
-  document.getElementById('stat-xp-total').textContent=xp;
+  const keys=['dha_bloc_m1_done','dha_bloc_m2_b1_done','dha_bloc_m3_done','dha_bloc_m4_done','dha_bloc_m5_done','dha_bloc_m6_done','dha_bloc_m7_done','dha_bloc_m8_done','dha_bloc_m9_done','dha_bloc_m10_done','dha_bloc_m11_done','dha_bloc_m12_done','dha_bloc_m13_done','dha_bloc_m14_done','dha_bloc_m15_done'];
+  let completed=keys.filter(k=>localStorage.getItem(k)).length;
+  const pct=Math.round((completed/15)*100);
+  document.getElementById('stat-modules').textContent=completed+'/15';
+  document.getElementById('stat-xp-total').textContent=member.xp||0;
   document.getElementById('stat-pct').textContent=pct+'%';
   document.getElementById('progress-fill').style.width=pct+'%';
-  document.getElementById('progress-text').textContent=pct+'%';
+  if(document.getElementById('progress-text'))document.getElementById('progress-text').textContent=pct+'%';
+}
 
   // Module 1 status
   if(m1Done){
