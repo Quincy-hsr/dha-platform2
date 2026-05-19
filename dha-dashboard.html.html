@@ -917,7 +917,7 @@ async function init() {
 
   // Sync XP depuis Supabase
   try {
-    const res = await fetch(SUPABASE_URL + '/rest/v1/membres?email=eq.' + encodeURIComponent(member.email) + '&select=xp,level,rang,xp_semaine', {
+    const res = await fetch(SUPABASE_URL + '/rest/v1/membres?email=eq.' + encodeURIComponent(member.email) + '&select=xp,level,rang,xp_semaine,pseudo,prenom,nom,avatar,nb_affilies,statut_affiliation', {
       headers: {'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY}
     });
     const data = await res.json();
