@@ -19,11 +19,9 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
 .nav-item:hover{background:rgba(30,100,255,0.08);color:var(--white);}
 .nav-item.active{background:rgba(30,100,255,0.12);color:var(--cyan);border-right:2px solid var(--cyan);}
 .nav-icon{font-size:16px;width:20px;text-align:center;flex-shrink:0;}
-.notif-dot{width:8px;height:8px;border-radius:50%;background:var(--red);margin-left:auto;animation:pulse-dot 1.5s infinite;}
-@keyframes pulse-dot{0%,100%{opacity:1;}50%{opacity:0.4;}}
 .sidebar-bottom{margin-top:auto;padding:16px 24px;border-top:1px solid var(--border);}
 .sidebar-member{display:flex;align-items:center;gap:12px;}
-.sidebar-avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--cyan));display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;}
+.sidebar-avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--cyan));display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;overflow:hidden;}
 .sidebar-member-name{font-family:'Orbitron',sans-serif;font-size:10px;font-weight:900;color:var(--white);}
 .sidebar-member-rang{font-size:10px;color:var(--dim);margin-top:2px;}
 .main{margin-left:var(--sidebar-w);flex:1;padding:32px;position:relative;z-index:1;max-width:900px;}
@@ -51,30 +49,17 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
 .info-box.cyan{background:rgba(0,212,255,0.06);border-left:3px solid var(--cyan);color:rgba(232,244,255,0.8);}
 .info-box.gold{background:rgba(255,215,0,0.06);border-left:3px solid var(--gold);color:rgba(255,215,0,0.9);}
 .info-box.green{background:rgba(0,255,136,0.06);border-left:3px solid var(--green);color:rgba(0,255,136,0.9);}
-.tw-pair{font-family:'Orbitron',sans-serif;font-size:13px;font-weight:900;color:var(--white);letter-spacing:1px;}
-.tw-price{font-family:'Orbitron',sans-serif;font-size:13px;font-weight:900;}
-.tw-price.up{color:var(--green);}
-.tw-price.down{color:var(--red);}
-.tw-timeframes{display:flex;gap:4px;}
-.tw-tf{padding:3px 8px;border-radius:5px;font-family:'Orbitron',sans-serif;font-size:8px;color:var(--dim);}
-.tw-tf.active{background:rgba(30,100,255,0.2);color:var(--cyan);}
-.tw-canvas{width:100%;display:block;}
-.trade-example{border-radius:16px;padding:20px;margin:16px 0;}
-.trade-example.buy{background:rgba(0,255,136,0.06);border:1px solid rgba(0,255,136,0.2);}
-.trade-example.sell{background:rgba(255,68,102,0.06);border:1px solid rgba(255,68,102,0.2);}
-.trade-example.loss{background:rgba(255,140,0,0.06);border:1px solid rgba(255,140,0,0.2);}
-.trade-header{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
-.trade-badge{padding:5px 12px;border-radius:8px;font-family:'Orbitron',sans-serif;font-size:10px;font-weight:900;letter-spacing:1px;}
-.trade-badge.buy{background:rgba(0,255,136,0.2);color:var(--green);}
-.trade-badge.sell{background:rgba(255,68,102,0.2);color:var(--red);}
-.trade-badge.loss{background:rgba(255,140,0,0.2);color:#FF8C00;}
-.trade-stats{display:flex;gap:12px;margin-top:12px;flex-wrap:wrap;}
-.trade-stat{padding:10px 16px;border-radius:10px;background:rgba(255,255,255,0.04);text-align:center;}
-.trade-stat-val{font-family:'Orbitron',sans-serif;font-size:16px;font-weight:900;line-height:1;}
-.trade-stat-label{font-family:'Orbitron',sans-serif;font-size:7px;letter-spacing:1px;color:var(--dim);margin-top:4px;}
+.info-box.red{background:rgba(255,68,102,0.06);border-left:3px solid var(--red);color:rgba(255,68,102,0.9);}
+.example-label{display:inline-flex;align-items:center;gap:8px;padding:6px 14px;border-radius:8px;font-family:'Orbitron',sans-serif;font-size:9px;font-weight:900;letter-spacing:2px;margin-bottom:16px;}
+.example-label.buy{background:rgba(0,255,136,0.1);color:var(--green);border:1px solid rgba(0,255,136,0.25);}
+.example-label.sell{background:rgba(255,68,102,0.1);color:var(--red);border:1px solid rgba(255,68,102,0.25);}
+.example-label.loss{background:rgba(255,140,0,0.1);color:#FF8C00;border:1px solid rgba(255,140,0,0.25);}
+.trade-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:16px 0;}
+.trade-stat{padding:12px;border-radius:10px;text-align:center;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);}
+.trade-stat-val{font-family:'Orbitron',sans-serif;font-size:16px;font-weight:900;margin-bottom:4px;}
+.trade-stat-label{font-family:'Orbitron',sans-serif;font-size:7px;letter-spacing:1px;color:var(--dim);}
 .quiz-section{background:linear-gradient(135deg,rgba(157,78,221,0.08),rgba(30,100,255,0.05));border:1px solid rgba(157,78,221,0.2);border-radius:16px;padding:24px;margin-top:24px;}
 .quiz-header{display:flex;align-items:center;gap:10px;margin-bottom:20px;}
-.quiz-icon{font-size:24px;}
 .quiz-title{font-family:'Orbitron',sans-serif;font-size:14px;font-weight:900;color:var(--white);letter-spacing:1px;}
 .quiz-xp{margin-left:auto;font-family:'Orbitron',sans-serif;font-size:10px;color:var(--gold);background:rgba(255,215,0,0.1);border:1px solid rgba(255,215,0,0.25);padding:4px 10px;border-radius:6px;}
 .quiz-question{margin-bottom:20px;}
@@ -95,31 +80,25 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
 .quiz-result{display:none;text-align:center;padding:20px;border-radius:12px;background:rgba(255,215,0,0.06);border:1px solid rgba(255,215,0,0.2);margin-top:16px;}
 .quiz-result.show{display:block;}
 .quiz-result-score{font-family:'Orbitron',sans-serif;font-size:40px;font-weight:900;color:var(--gold);}
-.quiz-result-text{font-size:14px;color:var(--dim);margin-top:8px;}
 .quiz-result-xp{font-family:'Orbitron',sans-serif;font-size:14px;color:var(--green);margin-top:8px;}
 .exercice-section{background:rgba(0,212,255,0.05);border:1px solid rgba(0,212,255,0.2);border-radius:16px;padding:24px;margin-top:16px;}
-.exercice-header{display:flex;align-items:center;gap:10px;margin-bottom:16px;}
-.exercice-title{font-family:'Orbitron',sans-serif;font-size:13px;font-weight:900;color:var(--cyan);letter-spacing:1px;}
-.exercice-xp{margin-left:auto;font-family:'Orbitron',sans-serif;font-size:10px;color:var(--green);background:rgba(0,255,136,0.1);border:1px solid rgba(0,255,136,0.25);padding:4px 10px;border-radius:6px;}
-.exercice-text{font-size:14px;color:rgba(232,244,255,0.75);line-height:1.8;margin-bottom:16px;}
-.exercice-steps{display:flex;flex-direction:column;gap:8px;margin-bottom:16px;}
-.exercice-step{display:flex;align-items:flex-start;gap:12px;padding:12px 14px;border-radius:10px;background:rgba(0,212,255,0.04);border:1px solid rgba(0,212,255,0.1);}
+.exercice-step{display:flex;align-items:flex-start;gap:12px;padding:10px 14px;border-radius:10px;background:rgba(0,212,255,0.04);border:1px solid rgba(0,212,255,0.1);margin-bottom:8px;}
 .exercice-step-num{width:24px;height:24px;border-radius:6px;background:rgba(0,212,255,0.15);display:flex;align-items:center;justify-content:center;font-family:'Orbitron',sans-serif;font-size:10px;font-weight:900;color:var(--cyan);flex-shrink:0;}
 .exercice-step-text{font-size:13px;color:rgba(232,244,255,0.7);line-height:1.6;}
-.exercice-validate{width:100%;padding:13px;border-radius:12px;background:linear-gradient(135deg,#006644,var(--green));color:#000;font-family:'Orbitron',sans-serif;font-size:11px;font-weight:900;letter-spacing:2px;border:none;cursor:pointer;transition:all .2s;}
+.exercice-validate{width:100%;padding:13px;border-radius:12px;background:linear-gradient(135deg,#006644,var(--green));color:#000;font-family:'Orbitron',sans-serif;font-size:11px;font-weight:900;letter-spacing:2px;border:none;cursor:pointer;margin-top:12px;transition:all .2s;}
 .exercice-validate:disabled{opacity:0.5;cursor:not-allowed;}
 .question-box{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:24px;margin-top:16px;}
 .question-box-title{font-family:'Orbitron',sans-serif;font-size:12px;font-weight:900;color:var(--white);letter-spacing:1px;margin-bottom:8px;}
 .question-box-desc{font-size:13px;color:var(--dim);margin-bottom:16px;line-height:1.6;font-style:italic;}
 .question-box-input{width:100%;padding:14px 16px;border-radius:12px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);color:var(--white);font-family:'Exo 2',sans-serif;font-size:14px;outline:none;resize:vertical;min-height:100px;}
 .question-box-input::placeholder{color:rgba(255,255,255,0.2);}
-.question-box-send{width:100%;padding:13px;border-radius:12px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);color:var(--white);font-family:'Orbitron',sans-serif;font-size:10px;font-weight:900;letter-spacing:2px;cursor:pointer;margin-top:10px;}
+.question-box-send{width:100%;padding:13px;border-radius:12px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);color:var(--white);font-family:'Orbitron',sans-serif;font-size:10px;font-weight:900;letter-spacing:2px;cursor:pointer;margin-top:10px;transition:all .2s;}
 .question-box-confirm{display:none;padding:12px;border-radius:10px;background:rgba(0,255,136,0.08);border:1px solid rgba(0,255,136,0.2);font-size:13px;color:var(--green);text-align:center;margin-top:10px;}
 .question-box-confirm.show{display:block;}
-.complete-btn{width:100%;padding:16px;border-radius:14px;background:linear-gradient(135deg,var(--blue),var(--cyan));color:#000;font-family:'Orbitron',sans-serif;font-size:12px;font-weight:900;letter-spacing:2px;border:none;cursor:pointer;margin-top:24px;box-shadow:0 6px 24px rgba(0,212,255,0.3);}
+.complete-btn{width:100%;padding:16px;border-radius:14px;background:linear-gradient(135deg,var(--blue),var(--cyan));color:#000;font-family:'Orbitron',sans-serif;font-size:12px;font-weight:900;letter-spacing:2px;border:none;cursor:pointer;margin-top:24px;box-shadow:0 6px 24px rgba(0,212,255,0.3);transition:all .2s;}
 .complete-btn:disabled{opacity:0.5;cursor:not-allowed;}
 @keyframes xp-pop{0%{opacity:1;transform:translate(-50%,-50%) scale(0.8);}60%{opacity:1;transform:translate(-50%,-80%) scale(1.2);}100%{opacity:0;transform:translate(-50%,-120%) scale(0.9);}}
-@media(max-width:768px){.sidebar{display:none;}.main{margin-left:0;padding:16px;}}
+@media(max-width:768px){.sidebar{display:none;}.main{margin-left:0;padding:16px;}.trade-stats{grid-template-columns:1fr 1fr;}}
 </style>
 </head><body>
 <div class="bg-grid"></div>
@@ -144,263 +123,275 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
     </div>
   </div>
 </aside>
+
 <main class="main">
   <div class="topbar">
-    <div><div class="topbar-title">MODULE 1 — <span>INTRODUCTION</span></div><div style="font-size:12px;color:var(--dim);margin-top:2px;">Comprends les bases avant de toucher quoi que ce soit</div></div>
+    <div><div class="topbar-title">MODULE 1 — <span>INTRODUCTION</span></div><div style="font-size:12px;color:var(--dim);margin-top:2px;">Les bases du trading</div></div>
     <div class="xp-pill"><span>⚡</span><span class="xp-pill-val" id="topbar-xp">0 XP</span></div>
   </div>
+
   <div class="module-header">
     <div class="module-glow"></div>
-    <div class="module-tag">MODULE 01 · TRADING</div>
+    <div class="module-tag">MODULE 01 · INTRODUCTION</div>
     <div class="module-title">Introduction<br/>au Trading</div>
-    <div class="module-desc">Avant de toucher à quoi que ce soit — avant même de regarder un graphique — tu dois comprendre exactement ce qui se passe quand tu trades.</div>
+    <div class="module-desc">Avant de placer ton premier trade tu dois comprendre comment ça marche. Dans ce module on voit les bases — comment gagner de l'argent en trading, ce qu'est un stop loss et pourquoi les pertes font partie du jeu.</div>
     <div class="module-meta">
       <div class="module-meta-item">📚 1 Bloc</div>
       <div class="module-meta-item">⚡ Jusqu'à 175 XP</div>
       <div class="module-meta-item">⏱️ 15 min</div>
     </div>
   </div>
+
   <div class="bloc">
     <div class="bloc-header">
       <div class="bloc-num">BLOC 01</div>
-      <div class="bloc-title">Comment ça marche vraiment ?</div>
+      <div class="bloc-title">Comment gagner de l'argent en trading ?</div>
     </div>
     <div class="bloc-body">
-      <div class="bloc-text">Imagine un marché en ligne où des milliers de personnes s'échangent des actifs financiers en permanence, 24h/24.<br/><br/>Des acheteurs. Des vendeurs. Des prix qui bougent à chaque seconde.<br/><br/>Ton rôle en tant que trader c'est simple : <strong>acheter quand les prix sont bas et revendre plus haut</strong> — ou vendre quand les prix sont hauts et racheter plus bas.</div>
-      <div class="info-box cyan">💡 Le trading c'est pas de la magie. C'est une compétence qui s'apprend. Comme conduire une voiture — au début ça semble complexe, mais avec la pratique ça devient naturel.</div>
 
-      <div style="font-family:'Orbitron',sans-serif;font-size:10px;letter-spacing:2px;color:var(--green);margin:24px 0 12px;">📈 EXEMPLE 1 — ACHAT GAGNANT</div>
-      <div style="margin:20px 0;border-radius:16px;overflow:hidden;border:1px solid rgba(0,255,136,0.2);">
-<svg viewBox="0 0 600 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;background:#0a0f1e;">
-  <!-- Grid -->
-  <defs>
-    <pattern id="grid1" width="40" height="40" patternUnits="userSpaceOnUse">
-      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
-    </pattern>
-  </defs>
-  <rect width="600" height="200" fill="url(#grid1)"/>
-  <!-- Bougies montantes -->
-  <rect x="60" y="140" width="18" height="30" fill="#00FF88" rx="2"/>
-  <line x1="69" y1="130" x2="69" y2="140" stroke="#00FF88" stroke-width="2"/>
-  <line x1="69" y1="170" x2="69" y2="178" stroke="#00FF88" stroke-width="2"/>
-  <rect x="100" y="125" width="18" height="30" fill="#00FF88" rx="2"/>
-  <line x1="109" y1="115" x2="109" y2="125" stroke="#00FF88" stroke-width="2"/>
-  <line x1="109" y1="155" x2="109" y2="163" stroke="#00FF88" stroke-width="2"/>
-  <rect x="140" y="108" width="18" height="30" fill="#00FF88" rx="2"/>
-  <line x1="149" y1="98" x2="149" y2="108" stroke="#00FF88" stroke-width="2"/>
-  <line x1="149" y1="138" x2="149" y2="146" stroke="#00FF88" stroke-width="2"/>
-  <rect x="180" y="90" width="18" height="30" fill="#00FF88" rx="2"/>
-  <line x1="189" y1="80" x2="189" y2="90" stroke="#00FF88" stroke-width="2"/>
-  <line x1="189" y1="120" x2="189" y2="128" stroke="#00FF88" stroke-width="2"/>
-  <rect x="220" y="72" width="18" height="30" fill="#00FF88" rx="2"/>
-  <line x1="229" y1="62" x2="229" y2="72" stroke="#00FF88" stroke-width="2"/>
-  <line x1="229" y1="102" x2="229" y2="110" stroke="#00FF88" stroke-width="2"/>
-  <rect x="260" y="55" width="18" height="28" fill="#00FF88" rx="2"/>
-  <line x1="269" y1="45" x2="269" y2="55" stroke="#00FF88" stroke-width="2"/>
-  <line x1="269" y1="83" x2="269" y2="91" stroke="#00FF88" stroke-width="2"/>
-  <!-- Ligne entrée -->
-  <line x1="50" y1="155" x2="550" y2="155" stroke="#00D4FF" stroke-width="1.5" stroke-dasharray="6,4"/>
-  <rect x="10" y="145" width="38" height="18" rx="4" fill="rgba(0,212,255,0.2)"/>
-  <text x="14" y="158" fill="#00D4FF" font-size="9" font-family="Orbitron" font-weight="bold">ACHAT</text>
-  <rect x="460" y="145" width="90" height="18" rx="4" fill="rgba(0,212,255,0.15)"/>
-  <text x="465" y="158" fill="#00D4FF" font-size="9" font-family="Orbitron">1.0780</text>
-  <!-- Ligne sortie -->
-  <line x1="50" y1="60" x2="550" y2="60" stroke="#FFD700" stroke-width="1.5" stroke-dasharray="6,4"/>
-  <rect x="10" y="50" width="38" height="18" rx="4" fill="rgba(255,215,0,0.2)"/>
-  <text x="14" y="63" fill="#FFD700" font-size="9" font-family="Orbitron" font-weight="bold">VENTE</text>
-  <rect x="440" y="50" width="110" height="18" rx="4" fill="rgba(255,215,0,0.15)"/>
-  <text x="445" y="63" fill="#FFD700" font-size="9" font-family="Orbitron">1.0850 +140€</text>
-  <!-- Flèche profit -->
-  <line x1="320" y1="155" x2="320" y2="65" stroke="#00FF88" stroke-width="2"/>
-  <polygon points="320,55 314,72 326,72" fill="#00FF88"/>
-  <rect x="328" y="95" width="80" height="22" rx="6" fill="rgba(0,255,136,0.15)" stroke="rgba(0,255,136,0.3)" stroke-width="1"/>
-  <text x="333" y="110" fill="#00FF88" font-size="11" font-family="Orbitron" font-weight="bold">+140€ 🎯</text>
-  <!-- Label -->
-  <rect x="150" y="8" width="300" height="24" rx="6" fill="rgba(0,255,136,0.1)" stroke="rgba(0,255,136,0.2)" stroke-width="1"/>
-  <text x="300" y="24" fill="#00FF88" font-size="10" font-family="Orbitron" font-weight="bold" text-anchor="middle">📈 ACHAT GAGNANT — EUR/USD H1</text>
-</svg>
-</div>
+      <div class="bloc-text">
+        Le trading c'est simple dans son principe — tu <strong>achètes quelque chose</strong> à un prix et tu le <strong>revends plus cher</strong>. La différence c'est ton profit.<br/><br/>
+        Mais on peut aussi faire l'inverse — <strong>vendre d'abord</strong> et racheter plus bas. C'est ce qu'on appelle le <strong>short</strong> ou la vente à découvert.
+      </div>
+
+      <div class="info-box cyan">💡 Le trading c'est pas de la magie. C'est une compétence qui s'apprend. Comme conduire une voiture — au début ça semble complexe mais avec la pratique ça devient naturel.</div>
+
+      <!-- EXEMPLE 1 — ACHAT GAGNANT -->
+      <div class="example-label buy">✅ EXEMPLE 1 — ACHAT GAGNANT</div>
       <div class="bloc-text">Tu analyses le marché. Tu décides d'<strong>acheter</strong> à un prix que tu juges intéressant. Le prix monte. Tu revends plus haut. Tu encaisses la différence.</div>
-      <div class="trade-example buy">
-        <div class="trade-header"><div class="trade-badge buy">🟢 ACHAT</div><div style="font-size:13px;color:var(--dim);">EUR/USD · H1</div></div>
-          <div class="tw-header"><span class="tw-pair">EUR/USD</span><div class="tw-timeframes"><span class="tw-tf">1m</span><span class="tw-tf">5m</span><span class="tw-tf active">1H</span><span class="tw-tf">4H</span></div><span class="tw-price up">1.0850 ▲</span></div>
-          <canvas id="chart-buy" class="tw-canvas" height="160"></canvas>
-        </div>
-        <div class="trade-stats">
-          <div class="trade-stat"><div class="trade-stat-val" style="color:var(--red);">1.0780</div><div class="trade-stat-label">PRIX D'ACHAT</div></div>
-          <div class="trade-stat"><div class="trade-stat-val" style="color:var(--green);">1.0850</div><div class="trade-stat-label">PRIX DE VENTE</div></div>
-          <div class="trade-stat"><div class="trade-stat-val" style="color:var(--gold);">+70 pips</div><div class="trade-stat-label">BÉNÉFICE</div></div>
-          <div class="trade-stat"><div class="trade-stat-val" style="color:var(--green);">+140€</div><div class="trade-stat-label">GAIN</div></div>
-        </div>
-        <div class="info-box green" style="margin-top:12px;">✅ Tu as acheté à <strong>1.0780</strong>. Le prix est monté jusqu'à <strong>1.0850</strong>. Tu as vendu et empoché <strong>+140€</strong>.</div>
+
+      <div style="margin:16px 0;border-radius:16px;overflow:hidden;border:1px solid rgba(0,255,136,0.2);">
+      <svg width="100%" viewBox="0 0 640 200" style="background:#050914;">
+        <defs><pattern id="g1" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0L0 0 0 40" fill="none" stroke="rgba(255,255,255,0.03)" stroke-width="1"/></pattern></defs>
+        <rect width="640" height="200" fill="url(#g1)"/>
+        <rect x="60" y="145" width="16" height="28" fill="#00FF88" rx="2"/>
+        <line x1="68" y1="135" x2="68" y2="145" stroke="#00FF88" stroke-width="2"/>
+        <line x1="68" y1="173" x2="68" y2="180" stroke="#00FF88" stroke-width="2"/>
+        <rect x="95" y="128" width="16" height="28" fill="#00FF88" rx="2"/>
+        <line x1="103" y1="118" x2="103" y2="128" stroke="#00FF88" stroke-width="2"/>
+        <line x1="103" y1="156" x2="103" y2="163" stroke="#00FF88" stroke-width="2"/>
+        <rect x="130" y="110" width="16" height="28" fill="#00FF88" rx="2"/>
+        <line x1="138" y1="100" x2="138" y2="110" stroke="#00FF88" stroke-width="2"/>
+        <line x1="138" y1="138" x2="138" y2="145" stroke="#00FF88" stroke-width="2"/>
+        <rect x="165" y="92" width="16" height="28" fill="#00FF88" rx="2"/>
+        <line x1="173" y1="82" x2="173" y2="92" stroke="#00FF88" stroke-width="2"/>
+        <line x1="173" y1="120" x2="173" y2="127" stroke="#00FF88" stroke-width="2"/>
+        <rect x="200" y="74" width="16" height="28" fill="#00FF88" rx="2"/>
+        <line x1="208" y1="64" x2="208" y2="74" stroke="#00FF88" stroke-width="2"/>
+        <line x1="208" y1="102" x2="208" y2="109" stroke="#00FF88" stroke-width="2"/>
+        <rect x="235" y="56" width="16" height="26" fill="#00FF88" rx="2"/>
+        <line x1="243" y1="46" x2="243" y2="56" stroke="#00FF88" stroke-width="2"/>
+        <line x1="243" y1="82" x2="243" y2="89" stroke="#00FF88" stroke-width="2"/>
+        <line x1="50" y1="155" x2="580" y2="155" stroke="#00D4FF" stroke-width="1.5" stroke-dasharray="8,5"/>
+        <rect x="8" y="143" width="50" height="22" rx="4" fill="#050914" stroke="rgba(0,212,255,0.5)" stroke-width="1"/>
+        <text x="33" y="158" fill="#00D4FF" font-size="11" font-family="Orbitron" font-weight="bold" text-anchor="middle">ACHAT</text>
+        <rect x="490" y="143" width="90" height="22" rx="4" fill="#050914" stroke="rgba(0,212,255,0.4)" stroke-width="1"/>
+        <text x="535" y="158" fill="#00D4FF" font-size="11" font-family="Orbitron" text-anchor="middle">1.0780</text>
+        <line x1="50" y1="52" x2="580" y2="52" stroke="#FFD700" stroke-width="1.5" stroke-dasharray="8,5"/>
+        <rect x="8" y="40" width="50" height="22" rx="4" fill="#050914" stroke="rgba(255,215,0,0.5)" stroke-width="1"/>
+        <text x="33" y="55" fill="#FFD700" font-size="11" font-family="Orbitron" font-weight="bold" text-anchor="middle">VENTE</text>
+        <rect x="460" y="40" width="120" height="22" rx="4" fill="#050914" stroke="rgba(255,215,0,0.4)" stroke-width="1"/>
+        <text x="520" y="55" fill="#FFD700" font-size="11" font-family="Orbitron" text-anchor="middle">1.0850 +140€</text>
+        <line x1="320" y1="155" x2="320" y2="60" stroke="#00FF88" stroke-width="2"/>
+        <polygon points="320,48 314,64 326,64" fill="#00FF88"/>
+        <rect x="330" y="95" width="90" height="24" rx="6" fill="rgba(0,255,136,0.15)" stroke="rgba(0,255,136,0.3)" stroke-width="1"/>
+        <text x="375" y="111" fill="#00FF88" font-size="13" font-family="Orbitron" font-weight="bold" text-anchor="middle">+140€ 🎯</text>
+      </svg>
       </div>
 
-      <div style="font-family:'Orbitron',sans-serif;font-size:10px;letter-spacing:2px;color:var(--red);margin:24px 0 12px;">📉 EXEMPLE 2 — VENTE GAGNANTE (SHORT)</div>
+      <div class="trade-stats">
+        <div class="trade-stat"><div class="trade-stat-val" style="color:var(--cyan);">1.0780</div><div class="trade-stat-label">PRIX D'ACHAT</div></div>
+        <div class="trade-stat"><div class="trade-stat-val" style="color:var(--green);">1.0850</div><div class="trade-stat-label">PRIX DE VENTE</div></div>
+        <div class="trade-stat"><div class="trade-stat-val" style="color:var(--green);">+70 pips</div><div class="trade-stat-label">BÉNÉFICE</div></div>
+        <div class="trade-stat"><div class="trade-stat-val" style="color:var(--green);">+140€</div><div class="trade-stat-label">GAIN</div></div>
+      </div>
+      <div class="info-box green">✅ Tu as acheté à <strong>1.0780</strong>. Le prix est monté jusqu'à <strong>1.0850</strong>. Tu as vendu et empoché <strong>+140€</strong>.</div>
+
+      <!-- EXEMPLE 2 — VENTE GAGNANTE -->
+      <div class="example-label sell" style="margin-top:28px;">📉 EXEMPLE 2 — VENTE GAGNANTE (SHORT)</div>
       <div class="bloc-text">En trading tu peux <strong>vendre</strong> quelque chose que tu ne possèdes pas encore. Tu vends d'abord, tu rachètes plus bas. La différence c'est ton bénéfice. On appelle ça le <strong>short</strong>.</div>
-      <div style="margin:20px 0;border-radius:16px;overflow:hidden;border:1px solid rgba(255,68,102,0.2);">
-<svg viewBox="0 0 600 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;background:#0a0f1e;">
-  <defs>
-    <pattern id="grid2" width="40" height="40" patternUnits="userSpaceOnUse">
-      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
-    </pattern>
-  </defs>
-  <rect width="600" height="200" fill="url(#grid2)"/>
-  <!-- Bougies descendantes -->
-  <rect x="60" y="40" width="18" height="28" fill="#FF4466" rx="2"/>
-  <line x1="69" y1="32" x2="69" y2="40" stroke="#FF4466" stroke-width="2"/>
-  <line x1="69" y1="68" x2="69" y2="76" stroke="#FF4466" stroke-width="2"/>
-  <rect x="100" y="58" width="18" height="28" fill="#FF4466" rx="2"/>
-  <line x1="109" y1="50" x2="109" y2="58" stroke="#FF4466" stroke-width="2"/>
-  <line x1="109" y1="86" x2="109" y2="94" stroke="#FF4466" stroke-width="2"/>
-  <rect x="140" y="75" width="18" height="28" fill="#FF4466" rx="2"/>
-  <line x1="149" y1="67" x2="149" y2="75" stroke="#FF4466" stroke-width="2"/>
-  <line x1="149" y1="103" x2="149" y2="111" stroke="#FF4466" stroke-width="2"/>
-  <rect x="180" y="93" width="18" height="28" fill="#FF4466" rx="2"/>
-  <line x1="189" y1="85" x2="189" y2="93" stroke="#FF4466" stroke-width="2"/>
-  <line x1="189" y1="121" x2="189" y2="129" stroke="#FF4466" stroke-width="2"/>
-  <rect x="220" y="110" width="18" height="28" fill="#FF4466" rx="2"/>
-  <line x1="229" y1="102" x2="229" y2="110" stroke="#FF4466" stroke-width="2"/>
-  <line x1="229" y1="138" x2="229" y2="146" stroke="#FF4466" stroke-width="2"/>
-  <rect x="260" y="128" width="18" height="28" fill="#FF4466" rx="2"/>
-  <line x1="269" y1="120" x2="269" y2="128" stroke="#FF4466" stroke-width="2"/>
-  <line x1="269" y1="156" x2="269" y2="164" stroke="#FF4466" stroke-width="2"/>
-  <!-- Ligne vente -->
-  <line x1="50" y1="55" x2="550" y2="55" stroke="#FF4466" stroke-width="1.5" stroke-dasharray="6,4"/>
-  <rect x="10" y="45" width="38" height="18" rx="4" fill="rgba(255,68,102,0.2)"/>
-  <text x="14" y="58" fill="#FF4466" font-size="9" font-family="Orbitron" font-weight="bold">VENTE</text>
-  <rect x="450" y="45" width="100" height="18" rx="4" fill="rgba(255,68,102,0.15)"/>
-  <text x="455" y="58" fill="#FF4466" font-size="9" font-family="Orbitron">1.0750</text>
-  <!-- Ligne rachat -->
-  <line x1="50" y1="145" x2="550" y2="145" stroke="#FFD700" stroke-width="1.5" stroke-dasharray="6,4"/>
-  <rect x="10" y="135" width="38" height="18" rx="4" fill="rgba(255,215,0,0.2)"/>
-  <text x="12" y="148" fill="#FFD700" font-size="9" font-family="Orbitron" font-weight="bold">RACHAT</text>
-  <rect x="430" y="135" width="120" height="18" rx="4" fill="rgba(255,215,0,0.15)"/>
-  <text x="435" y="148" fill="#FFD700" font-size="9" font-family="Orbitron">1.0680 +140€</text>
-  <!-- Flèche profit -->
-  <line x1="320" y1="55" x2="320" y2="140" stroke="#00FF88" stroke-width="2"/>
-  <polygon points="320,148 314,132 326,132" fill="#00FF88"/>
-  <rect x="328" y="88" width="80" height="22" rx="6" fill="rgba(0,255,136,0.15)" stroke="rgba(0,255,136,0.3)" stroke-width="1"/>
-  <text x="333" y="103" fill="#00FF88" font-size="11" font-family="Orbitron" font-weight="bold">+140€ 🎯</text>
-  <!-- Label -->
-  <rect x="130" y="8" width="340" height="24" rx="6" fill="rgba(255,68,102,0.1)" stroke="rgba(255,68,102,0.2)" stroke-width="1"/>
-  <text x="300" y="24" fill="#FF4466" font-size="10" font-family="Orbitron" font-weight="bold" text-anchor="middle">📉 VENTE GAGNANTE (SHORT) — EUR/USD H1</text>
-</svg>
-</div>
-      <div class="trade-example sell">
-        <div class="trade-header"><div class="trade-badge sell">🔴 VENTE (SHORT)</div><div style="font-size:13px;color:var(--dim);">EUR/USD · H1</div></div>
-          <div class="tw-header"><span class="tw-pair">EUR/USD</span><div class="tw-timeframes"><span class="tw-tf">1m</span><span class="tw-tf">5m</span><span class="tw-tf active">1H</span><span class="tw-tf">4H</span></div><span class="tw-price down">1.0680 ▼</span></div>
-          <canvas id="chart-sell" class="tw-canvas" height="160"></canvas>
-        </div>
-        <div class="trade-stats">
-          <div class="trade-stat"><div class="trade-stat-val" style="color:var(--green);">1.0750</div><div class="trade-stat-label">PRIX DE VENTE</div></div>
-          <div class="trade-stat"><div class="trade-stat-val" style="color:var(--red);">1.0680</div><div class="trade-stat-label">PRIX DE RACHAT</div></div>
-          <div class="trade-stat"><div class="trade-stat-val" style="color:var(--gold);">+70 pips</div><div class="trade-stat-label">BÉNÉFICE</div></div>
-          <div class="trade-stat"><div class="trade-stat-val" style="color:var(--green);">+140€</div><div class="trade-stat-label">GAIN</div></div>
-        </div>
-        <div class="info-box cyan" style="margin-top:12px;">✅ Tu as vendu à <strong>1.0750</strong>. Le prix est descendu jusqu'à <strong>1.0680</strong>. Tu as racheté moins cher et empoché <strong>+140€</strong>.</div>
+
+      <div style="margin:16px 0;border-radius:16px;overflow:hidden;border:1px solid rgba(255,68,102,0.2);">
+      <svg width="100%" viewBox="0 0 640 200" style="background:#050914;">
+        <defs><pattern id="g2" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0L0 0 0 40" fill="none" stroke="rgba(255,255,255,0.03)" stroke-width="1"/></pattern></defs>
+        <rect width="640" height="200" fill="url(#g2)"/>
+        <rect x="60" y="40" width="16" height="26" fill="#FF4466" rx="2"/>
+        <line x1="68" y1="30" x2="68" y2="40" stroke="#FF4466" stroke-width="2"/>
+        <line x1="68" y1="66" x2="68" y2="74" stroke="#FF4466" stroke-width="2"/>
+        <rect x="95" y="58" width="16" height="26" fill="#FF4466" rx="2"/>
+        <line x1="103" y1="48" x2="103" y2="58" stroke="#FF4466" stroke-width="2"/>
+        <line x1="103" y1="84" x2="103" y2="91" stroke="#FF4466" stroke-width="2"/>
+        <rect x="130" y="76" width="16" height="26" fill="#FF4466" rx="2"/>
+        <line x1="138" y1="66" x2="138" y2="76" stroke="#FF4466" stroke-width="2"/>
+        <line x1="138" y1="102" x2="138" y2="109" stroke="#FF4466" stroke-width="2"/>
+        <rect x="165" y="94" width="16" height="26" fill="#FF4466" rx="2"/>
+        <line x1="173" y1="84" x2="173" y2="94" stroke="#FF4466" stroke-width="2"/>
+        <line x1="173" y1="120" x2="173" y2="127" stroke="#FF4466" stroke-width="2"/>
+        <rect x="200" y="112" width="16" height="26" fill="#FF4466" rx="2"/>
+        <line x1="208" y1="102" x2="208" y2="112" stroke="#FF4466" stroke-width="2"/>
+        <line x1="208" y1="138" x2="208" y2="145" stroke="#FF4466" stroke-width="2"/>
+        <rect x="235" y="130" width="16" height="26" fill="#FF4466" rx="2"/>
+        <line x1="243" y1="120" x2="243" y2="130" stroke="#FF4466" stroke-width="2"/>
+        <line x1="243" y1="156" x2="243" y2="163" stroke="#FF4466" stroke-width="2"/>
+        <line x1="50" y1="48" x2="580" y2="48" stroke="#FF4466" stroke-width="1.5" stroke-dasharray="8,5"/>
+        <rect x="8" y="36" width="50" height="22" rx="4" fill="#050914" stroke="rgba(255,68,102,0.5)" stroke-width="1"/>
+        <text x="33" y="51" fill="#FF4466" font-size="11" font-family="Orbitron" font-weight="bold" text-anchor="middle">VENTE</text>
+        <rect x="490" y="36" width="90" height="22" rx="4" fill="#050914" stroke="rgba(255,68,102,0.4)" stroke-width="1"/>
+        <text x="535" y="51" fill="#FF4466" font-size="11" font-family="Orbitron" text-anchor="middle">1.0750</text>
+        <line x1="50" y1="148" x2="580" y2="148" stroke="#FFD700" stroke-width="1.5" stroke-dasharray="8,5"/>
+        <rect x="8" y="136" width="60" height="22" rx="4" fill="#050914" stroke="rgba(255,215,0,0.5)" stroke-width="1"/>
+        <text x="38" y="151" fill="#FFD700" font-size="11" font-family="Orbitron" font-weight="bold" text-anchor="middle">RACHAT</text>
+        <rect x="450" y="136" width="130" height="22" rx="4" fill="#050914" stroke="rgba(255,215,0,0.4)" stroke-width="1"/>
+        <text x="515" y="151" fill="#FFD700" font-size="11" font-family="Orbitron" text-anchor="middle">1.0680 +140€</text>
+        <line x1="320" y1="48" x2="320" y2="142" stroke="#00FF88" stroke-width="2"/>
+        <polygon points="320,152 314,136 326,136" fill="#00FF88"/>
+        <rect x="330" y="88" width="90" height="24" rx="6" fill="rgba(0,255,136,0.15)" stroke="rgba(0,255,136,0.3)" stroke-width="1"/>
+        <text x="375" y="104" fill="#00FF88" font-size="13" font-family="Orbitron" font-weight="bold" text-anchor="middle">+140€ 🎯</text>
+      </svg>
       </div>
 
-      <div style="font-family:'Orbitron',sans-serif;font-size:10px;letter-spacing:2px;color:#FF8C00;margin:24px 0 12px;">⚠️ EXEMPLE 3 — ACHAT QUI TOURNE MAL</div>
-      <div class="bloc-text"><strong>Le trading c'est pas du casino, mais ça demande des pertes.</strong><br/><br/>Même les meilleurs traders perdent des trades. La différence c'est de <strong>gérer ses pertes intelligemment.</strong></div>
-      <div style="margin:20px 0;border-radius:16px;overflow:hidden;border:1px solid rgba(255,140,0,0.2);">
-<svg viewBox="0 0 600 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;background:#0a0f1e;">
-  <defs>
-    <pattern id="grid3" width="40" height="40" patternUnits="userSpaceOnUse">
-      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
-    </pattern>
-  </defs>
-  <rect width="600" height="200" fill="url(#grid3)"/>
-  <!-- Bougies vertes puis rouges -->
-  <rect x="40" y="130" width="18" height="25" fill="#00FF88" rx="2"/>
-  <line x1="49" y1="122" x2="49" y2="130" stroke="#00FF88" stroke-width="2"/>
-  <line x1="49" y1="155" x2="49" y2="162" stroke="#00FF88" stroke-width="2"/>
-  <rect x="70" y="115" width="18" height="25" fill="#00FF88" rx="2"/>
-  <line x1="79" y1="107" x2="79" y2="115" stroke="#00FF88" stroke-width="2"/>
-  <line x1="79" y1="140" x2="79" y2="147" stroke="#00FF88" stroke-width="2"/>
-  <!-- Point d'achat -->
-  <rect x="100" y="100" width="18" height="25" fill="#00FF88" rx="2"/>
-  <line x1="109" y1="92" x2="109" y2="100" stroke="#00FF88" stroke-width="2"/>
-  <line x1="109" y1="125" x2="109" y2="132" stroke="#00FF88" stroke-width="2"/>
-  <!-- Bougies qui descendent -->
-  <rect x="130" y="112" width="18" height="25" fill="#FF4466" rx="2"/>
-  <line x1="139" y1="104" x2="139" y2="112" stroke="#FF4466" stroke-width="2"/>
-  <line x1="139" y1="137" x2="139" y2="144" stroke="#FF4466" stroke-width="2"/>
-  <rect x="160" y="126" width="18" height="25" fill="#FF4466" rx="2"/>
-  <line x1="169" y1="118" x2="169" y2="126" stroke="#FF4466" stroke-width="2"/>
-  <line x1="169" y1="151" x2="169" y2="158" stroke="#FF4466" stroke-width="2"/>
-  <rect x="190" y="138" width="18" height="25" fill="#FF4466" rx="2"/>
-  <line x1="199" y1="130" x2="199" y2="138" stroke="#FF4466" stroke-width="2"/>
-  <line x1="199" y1="163" x2="199" y2="170" stroke="#FF4466" stroke-width="2"/>
-  <!-- Ligne achat -->
-  <line x1="50" y1="108" x2="550" y2="108" stroke="#00D4FF" stroke-width="1.5" stroke-dasharray="6,4"/>
-  <rect x="10" y="98" width="38" height="18" rx="4" fill="rgba(0,212,255,0.2)"/>
-  <text x="14" y="111" fill="#00D4FF" font-size="9" font-family="Orbitron" font-weight="bold">ACHAT</text>
-  <rect x="450" y="98" width="100" height="18" rx="4" fill="rgba(0,212,255,0.15)"/>
-  <text x="455" y="111" fill="#00D4FF" font-size="9" font-family="Orbitron">1.0780</text>
-  <!-- Ligne stop loss -->
-  <line x1="50" y1="158" x2="550" y2="158" stroke="#FF4466" stroke-width="2" stroke-dasharray="6,4"/>
-  <rect x="5" y="148" width="44" height="18" rx="4" fill="rgba(255,68,102,0.2)"/>
-  <text x="8" y="161" fill="#FF4466" font-size="8" font-family="Orbitron" font-weight="bold">STOP 🛑</text>
-  <rect x="420" y="148" width="130" height="18" rx="4" fill="rgba(255,68,102,0.15)"/>
-  <text x="425" y="161" fill="#FF4466" font-size="9" font-family="Orbitron">1.0720 — -30€</text>
-  <!-- Zone de perte -->
-  <rect x="50" y="108" width="500" height="50" fill="rgba(255,68,102,0.06)" stroke="none"/>
-  <!-- Flèche perte -->
-  <line x1="350" y1="108" x2="350" y2="153" stroke="#FF4466" stroke-width="2"/>
-  <polygon points="350,160 344,144 356,144" fill="#FF4466"/>
-  <rect x="358" y="122" width="90" height="22" rx="6" fill="rgba(255,68,102,0.15)" stroke="rgba(255,68,102,0.3)" stroke-width="1"/>
-  <text x="363" y="137" fill="#FF4466" font-size="11" font-family="Orbitron" font-weight="bold">-30€ 🛑</text>
-  <!-- Label protection -->
-  <rect x="358" y="148" width="130" height="20" rx="6" fill="rgba(0,255,136,0.1)" stroke="rgba(0,255,136,0.2)" stroke-width="1"/>
-  <text x="363" y="162" fill="#00FF88" font-size="9" font-family="Orbitron">STOP LOSS PROTÈGE ✅</text>
-  <!-- Label titre -->
-  <rect x="120" y="8" width="360" height="24" rx="6" fill="rgba(255,140,0,0.1)" stroke="rgba(255,140,0,0.2)" stroke-width="1"/>
-  <text x="300" y="24" fill="#FF8C00" font-size="10" font-family="Orbitron" font-weight="bold" text-anchor="middle">⚠️ PERTE CONTRÔLÉE — STOP LOSS</text>
-</svg>
-</div>
-      <div class="trade-example loss">
-        <div class="trade-header"><div class="trade-badge loss">⚠️ PERTE</div><div style="font-size:13px;color:var(--dim);">EUR/USD · H1</div></div>
-          <div class="tw-header"><span class="tw-pair">EUR/USD</span><div class="tw-timeframes"><span class="tw-tf">1m</span><span class="tw-tf">5m</span><span class="tw-tf active">1H</span><span class="tw-tf">4H</span></div><span class="tw-price down">1.0720 ▼</span></div>
-          <canvas id="chart-loss" class="tw-canvas" height="160"></canvas>
-        </div>
-        <div class="trade-stats">
-          <div class="trade-stat"><div class="trade-stat-val" style="color:var(--green);">1.0780</div><div class="trade-stat-label">PRIX D'ACHAT</div></div>
-          <div class="trade-stat"><div class="trade-stat-val" style="color:var(--red);">1.0720</div><div class="trade-stat-label">STOP LOSS</div></div>
-          <div class="trade-stat"><div class="trade-stat-val" style="color:var(--red);">-60 pips</div><div class="trade-stat-label">PERTE</div></div>
-          <div class="trade-stat"><div class="trade-stat-val" style="color:var(--red);">-30€</div><div class="trade-stat-label">PERTE LIMITÉE</div></div>
-        </div>
-        <div class="info-box gold" style="margin-top:12px;">⚠️ Tu as acheté à <strong>1.0780</strong> mais le prix est descendu. Grâce au <strong>Stop Loss</strong> ta perte s'est arrêtée à <strong>-30€</strong>. Le stop loss c'est ta protection.</div>
+      <div class="trade-stats">
+        <div class="trade-stat"><div class="trade-stat-val" style="color:var(--red);">1.0750</div><div class="trade-stat-label">PRIX DE VENTE</div></div>
+        <div class="trade-stat"><div class="trade-stat-val" style="color:var(--green);">1.0680</div><div class="trade-stat-label">PRIX DE RACHAT</div></div>
+        <div class="trade-stat"><div class="trade-stat-val" style="color:var(--green);">+70 pips</div><div class="trade-stat-label">BÉNÉFICE</div></div>
+        <div class="trade-stat"><div class="trade-stat-val" style="color:var(--green);">+140€</div><div class="trade-stat-label">GAIN</div></div>
+      </div>
+      <div class="info-box green">✅ Tu as vendu à <strong>1.0750</strong>. Le prix est descendu jusqu'à <strong>1.0680</strong>. Tu as racheté et empoché <strong>+140€</strong>.</div>
+
+      <!-- EXEMPLE 3 — PERTE AVEC STOP LOSS -->
+      <div class="example-label loss" style="margin-top:28px;">⚠️ EXEMPLE 3 — ACHAT QUI TOURNE MAL</div>
+      <div class="bloc-text"><strong>Le trading c'est pas du casino, mais ça demande des pertes.</strong><br/><br/>Même les meilleurs traders perdent des trades. La différence c'est de <strong>gérer ses pertes intelligemment</strong>.</div>
+
+      <div style="margin:16px 0;border-radius:16px;overflow:hidden;border:1px solid rgba(255,140,0,0.2);">
+      <svg width="100%" viewBox="0 0 640 200" style="background:#050914;">
+        <defs><pattern id="g3" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0L0 0 0 40" fill="none" stroke="rgba(255,255,255,0.03)" stroke-width="1"/></pattern></defs>
+        <rect width="640" height="200" fill="url(#g3)"/>
+        <rect x="60" y="130" width="16" height="24" fill="#00FF88" rx="2"/>
+        <line x1="68" y1="120" x2="68" y2="130" stroke="#00FF88" stroke-width="2"/>
+        <line x1="68" y1="154" x2="68" y2="161" stroke="#00FF88" stroke-width="2"/>
+        <rect x="95" y="112" width="16" height="24" fill="#00FF88" rx="2"/>
+        <line x1="103" y1="102" x2="103" y2="112" stroke="#00FF88" stroke-width="2"/>
+        <line x1="103" y1="136" x2="103" y2="143" stroke="#00FF88" stroke-width="2"/>
+        <rect x="130" y="98" width="16" height="24" fill="#00FF88" rx="2"/>
+        <line x1="138" y1="88" x2="138" y2="98" stroke="#00FF88" stroke-width="2"/>
+        <line x1="138" y1="122" x2="138" y2="129" stroke="#00FF88" stroke-width="2"/>
+        <rect x="165" y="110" width="16" height="24" fill="#FF4466" rx="2"/>
+        <line x1="173" y1="100" x2="173" y2="110" stroke="#FF4466" stroke-width="2"/>
+        <line x1="173" y1="134" x2="173" y2="141" stroke="#FF4466" stroke-width="2"/>
+        <rect x="200" y="124" width="16" height="24" fill="#FF4466" rx="2"/>
+        <line x1="208" y1="114" x2="208" y2="124" stroke="#FF4466" stroke-width="2"/>
+        <line x1="208" y1="148" x2="208" y2="155" stroke="#FF4466" stroke-width="2"/>
+        <rect x="235" y="138" width="16" height="24" fill="#FF4466" rx="2"/>
+        <line x1="243" y1="128" x2="243" y2="138" stroke="#FF4466" stroke-width="2"/>
+        <line x1="243" y1="162" x2="243" y2="169" stroke="#FF4466" stroke-width="2"/>
+        <rect x="50" y="108" width="530" height="55" fill="rgba(255,68,102,0.05)" stroke="none"/>
+        <line x1="50" y1="108" x2="580" y2="108" stroke="#00D4FF" stroke-width="1.5" stroke-dasharray="8,5"/>
+        <rect x="8" y="96" width="50" height="22" rx="4" fill="#050914" stroke="rgba(0,212,255,0.5)" stroke-width="1"/>
+        <text x="33" y="111" fill="#00D4FF" font-size="11" font-family="Orbitron" font-weight="bold" text-anchor="middle">ACHAT</text>
+        <rect x="490" y="96" width="90" height="22" rx="4" fill="#050914" stroke="rgba(0,212,255,0.4)" stroke-width="1"/>
+        <text x="535" y="111" fill="#00D4FF" font-size="11" font-family="Orbitron" text-anchor="middle">1.0780</text>
+        <line x1="50" y1="163" x2="580" y2="163" stroke="#FF4466" stroke-width="2" stroke-dasharray="8,5"/>
+        <rect x="8" y="151" width="50" height="22" rx="4" fill="#050914" stroke="rgba(255,68,102,0.5)" stroke-width="1"/>
+        <text x="33" y="166" fill="#FF4466" font-size="10" font-family="Orbitron" font-weight="bold" text-anchor="middle">STOP</text>
+        <rect x="450" y="151" width="130" height="22" rx="4" fill="#050914" stroke="rgba(255,68,102,0.4)" stroke-width="1"/>
+        <text x="515" y="166" fill="#FF4466" font-size="11" font-family="Orbitron" text-anchor="middle">1.0720 — -30€</text>
+        <rect x="300" y="126" width="160" height="22" rx="6" fill="rgba(0,255,136,0.1)" stroke="rgba(0,255,136,0.25)" stroke-width="1"/>
+        <text x="380" y="141" fill="#00FF88" font-size="11" font-family="Orbitron" font-weight="bold" text-anchor="middle">STOP LOSS ✅ -30€</text>
+      </svg>
       </div>
 
-      <div class="bloc-text" style="margin-top:24px;"><strong>Le trading c'est pas un jeu de hasard.</strong> Pour savoir quand acheter et quand vendre, tu dois maîtriser une stratégie. C'est exactement ce que tu vas apprendre dans les prochaines leçons.</div>
+      <div class="trade-stats">
+        <div class="trade-stat"><div class="trade-stat-val" style="color:var(--cyan);">1.0780</div><div class="trade-stat-label">PRIX D'ACHAT</div></div>
+        <div class="trade-stat"><div class="trade-stat-val" style="color:var(--red);">1.0720</div><div class="trade-stat-label">STOP LOSS</div></div>
+        <div class="trade-stat"><div class="trade-stat-val" style="color:var(--red);">-60 pips</div><div class="trade-stat-label">PERTE</div></div>
+        <div class="trade-stat"><div class="trade-stat-val" style="color:var(--red);">-30€</div><div class="trade-stat-label">PERTE LIMITÉE</div></div>
+      </div>
+      <div class="info-box red">⚠️ Tu as acheté à <strong>1.0780</strong> mais le prix est descendu. Grâce au <strong>Stop Loss</strong> ta perte s'est arrêtée à <strong>-30€</strong>. Le stop loss c'est ta protection.</div>
 
+      <div class="bloc-text" style="margin-top:24px;"><strong>Le trading c'est pas un jeu de hasard.</strong> Pour savoir quand acheter et quand vendre tu dois maîtriser une stratégie. C'est exactement ce que tu vas apprendre dans les prochaines leçons.</div>
+
+      <!-- QUIZ -->
       <div class="quiz-section">
-        <div class="quiz-header"><div class="quiz-icon">🧠</div><div class="quiz-title">MINI QUIZ — Bloc 1</div><div class="quiz-xp">+50 XP MAX</div></div>
-        <div class="quiz-question" id="q1"><div class="quiz-q-num">QUESTION 1 / 5</div><div class="quiz-q-text">En trading, tu peux gagner de l'argent :</div><div class="quiz-options"><div class="quiz-option" onclick="selectOption(this,'q1','A')"><div class="quiz-option-letter">A</div>Seulement quand le prix monte</div><div class="quiz-option" onclick="selectOption(this,'q1','B')"><div class="quiz-option-letter">B</div>Quand le prix monte ET quand il baisse</div><div class="quiz-option" onclick="selectOption(this,'q1','C')"><div class="quiz-option-letter">C</div>Seulement quand le marché est stable</div></div><div class="quiz-feedback" id="fb-q1"></div></div>
-        <div class="quiz-question" id="q2"><div class="quiz-q-num">QUESTION 2 / 5</div><div class="quiz-q-text">Qu'est-ce qui se passe quand tu achètes et que le prix monte ?</div><div class="quiz-options"><div class="quiz-option" onclick="selectOption(this,'q2','A')"><div class="quiz-option-letter">A</div>Tu perds de l'argent</div><div class="quiz-option" onclick="selectOption(this,'q2','B')"><div class="quiz-option-letter">B</div>Rien ne se passe</div><div class="quiz-option" onclick="selectOption(this,'q2','C')"><div class="quiz-option-letter">C</div>Tu fais des bénéfices</div></div><div class="quiz-feedback" id="fb-q2"></div></div>
-        <div class="quiz-question" id="q3"><div class="quiz-q-num">QUESTION 3 / 5</div><div class="quiz-q-text">Le trading c'est :</div><div class="quiz-options"><div class="quiz-option" onclick="selectOption(this,'q3','A')"><div class="quiz-option-letter">A</div>Un jeu de hasard</div><div class="quiz-option" onclick="selectOption(this,'q3','B')"><div class="quiz-option-letter">B</div>Un casino en ligne</div><div class="quiz-option" onclick="selectOption(this,'q3','C')"><div class="quiz-option-letter">C</div>Une discipline qui demande une vraie stratégie</div></div><div class="quiz-feedback" id="fb-q3"></div></div>
-        <div class="quiz-question" id="q4"><div class="quiz-q-num">QUESTION 4 / 5</div><div class="quiz-q-text">Quand le prix ne va pas dans ta direction, tu :</div><div class="quiz-options"><div class="quiz-option" onclick="selectOption(this,'q4','A')"><div class="quiz-option-letter">A</div>Paniques et perds tout</div><div class="quiz-option" onclick="selectOption(this,'q4','B')"><div class="quiz-option-letter">B</div>Peux limiter ta perte grâce au stop loss</div><div class="quiz-option" onclick="selectOption(this,'q4','C')"><div class="quiz-option-letter">C</div>Ne peux rien faire</div></div><div class="quiz-feedback" id="fb-q4"></div></div>
-        <div class="quiz-question" id="q5"><div class="quiz-q-num">QUESTION 5 / 5</div><div class="quiz-q-text">Pour savoir quand acheter ou vendre, tu dois :</div><div class="quiz-options"><div class="quiz-option" onclick="selectOption(this,'q5','A')"><div class="quiz-option-letter">A</div>Suivre ton instinct</div><div class="quiz-option" onclick="selectOption(this,'q5','B')"><div class="quiz-option-letter">B</div>Maîtriser une stratégie</div><div class="quiz-option" onclick="selectOption(this,'q5','C')"><div class="quiz-option-letter">C</div>Copier les autres traders</div></div><div class="quiz-feedback" id="fb-q5"></div></div>
+        <div class="quiz-header"><div style="font-size:24px;">🧠</div><div class="quiz-title">MINI QUIZ — Bloc 1</div><div class="quiz-xp">+50 XP MAX</div></div>
+
+        <div class="quiz-question" id="q1">
+          <div class="quiz-q-num">QUESTION 1 / 5</div>
+          <div class="quiz-q-text">Comment gagner de l'argent en trading ?</div>
+          <div class="quiz-options">
+            <div class="quiz-option" onclick="selectOption(this,'q1','A')"><div class="quiz-option-letter">A</div>En devinant le marché au hasard</div>
+            <div class="quiz-option" onclick="selectOption(this,'q1','B')"><div class="quiz-option-letter">B</div>En achetant bas et revendant plus haut ou en vendant haut et rachetant plus bas</div>
+            <div class="quiz-option" onclick="selectOption(this,'q1','C')"><div class="quiz-option-letter">C</div>En gardant ses positions toujours ouvertes</div>
+          </div>
+          <div class="quiz-feedback" id="fb-q1"></div>
+        </div>
+
+        <div class="quiz-question" id="q2">
+          <div class="quiz-q-num">QUESTION 2 / 5</div>
+          <div class="quiz-q-text">C'est quoi un short ?</div>
+          <div class="quiz-options">
+            <div class="quiz-option" onclick="selectOption(this,'q2','A')"><div class="quiz-option-letter">A</div>Un trade qui dure peu de temps</div>
+            <div class="quiz-option" onclick="selectOption(this,'q2','B')"><div class="quiz-option-letter">B</div>Vendre d'abord et racheter plus bas pour faire du profit</div>
+            <div class="quiz-option" onclick="selectOption(this,'q2','C')"><div class="quiz-option-letter">C</div>Un type de graphique</div>
+          </div>
+          <div class="quiz-feedback" id="fb-q2"></div>
+        </div>
+
+        <div class="quiz-question" id="q3">
+          <div class="quiz-q-num">QUESTION 3 / 5</div>
+          <div class="quiz-q-text">À quoi sert le Stop Loss ?</div>
+          <div class="quiz-options">
+            <div class="quiz-option" onclick="selectOption(this,'q3','A')"><div class="quiz-option-letter">A</div>À augmenter ses gains</div>
+            <div class="quiz-option" onclick="selectOption(this,'q3','B')"><div class="quiz-option-letter">B</div>À limiter ses pertes automatiquement</div>
+            <div class="quiz-option" onclick="selectOption(this,'q3','C')"><div class="quiz-option-letter">C</div>À ouvrir une position</div>
+          </div>
+          <div class="quiz-feedback" id="fb-q3"></div>
+        </div>
+
+        <div class="quiz-question" id="q4">
+          <div class="quiz-q-num">QUESTION 4 / 5</div>
+          <div class="quiz-q-text">Est-ce que les meilleurs traders perdent des trades ?</div>
+          <div class="quiz-options">
+            <div class="quiz-option" onclick="selectOption(this,'q4','A')"><div class="quiz-option-letter">A</div>Non jamais</div>
+            <div class="quiz-option" onclick="selectOption(this,'q4','B')"><div class="quiz-option-letter">B</div>Oui — la différence c'est qu'ils gèrent leurs pertes intelligemment</div>
+            <div class="quiz-option" onclick="selectOption(this,'q4','C')"><div class="quiz-option-letter">C</div>Seulement les débutants perdent</div>
+          </div>
+          <div class="quiz-feedback" id="fb-q4"></div>
+        </div>
+
+        <div class="quiz-question" id="q5">
+          <div class="quiz-q-num">QUESTION 5 / 5</div>
+          <div class="quiz-q-text">Le trading c'est :</div>
+          <div class="quiz-options">
+            <div class="quiz-option" onclick="selectOption(this,'q5','A')"><div class="quiz-option-letter">A</div>Un jeu de hasard comme le casino</div>
+            <div class="quiz-option" onclick="selectOption(this,'q5','B')"><div class="quiz-option-letter">B</div>Réservé aux experts en finance</div>
+            <div class="quiz-option" onclick="selectOption(this,'q5','C')"><div class="quiz-option-letter">C</div>Une compétence qui s'apprend avec la pratique</div>
+          </div>
+          <div class="quiz-feedback" id="fb-q5"></div>
+        </div>
+
         <button class="quiz-submit" id="quiz-btn" onclick="submitQuiz()">✓ VALIDER MES RÉPONSES</button>
-        <div class="quiz-result" id="quiz-result"><div class="quiz-result-score" id="quiz-score">0/5</div><div class="quiz-result-text" id="quiz-text"></div><div class="quiz-result-xp" id="quiz-xp-text"></div></div>
+        <div class="quiz-result" id="quiz-result">
+          <div class="quiz-result-score" id="quiz-score">0/5</div>
+          <div style="font-size:14px;color:var(--dim);margin-top:8px;" id="quiz-text"></div>
+          <div class="quiz-result-xp" id="quiz-xp-text"></div>
+        </div>
       </div>
 
+      <!-- EXERCICE -->
       <div class="exercice-section">
-        <div class="exercice-header"><div style="font-size:22px;">💪</div><div class="exercice-title">EXERCICE PRATIQUE</div><div class="exercice-xp">+75 XP</div></div>
-        <div class="exercice-text">Maintenant que tu comprends les bases, mets-les en pratique avec un compte démo. Un compte démo c'est de l'argent fictif — zéro risque, 100% réel dans les sensations.</div>
-        <div class="exercice-steps">
-          <div class="exercice-step"><div class="exercice-step-num">1</div><div class="exercice-step-text">Ouvre <strong>TradingView.com</strong> et crée un compte gratuit</div></div>
-          <div class="exercice-step"><div class="exercice-step-num">2</div><div class="exercice-step-text">Ouvre le graphique <strong>EUR/USD</strong> en timeframe H1</div></div>
-          <div class="exercice-step"><div class="exercice-step-num">3</div><div class="exercice-step-text">Identifie un moment où le prix monte — note le prix d'achat et le prix de vente imaginaire</div></div>
-          <div class="exercice-step"><div class="exercice-step-num">4</div><div class="exercice-step-text">Fais pareil pour un moment où le prix descend — identifie une opportunité de vente (short)</div></div>
-          <div class="exercice-step"><div class="exercice-step-num">5</div><div class="exercice-step-text">Note tes observations et valide l'exercice ci-dessous</div></div>
-        </div>
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;"><div style="font-size:22px;">💪</div><div style="font-family:'Orbitron',sans-serif;font-size:13px;font-weight:900;color:var(--cyan);letter-spacing:1px;">EXERCICE PRATIQUE — +75 XP</div></div>
+        <div style="font-size:14px;color:rgba(232,244,255,0.75);line-height:1.8;margin-bottom:16px;">Ouvre TradingView et observe les graphiques.</div>
+        <div class="exercice-step"><div class="exercice-step-num">1</div><div class="exercice-step-text">Ouvre <strong>TradingView.com</strong> sur le graphique EUR/USD en H1</div></div>
+        <div class="exercice-step"><div class="exercice-step-num">2</div><div class="exercice-step-text">Identifie une <strong>bougie verte</strong> — c'est un mouvement haussier (achat possible)</div></div>
+        <div class="exercice-step"><div class="exercice-step-num">3</div><div class="exercice-step-text">Identifie une <strong>bougie rouge</strong> — c'est un mouvement baissier (vente possible)</div></div>
+        <div class="exercice-step"><div class="exercice-step-num">4</div><div class="exercice-step-text">Imagine un trade — où tu aurais acheté ? Où tu aurais mis ton stop loss ?</div></div>
         <button class="exercice-validate" id="exercice-btn" onclick="validateExercice()">✅ J'AI FAIT L'EXERCICE — +75 XP</button>
       </div>
 
+      <!-- QUESTION BOX -->
       <div class="question-box">
         <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;"><div style="font-size:22px;">💬</div><div class="question-box-title">TU AS UNE QUESTION ?</div></div>
-        <div class="question-box-desc">"Pas de question bête ici. Si quelque chose n'est pas clair dans ce bloc, pose ta question — on est là pour apprendre ensemble. 🙌"</div>
+        <div class="question-box-desc">"Pas de question bête ici. Si quelque chose n'est pas clair pose ta question — on est là pour apprendre ensemble. 🙌"</div>
         <textarea class="question-box-input" id="question-input" placeholder="Écris ta question ici..."></textarea>
         <button class="question-box-send" onclick="sendQuestion()">📩 ENVOYER MA QUESTION</button>
         <div class="question-box-confirm" id="question-confirm">✅ Question envoyée ! On te répond très vite. 🔥</div>
@@ -417,46 +408,35 @@ let member=null;
 let quizAnswers={q1:null,q2:null,q3:null,q4:null,q5:null};
 let quizDone=false;
 let exerciceDone=false;
-const correctAnswers={q1:'B',q2:'C',q3:'C',q4:'B',q5:'B'};
+const correctAnswers={q1:'B',q2:'B',q3:'B',q4:'B',q5:'C'};
 const feedbacks={
-  q1:{B:'✅ Exact ! En trading tu peux profiter des hausses ET des baisses.',wrong:'❌ En trading tu peux gagner aussi bien quand ça monte (achat) que quand ça baisse (short).'},
-  q2:{C:'✅ Parfait ! Tu achètes bas, tu revends haut — la différence c\'est ton bénéfice.',wrong:'❌ Quand tu achètes et que le prix monte, tu es en bénéfice.'},
-  q3:{C:'✅ Exactement ! Le trading c\'est une vraie compétence qui demande analyse et stratégie.',wrong:'❌ Le trading n\'est pas du hasard. C\'est une discipline qui s\'apprend.'},
-  q4:{B:'✅ Bien ! Le stop loss c\'est ton filet de sécurité. Il limite automatiquement tes pertes.',wrong:'❌ Le stop loss te protège ! Il coupe ta position quand la perte atteint un niveau défini.'},
-  q5:{B:'✅ Exactement ! Sans stratégie tu joues à pile ou face. On va te donner une stratégie solide.',wrong:'❌ L\'instinct ou copier les autres ne marche pas sur le long terme. Il te faut une vraie stratégie.'}
+  q1:{B:'✅ Exact ! Tu achètes bas et tu revends plus haut — ou tu vends haut et tu rachètes plus bas.',wrong:'❌ En trading on gagne en achetant bas et revendant plus haut ou en vendant haut et rachetant plus bas.'},
+  q2:{B:'✅ Parfait ! Un short c\'est vendre d\'abord et racheter plus bas pour encaisser la différence.',wrong:'❌ Un short c\'est vendre d\'abord et racheter plus bas. La différence entre les deux prix c\'est ton profit.'},
+  q3:{B:'✅ Exact ! Le stop loss limite automatiquement tes pertes — c\'est ta protection indispensable.',wrong:'❌ Le stop loss sert à limiter tes pertes automatiquement. Sans stop loss tu peux perdre beaucoup plus.'},
+  q4:{B:'✅ Parfait ! Même les meilleurs perdent des trades. Ce qui les différencie c\'est la gestion des pertes.',wrong:'❌ Tous les traders perdent des trades — même les meilleurs. La différence c\'est comment ils gèrent ces pertes.'},
+  q5:{C:'✅ Exact ! Le trading c\'est une compétence qui s\'apprend. Avec la pratique et la méthode ça devient naturel.',wrong:'❌ Le trading c\'est une compétence qui s\'apprend — pas du hasard, pas réservé aux experts.'}
 };
 
 function selectOption(el,qId,letter){
   if(quizDone)return;
   const opts=el.closest('.quiz-options').querySelectorAll('.quiz-option');
   opts.forEach(o=>{o.style.borderColor='';o.style.background='';o.style.color='';});
-  el.style.borderColor='rgba(157,78,221,0.5)';
-  el.style.background='rgba(157,78,221,0.12)';
-  el.style.color='var(--white)';
+  el.style.borderColor='rgba(157,78,221,0.5)';el.style.background='rgba(157,78,221,0.12)';el.style.color='var(--white)';
   quizAnswers[qId]=letter;
 }
 
 function submitQuiz(){
-  const quizKey='dha_quiz_m1_b1_done';
+  const quizKey='dha_quiz_m1_done';
   if(quizDone)return;
-  if(localStorage.getItem(quizKey)){
-    alert('Tu as déjà fait ce quiz ! 💪');
-    return;
-  }
+  if(localStorage.getItem(quizKey)){alert('Tu as déjà fait ce quiz ! 💪');return;}
   if(Object.values(quizAnswers).filter(v=>v===null).length>0){alert('Réponds à toutes les questions !');return;}
   quizDone=true;
   localStorage.setItem(quizKey,'true');
   let score=0;
   Object.keys(quizAnswers).forEach(qId=>{
-    const ans=quizAnswers[qId];
-    const correct=correctAnswers[qId];
+    const ans=quizAnswers[qId];const correct=correctAnswers[qId];
     const opts=document.getElementById(qId).querySelectorAll('.quiz-option');
-    opts.forEach(o=>{
-      o.onclick=null;
-      const letter=o.querySelector('.quiz-option-letter').textContent;
-      if(letter===correct)o.classList.add('correct');
-      else if(letter===ans&&ans!==correct)o.classList.add('wrong');
-    });
+    opts.forEach(o=>{o.onclick=null;const letter=o.querySelector('.quiz-option-letter').textContent;if(letter===correct)o.classList.add('correct');else if(letter===ans&&ans!==correct)o.classList.add('wrong');});
     const fb=document.getElementById('fb-'+qId);
     if(ans===correct){score++;fb.textContent=feedbacks[qId][correct];fb.className='quiz-feedback show correct';}
     else{fb.textContent=feedbacks[qId].wrong;fb.className='quiz-feedback show wrong';}
@@ -464,8 +444,7 @@ function submitQuiz(){
   const xpEarned=score*10;
   document.getElementById('quiz-btn').disabled=true;
   document.getElementById('quiz-btn').textContent='✅ QUIZ VALIDÉ';
-  const result=document.getElementById('quiz-result');
-  result.classList.add('show');
+  const result=document.getElementById('quiz-result');result.classList.add('show');
   document.getElementById('quiz-score').textContent=score+'/5';
   document.getElementById('quiz-text').textContent=score===5?'Parfait ! Tu as tout compris ! 🔥':score>=3?'Bon travail ! Relis les points manqués.':'Continue à apprendre — relis le bloc.';
   document.getElementById('quiz-xp-text').textContent='+'+xpEarned+' XP gagnés !';
@@ -473,12 +452,9 @@ function submitQuiz(){
 }
 
 function validateExercice(){
-  const exerciceKey='dha_exercice_m1_b1_done';
+  const exerciceKey='dha_exercice_m1_done';
   if(exerciceDone)return;
-  if(localStorage.getItem(exerciceKey)){
-    alert('Tu as déjà validé cet exercice ! 💪');
-    return;
-  }
+  if(localStorage.getItem(exerciceKey)){alert('Tu as déjà validé cet exercice ! 💪');return;}
   exerciceDone=true;
   localStorage.setItem(exerciceKey,'true');
   document.getElementById('exercice-btn').disabled=true;
@@ -489,97 +465,39 @@ function validateExercice(){
 function sendQuestion(){
   const q=document.getElementById('question-input').value.trim();
   if(!q){alert('Écris ta question d\'abord !');return;}
-  fetch(FORMSPREE,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({sujet:'Question Module 1 Bloc 1',question:q,membre:member?member.email:'inconnu'})});
+  fetch(FORMSPREE,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({sujet:'Question Module 1',question:q,membre:member?member.email:'inconnu'})});
   document.getElementById('question-input').value='';
   document.getElementById('question-confirm').classList.add('show');
 }
 
 function completeBloc(){
-  const blocKey='dha_bloc_m1_b1_done';
-  if(localStorage.getItem(blocKey)){
-    alert('Tu as déjà terminé ce bloc ! Les XP ont déjà été comptabilisés. 💪');
-    return;
-  }
+  const blocKey='dha_bloc_m1_done';
+  if(localStorage.getItem(blocKey)){alert('Tu as déjà terminé ce bloc ! 💪');return;}
   localStorage.setItem(blocKey,'true');
   addXP(25);
-  document.getElementById('complete-btn').textContent='✅ BLOC 1 TERMINÉ !';
+  document.getElementById('complete-btn').textContent='✅ MODULE 1 TERMINÉ !';
   document.getElementById('complete-btn').disabled=true;
-  setTimeout(()=>{window.location.href='dha-dashboard.html';},1500);
+  setTimeout(()=>{window.location.href='dha-formation.html';},1500);
 }
 
 async function addXP(amount){
   if(!member)return;
   member.xp=(member.xp||0)+amount;
+  member.xp_semaine=(member.xp_semaine||0)+amount;
   member.level=Math.floor(member.xp/500)+1;
   localStorage.setItem('dha_member',JSON.stringify(member));
   document.getElementById('topbar-xp').textContent=member.xp+' XP';
   const flash=document.createElement('div');
   flash.textContent='+'+amount+' XP ⚡';
   flash.style.cssText='position:fixed;top:40%;left:60%;transform:translate(-50%,-50%);font-family:Orbitron,sans-serif;font-size:36px;font-weight:900;color:#FFD700;text-shadow:0 0 30px rgba(255,215,0,0.8);z-index:9999;pointer-events:none;animation:xp-pop .9s ease forwards;';
-  document.body.appendChild(flash);
-  setTimeout(()=>flash.remove(),900);
-  try{await fetch(SUPABASE_URL+'/rest/v1/membres?email=eq.'+encodeURIComponent(member.email),{method:'PATCH',headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY},body:JSON.stringify({xp:member.xp,level:member.level})});}catch(e){}
-}
-    }
- if(type==='buy'){
-  [[1,100,92,104,88],[2,94,86,98,82],[3,88,80,92,76],[4,82,76,86,72],[5,78,68,82,64],[6,68,56,72,52],[7,56,44,60,40],[8,44,32,48,28],[9,32,22,36,18],[10,22,14,26,10]].forEach(([i,o,c,hi,lo])=>{
-    drawCandle(gap*i,o,c,hi,lo,c<o?'#00FF88':'#FF4466');
-  });
-  ctx.strokeStyle='rgba(0,212,255,0.5)';ctx.lineWidth=1.5;ctx.setLineDash([4,3]);
-  ctx.beginPath();ctx.moveTo(gap*5,70);ctx.lineTo(w*2,70);ctx.stroke();ctx.setLineDash([]);
-  ctx.fillStyle='rgba(0,212,255,0.9)';ctx.font='bold 11px Orbitron';
-  ctx.fillText('ACHAT 1.0780',gap*5+5,h-10);
-  ctx.strokeStyle='rgba(255,215,0,0.5)';ctx.lineWidth=1.5;ctx.setLineDash([4,3]);
-  ctx.beginPath();ctx.moveTo(gap*5,14);ctx.lineTo(w*2,14);ctx.stroke();ctx.setLineDash([]);
-  ctx.fillStyle='rgba(255,215,0,0.9)';ctx.fillText('+140€  1.0850',gap*8,h-10);
-}else if(type==='sell'){
-  [[1,50,58,46,62],[2,56,64,52,68],[3,62,70,58,74],[4,68,76,64,80],[5,72,80,68,84],[6,78,88,74,92],[7,86,96,82,100],[8,94,104,90,108],[9,102,110,98,114],[10,108,116,104,120]].forEach(([i,o,c,hi,lo])=>{
-    drawCandle(gap*i,o,c,hi,lo,c>o?'#FF4466':'#00FF88');
-  });
-  ctx.strokeStyle='rgba(255,68,102,0.5)';ctx.lineWidth=1.5;ctx.setLineDash([4,3]);
-  ctx.beginPath();ctx.moveTo(gap*5,78);ctx.lineTo(w*2,78);ctx.stroke();ctx.setLineDash([]);
-  ctx.fillStyle='rgba(255,68,102,0.9)';ctx.font='bold 11px Orbitron';
-  ctx.fillText('VENTE 1.0750',gap*5+5,10);
-  ctx.strokeStyle='rgba(255,215,0,0.5)';ctx.lineWidth=1.5;ctx.setLineDash([4,3]);
-  ctx.beginPath();ctx.moveTo(gap*5,116);ctx.lineTo(w*2,116);ctx.stroke();ctx.setLineDash([]);
-  ctx.fillStyle='rgba(255,215,0,0.9)';ctx.fillText('+140€  1.0680',gap*8,h-10);
-}else if(type==='loss'){
-  [[1,90,82,94,78],[2,84,76,88,72],[3,78,68,82,64],[4,72,78,68,82],[5,76,84,72,88],[6,82,92,78,96],[7,90,100,86,104],[8,98,108,94,112]].forEach(([i,o,c,hi,lo])=>{
-    drawCandle(gap*i,o,c,hi,lo,c<o?'#00FF88':'#FF4466');
-  });
-  ctx.strokeStyle='rgba(0,212,255,0.5)';ctx.lineWidth=1.5;ctx.setLineDash([4,3]);
-  ctx.beginPath();ctx.moveTo(gap*3,72);ctx.lineTo(w*2,72);ctx.stroke();ctx.setLineDash([]);
-  ctx.fillStyle='rgba(0,212,255,0.9)';ctx.font='bold 11px Orbitron';
-  ctx.fillText('ACHAT 1.0780',gap*3+5,10);
-  ctx.strokeStyle='rgba(255,68,102,0.7)';ctx.lineWidth=2;ctx.setLineDash([4,3]);
-  ctx.beginPath();ctx.moveTo(gap*3,108);ctx.lineTo(w*2,108);ctx.stroke();ctx.setLineDash([]);
-  ctx.fillStyle='rgba(255,68,102,0.9)';ctx.fillText('STOP LOSS -30€',gap*6,h-10);
-}
-    ctx.restore();
-    // Zoom hint
-    ctx.fillStyle='rgba(255,255,255,0.15)';ctx.font='9px Exo 2';
-    ctx.fillText('🔍 Molette pour zoomer · Glisser pour naviguer',8,h-8);
-  }
-
-  draw();
-
-  // Zoom molette
-  canvas.addEventListener('wheel',(e)=>{
-    e.preventDefault();
-    const delta=e.deltaY>0?0.9:1.1;
-    scale=Math.max(0.5,Math.min(4,scale*delta));
-    draw();
-  },{passive:false});
-
-  // Drag
-  canvas.addEventListener('mousedown',(e)=>{isDragging=true;startX=e.clientX;startOffset=offsetX;canvas.style.cursor='grabbing';});
-  canvas.addEventListener('mousemove',(e)=>{if(!isDragging)return;offsetX=startOffset+(e.clientX-startX);draw();});
-  canvas.addEventListener('mouseup',()=>{isDragging=false;canvas.style.cursor='grab';});
-  canvas.addEventListener('mouseleave',()=>{isDragging=false;canvas.style.cursor='grab';});
-  canvas.style.cursor='grab';
-
-  // Double-clic reset
-  canvas.addEventListener('dblclick',()=>{scale=1;offsetX=0;draw();});
+  document.body.appendChild(flash);setTimeout(()=>flash.remove(),900);
+  try{
+    await fetch(SUPABASE_URL+'/rest/v1/membres?email=eq.'+encodeURIComponent(member.email),{
+      method:'PATCH',
+      headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY},
+      body:JSON.stringify({xp:member.xp,xp_semaine:member.xp_semaine,level:member.level})
+    });
+  }catch(e){}
 }
 
 async function init(){
@@ -602,10 +520,11 @@ async function init(){
       document.getElementById('topbar-xp').textContent=member.xp+' XP';
     }
   }catch(e){}
-  if(localStorage.getItem('dha_bloc_m2_b1_done')){document.getElementById('complete-btn').textContent='✅ DÉJÀ TERMINÉ';document.getElementById('complete-btn').disabled=true;}
-  if(localStorage.getItem('dha_quiz_m2_b1_done')){document.getElementById('quiz-btn').textContent='✅ QUIZ DÉJÀ FAIT';document.getElementById('quiz-btn').disabled=true;}
-  if(localStorage.getItem('dha_exercice_m2_b1_done')){document.getElementById('exercice-btn').textContent='✅ DÉJÀ VALIDÉ';document.getElementById('exercice-btn').disabled=true;}
+  if(localStorage.getItem('dha_bloc_m1_done')){document.getElementById('complete-btn').textContent='✅ DÉJÀ TERMINÉ';document.getElementById('complete-btn').disabled=true;}
+  if(localStorage.getItem('dha_quiz_m1_done')){document.getElementById('quiz-btn').textContent='✅ QUIZ DÉJÀ FAIT';document.getElementById('quiz-btn').disabled=true;}
+  if(localStorage.getItem('dha_exercice_m1_done')){document.getElementById('exercice-btn').textContent='✅ DÉJÀ VALIDÉ';document.getElementById('exercice-btn').disabled=true;}
 }
+
 init();
 </script>
 </body>
