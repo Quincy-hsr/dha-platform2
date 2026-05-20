@@ -21,7 +21,7 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
 .nav-icon{font-size:16px;width:20px;text-align:center;flex-shrink:0;}
 .sidebar-bottom{margin-top:auto;padding:16px 24px;border-top:1px solid var(--border);}
 .sidebar-member{display:flex;align-items:center;gap:12px;}
-.sidebar-avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--cyan));display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;}
+.sidebar-avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--cyan));display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;overflow:hidden;}
 .sidebar-member-name{font-family:'Orbitron',sans-serif;font-size:10px;font-weight:900;color:var(--white);}
 .sidebar-member-rang{font-size:10px;color:var(--dim);margin-top:2px;}
 .main{margin-left:var(--sidebar-w);flex:1;padding:32px;position:relative;z-index:1;}
@@ -30,47 +30,35 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
 .topbar-title span{color:var(--gold);}
 .xp-pill{display:flex;align-items:center;gap:8px;padding:8px 16px;border-radius:99px;background:rgba(255,215,0,0.1);border:1px solid rgba(255,215,0,0.25);}
 .xp-pill-val{font-family:'Orbitron',sans-serif;font-size:12px;font-weight:900;color:var(--gold);}
-
-.top3{display:grid;grid-template-columns:1fr 1.2fr 1fr;gap:16px;margin-bottom:28px;align-items:end;}
-.top3-card{border-radius:20px;padding:24px;text-align:center;position:relative;overflow:hidden;}
-.top3-card.gold{background:linear-gradient(135deg,rgba(255,215,0,0.15),rgba(255,215,0,0.05));border:1px solid rgba(255,215,0,0.3);}
-.top3-card.silver{background:linear-gradient(135deg,rgba(192,192,192,0.1),rgba(192,192,192,0.03));border:1px solid rgba(192,192,192,0.2);}
-.top3-card.bronze{background:linear-gradient(135deg,rgba(205,127,50,0.1),rgba(205,127,50,0.03));border:1px solid rgba(205,127,50,0.2);}
-.top3-medal{font-size:36px;margin-bottom:8px;}
-.top3-avatar{width:56px;height:56px;border-radius:50%;margin:0 auto 10px;display:flex;align-items:center;justify-content:center;font-size:24px;}
-.top3-avatar.gold{background:linear-gradient(135deg,rgba(255,215,0,0.3),rgba(255,215,0,0.1));border:2px solid rgba(255,215,0,0.5);}
-.top3-avatar.silver{background:linear-gradient(135deg,rgba(192,192,192,0.3),rgba(192,192,192,0.1));border:2px solid rgba(192,192,192,0.4);}
-.top3-avatar.bronze{background:linear-gradient(135deg,rgba(205,127,50,0.3),rgba(205,127,50,0.1));border:2px solid rgba(205,127,50,0.4);}
-.top3-pseudo{font-family:'Orbitron',sans-serif;font-size:11px;font-weight:900;color:var(--white);margin-bottom:4px;letter-spacing:1px;}
-.top3-xp{font-family:'Orbitron',sans-serif;font-size:18px;font-weight:900;margin-bottom:2px;}
-.top3-xp.gold{color:var(--gold);}
-.top3-xp.silver{color:rgba(192,192,192,0.9);}
-.top3-xp.bronze{color:rgba(205,127,50,0.9);}
-.top3-label{font-family:'Orbitron',sans-serif;font-size:7px;letter-spacing:2px;color:var(--dim);}
-
-.section-title{font-family:'Orbitron',sans-serif;font-size:10px;letter-spacing:3px;color:var(--dim);margin-bottom:16px;}
-.lb-card{background:var(--card);border:1px solid var(--border);border-radius:20px;overflow:hidden;margin-bottom:28px;}
+.lb-card{background:var(--card);border:1px solid var(--border);border-radius:20px;overflow:hidden;margin-bottom:24px;}
 .lb-header{padding:20px 24px;border-bottom:1px solid rgba(255,255,255,0.05);display:flex;align-items:center;justify-content:space-between;}
 .lb-header-title{font-family:'Orbitron',sans-serif;font-size:12px;font-weight:900;color:var(--white);letter-spacing:1px;}
-.lb-header-reset{font-family:'Orbitron',sans-serif;font-size:8px;letter-spacing:2px;color:var(--dim);}
-.lb-item{display:flex;align-items:center;gap:14px;padding:14px 24px;border-bottom:1px solid rgba(255,255,255,0.04);transition:background .2s;}
+.lb-cols{display:grid;grid-template-columns:48px 90px 110px 1fr 90px 80px;gap:8px;padding:10px 24px;font-family:'Orbitron',sans-serif;font-size:8px;letter-spacing:2px;color:rgba(232,244,255,0.25);border-bottom:1px solid rgba(255,255,255,0.04);}
+.lb-item{display:grid;grid-template-columns:48px 90px 110px 1fr 90px 80px;gap:8px;padding:14px 24px;border-bottom:1px solid rgba(255,255,255,0.04);align-items:center;transition:background .2s;}
 .lb-item:hover{background:rgba(255,255,255,0.02);}
 .lb-item:last-child{border-bottom:none;}
-.lb-item.me{background:rgba(0,212,255,0.05);border-left:2px solid var(--cyan);}
-.lb-rank{font-family:'Orbitron',sans-serif;font-size:14px;font-weight:900;width:32px;text-align:center;flex-shrink:0;}
-.lb-avatar{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,var(--blue),var(--cyan));display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;overflow:hidden;}
-.lb-avatar img{width:100%;height:100%;object-fit:cover;}
-.lb-info{flex:1;}
-.lb-pseudo{font-family:'Orbitron',sans-serif;font-size:11px;font-weight:900;color:var(--white);letter-spacing:1px;}
-.lb-rang{font-size:11px;color:var(--dim);margin-top:2px;}
-.lb-xp-wrap{text-align:right;}
-.lb-xp{font-family:'Orbitron',sans-serif;font-size:14px;font-weight:900;color:var(--gold);}
-.lb-xp-label{font-family:'Orbitron',sans-serif;font-size:7px;letter-spacing:1px;color:var(--dim);margin-top:2px;}
+.lb-item.me{background:rgba(0,212,255,0.06);border-left:3px solid var(--cyan);}
+.lb-rank{font-family:'Orbitron',sans-serif;font-size:14px;font-weight:900;text-align:center;}
+.lb-pack{display:inline-flex;align-items:center;padding:3px 8px;border-radius:99px;font-family:'Orbitron',sans-serif;font-size:8px;font-weight:900;letter-spacing:1px;}
+.lb-pack.pro{background:rgba(255,215,0,0.15);color:var(--gold);border:1px solid rgba(255,215,0,0.35);}
+.lb-pack.medium{background:rgba(0,212,255,0.1);color:var(--cyan);border:1px solid rgba(0,212,255,0.25);}
+.lb-rang-badge{display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:99px;font-family:'Orbitron',sans-serif;font-size:8px;font-weight:900;}
+.lb-pseudo{font-family:'Orbitron',sans-serif;font-size:11px;font-weight:900;color:var(--white);display:flex;align-items:center;gap:8px;}
+.lb-me-tag{padding:2px 8px;border-radius:99px;background:rgba(0,212,255,0.2);font-size:8px;color:var(--cyan);letter-spacing:1px;}
+.lb-xp{font-family:'Orbitron',sans-serif;font-size:13px;font-weight:900;color:var(--gold);text-align:right;}
+.lb-modules{font-family:'Orbitron',sans-serif;font-size:11px;color:var(--dim);text-align:right;}
 .loading{text-align:center;padding:40px;font-family:'Orbitron',sans-serif;font-size:10px;letter-spacing:2px;color:var(--dim);}
-@media(max-width:768px){.sidebar{display:none;}.main{margin-left:0;padding:16px;}.top3{grid-template-columns:1fr;}}
+.legend{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:20px;}
+.legend-item{display:flex;align-items:center;gap:8px;font-family:'Orbitron',sans-serif;font-size:8px;letter-spacing:1px;color:var(--dim);}
+@media(max-width:768px){
+  .sidebar{display:none;}
+  .main{margin-left:0;padding:16px;}
+  .lb-cols{display:none;}
+  .lb-item{grid-template-columns:36px 1fr auto;gap:6px;}
+  .lb-pack,.lb-rang-badge,.lb-modules{display:none;}
+}
 </style>
-</head>
-<body>
+</head><body>
 <div class="bg-grid"></div>
 <aside class="sidebar">
   <div class="sidebar-logo"><div class="sidebar-logo-text">DHA</div><div class="sidebar-logo-sub">DIGITAL HUSTLER ACADEMY</div></div>
@@ -96,21 +84,30 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
 
 <main class="main">
   <div class="topbar">
-    <div><div class="topbar-title">LEADER<span>BOARD</span></div><div style="font-size:12px;color:var(--dim);margin-top:2px;">Classement hebdomadaire — remis à zéro chaque lundi</div></div>
+    <div><div class="topbar-title">LEADER<span>BOARD</span></div><div style="font-size:12px;color:var(--dim);margin-top:2px;">Classement de tous les membres DHA</div></div>
     <div class="xp-pill"><span>⚡</span><span class="xp-pill-val" id="topbar-xp">0 XP</span></div>
   </div>
 
-  <!-- TOP 3 -->
-  <div class="section-title">🏆 TOP 3 DE LA SEMAINE</div>
-  <div class="top3" id="top3">
-    <div class="loading">Chargement...</div>
+  <!-- LÉGENDE -->
+  <div class="legend">
+    <div class="legend-item"><span style="display:inline-flex;padding:3px 8px;border-radius:99px;background:rgba(255,215,0,0.15);color:var(--gold);border:1px solid rgba(255,215,0,0.35);font-size:8px;font-family:Orbitron,sans-serif;">💎 PRO</span> Pack Pro — accès à vie</div>
+    <div class="legend-item"><span style="display:inline-flex;padding:3px 8px;border-radius:99px;background:rgba(0,212,255,0.1);color:var(--cyan);border:1px solid rgba(0,212,255,0.25);font-size:8px;font-family:Orbitron,sans-serif;">⚡ MED</span> Pack Medium — abonnement</div>
+    <div class="legend-item"><span style="padding:2px 8px;border-radius:99px;background:rgba(0,212,255,0.2);color:var(--cyan);font-size:8px;font-family:Orbitron,sans-serif;">← TOI</span> Ta position</div>
   </div>
 
-  <!-- LISTE COMPLÈTE -->
+  <!-- CLASSEMENT -->
   <div class="lb-card">
     <div class="lb-header">
       <div class="lb-header-title">📊 CLASSEMENT COMPLET</div>
-      <div class="lb-header-reset" id="reset-info">Remis à zéro dans — jours</div>
+      <div style="font-family:'Orbitron',sans-serif;font-size:8px;letter-spacing:1px;color:var(--dim);" id="total-membres">— membres</div>
+    </div>
+    <div class="lb-cols">
+      <div>#</div>
+      <div>PACK</div>
+      <div>RANG</div>
+      <div>PSEUDO</div>
+      <div style="text-align:right;">XP</div>
+      <div style="text-align:right;">MODULES</div>
     </div>
     <div id="lb-list"><div class="loading">Chargement...</div></div>
   </div>
@@ -122,82 +119,69 @@ const SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSI
 let member=null;
 
 const RANGS=[
-  {min:0,max:499,name:'NEW HUSTLER',icon:'🎮'},
-  {min:500,max:1499,name:'HUSTLER',icon:'⚡'},
-  {min:1500,max:2999,name:'PRO HUSTLER',icon:'🚀'},
-  {min:3000,max:5999,name:'AMBASSADEUR',icon:'👑'},
-  {min:6000,max:999999,name:'LEGEND',icon:'💎'}
+  {min:0,max:499,name:'NEW HUSTLER',icon:'🎮',color:'rgba(200,200,200,0.6)'},
+  {min:500,max:1499,name:'HUSTLER',icon:'⚡',color:'#1E64FF'},
+  {min:1500,max:2999,name:'PRO HUSTLER',icon:'🚀',color:'#00D4FF'},
+  {min:3000,max:5999,name:'AMBASSADEUR',icon:'👑',color:'#FFD700'},
+  {min:6000,max:999999,name:'LEGEND',icon:'💎',color:'#9D4EDD'}
 ];
 function getRang(xp){return RANGS.find(r=>xp>=r.min&&xp<=r.max)||RANGS[0];}
 
-function getDaysUntilMonday(){
-  const now=new Date();
-  const day=now.getDay();
-  const daysUntil=day===0?1:(8-day);
-  return daysUntil;
+function getScore(m){
+  const packScore=m.pack==='pro'?1000000:0;
+  const rangScore=m.xp||0;
+  return packScore+rangScore;
 }
 
 async function loadLeaderboard(){
   try{
-    const res=await fetch(SUPABASE_URL+'/rest/v1/membres?select=pseudo,xp,xp_semaine,rang,avatar&order=xp_semaine.desc&limit=50',{
+    const res=await fetch(SUPABASE_URL+'/rest/v1/membres?select=pseudo,xp,rang,pack,avatar&order=xp.desc&limit=100',{
       headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY}
     });
     const data=await res.json();
+    if(!data||!Array.isArray(data)){
+      document.getElementById('lb-list').innerHTML='<div class="loading">Erreur de chargement. Réessaie.</div>';
+      return;
+    }
 
-    // TOP 3
-    const top3El=document.getElementById('top3');
-    const medals=[
-      {class:'gold',medal:'🥇',color:'gold'},
-      {class:'silver',medal:'🥈',color:'silver'},
-      {class:'bronze',medal:'🥉',color:'bronze'}
-    ];
-    const order=[1,0,2]; // Silver, Gold, Bronze position
-    top3El.innerHTML='';
+    // Trier : Pro d'abord puis par XP
+    data.sort((a,b)=>getScore(b)-getScore(a));
+    document.getElementById('total-membres').textContent=data.length+' membres';
 
-    [1,0,2].forEach(idx=>{
-      const m=data[idx];
-      const medal=medals[idx];
-      if(!m){top3El.innerHTML+='<div></div>';return;}
-      const avatarHtml=m.avatar?`<img src="${m.avatar}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"/>`:'⚡';
-      top3El.innerHTML+=`
-        <div class="top3-card ${medal.class}" style="${idx===0?'transform:scale(1.05)':''}">
-          <div class="top3-medal">${medal.medal}</div>
-          <div class="top3-avatar ${medal.class}">${avatarHtml}</div>
-          <div class="top3-pseudo">@${m.pseudo||'---'}</div>
-          <div class="top3-xp ${medal.class}">${m.xp_semaine||0} XP</div>
-          <div class="top3-label">CETTE SEMAINE</div>
-        </div>`;
-    });
-
-    // LISTE COMPLÈTE
+    const rankColors=['var(--gold)','rgba(192,192,192,0.8)','rgba(205,127,50,0.8)'];
+    const rankIcons=['🥇','🥈','🥉'];
     const list=document.getElementById('lb-list');
     list.innerHTML='';
+
     data.forEach((m,i)=>{
       const rang=getRang(m.xp||0);
       const isMe=member&&m.pseudo===member.pseudo;
-      const avatarHtml=m.avatar?`<img src="${m.avatar}"/>`:'⚡';
-      const rankColors=['var(--gold)','rgba(192,192,192,0.8)','rgba(205,127,50,0.8)'];
+      const isPro=m.pack==='pro';
       const rankColor=i<3?rankColors[i]:'var(--dim)';
+      const rankDisplay=i<3?rankIcons[i]:(i+1);
+
       list.innerHTML+=`
         <div class="lb-item ${isMe?'me':''}">
-          <div class="lb-rank" style="color:${rankColor}">${i<3?['🥇','🥈','🥉'][i]:i+1}</div>
-          <div class="lb-avatar">${avatarHtml}</div>
-          <div class="lb-info">
-            <div class="lb-pseudo">@${m.pseudo||'---'} ${isMe?'<span style="color:var(--cyan);font-size:9px;">← TOI</span>':''}</div>
-            <div class="lb-rang">${rang.icon} ${rang.name}</div>
+          <div class="lb-rank" style="color:${rankColor};">${rankDisplay}</div>
+          <div>
+            <span class="lb-pack ${isPro?'pro':'medium'}">${isPro?'💎 PRO':'⚡ MED'}</span>
           </div>
-          <div class="lb-xp-wrap">
-            <div class="lb-xp">${m.xp_semaine||0} XP</div>
-            <div class="lb-xp-label">CETTE SEMAINE</div>
+          <div>
+            <span class="lb-rang-badge" style="background:${rang.color}22;color:${rang.color};border:1px solid ${rang.color}44;">
+              ${rang.icon} ${rang.name}
+            </span>
           </div>
+          <div class="lb-pseudo">
+            @${m.pseudo||'---'}
+            ${isMe?'<span class="lb-me-tag">← TOI</span>':''}
+          </div>
+          <div class="lb-xp">${(m.xp||0).toLocaleString()} XP</div>
+          <div class="lb-modules">—</div>
         </div>`;
     });
 
-    // Reset info
-    document.getElementById('reset-info').textContent='Remis à zéro dans '+getDaysUntilMonday()+' jour(s)';
-
   }catch(e){
-    document.getElementById('top3').innerHTML='<div class="loading">Erreur de chargement</div>';
+    document.getElementById('lb-list').innerHTML='<div class="loading">Erreur de chargement. Réessaie.</div>';
   }
 }
 
@@ -207,11 +191,9 @@ function init(){
   member=JSON.parse(stored);
   document.getElementById('sb-pseudo').textContent=('@'+(member.pseudo||'HUSTLER')).toUpperCase();
   document.getElementById('topbar-xp').textContent=(member.xp||0)+' XP';
-  if(member.avatar){
-    document.getElementById('sb-avatar').innerHTML='<img src="'+member.avatar+'" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"/>';
-  }
+  if(member.avatar){document.getElementById('sb-avatar').innerHTML='<img src="'+member.avatar+'" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"/>';}
   loadLeaderboard();
-  setInterval(loadLeaderboard, 30000);
+  setInterval(loadLeaderboard,30000);
 }
 
 init();
