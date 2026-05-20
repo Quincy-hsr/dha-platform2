@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>DHA — Mindset</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600;700&display=swap" rel="stylesheet"/>
+<style>
+:root{--bg:#050914;--card:#080e1f;--blue:#1E64FF;--cyan:#00D4FF;--gold:#FFD700;--green:#00FF88;--red:#FF4466;--purple:#9D4EDD;--white:#E8F4FF;--dim:rgba(232,244,255,0.45);--border:rgba(30,100,255,0.15);--sidebar-w:240px;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-height:100vh;display:flex;}
+.bg-grid{position:fixed;inset:0;z-index:0;background-image:linear-gradient(rgba(30,100,255,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(30,100,255,0.03) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;}
+.sidebar{position:fixed;left:0;top:0;bottom:0;width:var(--sidebar-w);background:rgba(8,14,31,0.97);border-right:1px solid var(--border);display:flex;flex-direction:column;z-index:100;padding:24px 0;}
+.sidebar-logo{padding:0 24px 24px;border-bottom:1px solid var(--border);margin-bottom:16px;}
+.sidebar-logo-text{font-family:'Orbitron',sans-serif;font-size:28px;font-weight:900;letter-spacing:4px;color:var(--white);text-shadow:0 0 20px rgba(30,100,255,0.6);}
+.sidebar-logo-sub{font-family:'Orbitron',sans-serif;font-size:6px;letter-spacing:3px;color:rgba(0,212,255,0.5);margin-top:2px;}
+.sidebar-section{padding:8px 24px 4px;font-family:'Orbitron',sans-serif;font-size:7px;letter-spacing:3px;color:rgba(255,255,255,0.2);margin-top:8px;}
+.nav-item{display:flex;align-items:center;gap:12px;padding:11px 24px;cursor:pointer;transition:all .2s;font-size:13px;color:var(--dim);text-decoration:none;}
+.nav-item:hover{background:rgba(30,100,255,0.08);color:var(--white);}
+.nav-item.active{background:rgba(30,100,255,0.12);color:var(--cyan);border-right:2px solid var(--cyan);}
+.nav-icon{font-size:16px;width:20px;text-align:center;flex-shrink:0;}
+.sidebar-bottom{margin-top:auto;padding:16px 24px;border-top:1px solid var(--border);}
+.sidebar-member{display:flex;align-items:center;gap:12px;}
+.sidebar-avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--cyan));display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;overflow:hidden;}
+.sidebar-member-name{font-family:'Orbitron',sans-serif;font-size:10px;font-weight:900;color:var(--white);}
+.sidebar-member-rang{font-size:10px;color:var(--dim);margin-top:2px;}
+.main{margin-left:var(--sidebar-w);flex:1;padding:32px;position:relative;z-index:1;max-width:900px;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.4;}}
+</style>
+</head>
+<body>
+<div class="bg-grid"></div>
+<aside class="sidebar">
+  <div class="sidebar-logo"><div class="sidebar-logo-text">DHA</div><div class="sidebar-logo-sub">DIGITAL HUSTLER ACADEMY</div></div>
+  <div class="sidebar-section">MAIN</div>
+  <a class="nav-item" href="dha-dashboard.html"><span class="nav-icon">🎮</span> Dashboard</a>
+  <div class="sidebar-section">LEARN</div>
+  <a class="nav-item" href="dha-formation.html"><span class="nav-icon">📈</span> Formation Trading</a>
+  <a class="nav-item active" href="dha-mindset.html"><span class="nav-icon">🧠</span> Mindset</a>
+  <div class="sidebar-section">NETWORK</div>
+  <a class="nav-item" href="dha-leaderboard.html"><span class="nav-icon">🏆</span> Leaderboard</a>
+  <a class="nav-item" href="dha-squad.html"><span class="nav-icon">👥</span> Mon Squad</a>
+  <div class="sidebar-section">EARN</div>
+  <a class="nav-item" href="dha-affiliation.html"><span class="nav-icon">💰</span> Affiliation</a>
+  <div class="sidebar-section">TOOLS</div>
+  <a class="nav-item" href="dha-mentor.html"><span class="nav-icon">📞</span> Appel Mentor</a>
+  <div class="sidebar-bottom">
+    <div class="sidebar-member">
+      <div class="sidebar-avatar" id="sb-avatar">📈</div>
+      <div><div class="sidebar-member-name" id="sb-pseudo">HUSTLER</div><div class="sidebar-member-rang" id="sb-rang">NEW HUSTLER</div></div>
+    </div>
+  </div>
+</aside>
+
+<main class="main">
+  <div style="margin-bottom:40px;">
+    <div style="font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:3px;color:rgba(0,212,255,0.6);margin-bottom:8px;">MODULE · MINDSET</div>
+    <div style="font-family:'Orbitron',sans-serif;font-size:32px;font-weight:900;color:var(--white);line-height:1.2;margin-bottom:8px;">Le mindset<br/><span style="color:var(--cyan);">du trader</span></div>
+    <div style="font-size:14px;color:var(--dim);line-height:1.7;">Le trading c'est 20% technique et 80% mental. Ce module arrive bientôt.</div>
+  </div>
+
+  <div style="background:var(--card);border:1px solid rgba(30,100,255,0.2);border-radius:20px;padding:40px;text-align:center;margin-bottom:24px;position:relative;overflow:hidden;">
+    <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--cyan),transparent);"></div>
+    <div style="font-size:56px;margin-bottom:20px;">🧠</div>
+    <div style="font-family:'Orbitron',sans-serif;font-size:18px;font-weight:900;color:var(--white);letter-spacing:2px;margin-bottom:12px;">MODULE EN COURS DE CRÉATION</div>
+    <div style="font-size:14px;color:var(--dim);line-height:1.8;max-width:500px;margin:0 auto 24px;">Ce module va couvrir tout ce qu'on ne t'apprend pas en trading — la gestion des émotions, la discipline, la patience et la résilience face aux pertes.</div>
+    <div style="display:inline-flex;align-items:center;gap:8px;padding:8px 20px;border-radius:99px;background:rgba(0,212,255,0.1);border:1px solid rgba(0,212,255,0.25);">
+      <div style="width:8px;height:8px;border-radius:50%;background:var(--cyan);animation:pulse 1.5s infinite;"></div>
+      <span style="font-family:'Orbitron',sans-serif;font-size:10px;color:var(--cyan);letter-spacing:2px;">BIENTÔT DISPONIBLE</span>
+    </div>
+  </div>
+
+  <div style="font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:3px;color:rgba(232,244,255,0.3);margin-bottom:16px;">APERÇU DU CONTENU</div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:24px;">
+    <div style="background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px;">
+      <div style="font-size:24px;margin-bottom:10px;">😤</div>
+      <div style="font-family:'Orbitron',sans-serif;font-size:11px;font-weight:900;color:var(--white);letter-spacing:1px;margin-bottom:6px;">GESTION DES ÉMOTIONS</div>
+      <div style="font-size:12px;color:var(--dim);line-height:1.6;">La peur, la cupidité, le FOMO — comment les identifier et les contrôler.</div>
+    </div>
+    <div style="background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px;">
+      <div style="font-size:24px;margin-bottom:10px;">🎯</div>
+      <div style="font-family:'Orbitron',sans-serif;font-size:11px;font-weight:900;color:var(--white);letter-spacing:1px;margin-bottom:6px;">DISCIPLINE & ROUTINE</div>
+      <div style="font-size:12px;color:var(--dim);line-height:1.6;">Comment construire une routine de trader et s'y tenir même quand ça va mal.</div>
+    </div>
+    <div style="background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px;">
+      <div style="font-size:24px;margin-bottom:10px;">💪</div>
+      <div style="font-family:'Orbitron',sans-serif;font-size:11px;font-weight:900;color:var(--white);letter-spacing:1px;margin-bottom:6px;">RÉSILIENCE FACE AUX PERTES</div>
+      <div style="font-size:12px;color:var(--dim);line-height:1.6;">Perdre fait partie du jeu. Comment rebondir sans exploser son compte.</div>
+    </div>
+    <div style="background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px;">
+      <div style="font-size:24px;margin-bottom:10px;">🧘</div>
+      <div style="font-family:'Orbitron',sans-serif;font-size:11px;font-weight:900;color:var(--white);letter-spacing:1px;margin-bottom:6px;">PATIENCE & SÉLECTIVITÉ</div>
+      <div style="font-size:12px;color:var(--dim);line-height:1.6;">Attendre le bon setup plutôt que de forcer des trades médiocres.</div>
+    </div>
+  </div>
+
+  <div style="padding:24px;border-radius:14px;background:rgba(255,215,0,0.06);border-left:3px solid rgba(255,215,0,0.4);border-radius:0;margin-bottom:24px;">
+    <div style="font-size:15px;color:rgba(255,215,0,0.9);line-height:1.8;font-style:italic;">"La différence entre un trader rentable et un trader perdant, c'est pas la stratégie ou le capital. C'est le mental."</div>
+    <div style="font-family:'Orbitron',sans-serif;font-size:11px;color:rgba(255,215,0,0.5);margin-top:8px;letter-spacing:1px;">— QUINCY · DHA</div>
+  </div>
+
+  <a href="dha-formation.html" style="display:flex;align-items:center;justify-content:center;gap:10px;padding:14px;border-radius:12px;background:linear-gradient(135deg,var(--blue),var(--cyan));color:#000;font-family:'Orbitron',sans-serif;font-size:11px;font-weight:900;letter-spacing:2px;text-decoration:none;">← RETOUR À LA FORMATION</a>
+</main>
+
+<script>
+function init(){
+  const stored=localStorage.getItem('dha_member');
+  if(!stored){window.location.href='dha-connexion.html';return;}
+  const member=JSON.parse(stored);
+  document.getElementById('sb-pseudo').textContent=('@'+(member.pseudo||'HUSTLER')).toUpperCase();
+  if(member.avatar){document.getElementById('sb-avatar').innerHTML='<img src="'+member.avatar+'" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"/>';}
+}
+init();
+</script>
+</body>
+</html>
