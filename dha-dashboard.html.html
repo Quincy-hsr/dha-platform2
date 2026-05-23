@@ -758,12 +758,15 @@ requestAnimationFrame(animateBar);
   }catch(e){console.log('XP update error:',e);}
 }
 function completeQuete(type, xp, el) {
-  if(el.classList.contains('done')) return;
+  const today = new Date().toDateString();
+  const key = 'dha_quete_' + type + '_' + today;
+  if(localStorage.getItem(key)) return;
+  localStorage.setItem(key, 'true');
   el.classList.add('done');
   el.textContent = '✓';
   el.closest('.quete-item').classList.add('done');
   updateXP(xp);
-
+}
   // Flash XP
   const flash = document.createElement('div');
   flash.textContent = '+' + xp + ' XP ⚡';
@@ -911,6 +914,17 @@ async function init() {
   } catch(e) {}
 
   renderMember();
+  const todayStr = new Date().toDateString();
+['bloc','chat','parrainage'].forEach(type => {
+  if(localStorage.getItem('dha_quete_' + type + '_' + todayStr)) {
+    const els = document.querySelectorAll('[onclick*="completeQuete(\'' + type + '\'"]');
+    els.forEach(el => {
+      el.classList.add('done');
+      el.textContent = '✓';
+      el.closest('.quete-item').classList.add('done');
+    });
+  }
+});
   loadLeaderboard();
   const lastLogin = localStorage.getItem('dha_last_login');
   const today = new Date().toDateString();
