@@ -767,14 +767,6 @@ function completeQuete(type, xp, el) {
   el.closest('.quete-item').classList.add('done');
   updateXP(xp);
 }
-  // Flash XP
-  const flash = document.createElement('div');
-  flash.textContent = '+' + xp + ' XP ⚡';
-  flash.style.cssText = 'position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);font-family:Orbitron,sans-serif;font-size:32px;font-weight:900;color:#FFD700;text-shadow:0 0 30px rgba(255,215,0,0.8);z-index:9999;animation:fadeup .8s ease forwards;pointer-events:none;';
-  document.body.appendChild(flash);
-  setTimeout(()=>flash.remove(), 800);
-}
-
 function renderMember() {
   if(!member) return;
   const rang = getRang(member.xp || 0);
