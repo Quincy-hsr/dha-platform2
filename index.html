@@ -387,7 +387,7 @@
   <div style="margin-top:14px;font-family:'Orbitron',sans-serif;font-size:9px;color:rgba(255,215,0,0.7);letter-spacing:2px;">🔥 TARIF Pack Medium BLOQUÉ À VIE POUR LES PREMIERS MEMBRES</div>
 </div>
   <div class="hero-btns">
-    <a href="https://buy.stripe.com/00wcN6gsW1eKelV3BO6g809" target="_blank" class="btn-primary">▶ REJOINDRE EN Pack Medium — 150€</a>
+    <a href="javascript:void(0)" onclick="goToStripe('medium')" target="_blank" class="btn-primary">▶ REJOINDRE EN Pack Medium — 150€</a>
     <a href="#formations" class="btn-secondary">DÉCOUVRIR →</a>
   </div>
   <div class="hero-stats">
@@ -969,7 +969,7 @@
         <div class="feature-item"><div class="feature-check" style="background:rgba(255,215,0,0.15);border-color:rgba(255,215,0,0.4);color:var(--gold);">✓</div><span>Toutes les futures formations incluses</span></div>
         <div class="feature-item"><div class="feature-check" style="background:rgba(255,215,0,0.15);border-color:rgba(255,215,0,0.4);color:var(--gold);">✓</div><span>Communauté & mises à jour à vie</span></div>
       </div>
-      <a href="https://buy.stripe.com/7sYcN65Oi2iOa5F8W86g80b" target="_blank" class="pricing-btn" style="background:linear-gradient(135deg,#b8860b,var(--gold));box-shadow:0 6px 30px rgba(255,215,0,0.3);display:block;text-align:center;text-decoration:none;">👑 ACCÈS  Pack Pro — 500€</a>
+      <a href="javascript:void(0)" onclick="goToStripe('pro')" target="_blank" class="pricing-btn" style="background:linear-gradient(135deg,#b8860b,var(--gold));box-shadow:0 6px 30px rgba(255,215,0,0.3);display:block;text-align:center;text-decoration:none;">👑 ACCÈS  Pack Pro — 500€</a>
       <div class="pricing-sub">PAIEMENT SÉCURISÉ · UNE SEULE FOIS · POUR TOUJOURS</div>
     </div>
 
@@ -1062,6 +1062,16 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{
     if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth'});}
   });
 });
+ function goToStripe(pack){
+  const ref=localStorage.getItem('dha_ref')||'';
+  const links={
+    medium:'https://buy.stripe.com/00wcN6gsW1eKelV3BO6g809',
+    pro:'https://buy.stripe.com/7sYcN65Oi2iOa5F8W86g80b'
+  };
+  let url=links[pack];
+  if(ref)url+='?client_reference_id='+encodeURIComponent(ref);
+  window.open(url,'_blank');
+}
  // Sauvegarde le ref d'affiliation
 const urlRef=new URLSearchParams(window.location.search).get('ref');
 if(urlRef)localStorage.setItem('dha_ref',urlRef);
