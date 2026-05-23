@@ -912,19 +912,7 @@ async function init() {
       localStorage.setItem('dha_member', JSON.stringify(member));
     }
   } catch(e) {}
-
   renderMember();
-  const todayStr = new Date().toDateString();
-['bloc','chat','parrainage'].forEach(type => {
-  if(localStorage.getItem('dha_quete_' + type + '_' + todayStr)) {
-    const els = document.querySelectorAll('[onclick*="completeQuete(\'' + type + '\'"]');
-    els.forEach(el => {
-      el.classList.add('done');
-      el.textContent = '✓';
-      el.closest('.quete-item').classList.add('done');
-    });
-  }
-});
   loadLeaderboard();
   const lastLogin = localStorage.getItem('dha_last_login');
   const today = new Date().toDateString();
