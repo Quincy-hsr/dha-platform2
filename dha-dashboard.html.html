@@ -811,6 +811,10 @@ function renderMember() {
   // Date
   const now = new Date();
   document.getElementById('topbar-date').textContent = now.toLocaleDateString('fr-FR', { weekday:'long', day:'numeric', month:'long' }).toUpperCase();
+const keys=['dha_bloc_m1_done','dha_bloc_m2_b1_done','dha_bloc_m3_done','dha_bloc_m4_done','dha_bloc_m5_done','dha_bloc_m6_done','dha_bloc_m7_done','dha_bloc_m8_done','dha_bloc_m9_done','dha_bloc_m10_done','dha_bloc_m11_done','dha_bloc_m12_done','dha_bloc_m13_done','dha_bloc_m14_done','dha_bloc_m15_done'];
+  const completedMods=keys.filter(k=>localStorage.getItem(k)).length;
+  const formPct=Math.round((completedMods/15)*100);
+  document.querySelectorAll('.stat-card-val')[0].textContent=formPct+'%';
 }
 
 async function loadLeaderboard() {
