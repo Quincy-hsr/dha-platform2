@@ -5,7 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Digital Hustler Academy — Inscription</title>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600;700&display=swap" rel="stylesheet"/>
-<style>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+<script>emailjs.init('xbquOTEu4FwMMPYiF');</script>
+  <style>
 :root {
   --bg: #050914;
   --card: #080e1f;
@@ -693,8 +695,24 @@ parraine_par: refParam
     await supabaseInsert('membres', membre);
     bar.style.width = '100%';
 
-    // Ajouter à Brevo → email de bienvenue automatique
-    await addToBrevo(userData.prenom, userData.nom, userData.email);
+   // EmailJS — Bienvenue membre
+emailjs.send('service_4wng58y', 'template_i7b4cci', {
+  prenom: userData.prenom,
+  nom: userData.nom,
+  pseudo: userData.pseudo,
+  email: userData.email
+});
+// EmailJS — Notification CEO
+emailjs.send('service_4wng58y', 'template_5zg1ys4', {
+  prenom: userData.prenom,
+  nom: userData.nom,
+  pseudo: userData.pseudo,
+  email: userData.email,
+  telephone: userData.telephone || '',
+  pays: userData.pays || '',
+  parrain: refParam || 'Aucun',
+  pack: 'Medium'
+});
 
     localStorage.setItem('dha_member', JSON.stringify(membre));
 
