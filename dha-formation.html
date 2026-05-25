@@ -337,22 +337,16 @@ function showLockedModule(n){
 }
 
 function updateFormationStats(){
-  const keys=['dha_bloc_m1_done','dha_bloc_m2_b1_done','dha_bloc_m3_done','dha_bloc_m4_done','dha_bloc_m5_done','dha_bloc_m6_done','dha_bloc_m7_done','dha_bloc_m8_done','dha_bloc_m9_done','dha_bloc_m10_done','dha_bloc_m11_done','dha_bloc_m12_done','dha_bloc_m13_done','dha_bloc_m14_done','dha_bloc_m15_done'];
+  const pseudo=member?member.pseudo||'guest':'guest';
+  const prefix='dha_'+pseudo+'_';
+  const keys=[prefix+'bloc_m1_done',prefix+'bloc_m2_b1_done',prefix+'bloc_m3_done',prefix+'bloc_m4_done',prefix+'bloc_m5_done',prefix+'bloc_m6_done',prefix+'bloc_m7_done',prefix+'bloc_m8_done',prefix+'bloc_m9_done',prefix+'bloc_m10_done',prefix+'bloc_m11_done',prefix+'bloc_m12_done',prefix+'bloc_m13_done',prefix+'bloc_m14_done',prefix+'bloc_m15_done'];
   const completed=keys.filter(k=>localStorage.getItem(k)).length;
   const pct=Math.round((completed/15)*100);
   document.getElementById('stat-modules').textContent=completed+'/15';
   document.getElementById('stat-pct').textContent=pct+'%';
   document.getElementById('progress-fill').style.width=pct+'%';
   document.getElementById('progress-text').textContent=pct+'%';
-
-  // Afficher les modules complétés en vert
-  const moduleKeys={
-    'm1':'dha_bloc_m1_done',
-    'm2':'dha_bloc_m2_b1_done',
-    'm3':'dha_bloc_m3_done',
-    'm4':'dha_bloc_m4_done',
-    'm5':'dha_bloc_m5_done'
-  };
+  const moduleKeys={m1:prefix+'bloc_m1_done',m2:prefix+'bloc_m2_b1_done',m3:prefix+'bloc_m3_done',m4:prefix+'bloc_m4_done',m5:prefix+'bloc_m5_done'};
   Object.keys(moduleKeys).forEach(mod=>{
     if(localStorage.getItem(moduleKeys[mod])){
       const num=document.getElementById('num-'+mod);
@@ -362,7 +356,6 @@ function updateFormationStats(){
     }
   });
 }
-
 async function init(){
   const stored=localStorage.getItem('dha_member');
   if(!stored){window.location.href='dha-connexion.html';return;}
