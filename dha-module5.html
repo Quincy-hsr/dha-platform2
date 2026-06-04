@@ -413,6 +413,7 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
 const SUPABASE_URL='https://kdetwppxsfoagyndrlzr.supabase.co';
 const SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtkZXR3cHB4c2ZvYWd5bmRybHpyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzcyMzM3NjQsImV4cCI6MjA5MjgwOTc2NH0.OodaFQKEHcncDYdO6uM121NAUbyxD4UxpptSjzzZOi0';
 const FORMSPREE='https://formspree.io/f/mjgjrojb';
+  function getKey(k){const m=JSON.parse(localStorage.getItem('dha_member')||'{}');return 'dha_'+(m.pseudo||'guest')+'_'+k;}
 let member=null;
 let quizAnswers={q1:null,q2:null,q3:null,q4:null,q5:null};
 let quizDone=false;
@@ -435,7 +436,7 @@ function selectOption(el,qId,letter){
 }
 
 function submitQuiz(){
-  const quizKey='dha_quiz_m5_done';
+  const quizKey=getKey('quiz_m5_done');
   if(quizDone)return;
   if(localStorage.getItem(quizKey)){alert('Tu as déjà fait ce quiz ! 💪');return;}
   if(Object.values(quizAnswers).filter(v=>v===null).length>0){alert('Réponds à toutes les questions !');return;}
@@ -460,7 +461,7 @@ function submitQuiz(){
 }
 
 function validateExercice(){
-  const exerciceKey='dha_exercice_m5_done';
+  const exerciceKey=getKey('exercice_m5_done');
   if(exerciceDone)return;
   if(localStorage.getItem(exerciceKey)){alert('Tu as déjà validé cet exercice ! 💪');return;}
   exerciceDone=true;localStorage.setItem(exerciceKey,'true');
@@ -477,7 +478,7 @@ function sendQuestion(){
 }
 
 function completeBloc(){
-  const blocKey='dha_bloc_m5_done';
+  const blocKey=getKey('bloc_m5_done');
   if(localStorage.getItem(blocKey)){alert('Tu as déjà terminé ce module ! 💪');return;}
   localStorage.setItem(blocKey,'true');
   addXP(25);
@@ -520,9 +521,9 @@ async function init(){
       document.getElementById('topbar-xp').textContent=member.xp+' XP';
     }
   }catch(e){}
-  if(localStorage.getItem('dha_bloc_m2_b1_done')){document.getElementById('complete-btn').textContent='✅ DÉJÀ TERMINÉ';document.getElementById('complete-btn').disabled=true;}
-  if(localStorage.getItem('dha_quiz_m2_b1_done')){document.getElementById('quiz-btn').textContent='✅ QUIZ DÉJÀ FAIT';document.getElementById('quiz-btn').disabled=true;}
-  if(localStorage.getItem('dha_exercice_m2_b1_done')){document.getElementById('exercice-btn').textContent='✅ DÉJÀ VALIDÉ';document.getElementById('exercice-btn').disabled=true;}
+  if(localStorage.getItem(getKey('bloc_m5_done'))){document.getElementById('complete-btn').textContent='✅ DÉJÀ TERMINÉ';document.getElementById('complete-btn').disabled=true;}
+  if(localStorage.getItem(getKey('quiz_m5_done'))){document.getElementById('quiz-btn').textContent='✅ QUIZ DÉJÀ FAIT';document.getElementById('quiz-btn').disabled=true;}
+  if(localStorage.getItem(getKey('exercice_m5_done'))){document.getElementById('exercice-btn').textContent='✅ DÉJÀ VALIDÉ';document.getElementById('exercice-btn').disabled=true;}
 }
 
 init();
