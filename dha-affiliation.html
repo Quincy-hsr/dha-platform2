@@ -25,70 +25,129 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
 .sidebar-member-name{font-family:'Orbitron',sans-serif;font-size:10px;font-weight:900;color:var(--white);}
 .sidebar-member-rang{font-size:10px;color:var(--dim);margin-top:2px;}
 .main{margin-left:var(--sidebar-w);flex:1;padding:32px;position:relative;z-index:1;}
-.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:32px;}
+.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;}
 .topbar-title{font-family:'Orbitron',sans-serif;font-size:20px;font-weight:900;color:var(--white);letter-spacing:2px;}
 .topbar-title span{color:var(--gold);}
 .xp-pill{display:flex;align-items:center;gap:8px;padding:8px 16px;border-radius:99px;background:rgba(255,215,0,0.1);border:1px solid rgba(255,215,0,0.25);}
 .xp-pill-val{font-family:'Orbitron',sans-serif;font-size:12px;font-weight:900;color:var(--gold);}
-.statut-card{border-radius:20px;padding:28px;margin-bottom:24px;position:relative;overflow:hidden;}
-.statut-card.membre{background:linear-gradient(135deg,rgba(100,100,100,0.1),rgba(50,50,50,0.05));border:1px solid rgba(150,150,150,0.2);}
-.statut-card.affilie{background:linear-gradient(135deg,rgba(30,100,255,0.12),rgba(0,212,255,0.05));border:1px solid rgba(0,212,255,0.3);}
-.statut-card.ambassadeur{background:linear-gradient(135deg,rgba(255,215,0,0.12),rgba(255,165,0,0.05));border:1px solid rgba(255,215,0,0.3);}
+.hero{background:linear-gradient(135deg,#0a1428,#080e1f);border:1px solid rgba(255,215,0,0.2);border-radius:20px;padding:28px;margin-bottom:22px;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent);}
+.hero-glow{position:absolute;top:-60px;right:-60px;width:280px;height:280px;background:radial-gradient(ellipse,rgba(255,215,0,0.1),transparent 70%);pointer-events:none;}
+.hero-tag{font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:3px;color:rgba(255,215,0,0.7);margin-bottom:10px;}
+.hero-title{font-family:'Orbitron',sans-serif;font-size:26px;font-weight:900;color:var(--white);margin-bottom:8px;line-height:1.2;}
+.hero-title span{color:var(--gold);}
+.hero-desc{font-size:14px;color:var(--dim);line-height:1.7;max-width:580px;margin-bottom:20px;}
+.hero-stats{display:flex;gap:14px;flex-wrap:wrap;}
+.hero-stat{padding:12px 20px;border-radius:12px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);text-align:center;}
+.hero-stat-val{font-family:'Orbitron',sans-serif;font-size:22px;font-weight:900;color:var(--gold);}
+.hero-stat-label{font-family:'Orbitron',sans-serif;font-size:7px;letter-spacing:2px;color:var(--dim);margin-top:4px;}
+.sec-label{font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:3px;color:var(--dim);margin:20px 0 10px;}
+.statut-card{border-radius:18px;padding:24px;margin-bottom:20px;position:relative;overflow:hidden;}
+.statut-card.affilie{background:linear-gradient(135deg,rgba(30,100,255,0.1),rgba(0,212,255,0.04));border:1px solid rgba(0,212,255,0.25);}
+.statut-card.membre{background:linear-gradient(135deg,rgba(100,100,100,0.08),rgba(50,50,50,0.04));border:1px solid rgba(150,150,150,0.15);}
+.statut-card.ambassadeur{background:linear-gradient(135deg,rgba(255,215,0,0.1),rgba(255,165,0,0.04));border:1px solid rgba(255,215,0,0.25);}
 .statut-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;}
-.statut-card.membre::before{background:linear-gradient(90deg,transparent,rgba(150,150,150,0.5),transparent);}
 .statut-card.affilie::before{background:linear-gradient(90deg,transparent,var(--cyan),transparent);}
+.statut-card.membre::before{background:linear-gradient(90deg,transparent,rgba(150,150,150,0.5),transparent);}
 .statut-card.ambassadeur::before{background:linear-gradient(90deg,transparent,var(--gold),transparent);}
-.statut-header{display:flex;align-items:center;gap:16px;margin-bottom:20px;}
-.statut-icon{font-size:40px;}
-.statut-name{font-family:'Orbitron',sans-serif;font-size:20px;font-weight:900;color:var(--white);letter-spacing:2px;}
-.statut-desc{font-size:13px;color:var(--dim);margin-top:4px;}
+.statut-header{display:flex;align-items:center;gap:14px;margin-bottom:16px;}
+.statut-icon{font-size:36px;}
+.statut-name{font-family:'Orbitron',sans-serif;font-size:18px;font-weight:900;color:var(--white);letter-spacing:2px;}
+.statut-sub{font-size:13px;color:var(--dim);margin-top:3px;}
 .statut-badge{margin-left:auto;padding:6px 14px;border-radius:8px;font-family:'Orbitron',sans-serif;font-size:9px;font-weight:900;letter-spacing:1px;}
-.badge-actif{background:rgba(0,255,136,0.15);color:var(--green);border:1px solid rgba(0,255,136,0.3);}
-.badge-inactif{background:rgba(255,255,255,0.05);color:var(--dim);border:1px solid rgba(255,255,255,0.1);}
-.progress-wrap{margin-bottom:16px;}
-.progress-label{display:flex;justify-content:space-between;font-family:'Orbitron',sans-serif;font-size:8px;color:var(--dim);margin-bottom:8px;}
-.progress-bar{height:6px;border-radius:99px;background:rgba(255,255,255,0.08);overflow:hidden;}
-.progress-fill{height:100%;border-radius:99px;transition:width 1s ease;}
-.fill-membre{background:linear-gradient(90deg,rgba(150,150,150,0.5),rgba(200,200,200,0.8));}
+.b-actif{background:rgba(0,255,136,0.12);color:var(--green);border:1px solid rgba(0,255,136,0.3);}
+.pb-wrap{margin-bottom:14px;}
+.pb-lbl{display:flex;justify-content:space-between;font-family:'Orbitron',sans-serif;font-size:8px;color:var(--dim);margin-bottom:7px;}
+.pb{height:5px;border-radius:99px;background:rgba(255,255,255,0.08);overflow:hidden;}
+.pb-fill{height:100%;border-radius:99px;transition:width 1s ease;}
 .fill-affilie{background:linear-gradient(90deg,var(--blue),var(--cyan));}
 .fill-ambassadeur{background:linear-gradient(90deg,var(--gold),#FFA500);}
-.activate-btn{width:100%;padding:14px;border-radius:12px;font-family:'Orbitron',sans-serif;font-size:11px;font-weight:900;letter-spacing:2px;border:none;cursor:pointer;transition:all .2s;}
-.activate-btn.affilie{background:linear-gradient(135deg,var(--blue),var(--cyan));color:#000;box-shadow:0 6px 20px rgba(0,212,255,0.3);}
-.activate-btn.affilie:hover{transform:translateY(-2px);}
-.activate-btn:disabled{opacity:0.5;cursor:not-allowed;transform:none;}
-.commission-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:16px;}
-.commission-item{padding:14px;border-radius:12px;text-align:center;}
-.commission-item.n1{background:rgba(255,215,0,0.08);border:1px solid rgba(255,215,0,0.2);}
-.commission-item.n2{background:rgba(0,212,255,0.06);border:1px solid rgba(0,212,255,0.15);}
-.commission-item.n3{background:rgba(157,78,221,0.06);border:1px solid rgba(157,78,221,0.15);}
-.commission-pct{font-family:'Orbitron',sans-serif;font-size:24px;font-weight:900;}
-.commission-pct.n1{color:var(--gold);}
-.commission-pct.n2{color:var(--cyan);}
-.commission-pct.n3{color:var(--purple);}
-.commission-label{font-family:'Orbitron',sans-serif;font-size:7px;letter-spacing:1px;color:var(--dim);margin-top:4px;}
-.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:24px;}
-.card{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:24px;}
-.card-label{font-family:'Orbitron',sans-serif;font-size:8px;letter-spacing:3px;color:var(--dim);margin-bottom:16px;}
-.lien-box{background:rgba(255,215,0,0.06);border:1px solid rgba(255,215,0,0.2);border-radius:14px;padding:14px;display:flex;align-items:center;gap:10px;margin-bottom:12px;}
-.lien-text{flex:1;font-size:11px;color:var(--gold);word-break:break-all;}
-.copy-btn{padding:10px 14px;border-radius:10px;background:rgba(255,215,0,0.15);border:1px solid rgba(255,215,0,0.3);color:var(--gold);font-family:'Orbitron',sans-serif;font-size:9px;font-weight:900;cursor:pointer;flex-shrink:0;}
-.copy-confirm{display:none;font-size:12px;color:var(--green);text-align:center;margin-top:8px;}
+.comm-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:14px;}
+.cc{padding:14px;border-radius:10px;text-align:center;}
+.cc .pct{font-family:'Orbitron',sans-serif;font-size:24px;font-weight:900;line-height:1;}
+.cc .lbl{font-family:'Orbitron',sans-serif;font-size:7px;letter-spacing:1px;color:var(--dim);margin-top:4px;}
+.activate-btn{width:100%;padding:14px;border-radius:12px;background:linear-gradient(135deg,var(--blue),var(--cyan));color:#000;font-family:'Orbitron',sans-serif;font-size:11px;font-weight:900;letter-spacing:2px;border:none;cursor:pointer;margin-top:14px;box-shadow:0 4px 16px rgba(0,212,255,0.25);transition:all .2s;}
+.activate-btn:hover{transform:translateY(-2px);}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:20px;}
+.card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:22px;}
+.card-label{font-family:'Orbitron',sans-serif;font-size:8px;letter-spacing:3px;color:var(--dim);margin-bottom:14px;}
+.lien-box{background:rgba(255,215,0,0.05);border:1px solid rgba(255,215,0,0.18);border-radius:12px;padding:12px 16px;display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+.lien-text{flex:1;font-size:11px;color:var(--gold);word-break:break-all;line-height:1.5;}
+.copy-btn{padding:9px 12px;border-radius:9px;background:rgba(255,215,0,0.15);border:1px solid rgba(255,215,0,0.3);color:var(--gold);font-family:'Orbitron',sans-serif;font-size:9px;font-weight:900;cursor:pointer;flex-shrink:0;transition:all .2s;}
+.copy-confirm{display:none;font-size:12px;color:var(--green);text-align:center;margin-top:6px;}
 .copy-confirm.show{display:block;}
-.share-btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;}
-.share-btn{padding:10px 14px;border-radius:10px;font-family:'Orbitron',sans-serif;font-size:9px;font-weight:900;cursor:pointer;border:none;}
-.stat-row{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.05);}
+.share-btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;}
+.share-btn{padding:9px 14px;border-radius:9px;font-family:'Orbitron',sans-serif;font-size:9px;font-weight:900;cursor:pointer;border:none;transition:all .2s;}
+.share-btn:hover{transform:translateY(-1px);}
+.stat-row{display:flex;justify-content:space-between;align-items:center;padding:11px 0;border-bottom:1px solid rgba(255,255,255,0.05);}
 .stat-row:last-child{border-bottom:none;}
-.stat-label{font-size:13px;color:var(--dim);}
-.stat-val{font-family:'Orbitron',sans-serif;font-size:18px;font-weight:900;color:var(--gold);}
-.paliers-card{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:24px;margin-bottom:24px;}
-.palier-item{display:flex;align-items:center;gap:16px;padding:16px 0;border-bottom:1px solid rgba(255,255,255,0.05);}
-.palier-item:last-child{border-bottom:none;}
-.palier-icon{font-size:28px;flex-shrink:0;}
-.palier-info{flex:1;}
-.palier-name{font-family:'Orbitron',sans-serif;font-size:12px;font-weight:900;color:var(--white);letter-spacing:1px;margin-bottom:4px;}
-.palier-desc{font-size:13px;color:var(--dim);line-height:1.5;}
-.palier-status{font-family:'Orbitron',sans-serif;font-size:9px;padding:5px 12px;border-radius:6px;}
-@media(max-width:768px){.sidebar{display:none;}.main{margin-left:0;padding:16px;}.grid-2{grid-template-columns:1fr;}.commission-grid{grid-template-columns:1fr;}}
+.stat-lbl{font-size:13px;color:var(--dim);}
+.stat-val{font-family:'Orbitron',sans-serif;font-size:17px;font-weight:900;color:var(--gold);}
+.affilies-card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:22px;margin-bottom:20px;}
+.affi-row{display:flex;align-items:center;gap:12px;padding:12px;border-radius:12px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);margin-bottom:8px;transition:all .2s;}
+.affi-row:last-child{margin-bottom:0;}
+.affi-row:hover{border-color:rgba(0,212,255,0.2);background:rgba(0,212,255,0.04);}
+.affi-avatar{width:32px;height:32px;border-radius:8px;background:linear-gradient(135deg,var(--blue),var(--cyan));display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;}
+.affi-info{flex:1;}
+.affi-pseudo{font-size:13px;font-weight:600;color:var(--white);}
+.affi-meta{font-size:11px;color:var(--dim);margin-top:2px;}
+.affi-comm{font-family:'Orbitron',sans-serif;font-size:12px;font-weight:900;color:var(--green);}
+.no-affili{text-align:center;padding:24px;color:var(--dim);font-size:13px;}
+.paliers-card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:22px;margin-bottom:20px;}
+.palier-row{display:flex;align-items:center;gap:14px;padding:14px 0;border-bottom:1px solid rgba(255,255,255,0.05);}
+.palier-row:last-child{border-bottom:none;}
+.p-icon{font-size:26px;flex-shrink:0;}
+.p-info{flex:1;}
+.p-name{font-family:'Orbitron',sans-serif;font-size:11px;font-weight:900;color:var(--white);letter-spacing:1px;margin-bottom:4px;}
+.p-desc{font-size:12px;color:var(--dim);line-height:1.6;}
+.p-status{font-family:'Orbitron',sans-serif;font-size:9px;padding:5px 12px;border-radius:6px;flex-shrink:0;}
+.rev-card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:22px;margin-bottom:20px;}
+.rev-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:20px;}
+.rc{border-radius:12px;padding:16px;text-align:center;}
+.rc .v{font-family:'Orbitron',sans-serif;font-size:26px;font-weight:900;line-height:1;margin-bottom:4px;}
+.rc .l{font-family:'Orbitron',sans-serif;font-size:7px;letter-spacing:2px;color:var(--dim);}
+.rib-section{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:14px;padding:18px;}
+.rib-label{font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:2px;color:var(--dim);margin-bottom:12px;}
+.rib-display{display:flex;align-items:center;gap:12px;padding:12px 16px;border-radius:10px;background:rgba(0,255,136,0.06);border:1px solid rgba(0,255,136,0.2);margin-bottom:10px;}
+.rib-val{flex:1;font-size:13px;color:var(--green);letter-spacing:2px;}
+.rib-btns{display:flex;gap:8px;}
+.rib-btn-sm{padding:7px 12px;border-radius:8px;font-family:'Orbitron',sans-serif;font-size:9px;font-weight:900;cursor:pointer;border:none;transition:all .2s;}
+.rib-input{width:100%;padding:12px 16px;border-radius:10px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);color:var(--white);font-family:'Exo 2',sans-serif;font-size:14px;outline:none;margin-bottom:10px;}
+.rib-input::placeholder{color:rgba(255,255,255,0.2);}
+.rib-save{width:100%;padding:13px;border-radius:12px;background:linear-gradient(135deg,var(--blue),var(--cyan));color:#000;font-family:'Orbitron',sans-serif;font-size:10px;font-weight:900;letter-spacing:2px;border:none;cursor:pointer;}
+.contrat-card{background:rgba(255,68,102,0.04);border:1px solid rgba(255,68,102,0.2);border-radius:18px;padding:22px;margin-bottom:20px;}
+.contrat-header{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
+.contrat-title{font-family:'Orbitron',sans-serif;font-size:13px;font-weight:900;color:var(--red);letter-spacing:1px;}
+.contrat-intro{font-size:13px;color:var(--dim);line-height:1.7;margin-bottom:16px;}
+.contrat-points{display:flex;flex-direction:column;gap:8px;margin-bottom:18px;}
+.contrat-point{display:flex;align-items:flex-start;gap:10px;padding:10px 14px;border-radius:10px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);font-size:13px;color:rgba(232,244,255,0.7);line-height:1.6;}
+.contrat-point::before{content:'▸';color:var(--red);flex-shrink:0;margin-top:1px;}
+.sign-btn{width:100%;padding:14px;border-radius:12px;background:linear-gradient(135deg,#cc2244,var(--red));color:var(--white);font-family:'Orbitron',sans-serif;font-size:11px;font-weight:900;letter-spacing:2px;border:none;cursor:pointer;transition:all .2s;}
+.sign-btn:hover{transform:translateY(-2px);}
+.signed-badge{display:flex;align-items:center;gap:12px;padding:14px 18px;border-radius:12px;background:rgba(0,255,136,0.08);border:1px solid rgba(0,255,136,0.25);}
+.signed-icon{font-size:24px;}
+.signed-title{font-family:'Orbitron',sans-serif;font-size:11px;font-weight:900;color:var(--green);}
+.signed-date{font-size:11px;color:var(--dim);margin-top:2px;}
+.contrat-modal{display:none;position:fixed;inset:0;z-index:9999;background:rgba(5,9,20,0.92);backdrop-filter:blur(12px);align-items:center;justify-content:center;padding:20px;}
+.contrat-modal.show{display:flex;}
+.contrat-modal-card{background:#080e1f;border:1px solid rgba(255,68,102,0.3);border-radius:20px;padding:36px;max-width:640px;width:100%;max-height:85vh;overflow-y:auto;position:relative;}
+.contrat-modal-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--red),transparent);border-radius:20px 20px 0 0;}
+.modal-title{font-family:'Orbitron',sans-serif;font-size:16px;font-weight:900;color:var(--white);margin-bottom:20px;letter-spacing:2px;}
+.modal-section{margin-bottom:18px;}
+.modal-section-title{font-family:'Orbitron',sans-serif;font-size:10px;font-weight:900;color:var(--red);letter-spacing:2px;margin-bottom:8px;}
+.modal-text{font-size:13px;color:rgba(232,244,255,0.65);line-height:1.8;}
+.modal-text strong{color:var(--white);}
+.modal-sign-area{margin-top:24px;padding:18px;border-radius:14px;background:rgba(255,68,102,0.06);border:1px solid rgba(255,68,102,0.2);}
+.modal-sign-label{font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:2px;color:var(--dim);margin-bottom:8px;}
+.modal-sign-input{width:100%;padding:12px 16px;border-radius:10px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);color:var(--white);font-family:'Exo 2',sans-serif;font-size:14px;outline:none;margin-bottom:12px;}
+.modal-sign-input::placeholder{color:rgba(255,255,255,0.2);}
+.modal-checkbox{display:flex;align-items:flex-start;gap:10px;margin-bottom:14px;cursor:pointer;}
+.modal-checkbox input{width:18px;height:18px;border-radius:4px;flex-shrink:0;margin-top:2px;cursor:pointer;accent-color:var(--red);}
+.modal-checkbox-label{font-size:13px;color:var(--dim);line-height:1.6;}
+.modal-sign-btn{width:100%;padding:14px;border-radius:12px;background:linear-gradient(135deg,#cc2244,var(--red));color:var(--white);font-family:'Orbitron',sans-serif;font-size:11px;font-weight:900;letter-spacing:2px;border:none;cursor:pointer;}
+.modal-sign-btn:disabled{opacity:0.4;cursor:not-allowed;}
+.modal-close{position:absolute;top:16px;right:16px;width:32px;height:32px;border-radius:8px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);color:var(--dim);cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;}
+@media(max-width:768px){.sidebar{display:none;}.main{margin-left:0;padding:16px;}.grid2{grid-template-columns:1fr;}.comm-grid,.rev-grid{grid-template-columns:1fr;}}
 </style>
 </head>
 <body>
@@ -121,98 +180,199 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
     <div class="xp-pill"><span>⚡</span><span class="xp-pill-val" id="topbar-xp">0 XP</span></div>
   </div>
 
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-glow"></div>
+    <div class="hero-tag">💰 PROGRAMME D'AFFILIATION · APPORTEUR D'AFFAIRES</div>
+    <div class="hero-title">Transforme ton réseau<br/><span>en revenus réels.</span></div>
+    <div class="hero-desc">Recommande la DHA à ton entourage et touche des commissions sur chaque inscription. Complément de revenu ou activité principale — c'est toi qui choisis.</div>
+    <div class="hero-stats">
+      <div class="hero-stat"><div class="hero-stat-val" id="hero-affilies">0</div><div class="hero-stat-label">AFFILIÉS</div></div>
+      <div class="hero-stat"><div class="hero-stat-val" id="hero-commissions">0€</div><div class="hero-stat-label">COMMISSIONS</div></div>
+      <div class="hero-stat"><div class="hero-stat-val" id="hero-statut" style="font-size:14px;color:var(--cyan);">—</div><div class="hero-stat-label">TON STATUT</div></div>
+    </div>
+  </div>
+
   <!-- STATUT ACTUEL -->
+  <div class="sec-label">TON STATUT ACTUEL</div>
   <div id="statut-wrap"></div>
 
-  <div class="grid-2">
-    <!-- LIEN -->
+  <!-- LIEN + STATS -->
+  <div class="grid2">
     <div class="card">
       <div class="card-label">🔗 TON LIEN D'AFFILIATION</div>
       <div class="lien-box">
         <div class="lien-text" id="affili-link">Chargement...</div>
         <button class="copy-btn" onclick="copyLink()">📋 COPIER</button>
       </div>
-      <div class="copy-confirm" id="copy-confirm">✅ Lien copié ! 🔥</div>
+      <div class="copy-confirm" id="copy-confirm">✅ Lien copié ! Partage-le maintenant 🔥</div>
       <div class="share-btns">
-        <button class="share-btn" onclick="shareWhatsApp()" style="background:rgba(37,211,102,0.15);border:1px solid rgba(37,211,102,0.3);color:#25D366;">WhatsApp</button>
-        <button class="share-btn" onclick="shareTwitter()" style="background:rgba(29,161,242,0.15);border:1px solid rgba(29,161,242,0.3);color:#1DA1F2;">Twitter/X</button>
-        <button class="share-btn" onclick="shareInstagram()" style="background:rgba(225,48,108,0.15);border:1px solid rgba(225,48,108,0.3);color:#E1306C;">Instagram</button>
+        <button class="share-btn" onclick="shareWhatsApp()" style="background:rgba(37,211,102,0.12);border:1px solid rgba(37,211,102,0.25);color:#25D366;">💬 WhatsApp</button>
+        <button class="share-btn" onclick="shareTwitter()" style="background:rgba(29,161,242,0.12);border:1px solid rgba(29,161,242,0.25);color:#1DA1F2;">𝕏 Twitter</button>
+        <button class="share-btn" onclick="shareInstagram()" style="background:rgba(225,48,108,0.12);border:1px solid rgba(225,48,108,0.25);color:#E1306C;">📸 Insta</button>
       </div>
     </div>
-
-    <!-- STATS -->
     <div class="card">
-      <div class="card-label">📊 TES STATS</div>
-      <div class="stat-row"><div class="stat-label">Affiliés recrutés</div><div class="stat-val" id="stat-affilies">0</div></div>
-      <div class="stat-row"><div class="stat-label">Commissions gagnées</div><div class="stat-val" id="stat-commissions">0€</div></div>
-      <div class="stat-row"><div class="stat-label">Ton statut</div><div class="stat-val" id="stat-statut" style="font-size:12px;">—</div></div>
+      <div class="card-label">📊 TES STATISTIQUES</div>
+      <div class="stat-row"><div class="stat-lbl">Affiliés recrutés</div><div class="stat-val" id="stat-affilies">0</div></div>
+      <div class="stat-row"><div class="stat-lbl">Commissions totales</div><div class="stat-val" id="stat-commissions">0€</div></div>
+      <div class="stat-row"><div class="stat-lbl">En cours de versement</div><div class="stat-val" id="stat-encours" style="color:var(--gold);">0€</div></div>
+      <div class="stat-row"><div class="stat-lbl">Déjà versé</div><div class="stat-val" id="stat-verse" style="color:var(--cyan);">0€</div></div>
     </div>
+  </div>
+
+  <!-- MES AFFILIÉS -->
+  <div class="affilies-card">
+    <div class="card-label">👥 MES AFFILIÉS RECRUTÉS</div>
+    <div id="affilies-list"><div class="no-affili">Chargement de tes affiliés... ⏳</div></div>
   </div>
 
   <!-- PALIERS -->
   <div class="paliers-card">
-    <div class="card-label">🏆 LES 3 PALIERS</div>
-    <div class="palier-item">
-      <div class="palier-icon">🥉</div>
-      <div class="palier-info">
-        <div class="palier-name">MEMBRE SIMPLE</div>
-        <div class="palier-desc">Statut par défaut. Recrute 3 membres via ton lien et reçois <strong style="color:var(--green);">1 mois gratuit</strong> offert par l'équipe DHA.</div>
+    <div class="card-label">🏆 LES 3 PALIERS D'AFFILIATION</div>
+    <div class="palier-row">
+      <div class="p-icon">🥉</div>
+      <div class="p-info">
+        <div class="p-name">MEMBRE SIMPLE</div>
+        <div class="p-desc">Recrute <strong style="color:var(--white);">3 membres</strong> via ton lien → reçois <strong style="color:var(--green);">1 mois gratuit</strong> offert par l'équipe DHA. Aucune démarche administrative requise.</div>
       </div>
-      <div class="palier-status" id="palier-1-status" style="background:rgba(0,255,136,0.1);color:var(--green);border:1px solid rgba(0,255,136,0.2);">ACTIF</div>
+      <div class="p-status" id="pal-1-status">—</div>
     </div>
-    <div class="palier-item">
-      <div class="palier-icon">🥈</div>
-      <div class="palier-info">
-        <div class="palier-name">AFFILIÉ</div>
-        <div class="palier-desc">Active le mode affilié et gagne <strong style="color:var(--cyan);">20% de commission</strong> sur chaque vente générée via ton lien.</div>
+    <div class="palier-row">
+      <div class="p-icon">🥈</div>
+      <div class="p-info">
+        <div class="p-name">AFFILIÉ</div>
+        <div class="p-desc">Active le mode affilié et gagne <strong style="color:var(--cyan);">20% de commission</strong> sur chaque vente directe générée via ton lien. Nécessite un statut auto-entrepreneur.</div>
       </div>
-      <div class="palier-status" id="palier-2-status" style="background:rgba(255,255,255,0.05);color:var(--dim);border:1px solid rgba(255,255,255,0.1);">INACTIF</div>
+      <div class="p-status" id="pal-2-status">—</div>
     </div>
-    <div class="palier-item">
-      <div class="palier-icon">🥇</div>
-      <div class="palier-info">
-        <div class="palier-name">AMBASSADEUR</div>
-        <div class="palier-desc">Débloqué après <strong style="color:var(--gold);">10 affiliés</strong>. Tu touches sur tout ton réseau :<br/>
-        <strong style="color:var(--gold);">25%</strong> niveau 1 · <strong style="color:var(--cyan);">10%</strong> niveau 2 · <strong style="color:var(--purple);">5%</strong> niveau 3</div>
+    <div class="palier-row">
+      <div class="p-icon">🥇</div>
+      <div class="p-info">
+        <div class="p-name">AMBASSADEUR</div>
+        <div class="p-desc">Débloqué après <strong style="color:var(--gold);">10 affiliés</strong>. Commission sur 3 niveaux : <strong style="color:var(--gold);">25%</strong> niveau 1 · <strong style="color:var(--cyan);">10%</strong> niveau 2 · <strong style="color:var(--purple);">5%</strong> niveau 3</div>
       </div>
-      <div class="palier-status" id="palier-3-status" style="background:rgba(255,255,255,0.05);color:var(--dim);border:1px solid rgba(255,255,255,0.1);">🔒 10 AFFILIÉS</div>
-    </div>
-  </div>
-  <!-- DASHBOARD REVENUS -->
-<div class="card" style="margin-bottom:24px;">
-  <div class="card-label">💳 MES REVENUS & PAIEMENT</div>
-  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:24px;">
-    <div style="padding:16px;border-radius:12px;background:rgba(0,255,136,0.06);border:1px solid rgba(0,255,136,0.2);text-align:center;">
-      <div style="font-family:'Orbitron',sans-serif;font-size:28px;font-weight:900;color:var(--green);" id="rev-total">0€</div>
-      <div style="font-family:'Orbitron',sans-serif;font-size:7px;letter-spacing:2px;color:var(--dim);margin-top:4px;">TOTAL GAGNÉ</div>
-    </div>
-    <div style="padding:16px;border-radius:12px;background:rgba(255,215,0,0.06);border:1px solid rgba(255,215,0,0.2);text-align:center;">
-      <div style="font-family:'Orbitron',sans-serif;font-size:28px;font-weight:900;color:var(--gold);" id="rev-encours">0€</div>
-      <div style="font-family:'Orbitron',sans-serif;font-size:7px;letter-spacing:2px;color:var(--dim);margin-top:4px;">EN COURS</div>
-    </div>
-    <div style="padding:16px;border-radius:12px;background:rgba(0,212,255,0.06);border:1px solid rgba(0,212,255,0.2);text-align:center;">
-      <div style="font-family:'Orbitron',sans-serif;font-size:28px;font-weight:900;color:var(--cyan);" id="rev-verse">0€</div>
-      <div style="font-family:'Orbitron',sans-serif;font-size:7px;letter-spacing:2px;color:var(--dim);margin-top:4px;">DÉJÀ VERSÉ</div>
+      <div class="p-status" id="pal-3-status">—</div>
     </div>
   </div>
 
-  <!-- RIB -->
-  <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:20px;">
-    <div style="font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:2px;color:var(--dim);margin-bottom:12px;">🏦 TON RIB — POUR RECEVOIR TES PAIEMENTS</div>
-    <div id="rib-display" style="display:none;">
-      <div style="padding:12px 16px;border-radius:10px;background:rgba(0,255,136,0.06);border:1px solid rgba(0,255,136,0.2);font-size:13px;color:var(--green);margin-bottom:12px;" id="rib-text"></div>
-      <button onclick="editRib()" style="padding:10px 20px;border-radius:10px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);color:var(--dim);font-family:'Orbitron',sans-serif;font-size:9px;cursor:pointer;">✏️ MODIFIER</button>
+  <!-- REVENUS + RIB -->
+  <div class="rev-card">
+    <div class="card-label">💳 MES REVENUS & PAIEMENT</div>
+    <div class="rev-grid">
+      <div class="rc" style="background:rgba(0,255,136,0.05);border:1px solid rgba(0,255,136,0.18);">
+        <div class="v" id="rev-total" style="color:var(--green);">0€</div><div class="l">TOTAL GAGNÉ</div>
+      </div>
+      <div class="rc" style="background:rgba(255,215,0,0.05);border:1px solid rgba(255,215,0,0.18);">
+        <div class="v" id="rev-encours" style="color:var(--gold);">0€</div><div class="l">EN COURS</div>
+      </div>
+      <div class="rc" style="background:rgba(0,212,255,0.05);border:1px solid rgba(0,212,255,0.18);">
+        <div class="v" id="rev-verse" style="color:var(--cyan);">0€</div><div class="l">DÉJÀ VERSÉ</div>
+      </div>
     </div>
-    <div id="rib-form">
-      <input id="rib-input" placeholder="FR76 XXXX XXXX XXXX XXXX XXXX XXX" style="width:100%;padding:12px 16px;border-radius:10px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);color:var(--white);font-family:'Exo 2',sans-serif;font-size:14px;outline:none;margin-bottom:10px;"/>
-      <button onclick="saveRib()" style="width:100%;padding:13px;border-radius:12px;background:linear-gradient(135deg,var(--blue),var(--cyan));color:#000;font-family:'Orbitron',sans-serif;font-size:10px;font-weight:900;letter-spacing:2px;border:none;cursor:pointer;">💾 SAUVEGARDER MON RIB</button>
+
+    <!-- RIB -->
+    <div class="rib-section">
+      <div class="rib-label">🏦 TON RIB — POUR RECEVOIR TES PAIEMENTS</div>
+      <div id="rib-display" style="display:none;">
+        <div class="rib-display">
+          <div class="rib-val" id="rib-masked">FR76 •••• •••• •••• •••• •••• •••</div>
+          <div class="rib-btns">
+            <button class="rib-btn-sm" onclick="editRib()" style="background:rgba(0,212,255,0.1);border:1px solid rgba(0,212,255,0.25);color:var(--cyan);">✏️ Modifier</button>
+            <button class="rib-btn-sm" onclick="deleteRib()" style="background:rgba(255,68,102,0.1);border:1px solid rgba(255,68,102,0.25);color:var(--red);">🗑️ Supprimer</button>
+          </div>
+        </div>
+        <div style="font-size:11px;color:var(--dim);line-height:1.6;margin-top:6px;">🔒 Ton RIB est sécurisé et uniquement visible par l'équipe DHA pour le versement de tes commissions.</div>
+      </div>
+      <div id="rib-form">
+        <input class="rib-input" id="rib-input" placeholder="FR76 XXXX XXXX XXXX XXXX XXXX XXX"/>
+        <button class="rib-save" onclick="saveRib()">💾 SAUVEGARDER MON RIB</button>
+        <div style="font-size:11px;color:var(--dim);line-height:1.6;margin-top:8px;">🔒 Ton RIB est sécurisé et uniquement visible par l'équipe DHA pour le versement de tes commissions.</div>
+      </div>
     </div>
-    <div style="margin-top:10px;font-size:11px;color:var(--dim);line-height:1.6;">🔒 Ton RIB est sécurisé et uniquement visible par l'équipe DHA pour le versement de tes commissions.</div>
   </div>
-</div>
+
+  <!-- CONTRAT LÉGAL -->
+  <div class="contrat-card">
+    <div class="contrat-header">
+      <span style="font-size:24px;">📄</span>
+      <div class="contrat-title">CONTRAT PRESTATAIRE DE SERVICES</div>
+    </div>
+    <div class="contrat-intro">Avant de percevoir des commissions en tant qu'affilié, tu dois signer le contrat d'apporteur d'affaires DHA. Ce contrat est <strong style="color:var(--white);">obligatoire</strong> pour que notre collaboration soit légale et que tu puisses être rémunéré.</div>
+    <div class="contrat-points">
+      <div class="contrat-point">Tu t'engages à te déclarer en <strong style="color:var(--white);">auto-entrepreneur</strong> pour exercer cette activité d'apporteur d'affaires</div>
+      <div class="contrat-point">Tu agis en tant que <strong style="color:var(--white);">prestataire de services indépendant</strong> — tu n'es pas salarié de la DHA</div>
+      <div class="contrat-point">Les commissions varient selon ton statut : <strong style="color:var(--cyan);">Affilié 20%</strong> · <strong style="color:var(--gold);">Ambassadeur 25% / 10% / 5%</strong> selon les niveaux</div>
+      <div class="contrat-point">Les paiements sont effectués <strong style="color:var(--white);">mensuellement</strong> sur présentation de facture et après vérification des commissions dues</div>
+      <div class="contrat-point">Tu es <strong style="color:var(--white);">seul responsable</strong> de tes déclarations fiscales et sociales liées à ces revenus</div>
+      <div class="contrat-point">La DHA se réserve le droit de <strong style="color:var(--white);">suspendre l'accès</strong> au programme en cas de non-respect des conditions</div>
+    </div>
+    <div id="contrat-btn-wrap">
+      <button class="sign-btn" onclick="showContratModal()">📝 LIRE ET SIGNER LE CONTRAT COMPLET</button>
+    </div>
+    <div id="contrat-signed" style="display:none;">
+      <div class="signed-badge">
+        <div class="signed-icon">✅</div>
+        <div>
+          <div class="signed-title">CONTRAT SIGNÉ</div>
+          <div class="signed-date" id="signed-date">Signé le —</div>
+        </div>
+      </div>
+    </div>
+  </div>
 </main>
 
-<script>
+<!-- MODAL CONTRAT -->
+<div class="contrat-modal" id="contrat-modal">
+  <div class="contrat-modal-card">
+    <button class="modal-close" onclick="hideContratModal()">✕</button>
+    <div class="modal-title">📄 CONTRAT D'APPORTEUR D'AFFAIRES — DHA</div>
+
+    <div class="modal-section">
+      <div class="modal-section-title">ARTICLE 1 — PARTIES</div>
+      <div class="modal-text">Ce contrat est conclu entre la <strong>Digital Hustler Academy (DHA)</strong>, ci-après dénommée "la Société", et le membre signataire, ci-après dénommé "l'Apporteur d'Affaires".</div>
+    </div>
+    <div class="modal-section">
+      <div class="modal-section-title">ARTICLE 2 — OBJET</div>
+      <div class="modal-text">L'Apporteur d'Affaires s'engage à promouvoir les offres de formation de la DHA auprès de son réseau en échange de commissions sur les ventes générées. Cette activité est exercée à titre de <strong>prestation de services indépendante</strong>.</div>
+    </div>
+    <div class="modal-section">
+      <div class="modal-section-title">ARTICLE 3 — STATUT LÉGAL OBLIGATOIRE</div>
+      <div class="modal-text">Pour percevoir des commissions, l'Apporteur d'Affaires doit obligatoirement être déclaré en tant qu'<strong>auto-entrepreneur</strong> (micro-entrepreneur) auprès de l'URSSAF. Il s'engage à fournir son numéro SIRET avant tout premier versement. La DHA ne peut pas rémunérer une personne sans statut légal reconnu.</div>
+    </div>
+    <div class="modal-section">
+      <div class="modal-section-title">ARTICLE 4 — RÉMUNÉRATION</div>
+      <div class="modal-text">
+        Les commissions sont calculées comme suit :<br/><br/>
+        • <strong>Palier Affilié :</strong> 20% sur chaque vente directe (niveau 1)<br/>
+        • <strong>Palier Ambassadeur (10+ affiliés) :</strong> 25% niveau 1 · 10% niveau 2 · 5% niveau 3<br/><br/>
+        Les paiements sont effectués mensuellement, sur présentation d'une <strong>facture auto-entrepreneur</strong> adressée à la DHA, après validation des commissions dues.
+      </div>
+    </div>
+    <div class="modal-section">
+      <div class="modal-section-title">ARTICLE 5 — OBLIGATIONS FISCALES</div>
+      <div class="modal-text">L'Apporteur d'Affaires est seul responsable de ses <strong>déclarations fiscales et sociales</strong> liées aux revenus perçus dans le cadre de ce contrat. La DHA ne prend en charge aucune cotisation sociale ni impôt pour le compte de l'Apporteur d'Affaires.</div>
+    </div>
+    <div class="modal-section">
+      <div class="modal-section-title">ARTICLE 6 — DURÉE & RÉSILIATION</div>
+      <div class="modal-text">Ce contrat est conclu pour une durée <strong>indéterminée</strong>. Chaque partie peut y mettre fin à tout moment avec un préavis de 30 jours. La DHA se réserve le droit de suspendre immédiatement l'accès au programme en cas de non-respect des présentes conditions.</div>
+    </div>
+
+    <div class="modal-sign-area">
+      <div class="modal-sign-label">SIGNATURE ÉLECTRONIQUE — ÉCRIS TON NOM COMPLET</div>
+      <input class="modal-sign-input" id="sign-input" placeholder="Prénom Nom (ex: Jean Dupont)" oninput="checkSignReady()"/>
+      <label class="modal-checkbox">
+        <input type="checkbox" id="check-ae" onchange="checkSignReady()"/>
+        <span class="modal-checkbox-label">Je confirme que je suis ou vais me déclarer en <strong style="color:var(--white);">auto-entrepreneur</strong> avant de percevoir mes premières commissions</span>
+      </label>
+      <label class="modal-checkbox">
+        <input type="checkbox" id="check-lu" onchange="checkSignReady()"/>
+        <span class="modal-checkbox-label">J'ai lu et j'accepte l'ensemble des conditions de ce contrat d'apporteur d'affaires</span>
+      </label>
+      <button class="modal-sign-btn" id="modal-sign-btn" onclick="signContrat()" disabled>✍️ SIGNER LE CONTRAT</button>
+    </div>
+  </div>
+</div><script>
 const SUPABASE_URL='https://kdetwppxsfoagyndrlzr.supabase.co';
 const SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtkZXR3cHB4c2ZvYWd5bmRybHpyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzcyMzM3NjQsImV4cCI6MjA5MjgwOTc2NH0.OodaFQKEHcncDYdO6uM121NAUbyxD4UxpptSjzzZOi0';
 let member=null;
@@ -220,34 +380,75 @@ let affiliLink='';
 
 function copyLink(){
   navigator.clipboard.writeText(affiliLink);
-  document.getElementById('copy-confirm').classList.add('show');
-  setTimeout(()=>document.getElementById('copy-confirm').classList.remove('show'),3000);
+  const c=document.getElementById('copy-confirm');
+  c.classList.add('show');
+  setTimeout(()=>c.classList.remove('show'),3000);
 }
 function shareWhatsApp(){window.open('https://wa.me/?text='+encodeURIComponent('🔥 Rejoins la Digital Hustler Academy — formation trading gamifiée ! '+affiliLink));}
 function shareTwitter(){window.open('https://twitter.com/intent/tweet?text='+encodeURIComponent('🔥 Formation trading gamifiée avec XP et rangs ! '+affiliLink));}
 function shareInstagram(){copyLink();alert('Lien copié ! Colle-le dans ta bio Instagram. 🔥');}
 
-async function activateAffilie(){
-  if(!confirm('Activer le mode Affilié ? Tu gagneras 20% sur chaque vente mais tu ne bénéficieras plus du mois gratuit à 3 affiliés.'))return;
-  try{
-    await fetch(SUPABASE_URL+'/rest/v1/membres?email=eq.'+encodeURIComponent(member.email),{
-      method:'PATCH',
-      headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY},
-      body:JSON.stringify({statut_affiliation:'affilie'})
-    });
-    member.statut_affiliation='affilie';
-    localStorage.setItem('dha_member',JSON.stringify(member));
-    renderStatut();
-    alert('Mode Affilié activé ! 🔥 Commence à partager ton lien.');
-  }catch(e){alert('Erreur. Réessaie.');}
+function showContratModal(){document.getElementById('contrat-modal').classList.add('show');}
+function hideContratModal(){document.getElementById('contrat-modal').classList.remove('show');}
+
+function checkSignReady(){
+  const name=document.getElementById('sign-input').value.trim();
+  const ae=document.getElementById('check-ae').checked;
+  const lu=document.getElementById('check-lu').checked;
+  document.getElementById('modal-sign-btn').disabled=!(name.length>3&&ae&&lu);
 }
 
-function renderStatut(){
-  const statut=member.statut_affiliation||'membre_simple';
-  const nb=member.nb_affilies||0;
+async function signContrat(){
+  const name=document.getElementById('sign-input').value.trim();
+  const now=new Date();
+  const dateStr=now.toLocaleDateString('fr-FR',{day:'2-digit',month:'2-digit',year:'numeric'})+' à '+now.getHours()+'h'+String(now.getMinutes()).padStart(2,'0');
+  const signData={contrat_signe:true,contrat_date:now.toISOString(),contrat_nom:name};
+  try{
+    await fetch(SUPABASE_URL+'/rest/v1/membres?email=eq.'+encodeURIComponent(member.email).replace(/\./g,'%2E'),{
+      method:'PATCH',
+      headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY},
+      body:JSON.stringify(signData)
+    });
+  }catch(e){}
+  member.contrat_signe=true;
+  member.contrat_date=now.toISOString();
+  localStorage.setItem('dha_member',JSON.stringify(member));
+  hideContratModal();
+  showSignedState(dateStr);
+  alert('Contrat signé ! 🎉 Bienvenue dans le programme DHA.');
+}
+
+function showSignedState(dateStr){
+  document.getElementById('contrat-btn-wrap').style.display='none';
+  document.getElementById('contrat-signed').style.display='block';
+  document.getElementById('signed-date').textContent='Signé le '+dateStr;
+}
+
+function renderStatutPaliers(statut,nb){
+  const s1=document.getElementById('pal-1-status');
+  const s2=document.getElementById('pal-2-status');
+  const s3=document.getElementById('pal-3-status');
+
+  if(statut==='membre_simple'){
+    s1.textContent='✅ ACTIF';s1.style.cssText='background:rgba(0,255,136,0.1);color:var(--green);border:1px solid rgba(0,255,136,0.25);';
+    s2.textContent='INACTIF';s2.style.cssText='background:rgba(255,255,255,0.05);color:var(--dim);border:1px solid rgba(255,255,255,0.1);';
+    s3.textContent='🔒 10 AFFILIÉS';s3.style.cssText='background:rgba(255,255,255,0.05);color:var(--dim);border:1px solid rgba(255,255,255,0.1);';
+  } else if(statut==='affilie'){
+    s1.textContent='DÉPASSÉ';s1.style.cssText='background:rgba(255,255,255,0.04);color:rgba(232,244,255,0.3);border:1px solid rgba(255,255,255,0.07);';
+    s2.textContent='✅ ACTIF';s2.style.cssText='background:rgba(0,212,255,0.1);color:var(--cyan);border:1px solid rgba(0,212,255,0.25);';
+    s3.textContent='🔒 '+(10-nb)+' AFFILIÉS';s3.style.cssText='background:rgba(255,255,255,0.05);color:var(--dim);border:1px solid rgba(255,255,255,0.1);';
+  } else if(statut==='ambassadeur'){
+    s1.textContent='DÉPASSÉ';s1.style.cssText='background:rgba(255,255,255,0.04);color:rgba(232,244,255,0.3);border:1px solid rgba(255,255,255,0.07);';
+    s2.textContent='DÉPASSÉ';s2.style.cssText='background:rgba(255,255,255,0.04);color:rgba(232,244,255,0.3);border:1px solid rgba(255,255,255,0.07);';
+    s3.textContent='✅ ACTIF';s3.style.cssText='background:rgba(255,215,0,0.1);color:var(--gold);border:1px solid rgba(255,215,0,0.25);';
+  }
+}
+
+function renderStatut(statut,nb){
   const wrap=document.getElementById('statut-wrap');
+  document.getElementById('hero-affilies').textContent=nb;
+  document.getElementById('hero-statut').textContent=statut==='ambassadeur'?'🥇 AMBASSADEUR':statut==='affilie'?'🥈 AFFILIÉ':'🥉 MEMBRE SIMPLE';
   document.getElementById('stat-affilies').textContent=nb;
-  document.getElementById('stat-statut').textContent=statut==='ambassadeur'?'🥇 AMBASSADEUR':statut==='affilie'?'🥈 AFFILIÉ':'🥉 MEMBRE SIMPLE';
 
   if(statut==='membre_simple'){
     const pct=Math.min((nb/3)*100,100);
@@ -255,16 +456,18 @@ function renderStatut(){
       <div class="statut-card membre">
         <div class="statut-header">
           <div class="statut-icon">🥉</div>
-          <div><div class="statut-name">MEMBRE SIMPLE</div><div class="statut-desc">Recrute 3 membres pour recevoir 1 mois gratuit</div></div>
-          <div class="statut-badge badge-actif">ACTIF</div>
+          <div style="flex:1;"><div class="statut-name">MEMBRE SIMPLE</div><div class="statut-sub">Recrute 3 membres pour recevoir 1 mois gratuit</div></div>
+          <div class="statut-badge b-actif">✅ ACTIF</div>
         </div>
-        <div class="progress-wrap">
-          <div class="progress-label"><span>PROGRESSION VERS 1 MOIS GRATUIT</span><span>${nb}/3 affiliés</span></div>
-          <div class="progress-bar"><div class="progress-fill fill-membre" style="width:${pct}%"></div></div>
+        <div class="pb-wrap">
+          <div class="pb-lbl"><span>PROGRESSION VERS 1 MOIS GRATUIT</span><span>${nb}/3 affiliés</span></div>
+          <div class="pb"><div class="pb-fill fill-membre" style="width:${pct}%"></div></div>
         </div>
-        ${nb<3?`<button class="activate-btn affilie" onclick="activateAffilie()">⚡ ACTIVER LE MODE AFFILIÉ (20% COMMISSION)</button>
-        <div style="font-size:11px;color:var(--dim);text-align:center;margin-top:8px;">Attention — si tu actives le mode Affilié avant 3 filleuls tu perds le mois gratuit.</div>`:''}
-        ${nb>=3?`<div style="padding:14px;border-radius:12px;background:rgba(0,255,136,0.08);border:1px solid rgba(0,255,136,0.2);text-align:center;font-size:14px;color:var(--green);margin-top:12px;">🎉 Félicitations ! Tu as atteint 3 affiliés. L\'équipe DHA va t\'offrir 1 mois gratuit sous 48h.</div>`:''}
+        ${nb>=3?`<div style="padding:14px;border-radius:12px;background:rgba(0,255,136,0.08);border:1px solid rgba(0,255,136,0.2);text-align:center;font-size:14px;color:var(--green);margin-top:10px;">🎉 Félicitations ! Tu as 3 affiliés. L'équipe DHA va t'offrir 1 mois gratuit sous 48h.</div>
+        <button class="activate-btn" onclick="activateAffilie()">⚡ PASSER EN MODE AFFILIÉ (20% COMMISSION)</button>
+        <div style="font-size:11px;color:var(--dim);text-align:center;margin-top:8px;">Tu dois avoir signé le contrat et avoir un statut auto-entrepreneur.</div>`:
+        `<button class="activate-btn" onclick="activateAffilie()">⚡ ACTIVER LE MODE AFFILIÉ (20% COMMISSION)</button>
+        <div style="font-size:11px;color:var(--dim);text-align:center;margin-top:8px;">⚠️ Si tu actives avant 3 affiliés tu perds le mois gratuit.</div>`}
       </div>`;
   } else if(statut==='affilie'){
     const pct=Math.min((nb/10)*100,100);
@@ -272,17 +475,17 @@ function renderStatut(){
       <div class="statut-card affilie">
         <div class="statut-header">
           <div class="statut-icon">🥈</div>
-          <div><div class="statut-name">AFFILIÉ</div><div class="statut-desc">Tu gagnes 20% sur chaque vente directe</div></div>
-          <div class="statut-badge badge-actif">ACTIF</div>
+          <div style="flex:1;"><div class="statut-name">AFFILIÉ</div><div class="statut-sub">Tu gagnes 20% sur chaque vente directe générée</div></div>
+          <div class="statut-badge b-actif">✅ ACTIF</div>
         </div>
-        <div class="progress-wrap">
-          <div class="progress-label"><span>PROGRESSION VERS AMBASSADEUR</span><span>${nb}/10 affiliés</span></div>
-          <div class="progress-bar"><div class="progress-fill fill-affilie" style="width:${pct}%"></div></div>
+        <div class="pb-wrap">
+          <div class="pb-lbl"><span>PROGRESSION VERS AMBASSADEUR</span><span>${nb}/10 affiliés</span></div>
+          <div class="pb"><div class="pb-fill fill-affilie" style="width:${pct}%"></div></div>
         </div>
-        <div class="commission-grid">
-          <div class="commission-item n1"><div class="commission-pct n1">20%</div><div class="commission-label">NIVEAU 1</div></div>
-          <div class="commission-item n2" style="opacity:0.3"><div class="commission-pct n2">—</div><div class="commission-label">NIVEAU 2</div></div>
-          <div class="commission-item n3" style="opacity:0.3"><div class="commission-pct n3">—</div><div class="commission-label">NIVEAU 3</div></div>
+        <div class="comm-grid">
+          <div class="cc" style="background:rgba(255,215,0,0.08);border:1px solid rgba(255,215,0,0.2);"><div class="pct" style="color:var(--gold);">20%</div><div class="lbl">NIVEAU 1</div></div>
+          <div class="cc" style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);opacity:0.3;"><div class="pct" style="color:var(--cyan);">—</div><div class="lbl">NIVEAU 2</div></div>
+          <div class="cc" style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);opacity:0.3;"><div class="pct" style="color:var(--purple);">—</div><div class="lbl">NIVEAU 3</div></div>
         </div>
       </div>`;
   } else if(statut==='ambassadeur'){
@@ -290,74 +493,101 @@ function renderStatut(){
       <div class="statut-card ambassadeur">
         <div class="statut-header">
           <div class="statut-icon">🥇</div>
-          <div><div class="statut-name">AMBASSADEUR</div><div class="statut-desc">Tu touches sur tout ton réseau jusqu'au niveau 3</div></div>
-          <div class="statut-badge badge-actif">ACTIF</div>
+          <div style="flex:1;"><div class="statut-name">AMBASSADEUR</div><div class="statut-sub">Tu touches sur tout ton réseau jusqu'au niveau 3</div></div>
+          <div class="statut-badge b-actif">✅ ACTIF</div>
         </div>
-        <div class="commission-grid">
-          <div class="commission-item n1"><div class="commission-pct n1">25%</div><div class="commission-label">NIVEAU 1</div></div>
-          <div class="commission-item n2"><div class="commission-pct n2">10%</div><div class="commission-label">NIVEAU 2</div></div>
-          <div class="commission-item n3"><div class="commission-pct n3">5%</div><div class="commission-label">NIVEAU 3</div></div>
+        <div class="comm-grid">
+          <div class="cc" style="background:rgba(255,215,0,0.08);border:1px solid rgba(255,215,0,0.2);"><div class="pct" style="color:var(--gold);">25%</div><div class="lbl">NIVEAU 1</div></div>
+          <div class="cc" style="background:rgba(0,212,255,0.06);border:1px solid rgba(0,212,255,0.15);"><div class="pct" style="color:var(--cyan);">10%</div><div class="lbl">NIVEAU 2</div></div>
+          <div class="cc" style="background:rgba(157,78,221,0.06);border:1px solid rgba(157,78,221,0.15);"><div class="pct" style="color:var(--purple);">5%</div><div class="lbl">NIVEAU 3</div></div>
         </div>
       </div>`;
-    document.getElementById('palier-3-status').textContent='✅ ACTIF';
-    document.getElementById('palier-3-status').style.cssText='background:rgba(255,215,0,0.1);color:var(--gold);border:1px solid rgba(255,215,0,0.3);';
   }
-
-  if(statut==='affilie'||statut==='ambassadeur'){
-    document.getElementById('palier-2-status').textContent='✅ ACTIF';
-    document.getElementById('palier-2-status').style.cssText='background:rgba(0,212,255,0.1);color:var(--cyan);border:1px solid rgba(0,212,255,0.3);';
-  }
+  renderStatutPaliers(statut,nb);
 }
 
-async function checkUpgradeAmbassadeur(){
-  if((member.statut_affiliation==='affilie')&&(member.nb_affilies||0)>=10){
-    await fetch(SUPABASE_URL+'/rest/v1/membres?email=eq.'+encodeURIComponent(member.email),{
+async function activateAffilie(){
+  if(!document.getElementById('contrat-signed')||document.getElementById('contrat-signed').style.display==='none'){
+    alert('⚠️ Tu dois d\'abord signer le contrat prestataire avant d\'activer le mode affilié.');
+    document.getElementById('contrat-card')?.scrollIntoView({behavior:'smooth'});
+    return;
+  }
+  if(!confirm('Activer le mode Affilié ? Tu gagneras 20% sur chaque vente.'))return;
+  try{
+    await fetch(SUPABASE_URL+'/rest/v1/membres?email=eq.'+encodeURIComponent(member.email).replace(/\./g,'%2E'),{
       method:'PATCH',
       headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY},
-      body:JSON.stringify({statut_affiliation:'ambassadeur'})
+      body:JSON.stringify({statut_affiliation:'affilie'})
     });
-    member.statut_affiliation='ambassadeur';
+    member.statut_affiliation='affilie';
     localStorage.setItem('dha_member',JSON.stringify(member));
-  }
+    renderStatut('affilie',member.nb_affilies||0);
+    alert('Mode Affilié activé ! 🔥 Commence à partager ton lien.');
+  }catch(e){alert('Erreur. Réessaie.');}
 }
 
-function init(){
-  const stored=localStorage.getItem('dha_member');
-  if(!stored){window.location.href='dha-connexion.html';return;}
-  member=JSON.parse(stored);
-  document.getElementById('sb-pseudo').textContent=('@'+(member.pseudo||'HUSTLER')).toUpperCase();
-  document.getElementById('topbar-xp').textContent=(member.xp||0)+' XP';
-  if(member.avatar){document.getElementById('sb-avatar').innerHTML='<img src="'+member.avatar+'" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"/>';}
-  affiliLink='https://quincy-hsr.github.io/dha-platform2/dha-inscription.html?ref='+encodeURIComponent(member.pseudo||'');
-  document.getElementById('affili-link').textContent=affiliLink;
-  checkUpgradeAmbassadeur();
-  renderStatut();
-  // Charger RIB
-if(member.rib){
-  document.getElementById('rib-text').textContent=member.rib;
-  document.getElementById('rib-display').style.display='block';
-  document.getElementById('rib-form').style.display='none';
-}
-
-async function updateRevenus(){
+async function loadAffilie(){
   try{
-    const res=await fetch(SUPABASE_URL+'/rest/v1/membres?email=eq.'+encodeURIComponent(member.email)+'&select=commissions_total,commissions_encours,commissions_versees,nb_affilies,statut_affiliation',{
+    const res=await fetch(SUPABASE_URL+'/rest/v1/membres?parraine_par=eq.'+encodeURIComponent(member.pseudo||'')+'&select=pseudo,date_inscription,pack',{
       headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY}
     });
     const data=await res.json();
-    if(data&&data.length>0){
-      member.commissions_total=data[0].commissions_total||0;
-      member.commissions_encours=data[0].commissions_encours||0;
-      member.commissions_versees=data[0].commissions_versees||0;
-      member.nb_affilies=data[0].nb_affilies||0;
-      member.statut_affiliation=data[0].statut_affiliation||'membre_simple';
-      localStorage.setItem('dha_member',JSON.stringify(member));
+    const list=document.getElementById('affilies-list');
+    if(!data||data.length===0){
+      list.innerHTML='<div class="no-affili">Tu n\'as pas encore d\'affiliés. Partage ton lien ! 🔥</div>';
+      return;
     }
-  }catch(e){}
-  document.getElementById('rev-total').textContent=(member.commissions_total||0)+'€';
-  document.getElementById('rev-encours').textContent=(member.commissions_encours||0)+'€';
-  document.getElementById('rev-verse').textContent=(member.commissions_versees||0)+'€';
+    const statut=member.statut_affiliation||'membre_simple';
+    const pct=statut==='ambassadeur'?25:statut==='affilie'?20:0;
+    const packPrix={medium:150,pro:500};
+    list.innerHTML='';
+    data.forEach(m=>{
+      const prix=packPrix[m.pack||'medium']||150;
+      const comm=statut!=='membre_simple'?Math.round(prix*pct/100):0;
+      const date=m.date_inscription?new Date(m.date_inscription).toLocaleDateString('fr-FR'):'—';
+      const icons=['⚡','🔥','🎮','🚀','💎','👑'];
+      const icon=icons[Math.floor(Math.random()*icons.length)];
+      list.innerHTML+=`
+        <div class="affi-row">
+          <div class="affi-avatar">${icon}</div>
+          <div class="affi-info">
+            <div class="affi-pseudo">@${m.pseudo}</div>
+            <div class="affi-meta">Inscrit le ${date} · Pack ${(m.pack||'medium').toUpperCase()}</div>
+          </div>
+          <div class="affi-comm">${comm>0?'+'+comm+'€':'—'}</div>
+        </div>`;
+    });
+  }catch(e){
+    document.getElementById('affilies-list').innerHTML='<div class="no-affili">Impossible de charger tes affiliés pour le moment.</div>';
+  }
 }
+
+function saveRib(){
+  const val=document.getElementById('rib-input').value.trim();
+  if(!val){alert('Saisis ton RIB d\'abord.');return;}
+  if(val.length<10){alert('RIB invalide. Vérifie le format FR76...');return;}
+  saveRibToSupabase(val);
+}
+
+async function saveRibToSupabase(val){
+  try{
+    await fetch(SUPABASE_URL+'/rest/v1/membres?email=eq.'+encodeURIComponent(member.email).replace(/\./g,'%2E'),{
+      method:'PATCH',
+      headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY},
+      body:JSON.stringify({rib:val})
+    });
+  }catch(e){}
+  member.rib=val;
+  localStorage.setItem('dha_member',JSON.stringify(member));
+  showRibDisplay(val);
+  alert('RIB sauvegardé ! 🔥');
+}
+
+function showRibDisplay(val){
+  const masked=val.substring(0,4)+' •••• •••• •••• •••• •••• •••';
+  document.getElementById('rib-masked').textContent=masked;
+  document.getElementById('rib-display').style.display='block';
+  document.getElementById('rib-form').style.display='none';
 }
 
 function editRib(){
@@ -365,6 +595,93 @@ function editRib(){
   document.getElementById('rib-form').style.display='block';
   document.getElementById('rib-input').value=member.rib||'';
 }
+
+async function deleteRib(){
+  if(!confirm('Supprimer ton RIB ?'))return;
+  try{
+    await fetch(SUPABASE_URL+'/rest/v1/membres?email=eq.'+encodeURIComponent(member.email).replace(/\./g,'%2E'),{
+      method:'PATCH',
+      headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY},
+      body:JSON.stringify({rib:null})
+    });
+  }catch(e){}
+  member.rib=null;
+  localStorage.setItem('dha_member',JSON.stringify(member));
+  document.getElementById('rib-display').style.display='none';
+  document.getElementById('rib-form').style.display='block';
+  document.getElementById('rib-input').value='';
+}
+
+async function init(){
+  const stored=localStorage.getItem('dha_member');
+  if(!stored){window.location.href='dha-connexion.html';return;}
+  member=JSON.parse(stored);
+  document.getElementById('sb-pseudo').textContent=('@'+(member.pseudo||'HUSTLER')).toUpperCase();
+  document.getElementById('topbar-xp').textContent=(member.xp||0)+' XP';
+  if(member.avatar){document.getElementById('sb-avatar').innerHTML='<img src="'+member.avatar+'" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"/>';}
+
+  affiliLink='https://digitalhustleracademy.digital/dha-inscription.html?ref='+encodeURIComponent(member.pseudo||'');
+  document.getElementById('affili-link').textContent=affiliLink;
+
+  try{
+    const res=await fetch(SUPABASE_URL+'/rest/v1/membres?email=eq.'+encodeURIComponent(member.email).replace(/\./g,'%2E')+'&select=nb_affilies,statut_affiliation,commissions_total,commissions_encours,commissions_versees,rib,contrat_signe,contrat_date',{
+      headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY}
+    });
+    const data=await res.json();
+    if(data&&data.length>0){
+      member.nb_affilies=data[0].nb_affilies||0;
+      member.statut_affiliation=data[0].statut_affiliation||'membre_simple';
+      member.commissions_total=data[0].commissions_total||0;
+      member.commissions_encours=data[0].commissions_encours||0;
+      member.commissions_versees=data[0].commissions_versees||0;
+      member.rib=data[0].rib||null;
+      member.contrat_signe=data[0].contrat_signe||false;
+      member.contrat_date=data[0].contrat_date||null;
+      localStorage.setItem('dha_member',JSON.stringify(member));
+    }
+  }catch(e){}
+
+  const nb=member.nb_affilies||0;
+  const statut=member.statut_affiliation||'membre_simple';
+  const total=member.commissions_total||0;
+  const encours=member.commissions_encours||0;
+  const verse=member.commissions_versees||0;
+
+  // Upgrade auto ambassadeur
+  if(statut==='affilie'&&nb>=10){
+    member.statut_affiliation='ambassadeur';
+    try{
+      await fetch(SUPABASE_URL+'/rest/v1/membres?email=eq.'+encodeURIComponent(member.email).replace(/\./g,'%2E'),{
+        method:'PATCH',
+        headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY},
+        body:JSON.stringify({statut_affiliation:'ambassadeur'})
+      });
+    }catch(e){}
+    localStorage.setItem('dha_member',JSON.stringify(member));
+  }
+
+  renderStatut(member.statut_affiliation,nb);
+  document.getElementById('hero-commissions').textContent=total+'€';
+  document.getElementById('stat-commissions').textContent=total+'€';
+  document.getElementById('stat-encours').textContent=encours+'€';
+  document.getElementById('stat-verse').textContent=verse+'€';
+  document.getElementById('rev-total').textContent=total+'€';
+  document.getElementById('rev-encours').textContent=encours+'€';
+  document.getElementById('rev-verse').textContent=verse+'€';
+
+  // RIB
+  if(member.rib){showRibDisplay(member.rib);}
+
+  // Contrat
+  if(member.contrat_signe&&member.contrat_date){
+    const d=new Date(member.contrat_date);
+    const dateStr=d.toLocaleDateString('fr-FR')+' à '+d.getHours()+'h'+String(d.getMinutes()).padStart(2,'0');
+    showSignedState(dateStr);
+  }
+
+  loadAffilie();
+}
+
 init();
 </script>
 </body>
