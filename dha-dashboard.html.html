@@ -165,7 +165,7 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
       <div class="xp-bar-wrap">
         <div class="xp-bar-header"><span>PROGRESSION VERS LE PROCHAIN LEVEL</span><span id="xp-next">0 / 500 XP</span></div>
         <div class="xp-bar"><div class="xp-fill" id="xp-fill" style="width:0%"></div></div>
-        <div style="text-align:right;margin-top:8px;"><a href="dha-niveaux.html" style="font-family:'Orbitron',sans-serif;font-size:8px;letter-spacing:2px;color:var(--cyan);text-decoration:none;">VOIR TOUS LES RANGS →</a></div>
+        <div style="text-align:right;margin-top:8px;"><a href="#" onclick="showRangsModal();return false;" style="font-family:'Orbitron',sans-serif;font-size:8px;letter-spacing:2px;color:var(--cyan);text-decoration:none;">VOIR TOUS LES RANGS →</a></div>
       </div>
     </div>
 
@@ -280,23 +280,17 @@ const rangs=[
 ];
 let member=null;
 
+function getKey(k){const m=JSON.parse(localStorage.getItem('dha_member')||'{}');return 'dha_'+(m.pseudo||'guest')+'_'+k;}
 function getRang(xp){return rangs.find(r=>xp>=r.min&&xp<=r.max)||rangs[0];}
-
 function showLocked(name){document.getElementById('locked-title').textContent='🔒 '+name.toUpperCase()+' — BIENTÔT';document.getElementById('locked-modal').classList.add('show');}
 function hideLocked(){document.getElementById('locked-modal').classList.remove('show');}
-
 function logout(){if(confirm('Tu veux vraiment te déconnecter ?')){localStorage.removeItem('dha_member');localStorage.removeItem('dha_last_login');window.location.href='dha-connexion.html';}}
-
-function checkQuetes(){
+ function checkQuetes(){
   const today=new Date().toDateString();
   ['bloc','chat','parrainage'].forEach(type=>{
     if(localStorage.getItem('dha_quete_'+type+'_'+today)){
       const el=document.getElementById('check-'+type);
-      if(el){
-        el.classList.add('done');
-        el.textContent='✓';
-        el.closest('.quete-item').classList.add('done');
-      }
+      if(el){el.classList.add('done');el.textContent='✓';el.closest('.quete-item').classList.add('done');}
     }
   });
 }
@@ -306,8 +300,7 @@ function completeQuete(type,xp,el){
   const key='dha_quete_'+type+'_'+today;
   if(localStorage.getItem(key))return;
   localStorage.setItem(key,'true');
-  el.classList.add('done');
-  el.textContent='✓';
+  el.classList.add('done');el.textContent='✓';
   el.closest('.quete-item').classList.add('done');
   updateXP(xp);
 }
@@ -322,15 +315,11 @@ async function updateXP(amount){
   const flash=document.createElement('div');
   flash.textContent='+'+amount+' XP ⚡';
   flash.style.cssText='position:fixed;top:80px;right:24px;font-family:Orbitron,sans-serif;font-size:20px;font-weight:900;color:#FFD700;text-shadow:0 0 20px rgba(255,215,0,0.8);z-index:9999;pointer-events:none;animation:xp-float 1.5s ease forwards;';
-  document.body.appendChild(flash);
-  setTimeout(()=>flash.remove(),1500);
-  const startXP=oldXP%500;
-  const endXP=member.xp%500;
-  const duration=1000;
-  const startTime=performance.now();
+  document.body.appendChild(flash);setTimeout(()=>flash.remove(),1500);
+  const startXP=oldXP%500;const endXP=member.xp%500;
+  const duration=1000;const startTime=performance.now();
   function animateBar(currentTime){
-    const elapsed=currentTime-startTime;
-    const progress=Math.min(elapsed/duration,1);
+    const elapsed=currentTime-startTime;const progress=Math.min(elapsed/duration,1);
     const currentPct=(startXP+(endXP-startXP)*progress)/500*100;
     document.getElementById('xp-fill').style.width=currentPct+'%';
     document.getElementById('xp-next').textContent=Math.round(startXP+(endXP-startXP)*progress)+' / 500 XP';
@@ -368,7 +357,7 @@ function renderMember(){
   document.getElementById('stat-xp').textContent=xp;
   document.getElementById('stat-level').textContent=level;
   if(member.date_inscription){
-    const days=Math.max(1,Math.floor((new Date()-new Date(member.date_inscription))/86400000));
+    const days=Math.max(1,Math.floor((new Date()-new Date(member.date_inscription))/86400000)+1);
     document.getElementById('stat-days').textContent=days;
   }
   document.getElementById('xp-fill').style.width=xpPct+'%';
@@ -377,13 +366,14 @@ function renderMember(){
   document.getElementById('module-classe-name').textContent='MODULE '+(classeNames[classe]||'TRADING');
   const now=new Date();
   document.getElementById('topbar-date').textContent=now.toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'}).toUpperCase();
-  const keys=['dha_bloc_m1_done','dha_bloc_m2_b1_done','dha_bloc_m3_done','dha_bloc_m4_done','dha_bloc_m5_done','dha_bloc_m6_done','dha_bloc_m7_done','dha_bloc_m8_done','dha_bloc_m9_done','dha_bloc_m10_done','dha_bloc_m11_done','dha_bloc_m12_done','dha_bloc_m13_done','dha_bloc_m14_done','dha_bloc_m15_done'];
+  const pseudo=member.pseudo||'guest';
+  const prefix='dha_'+pseudo+'_';
+  const keys=[prefix+'bloc_m1_done',prefix+'bloc_m2_b1_done',prefix+'bloc_m3_done',prefix+'bloc_m4_done',prefix+'bloc_m5_done',prefix+'bloc_m6_done',prefix+'bloc_m7_done',prefix+'bloc_m8_done',prefix+'bloc_m9_done',prefix+'bloc_m10_done',prefix+'bloc_m11_done',prefix+'bloc_m12_done',prefix+'bloc_m13_done',prefix+'bloc_m14_done',prefix+'bloc_m15_done'];
   const completedMods=keys.filter(k=>localStorage.getItem(k)).length;
   const formPct=Math.round((completedMods/15)*100);
   document.getElementById('stat-formation').textContent=formPct+'%';
 }
-
-function showAvatar(url){
+  function showAvatar(url){
   if(!url)return;
   const img=document.getElementById('player-avatar-img');
   const emoji=document.getElementById('player-avatar-emoji');
@@ -407,24 +397,59 @@ async function uploadAvatar(event){
       member.avatar=avatarUrl;
       localStorage.setItem('dha_member',JSON.stringify(member));
       await fetch(SUPABASE_URL+'/rest/v1/membres?email=eq.'+encodeURIComponent(member.email).replace(/\./g,'%2E'),{method:'PATCH',headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY},body:JSON.stringify({avatar:avatarUrl})});
-      showAvatar(avatarUrl);
-      alert('Photo mise à jour ! 🔥');
+      showAvatar(avatarUrl);alert('Photo mise à jour ! 🔥');
     }
   }catch(e){alert('Erreur upload. Réessaie.');}
 }
 
 async function loadLeaderboard(){
   try{
-    const res=await fetch(SUPABASE_URL+'/rest/v1/membres?select=pseudo,xp&order=xp.desc&limit=3',{headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY}});
+    const res=await fetch(SUPABASE_URL+'/rest/v1/membres?select=pseudo,xp&limit=3',{headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY}});
     const data=await res.json();
+    const sorted=data.sort((a,b)=>(b.xp||0)-(a.xp||0));
     const list=document.getElementById('leaderboard-list');
     const medals=['🥇','🥈','🥉'];
     const colors=['var(--gold)','rgba(192,192,192,0.8)','rgba(205,127,50,0.8)'];
     list.innerHTML='';
-    data.forEach((m,i)=>{
-      list.innerHTML+=`<div class="lb-item"><div class="lb-rank" style="color:${colors[i]}">${medals[i]}</div><div class="lb-avatar">⚡</div><div class="lb-name">@${m.pseudo}</div><div class="lb-xp">${m.xp} XP</div></div>`;
+    sorted.forEach((m,i)=>{
+      list.innerHTML+=`<div class="lb-item"><div class="lb-rank" style="color:${colors[i]}">${medals[i]}</div><div class="lb-avatar">⚡</div><div class="lb-name">@${m.pseudo}</div><div class="lb-xp">${m.xp||0} XP</div></div>`;
     });
   }catch(e){console.log('Leaderboard error:',e);}
+}
+
+function showRangsModal(){
+  const rangsData=[
+    {icon:'🎮',name:'NEW HUSTLER',xp:'0 XP',color:'rgba(200,200,200,0.8)',avantages:['Accès à tous les modules','Discord communauté','Système de quêtes quotidiennes','Leaderboard hebdo']},
+    {icon:'⚡',name:'HUSTLER',xp:'500 XP',color:'#1E64FF',avantages:['Tout NEW HUSTLER','Badge ⚡ exclusif sur ton profil','Accès prioritaire aux lives','1 appel mentor offert']},
+    {icon:'🚀',name:'PRO HUSTLER',xp:'1500 XP',color:'#00D4FF',avantages:['Tout HUSTLER','Badge 🚀 sur ton profil','Accès aux sessions privées','Priorité events physiques']},
+    {icon:'👑',name:'AMBASSADEUR',xp:'3000 XP',color:'#FFD700',avantages:['Tout PRO HUSTLER','Badge 👑 sur ton profil','Commissions affiliation boostées','Accès VIP aux villas & events']},
+    {icon:'💎',name:'LEGEND',xp:'6000 XP',color:'#9D4EDD',avantages:['Tout AMBASSADEUR','Badge 💎 légendaire','Accès à vie garanti','Priorité absolue sur tout']}
+  ];
+  const currentXP=member?member.xp||0:0;
+  let html=`<div style="position:fixed;inset:0;z-index:9999;background:rgba(5,9,20,0.92);backdrop-filter:blur(12px);display:flex;align-items:center;justify-content:center;padding:20px;" onclick="this.remove()">
+  <div style="background:#080e1f;border:1px solid rgba(30,100,255,0.2);border-radius:20px;padding:36px;max-width:600px;width:100%;max-height:85vh;overflow-y:auto;position:relative;" onclick="event.stopPropagation()">
+  <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,#1E64FF,#00D4FF,#FFD700);border-radius:20px 20px 0 0;"></div>
+  <div style="font-family:'Orbitron',sans-serif;font-size:16px;font-weight:900;color:#E8F4FF;margin-bottom:24px;letter-spacing:2px;">🏆 LES RANGS DHA</div>`;
+
+  rangsData.forEach(r=>{
+    const isActive=currentXP>=parseInt(r.xp);
+    const isCurrent=getRang(currentXP).name===r.name;
+    html+=`<div style="padding:18px 20px;border-radius:14px;margin-bottom:12px;background:${isCurrent?'rgba(30,100,255,0.1)':'rgba(255,255,255,0.03)'};border:1px solid ${isCurrent?r.color:'rgba(255,255,255,0.07)'};transition:all .2s;">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:${isActive?'12px':'0'};">
+        <div style="font-size:28px;">${r.icon}</div>
+        <div style="flex:1;">
+          <div style="font-family:'Orbitron',sans-serif;font-size:13px;font-weight:900;color:${r.color};">${r.name}</div>
+          <div style="font-family:'Orbitron',sans-serif;font-size:9px;color:rgba(232,244,255,0.4);margin-top:2px;">À PARTIR DE ${r.xp}</div>
+        </div>
+        ${isCurrent?`<div style="padding:4px 12px;border-radius:99px;background:rgba(0,255,136,0.1);border:1px solid rgba(0,255,136,0.3);font-family:'Orbitron',sans-serif;font-size:8px;color:#00FF88;">TON RANG</div>`:''}
+      </div>
+      ${isActive?`<div style="display:flex;flex-wrap:wrap;gap:6px;">${r.avantages.map(a=>`<div style="padding:4px 10px;border-radius:6px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);font-size:11px;color:rgba(232,244,255,0.6);">✓ ${a}</div>`).join('')}</div>`:''}
+    </div>`;
+  });
+
+  html+=`<div style="text-align:center;margin-top:8px;"><button onclick="this.closest('[style*=fixed]').remove()" style="padding:12px 28px;border-radius:12px;background:rgba(0,212,255,0.1);border:1px solid rgba(0,212,255,0.3);color:#00D4FF;font-family:'Orbitron',sans-serif;font-size:10px;font-weight:900;cursor:pointer;letter-spacing:2px;">FERMER</button></div>
+  </div></div>`;
+  document.body.insertAdjacentHTML('beforeend',html);
 }
 
 async function init(){
@@ -432,12 +457,13 @@ async function init(){
   if(!stored){window.location.href='dha-connexion.html';return;}
   member=JSON.parse(stored);
   try{
-    const res=await fetch(SUPABASE_URL+'/rest/v1/membres?email=eq.'+encodeURIComponent(member.email).replace(/\./g,'%2E')+'&select=xp,level,rang,xp_semaine,pseudo,prenom,nom,avatar,nb_affilies,statut_affiliation',{headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY}});
+    const res=await fetch(SUPABASE_URL+'/rest/v1/membres?email=eq.'+encodeURIComponent(member.email).replace(/\./g,'%2E')+'&select=xp,level,rang,xp_semaine,pseudo,prenom,nom,avatar,nb_affilies,statut_affiliation,date_inscription',{headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY}});
     const data=await res.json();
     if(data&&data.length>0){
       member.xp=data[0].xp||member.xp;
       member.level=data[0].level||member.level;
       member.xp_semaine=data[0].xp_semaine||member.xp_semaine;
+      if(data[0].date_inscription)member.date_inscription=data[0].date_inscription;
       localStorage.setItem('dha_member',JSON.stringify(member));
     }
   }catch(e){}
@@ -451,6 +477,7 @@ async function init(){
     setTimeout(()=>updateXP(10),1000);
   }
 }
+
 init();
 </script>
 </body>
