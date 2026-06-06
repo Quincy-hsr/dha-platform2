@@ -463,10 +463,14 @@ async function init(){
       member.xp=data[0].xp||member.xp;
       member.level=data[0].level||member.level;
       member.xp_semaine=data[0].xp_semaine||member.xp_semaine;
-      if(data[0].date_inscription)member.date_inscription=data[0].date_inscription;
+      if(data[0].date_inscription) member.date_inscription=data[0].date_inscription;
       localStorage.setItem('dha_member',JSON.stringify(member));
     }
-  }catch(e){}
+  }catch(e){console.log('Supabase error:',e);}
+  if(member.date_inscription){
+    const days=Math.max(1,Math.floor((new Date()-new Date(member.date_inscription))/86400000)+1);
+    document.getElementById('stat-days').textContent=days;
+  }
   renderMember();
   checkQuetes();
   loadLeaderboard();
