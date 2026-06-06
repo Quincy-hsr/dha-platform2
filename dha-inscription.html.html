@@ -315,6 +315,96 @@ body {
   .logo-dha { font-size: 36px; }
   .step-line { width: 40px; }
 }
+
+/* MODALE RÈGLEMENT */
+.reglement-overlay {
+  position:fixed;inset:0;z-index:99999;
+  background:rgba(5,9,20,0.92);backdrop-filter:blur(8px);
+  display:none;align-items:center;justify-content:center;padding:20px;
+}
+.reglement-overlay.active { display:flex; }
+.reglement-box {
+  background:#080e1f;border:1px solid rgba(0,212,255,0.35);
+  border-radius:20px;width:100%;max-width:560px;
+  max-height:88vh;display:flex;flex-direction:column;
+  box-shadow:0 8px 60px rgba(0,212,255,0.15);
+  animation:fadeup .35s ease;
+}
+.reglement-header {
+  padding:22px 24px 16px;border-bottom:1px solid rgba(0,212,255,0.15);
+  display:flex;align-items:center;gap:14px;flex-shrink:0;
+}
+.reglement-header-icon {
+  width:44px;height:44px;border-radius:12px;
+  background:linear-gradient(135deg,rgba(30,100,255,0.25),rgba(0,212,255,0.15));
+  border:1px solid rgba(0,212,255,0.3);
+  display:flex;align-items:center;justify-content:center;font-size:20px;
+}
+.reglement-header-title {
+  font-family:'Orbitron',sans-serif;font-size:13px;font-weight:900;
+  color:#E8F4FF;letter-spacing:1px;
+}
+.reglement-header-sub {
+  font-family:'Orbitron',sans-serif;font-size:8px;
+  color:rgba(0,212,255,0.6);letter-spacing:2px;margin-top:3px;
+}
+.reglement-body {
+  flex:1;overflow-y:auto;padding:20px 24px;
+  scrollbar-width:thin;scrollbar-color:#1E64FF44 transparent;
+}
+.reglement-body::-webkit-scrollbar { width:4px; }
+.reglement-body::-webkit-scrollbar-thumb { background:#1E64FF44;border-radius:99px; }
+.reglement-section {
+  margin-bottom:22px;
+}
+.reglement-section-title {
+  font-family:'Orbitron',sans-serif;font-size:9px;font-weight:700;
+  letter-spacing:2px;color:var(--cyan);margin-bottom:10px;
+  display:flex;align-items:center;gap:8px;
+}
+.reglement-section-title::after {
+  content:'';flex:1;height:1px;background:rgba(0,212,255,0.15);
+}
+.reglement-section p, .reglement-section li {
+  font-size:13px;color:var(--dim);line-height:1.75;
+}
+.reglement-section ul { padding-left:18px; }
+.reglement-section li { margin-bottom:4px; }
+.reglement-section strong { color:#E8F4FF; }
+.reglement-footer {
+  padding:16px 24px 20px;border-top:1px solid rgba(0,212,255,0.15);flex-shrink:0;
+}
+.reglement-check-row {
+  display:flex;align-items:flex-start;gap:12px;margin-bottom:16px;cursor:pointer;
+}
+.reglement-check-box {
+  width:20px;height:20px;border-radius:6px;flex-shrink:0;margin-top:1px;
+  border:2px solid rgba(0,212,255,0.4);background:transparent;
+  display:flex;align-items:center;justify-content:center;transition:all .2s;
+}
+.reglement-check-box.checked {
+  background:rgba(0,212,255,0.2);border-color:var(--cyan);
+}
+.reglement-check-box.checked::after { content:'✓';color:var(--cyan);font-size:12px;font-weight:900; }
+.reglement-check-label {
+  font-size:13px;color:var(--dim);line-height:1.6;
+}
+.reglement-check-label strong { color:#E8F4FF; }
+.reglement-btn-validate {
+  width:100%;padding:15px;border-radius:12px;
+  background:linear-gradient(135deg,#1E64FF,#00D4FF);
+  color:#000;font-family:'Orbitron',sans-serif;font-size:12px;font-weight:900;
+  letter-spacing:2px;border:none;cursor:pointer;
+  box-shadow:0 6px 24px rgba(0,212,255,0.35);transition:all .2s;
+  opacity:0.4;pointer-events:none;
+}
+.reglement-btn-validate.enabled {
+  opacity:1;pointer-events:auto;
+}
+.reglement-btn-validate.enabled:hover {
+  transform:translateY(-2px);box-shadow:0 8px 32px rgba(0,212,255,0.5);
+}
+
 </style>
 </head>
 <body>
@@ -489,7 +579,7 @@ body {
 
       <div style="display:flex;gap:10px;">
         <button class="btn-submit" style="background:rgba(255,255,255,0.05);border:1px solid var(--border);color:var(--dim);box-shadow:none;flex:0 0 auto;width:auto;padding:16px 20px;" onclick="goStep1()">← RETOUR</button>
-        <button class="btn-submit" style="flex:1" onclick="goStep3()" id="btn-step3">CRÉER MON COMPTE →</button>
+        <button class="btn-submit" style="flex:1" onclick="showReglement()" id="btn-step3">CRÉER MON COMPTE →</button>
       </div>
     </div>
 
@@ -759,6 +849,119 @@ if(urlRef){
   document.getElementById('parrain-banner').style.display='block';
   document.getElementById('parrain-pseudo').textContent='@'+urlRef;
 }
+
+// ── RÈGLEMENT ──────────────────────────────────────────────────
+let reglementChecked = false;
+
+function showReglement() {
+  if(!selectedClasse) { alert('Choisis ta classe pour continuer.'); return; }
+  document.getElementById('reglement-overlay').classList.add('active');
+  document.querySelector('.reglement-body').scrollTop = 0;
+}
+
+function toggleReglementCheck() {
+  reglementChecked = !reglementChecked;
+  const box = document.getElementById('reglement-check');
+  const btn = document.getElementById('reglement-btn');
+  box.classList.toggle('checked', reglementChecked);
+  btn.classList.toggle('enabled', reglementChecked);
+}
+
+function validerReglement() {
+  if(!reglementChecked) return;
+  document.getElementById('reglement-overlay').classList.remove('active');
+  goStep3();
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  const overlay = document.getElementById('reglement-overlay');
+  if(overlay) {
+    overlay.addEventListener('click', function(e) {
+      if(e.target === this) this.classList.remove('active');
+    });
+  }
+});
+
 </script>
+
+<!-- MODALE RÈGLEMENT -->
+<div class="reglement-overlay" id="reglement-overlay">
+  <div class="reglement-box">
+
+    <div class="reglement-header">
+      <div class="reglement-header-icon">📋</div>
+      <div>
+        <div class="reglement-header-title">RÈGLEMENT DE LA DHA</div>
+        <div class="reglement-header-sub">À LIRE ET VALIDER AVANT DE REJOINDRE</div>
+      </div>
+    </div>
+
+    <div class="reglement-body">
+
+      <div class="reglement-section">
+        <div class="reglement-section-title">01 — ACCÈS & UTILISATION</div>
+        <ul>
+          <li>L'accès à la plateforme est <strong>strictement personnel</strong>. Ton compte ne peut pas être partagé ou revendu.</li>
+          <li>Tu t'engages à utiliser les contenus pour ton usage personnel uniquement.</li>
+          <li>Tout partage non autorisé de modules, vidéos ou supports entraîne la <strong>résiliation immédiate</strong> du compte sans remboursement.</li>
+        </ul>
+      </div>
+
+      <div class="reglement-section">
+        <div class="reglement-section-title">02 — COMPORTEMENT & COMMUNAUTÉ</div>
+        <ul>
+          <li>Respect obligatoire envers tous les membres, mentors et l'équipe DHA.</li>
+          <li>Zéro tolérance pour le spam, le contenu offensant ou la promotion de services externes dans nos espaces.</li>
+          <li>Les comportements toxiques mènent à un <strong>ban définitif</strong> sans remboursement.</li>
+          <li>La communauté Discord est un espace de progression — pas un défouloir.</li>
+        </ul>
+      </div>
+
+      <div class="reglement-section">
+        <div class="reglement-section-title">03 — PAIEMENTS & RÉSILIATION</div>
+        <ul>
+          <li><strong>Pack Medium :</strong> Sans engagement. Tu peux résilier à tout moment avant le prochain prélèvement.</li>
+          <li><strong>Pack Lifetime :</strong> Paiement unique non remboursable après 14 jours d'accès.</li>
+          <li>Les remboursements sont traités au cas par cas dans les <strong>14 jours suivant l'achat</strong> si aucun contenu n'a été consommé.</li>
+          <li>En cas de paiement en plusieurs fois, le plan d'échéances doit être respecté intégralement.</li>
+        </ul>
+      </div>
+
+      <div class="reglement-section">
+        <div class="reglement-section-title">04 — AFFILIATION</div>
+        <ul>
+          <li>Les commissions d'affiliation sont versées sur les ventes <strong>confirmées et non remboursées</strong>.</li>
+          <li>Il est interdit d'utiliser des publicités payantes avec les termes "DHA" ou "Digital Hustler Academy" sans autorisation écrite.</li>
+          <li>Tout abus du programme d'affiliation entraîne la suspension immédiate des commissions.</li>
+        </ul>
+      </div>
+
+      <div class="reglement-section">
+        <div class="reglement-section-title">05 — RÉSULTATS & RESPONSABILITÉ</div>
+        <p>Les résultats présentés sur la plateforme sont des exemples réels mais non garantis. <strong>Le trading comporte des risques de perte en capital.</strong> DHA fournit une formation et un accompagnement — les résultats dépendent de l'implication de chaque membre. DHA ne peut être tenu responsable des décisions d'investissement personnelles.</p>
+      </div>
+
+      <div class="reglement-section">
+        <div class="reglement-section-title">06 — PROPRIÉTÉ INTELLECTUELLE</div>
+        <p>Tous les contenus (vidéos, modules, supports, méthodes) sont la <strong>propriété exclusive de DHA</strong>. Toute reproduction, redistribution ou revente est strictement interdite et poursuivie légalement.</p>
+      </div>
+
+    </div>
+
+    <div class="reglement-footer">
+      <div class="reglement-check-row" onclick="toggleReglementCheck()">
+        <div class="reglement-check-box" id="reglement-check"></div>
+        <div class="reglement-check-label">
+          J'ai lu et j'accepte le règlement de la <strong>Digital Hustler Academy</strong>. Je comprends les conditions d'accès, de paiement et de comportement.
+        </div>
+      </div>
+      <button class="reglement-btn-validate" id="reglement-btn" onclick="validerReglement()">
+        ✓ VALIDER ET CRÉER MON COMPTE
+      </button>
+    </div>
+
+  </div>
+</div>
+
 </body>
 </html>
