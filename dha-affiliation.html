@@ -206,6 +206,11 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
         <button class="copy-btn" onclick="copyLink()">📋 COPIER</button>
       </div>
       <div class="copy-confirm" id="copy-confirm">✅ Lien copié ! Partage-le maintenant 🔥</div>
+      <div style="margin-top:10px;padding:10px 14px;border-radius:10px;background:rgba(0,212,255,0.05);border:1px solid rgba(0,212,255,0.15);font-size:11px;color:var(--dim);line-height:1.8;">
+        🛤️ <strong style="color:var(--cyan);">Parcours de ton filleul :</strong><br/>
+        Ton lien → <span style="color:var(--white);">Landing page</span> → <span style="color:var(--white);">Paiement Stripe</span> → <span style="color:var(--white);">Inscription</span> → <span style="color:var(--green);">Plateforme DHA</span><br/>
+        <span style="color:rgba(0,212,255,0.6);">Ton pseudo est automatiquement associé à chaque inscription générée.</span>
+      </div>
       <div class="share-btns">
         <button class="share-btn" onclick="shareWhatsApp()" style="background:rgba(37,211,102,0.12);border:1px solid rgba(37,211,102,0.25);color:#25D366;">💬 WhatsApp</button>
         <button class="share-btn" onclick="shareTwitter()" style="background:rgba(29,161,242,0.12);border:1px solid rgba(29,161,242,0.25);color:#1DA1F2;">𝕏 Twitter</button>
@@ -250,7 +255,7 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
       <div class="p-icon">🥇</div>
       <div class="p-info">
         <div class="p-name">AMBASSADEUR</div>
-        <div class="p-desc">Débloqué après <strong style="color:var(--gold);">10 affiliés</strong>. Commission sur 3 niveaux : <strong style="color:var(--gold);">25%</strong> niveau 1 · <strong style="color:var(--cyan);">10%</strong> niveau 2 · <strong style="color:var(--purple);">5%</strong> niveau 3</div>
+        <div class="p-desc">Débloqué après <strong style="color:var(--gold);">10 affiliés</strong>. Commission sur 2 niveaux : <strong style="color:var(--gold);">25%</strong> niveau 1 · <strong style="color:var(--cyan);">5%</strong> niveau 2</div>
       </div>
       <div class="p-status" id="pal-3-status">—</div>
     </div>
@@ -302,7 +307,7 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
     <div class="contrat-points">
       <div class="contrat-point">Tu t'engages à te déclarer en <strong style="color:var(--white);">auto-entrepreneur</strong> pour exercer cette activité d'apporteur d'affaires</div>
       <div class="contrat-point">Tu agis en tant que <strong style="color:var(--white);">prestataire de services indépendant</strong> — tu n'es pas salarié de la DHA</div>
-      <div class="contrat-point">Les commissions varient selon ton statut : <strong style="color:var(--cyan);">Affilié 20%</strong> · <strong style="color:var(--gold);">Ambassadeur 25% / 10% / 5%</strong> selon les niveaux</div>
+      <div class="contrat-point">Les commissions varient selon ton statut : <strong style="color:var(--cyan);">Affilié 20%</strong> · <strong style="color:var(--gold);">Ambassadeur 25% niveau 1 / 5% niveau 2</strong></div>
       <div class="contrat-point">Les paiements sont effectués <strong style="color:var(--white);">mensuellement</strong> sur présentation de facture et après vérification des commissions dues</div>
       <div class="contrat-point">Tu es <strong style="color:var(--white);">seul responsable</strong> de tes déclarations fiscales et sociales liées à ces revenus</div>
       <div class="contrat-point">La DHA se réserve le droit de <strong style="color:var(--white);">suspendre l'accès</strong> au programme en cas de non-respect des conditions</div>
@@ -345,7 +350,7 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
       <div class="modal-text">
         Les commissions sont calculées comme suit :<br/><br/>
         • <strong>Palier Affilié :</strong> 20% sur chaque vente directe (niveau 1)<br/>
-        • <strong>Palier Ambassadeur (10+ affiliés) :</strong> 25% niveau 1 · 10% niveau 2 · 5% niveau 3<br/><br/>
+        • <strong>Palier Ambassadeur (10+ affiliés) :</strong> 25% niveau 1 · 5% niveau 2<br/><br/>
         Les paiements sont effectués mensuellement, sur présentation d'une <strong>facture auto-entrepreneur</strong> adressée à la DHA, après validation des commissions dues.
       </div>
     </div>
@@ -482,10 +487,9 @@ function renderStatut(statut,nb){
           <div class="pb-lbl"><span>PROGRESSION VERS AMBASSADEUR</span><span>${nb}/10 affiliés</span></div>
           <div class="pb"><div class="pb-fill fill-affilie" style="width:${pct}%"></div></div>
         </div>
-        <div class="comm-grid">
+        <div class="comm-grid" style="grid-template-columns:1fr 1fr;">
           <div class="cc" style="background:rgba(255,215,0,0.08);border:1px solid rgba(255,215,0,0.2);"><div class="pct" style="color:var(--gold);">20%</div><div class="lbl">NIVEAU 1</div></div>
           <div class="cc" style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);opacity:0.3;"><div class="pct" style="color:var(--cyan);">—</div><div class="lbl">NIVEAU 2</div></div>
-          <div class="cc" style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);opacity:0.3;"><div class="pct" style="color:var(--purple);">—</div><div class="lbl">NIVEAU 3</div></div>
         </div>
       </div>`;
   } else if(statut==='ambassadeur'){
@@ -493,13 +497,12 @@ function renderStatut(statut,nb){
       <div class="statut-card ambassadeur">
         <div class="statut-header">
           <div class="statut-icon">🥇</div>
-          <div style="flex:1;"><div class="statut-name">AMBASSADEUR</div><div class="statut-sub">Tu touches sur tout ton réseau jusqu'au niveau 3</div></div>
+          <div style="flex:1;"><div class="statut-name">AMBASSADEUR</div><div class="statut-sub">Tu touches sur tout ton réseau jusqu'au niveau 2</div></div>
           <div class="statut-badge b-actif">✅ ACTIF</div>
         </div>
-        <div class="comm-grid">
+        <div class="comm-grid" style="grid-template-columns:1fr 1fr;">
           <div class="cc" style="background:rgba(255,215,0,0.08);border:1px solid rgba(255,215,0,0.2);"><div class="pct" style="color:var(--gold);">25%</div><div class="lbl">NIVEAU 1</div></div>
-          <div class="cc" style="background:rgba(0,212,255,0.06);border:1px solid rgba(0,212,255,0.15);"><div class="pct" style="color:var(--cyan);">10%</div><div class="lbl">NIVEAU 2</div></div>
-          <div class="cc" style="background:rgba(157,78,221,0.06);border:1px solid rgba(157,78,221,0.15);"><div class="pct" style="color:var(--purple);">5%</div><div class="lbl">NIVEAU 3</div></div>
+          <div class="cc" style="background:rgba(0,212,255,0.06);border:1px solid rgba(0,212,255,0.15);"><div class="pct" style="color:var(--cyan);">5%</div><div class="lbl">NIVEAU 2</div></div>
         </div>
       </div>`;
   }
@@ -620,7 +623,7 @@ async function init(){
   document.getElementById('topbar-xp').textContent=(member.xp||0)+' XP';
   if(member.avatar){document.getElementById('sb-avatar').innerHTML='<img src="'+member.avatar+'" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"/>';}
 
-  affiliLink='https://digitalhustleracademy.digital/dha-inscription.html?ref='+encodeURIComponent(member.pseudo||'');
+  affiliLink='https://digitalhustleracademy.digital/?ref='+encodeURIComponent(member.pseudo||'');
   document.getElementById('affili-link').textContent=affiliLink;
 
   try{
