@@ -490,6 +490,10 @@ function completeBloc(){
   const blocKey=getKey('bloc_m5_done');
   if(localStorage.getItem(blocKey)){alert('Tu as déjà terminé ce module ! 💪');return;}
   localStorage.setItem(blocKey,'true');
+  // Notifie le dashboard pour valider la quête automatiquement
+  const today=new Date().toDateString();
+  const pseudo=(JSON.parse(localStorage.getItem('dha_member')||'{}')).pseudo||'guest';
+  localStorage.setItem('dha_'+pseudo+'_last_module_done', today);
   addXP(25);
   document.getElementById('complete-btn').textContent='✅ MODULE 5 TERMINÉ !';
   document.getElementById('complete-btn').disabled=true;
