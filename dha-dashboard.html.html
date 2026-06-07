@@ -58,7 +58,7 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
 .xp-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--blue),var(--cyan));box-shadow:0 0 10px rgba(0,212,255,0.5);transition:width 1s ease;}
 .quete-item{display:flex;align-items:center;gap:12px;padding:14px 0;border-bottom:1px solid rgba(255,255,255,0.05);}
 .quete-item:last-child{border-bottom:none;}
-.quete-check{width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s;cursor:pointer;border:1px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.04);font-size:12px;}
+.quete-check{width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s;cursor:default;border:1px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.04);font-size:12px;}
 .quete-check.done{background:rgba(0,255,136,0.15);border-color:rgba(0,255,136,0.4);color:var(--green);}
 .quete-info{flex:1;}
 .quete-name{font-size:13px;color:var(--white);font-weight:600;}
@@ -177,15 +177,15 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
           <div class="quete-info"><div class="quete-name">Connexion quotidienne</div><div class="quete-xp">+10 XP</div></div>
         </div>
         <div class="quete-item" id="q-bloc">
-          <div class="quete-check" id="check-bloc">○</div>
+          <div class="quete-check" id="check-bloc" title="Se valide automatiquement quand tu termines un module">○</div>
           <div class="quete-info"><div class="quete-name">Finir un module</div><div class="quete-xp">+50 XP</div></div>
         </div>
         <div class="quete-item" id="q-chat">
-          <div class="quete-check" id="check-chat">○</div>
+          <div class="quete-check" id="check-chat" title="Se valide automatiquement quand tu ouvres le Squad Discord">○</div>
           <div class="quete-info"><div class="quete-name">Envoyer un message dans le chat Discord</div><div class="quete-xp">+5 XP</div></div>
         </div>
         <div class="quete-item" id="q-parrainage">
-          <div class="quete-check" id="check-parrainage">○</div>
+          <div class="quete-check" id="check-parrainage" title="Se valide automatiquement dès que tu as un filleul">○</div>
           <div class="quete-info"><div class="quete-name">Parrainer un ami</div><div class="quete-xp">+250 XP</div></div>
         </div>
       </div>
@@ -360,15 +360,6 @@ function completeQueteAuto(type,xp){
   updateXP(xp);
 }
 
-function completeQuete(type,xp,el){
-  const today=new Date().toDateString();
-  const key='dha_quete_'+type+'_'+today;
-  if(localStorage.getItem(key))return;
-  localStorage.setItem(key,'true');
-  el.classList.add('done');el.textContent='✓';
-  el.closest('.quete-item').classList.add('done');
-  updateXP(xp);
-}
 
 // Appelé depuis les pages de modules quand un module est terminé
 function notifyModuleDone(){
