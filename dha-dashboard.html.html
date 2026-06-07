@@ -114,7 +114,7 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
   <a class="nav-item" href="dha-formation.html"><span class="nav-icon">📈</span> Formation Trading</a>
   <a class="nav-item" href="dha-mindset.html"><span class="nav-icon">🧠</span> Mindset</a>
   <div class="sidebar-section">NETWORK</div>
-  <a class="nav-item" href="dha-squad.html"><span class="nav-icon">👥</span> Mon Squad</a>
+  <a class="nav-item" href="dha-squad.html" onclick="localStorage.setItem('dha_discord_opened',new Date().toDateString())"><span class="nav-icon">👥</span> Mon Squad</a>
   <a class="nav-item" href="dha-leaderboard.html"><span class="nav-icon">🏆</span> Leaderboard</a>
   <div class="sidebar-section">EARN</div>
   <a class="nav-item" href="dha-affiliation.html"><span class="nav-icon">💰</span> Affiliation</a>
@@ -177,21 +177,21 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
           <div class="quete-info"><div class="quete-name">Connexion quotidienne</div><div class="quete-xp">+10 XP</div></div>
         </div>
         <div class="quete-item" id="q-bloc">
-          <div class="quete-check" id="check-bloc" onclick="completeQuete('bloc',50,this)">○</div>
-          <div class="quete-info"><div class="quete-name">Finir un bloc de formation</div><div class="quete-xp">+50 XP</div></div>
+          <div class="quete-check" id="check-bloc">○</div>
+          <div class="quete-info"><div class="quete-name">Finir un module</div><div class="quete-xp">+50 XP</div></div>
         </div>
         <div class="quete-item" id="q-chat">
-          <div class="quete-check" id="check-chat" onclick="completeQuete('chat',5,this)">○</div>
-          <div class="quete-info"><div class="quete-name">Poster dans ton Squad</div><div class="quete-xp">+5 XP</div></div>
+          <div class="quete-check" id="check-chat">○</div>
+          <div class="quete-info"><div class="quete-name">Envoyer un message dans le chat Discord</div><div class="quete-xp">+5 XP</div></div>
         </div>
         <div class="quete-item" id="q-parrainage">
-          <div class="quete-check" id="check-parrainage" onclick="completeQuete('parrainage',150,this)">○</div>
-          <div class="quete-info"><div class="quete-name">Parrainer un ami</div><div class="quete-xp">+150 XP</div></div>
+          <div class="quete-check" id="check-parrainage">○</div>
+          <div class="quete-info"><div class="quete-name">Parrainer un ami</div><div class="quete-xp">+250 XP</div></div>
         </div>
       </div>
       <div style="margin-top:16px;padding:12px;border-radius:12px;background:rgba(255,215,0,0.06);border:1px solid rgba(255,215,0,0.15);text-align:center;">
         <div style="font-family:'Orbitron',sans-serif;font-size:8px;letter-spacing:2px;color:rgba(255,215,0,0.5);margin-bottom:4px;">XP DISPONIBLE AUJOURD'HUI</div>
-        <div style="font-family:'Orbitron',sans-serif;font-size:24px;font-weight:900;color:var(--gold);" id="xp-dispo">190 XP</div>
+        <div style="font-family:'Orbitron',sans-serif;font-size:24px;font-weight:900;color:var(--gold);" id="xp-dispo">315 XP</div>
       </div>
     </div>
   </div>
@@ -293,6 +293,71 @@ function logout(){if(confirm('Tu veux vraiment te déconnecter ?')){localStorage
       if(el){el.classList.add('done');el.textContent='✓';el.closest('.quete-item').classList.add('done');}
     }
   });
+
+  // QUÊTE MODULE : vérifie si un module a été complété aujourd'hui
+  checkQueteModule();
+
+  // QUÊTE DISCORD : vérifie si le lien discord a été ouvert aujourd'hui
+  checkQueteDiscord();
+
+  // QUÊTE PARRAINAGE : vérifie si le membre a au moins 1 filleul
+  checkQueteParrainage();
+}
+
+function checkQueteModule(){
+  const today=new Date().toDateString();
+  if(localStorage.getItem('dha_quete_bloc_'+today)) return; // déjà validée
+  if(!member) return;
+  const pseudo=member.pseudo||'guest';
+  const prefix='dha_'+pseudo+'_';
+  // Clés de tous les modules complétés
+  const moduleKeys=[
+    prefix+'module_mindset_done',
+    prefix+'module_trading_done',
+    prefix+'module_ugc_done',
+    prefix+'module_marketing_done',
+    prefix+'bloc_m1_done',prefix+'bloc_m2_b1_done',prefix+'bloc_m3_done',
+    prefix+'bloc_m4_done',prefix+'bloc_m5_done',prefix+'bloc_m6_done'
+  ];
+  // Vérifie si l'un d'eux a été complété aujourd'hui (stocké avec date)
+  const moduleDoneToday=localStorage.getItem(prefix+'last_module_done');
+  if(moduleDoneToday===today){
+    completeQueteAuto('bloc',50);
+  }
+}
+
+function checkQueteDiscord(){
+  const today=new Date().toDateString();
+  if(localStorage.getItem('dha_quete_chat_'+today)) return;
+  const discordOpened=localStorage.getItem('dha_discord_opened');
+  if(discordOpened===today){
+    completeQueteAuto('chat',5);
+  }
+}
+
+async function checkQueteParrainage(){
+  const today=new Date().toDateString();
+  if(localStorage.getItem('dha_quete_parrainage_'+today)) return;
+  if(!member) return;
+  try{
+    const res=await fetch(SUPABASE_URL+'/rest/v1/membres?parraine_par=eq.'+encodeURIComponent(member.pseudo||'')+'&select=pseudo',{
+      headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY}
+    });
+    const data=await res.json();
+    if(data && data.length>0){
+      completeQueteAuto('parrainage',250);
+    }
+  }catch(e){console.log('Parrainage check error:',e);}
+}
+
+function completeQueteAuto(type,xp){
+  const today=new Date().toDateString();
+  const key='dha_quete_'+type+'_'+today;
+  if(localStorage.getItem(key))return;
+  localStorage.setItem(key,'true');
+  const el=document.getElementById('check-'+type);
+  if(el){el.classList.add('done');el.textContent='✓';el.closest('.quete-item').classList.add('done');}
+  updateXP(xp);
 }
 
 function completeQuete(type,xp,el){
@@ -303,6 +368,23 @@ function completeQuete(type,xp,el){
   el.classList.add('done');el.textContent='✓';
   el.closest('.quete-item').classList.add('done');
   updateXP(xp);
+}
+
+// Appelé depuis les pages de modules quand un module est terminé
+function notifyModuleDone(){
+  const today=new Date().toDateString();
+  if(!member) return;
+  const pseudo=member.pseudo||'guest';
+  localStorage.setItem('dha_'+pseudo+'_last_module_done', today);
+  checkQueteModule();
+}
+
+// Appelé quand le membre clique sur le lien Discord
+function openDiscord(url){
+  const today=new Date().toDateString();
+  localStorage.setItem('dha_discord_opened', today);
+  checkQueteDiscord();
+  window.open(url,'_blank');
 }
 
 async function updateXP(amount){
