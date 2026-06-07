@@ -972,6 +972,12 @@
 </footer>
 
 <script>
+// SAUVEGARDE REF AFFILIATION
+(function(){
+  const ref = new URLSearchParams(window.location.search).get('ref');
+  if(ref) localStorage.setItem('dha_ref', ref);
+})();
+
 // STARS
 (function(){
   const container=document.getElementById('stars');
