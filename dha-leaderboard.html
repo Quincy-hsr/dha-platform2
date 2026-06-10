@@ -68,8 +68,8 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
   <a class="nav-item" href="dha-formation.html"><span class="nav-icon">📈</span> Formation Trading</a>
   <a class="nav-item" href="dha-mindset.html"><span class="nav-icon">🧠</span> Mindset</a>
   <div class="sidebar-section">NETWORK</div>
-  <a class="nav-item active" href="dha-leaderboard.html"><span class="nav-icon">🏆</span> Leaderboard</a>
   <a class="nav-item" href="dha-squad.html"><span class="nav-icon">👥</span> Mon Squad</a>
+  <a class="nav-item active" href="dha-leaderboard.html"><span class="nav-icon">🏆</span> Leaderboard</a>
   <div class="sidebar-section">EARN</div>
   <a class="nav-item" href="dha-affiliation.html"><span class="nav-icon">💰</span> Affiliation</a>
   <div class="sidebar-section">TOOLS</div>
@@ -119,11 +119,11 @@ const SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSI
 let member=null;
 
 const RANGS=[
-  {min:0,max:499,name:'NEW HUSTLER',icon:'🎮',color:'rgba(200,200,200,0.6)'},
-  {min:500,max:1499,name:'HUSTLER',icon:'⚡',color:'#1E64FF'},
-  {min:1500,max:2999,name:'PRO HUSTLER',icon:'🚀',color:'#00D4FF'},
-  {min:3000,max:5999,name:'AMBASSADEUR',icon:'👑',color:'#FFD700'},
-  {min:6000,max:999999,name:'LEGEND',icon:'💎',color:'#9D4EDD'}
+  {min:0,    max:4999,  name:'NEW HUSTLER',icon:'🎮',color:'rgba(200,200,200,0.6)'},
+  {min:5000, max:14999, name:'HUSTLER',    icon:'⚡',color:'#1E64FF'},
+  {min:15000,max:21999, name:'PRO HUSTLER',icon:'🚀',color:'#00D4FF'},
+  {min:22000,max:29999, name:'AMBASSADEUR',icon:'👑',color:'#FFD700'},
+  {min:30000,max:999999,name:'LEGEND',     icon:'💎',color:'#9D4EDD'}
 ];
 function getRang(xp){return RANGS.find(r=>xp>=r.min&&xp<=r.max)||RANGS[0];}
 
