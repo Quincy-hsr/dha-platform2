@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>DHA — Dashboard (DÉMO)</title>
+<title>DHA — Dashboard</title>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600;700&display=swap" rel="stylesheet"/>
 <style>
 :root{--bg:#050914;--card:#080e1f;--card2:#0a1128;--blue:#1E64FF;--cyan:#00D4FF;--gold:#FFD700;--green:#00FF88;--purple:#9D4EDD;--red:#FF4466;--orange:#FF8C00;--white:#E8F4FF;--dim:rgba(232,244,255,0.45);--border:rgba(30,100,255,0.15);--sidebar-w:240px;}
@@ -109,21 +109,21 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
 <aside class="sidebar">
   <div class="sidebar-logo"><div class="sidebar-logo-text">DHA</div><div class="sidebar-logo-sub">DIGITAL HUSTLER ACADEMY</div></div>
   <div class="sidebar-section">MAIN</div>
-  <a class="nav-item active" href="#"><span class="nav-icon">🎮</span> Dashboard</a>
+  <a class="nav-item active" href="dha-dashboard.html"><span class="nav-icon">🎮</span> Dashboard</a>
   <div class="sidebar-section">LEARN</div>
-  <a class="nav-item" href="#"><span class="nav-icon">📈</span> Formation Trading</a>
-  <a class="nav-item" href="#"><span class="nav-icon">🧠</span> Mindset</a>
+  <a class="nav-item" href="dha-formation.html"><span class="nav-icon">📈</span> Formation Trading</a>
+  <a class="nav-item" href="dha-mindset.html"><span class="nav-icon">🧠</span> Mindset</a>
   <div class="sidebar-section">NETWORK</div>
-  <a class="nav-item" href="#"><span class="nav-icon">👥</span> Mon Squad</a>
-  <a class="nav-item" href="#"><span class="nav-icon">🏆</span> Leaderboard</a>
+  <a class="nav-item" href="dha-squad.html" onclick="localStorage.setItem('dha_discord_opened',new Date().toDateString())"><span class="nav-icon">👥</span> Mon Squad</a>
+  <a class="nav-item" href="dha-leaderboard.html"><span class="nav-icon">🏆</span> Leaderboard</a>
   <div class="sidebar-section">EARN</div>
-  <a class="nav-item" href="#"><span class="nav-icon">💰</span> Affiliation</a>
+  <a class="nav-item" href="dha-affiliation.html"><span class="nav-icon">💰</span> Affiliation</a>
   <div class="sidebar-section">TOOLS</div>
-  <a class="nav-item" href="#"><span class="nav-icon">📞</span> Appel Mentor</a>
+  <a class="nav-item" href="dha-mentor.html"><span class="nav-icon">📞</span> Appel Mentor</a>
   <div class="sidebar-bottom">
     <div class="sidebar-member">
-      <div class="sidebar-avatar">📈</div>
-      <div><div class="sidebar-member-name">@QUINCY</div><div class="sidebar-member-rang">⚡ HUSTLER</div></div>
+      <div class="sidebar-avatar" id="sb-avatar">🎮</div>
+      <div><div class="sidebar-member-name" id="sb-pseudo">CHARGEMENT...</div><div class="sidebar-member-rang" id="sb-rang">NEW HUSTLER</div></div>
     </div>
   </div>
 </aside>
@@ -135,8 +135,8 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
       <div style="font-size:12px;color:var(--dim);margin-top:2px;" id="topbar-date"></div>
     </div>
     <div class="topbar-right">
-      <div class="topbar-xp"><span style="font-size:16px;">⚡</span><span class="topbar-xp-val">6 240 XP</span><span class="topbar-xp-label">TOTAL</span></div>
-      <div style="padding:8px 16px;border-radius:99px;background:rgba(255,68,102,0.1);border:1px solid rgba(255,68,102,0.2);font-family:'Orbitron',sans-serif;font-size:10px;color:var(--red);cursor:pointer;">DÉCONNEXION</div>
+      <div class="topbar-xp"><span style="font-size:16px;">⚡</span><span class="topbar-xp-val" id="topbar-xp">0 XP</span><span class="topbar-xp-label">TOTAL</span></div>
+      <div style="padding:8px 16px;border-radius:99px;background:rgba(255,68,102,0.1);border:1px solid rgba(255,68,102,0.2);font-family:'Orbitron',sans-serif;font-size:10px;color:var(--red);cursor:pointer;" onclick="logout()">DÉCONNEXION</div>
     </div>
   </div>
 
@@ -145,54 +145,53 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
       <div class="player-card-glow"></div>
       <div class="player-card-grid"></div>
       <div class="player-header">
-        <div class="player-avatar" style="cursor:pointer;" title="Clique pour changer ta photo">
-          <span>📈</span>
+        <div class="player-avatar" id="player-avatar" onclick="triggerAvatarUpload()" style="cursor:pointer;" title="Clique pour changer ta photo">
+          <img id="player-avatar-img" src="" style="display:none;width:100%;height:100%;object-fit:cover;border-radius:14px;"/>
+          <span id="player-avatar-emoji">🎮</span>
           <div style="position:absolute;bottom:-4px;right:-4px;width:18px;height:18px;border-radius:50%;background:var(--cyan);display:flex;align-items:center;justify-content:center;font-size:10px;">📷</div>
         </div>
+        <input type="file" id="avatar-input" accept="image/*" style="display:none;" onchange="uploadAvatar(event)"/>
         <div class="player-info">
-          <div class="player-pseudo">@QUINCY</div>
-          <div class="player-classe">📈 TRADING</div>
+          <div class="player-pseudo" id="player-pseudo">---</div>
+          <div class="player-classe" id="player-classe">Chargement...</div>
         </div>
-        <div class="player-rang">⚡ HUSTLER</div>
+        <div class="player-rang" id="player-rang">🎮 NEW HUSTLER</div>
       </div>
       <div class="player-stats">
-        <div class="player-stat"><div class="player-stat-val" style="color:var(--gold)">6 240</div><div class="player-stat-label">XP TOTAL</div></div>
-        <div class="player-stat"><div class="player-stat-val" style="color:var(--cyan)">13</div><div class="player-stat-label">LEVEL</div></div>
-        <div class="player-stat"><div class="player-stat-val" style="color:var(--green)">42</div><div class="player-stat-label">JOUR(S)</div></div>
+        <div class="player-stat"><div class="player-stat-val" id="stat-xp" style="color:var(--gold)">0</div><div class="player-stat-label">XP TOTAL</div></div>
+        <div class="player-stat"><div class="player-stat-val" id="stat-level" style="color:var(--cyan)">1</div><div class="player-stat-label">LEVEL</div></div>
+        <div class="player-stat"><div class="player-stat-val" id="stat-days" style="color:var(--green)">1</div><div class="player-stat-label">JOUR(S)</div></div>
       </div>
       <div class="xp-bar-wrap">
-        <div class="xp-bar-header"><span>PROGRESSION VERS LE PROCHAIN LEVEL</span><span>908 / 667 XP</span></div>
-        <div class="xp-bar"><div class="xp-fill" style="width:62%"></div></div>
+        <div class="xp-bar-header"><span>PROGRESSION VERS LE PROCHAIN LEVEL</span><span id="xp-next">0 / 500 XP</span></div>
+        <div class="xp-bar"><div class="xp-fill" id="xp-fill" style="width:0%"></div></div>
         <div style="text-align:right;margin-top:8px;"><a href="#" onclick="showRangsModal();return false;" style="font-family:'Orbitron',sans-serif;font-size:8px;letter-spacing:2px;color:var(--cyan);text-decoration:none;">VOIR TOUS LES RANGS →</a></div>
       </div>
     </div>
 
     <div class="card">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
-        <div class="card-label" style="margin-bottom:0;">⚡ QUÊTES DU JOUR</div>
-        <a href="#" onclick="showGuideXP();return false;" style="font-family:'Orbitron',sans-serif;font-size:8px;letter-spacing:2px;color:var(--cyan);text-decoration:none;opacity:0.7;">GUIDE XP →</a>
-      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;"><div class="card-label" style="margin-bottom:0;">⚡ QUÊTES DU JOUR</div><a href="#" onclick="showGuideXP();return false;" style="font-family:'Orbitron',sans-serif;font-size:8px;letter-spacing:2px;color:var(--cyan);text-decoration:none;opacity:0.7;">GUIDE XP →</a></div>
       <div id="quetes-list">
-        <div class="quete-item done">
-          <div class="quete-check done">✓</div>
+        <div class="quete-item" id="q-connexion">
+          <div class="quete-check done" id="check-connexion">✓</div>
           <div class="quete-info"><div class="quete-name">Connexion quotidienne</div><div class="quete-xp">+10 XP</div></div>
         </div>
-        <div class="quete-item done">
-          <div class="quete-check done">✓</div>
+        <div class="quete-item" id="q-bloc">
+          <div class="quete-check" id="check-bloc" title="Se valide automatiquement quand tu termines un module">○</div>
           <div class="quete-info"><div class="quete-name">Finir un module</div><div class="quete-xp">+50 XP</div></div>
         </div>
-        <div class="quete-item">
-          <div class="quete-check">○</div>
+        <div class="quete-item" id="q-chat">
+          <div class="quete-check" id="check-chat" title="Se valide automatiquement quand tu ouvres le Squad Discord">○</div>
           <div class="quete-info"><div class="quete-name">Envoyer un message dans le chat Discord</div><div class="quete-xp">+5 XP</div></div>
         </div>
-        <div class="quete-item">
-          <div class="quete-check">○</div>
+        <div class="quete-item" id="q-parrainage">
+          <div class="quete-check" id="check-parrainage" title="Se valide automatiquement dès que tu as un filleul">○</div>
           <div class="quete-info"><div class="quete-name">Parrainer un ami</div><div class="quete-xp">+250 XP</div></div>
         </div>
       </div>
       <div style="margin-top:16px;padding:12px;border-radius:12px;background:rgba(255,215,0,0.06);border:1px solid rgba(255,215,0,0.15);text-align:center;">
         <div style="font-family:'Orbitron',sans-serif;font-size:8px;letter-spacing:2px;color:rgba(255,215,0,0.5);margin-bottom:4px;">XP DISPONIBLE AUJOURD'HUI</div>
-        <div style="font-family:'Orbitron',sans-serif;font-size:24px;font-weight:900;color:var(--gold);">315 XP</div>
+        <div style="font-family:'Orbitron',sans-serif;font-size:24px;font-weight:900;color:var(--gold);" id="xp-dispo">315 XP</div>
       </div>
     </div>
   </div>
@@ -201,7 +200,7 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
     <div class="stat-card">
       <div class="stat-card-glow" style="background:radial-gradient(ellipse,rgba(0,212,255,0.15),transparent 70%)"></div>
       <div class="stat-card-icon">📚</div>
-      <div class="stat-card-val" style="color:var(--cyan)">33%</div>
+      <div class="stat-card-val" id="stat-formation" style="color:var(--cyan)">0%</div>
       <div class="stat-card-label">FORMATION</div>
     </div>
     <div class="stat-card">
@@ -221,27 +220,27 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
   <div class="grid-main fadeup fadeup-3">
     <div class="card">
       <div class="card-label">📚 MES FORMATIONS</div>
-      <a class="module-item" href="#">
+      <a class="module-item" href="dha-mindset.html">
         <div class="module-icon">🧠</div>
         <div class="module-info"><div class="module-name">MODULE MINDSET</div><div class="module-desc">La fondation obligatoire — commence ici</div></div>
         <div class="module-badge new">NOUVEAU</div>
       </a>
-      <a class="module-item" href="#">
-        <div class="module-icon">📈</div>
-        <div class="module-info"><div class="module-name">MODULE TRADING</div><div class="module-desc">Analyse, gestion du risque, live sessions</div></div>
+      <a class="module-item" href="dha-formation.html" id="module-classe">
+        <div class="module-icon" id="module-classe-icon">📈</div>
+        <div class="module-info"><div class="module-name" id="module-classe-name">MODULE TRADING</div><div class="module-desc">Analyse, gestion du risque, live sessions</div></div>
         <div class="module-badge available">DISPONIBLE</div>
       </a>
-      <div class="module-item locked">
+      <div class="module-item locked" onclick="showLocked('UGC Creator')">
         <div class="module-icon">🎬</div>
         <div class="module-info"><div class="module-name">MODULE UGC CREATOR</div><div class="module-desc">Bientôt disponible</div></div>
         <div class="module-badge locked">🔒 BIENTÔT</div>
       </div>
-      <div class="module-item locked">
+      <div class="module-item locked" onclick="showLocked('Marketing Digital')">
         <div class="module-icon">🚀</div>
         <div class="module-info"><div class="module-name">MODULE MARKETING</div><div class="module-desc">Bientôt disponible</div></div>
         <div class="module-badge locked">🔒 BIENTÔT</div>
       </div>
-      <div class="module-item locked">
+      <div class="module-item locked" onclick="showLocked('E-Commerce')">
         <div class="module-icon">🛒</div>
         <div class="module-info"><div class="module-name">MODULE E-COMMERCE</div><div class="module-desc">Bientôt disponible</div></div>
         <div class="module-badge locked">🔒 BIENTÔT</div>
@@ -251,9 +250,9 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
     <div class="card">
       <div class="card-label">🏆 LEADERBOARD</div>
       <div id="leaderboard-list">
-        <div class="lb-item"><div class="lb-rank" style="color:var(--gold)">🥇</div><div class="lb-avatar">🔥</div><div class="lb-name">@SHADOW</div><div class="lb-xp">12 450 XP</div></div>
-        <div class="lb-item"><div class="lb-rank" style="color:rgba(192,192,192,0.8)">🥈</div><div class="lb-avatar">⚡</div><div class="lb-name">@QUINCY</div><div class="lb-xp">6 240 XP</div></div>
-        <div class="lb-item"><div class="lb-rank" style="color:rgba(205,127,50,0.8)">🥉</div><div class="lb-avatar">🚀</div><div class="lb-name">@NOVA</div><div class="lb-xp">4 100 XP</div></div>
+        <div class="lb-item"><div class="lb-rank" style="color:var(--gold)">🥇</div><div class="lb-avatar">🔥</div><div class="lb-name">---</div><div class="lb-xp">--- XP</div></div>
+        <div class="lb-item"><div class="lb-rank" style="color:rgba(192,192,192,0.8)">🥈</div><div class="lb-avatar">⚡</div><div class="lb-name">---</div><div class="lb-xp">--- XP</div></div>
+        <div class="lb-item"><div class="lb-rank" style="color:rgba(205,127,50,0.8)">🥉</div><div class="lb-avatar">🚀</div><div class="lb-name">---</div><div class="lb-xp">--- XP</div></div>
       </div>
       <div style="margin-top:12px;text-align:center;font-family:'Orbitron',sans-serif;font-size:8px;letter-spacing:2px;color:var(--dim);">CLASSEMENT EN TEMPS RÉEL</div>
     </div>
@@ -267,13 +266,11 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
     <div class="locked-modal-sub">Cette section n'est pas encore disponible.<br/>On travaille dessus et elle sera débloquée très prochainement.<br/><br/><strong style="color:var(--gold);">Reste connecté — tu seras le premier informé. 🔥</strong></div>
     <div class="locked-modal-btn" onclick="hideLocked()">COMPRIS 👊</div>
   </div>
-</div>
-
-<script>
-// ── Données fictives ──
-const member = { xp: 6240, level: 13, pseudo: 'QUINCY', classe: 'trading' };
-
-// ── Rangs ──
+</div><script>
+const SUPABASE_URL='https://kdetwppxsfoagyndrlzr.supabase.co';
+const SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtkZXR3cHB4c2ZvYWd5bmRybHpyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzcyMzM3NjQsImV4cCI6MjA5MjgwOTc2NH0.OodaFQKEHcncDYdO6uM121NAUbyxD4UxpptSjzzZOi0';
+const classeIcons={trading:'📈',ugc:'🎬',marketing:'🚀',ecommerce:'🛒'};
+const classeNames={trading:'TRADING',ugc:'UGC CREATOR',marketing:'MARKETING DIGITAL',ecommerce:'E-COMMERCE'};
 const rangs=[
   {min:0,    max:4999,  name:'NEW HUSTLER',icon:'🎮',color:'rgba(200,200,200,0.6)'},
   {min:5000, max:14999, name:'HUSTLER',    icon:'⚡',color:'#1E64FF'},
@@ -281,53 +278,274 @@ const rangs=[
   {min:22000,max:29999, name:'AMBASSADEUR',icon:'👑',color:'#FFD700'},
   {min:30000,max:999999,name:'LEGEND',     icon:'💎',color:'#9D4EDD'}
 ];
+function getXPForLevel(level){
+  if(level<=1)return 0;
+  if(level<=10)return (level-1)*500;
+  if(level<=25)return 5000+(level-10)*667;
+  if(level<=50)return 15000+(level-25)*280;
+  return 22000+(level-50)*160;
+}
+function getLevelFromXP(xp){
+  for(let l=100;l>=1;l--){if(xp>=getXPForLevel(l))return l;}
+  return 1;
+}
+function getXPInLevel(xp){
+  const level=getLevelFromXP(xp);
+  return xp-getXPForLevel(level);
+}
+function getXPForCurrentLevel(xp){
+  const level=getLevelFromXP(xp);
+  return getXPForLevel(level+1)-getXPForLevel(level);
+}
+let member=null;
+
+function getKey(k){const m=JSON.parse(localStorage.getItem('dha_member')||'{}');return 'dha_'+(m.pseudo||'guest')+'_'+k;}
 function getRang(xp){return rangs.find(r=>xp>=r.min&&xp<=r.max)||rangs[0];}
-
-// ── Date ──
-const now=new Date();
-document.getElementById('topbar-date').textContent=now.toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'}).toUpperCase();
-
 function showLocked(name){document.getElementById('locked-title').textContent='🔒 '+name.toUpperCase()+' — BIENTÔT';document.getElementById('locked-modal').classList.add('show');}
 function hideLocked(){document.getElementById('locked-modal').classList.remove('show');}
+function logout(){if(confirm('Tu veux vraiment te déconnecter ?')){localStorage.removeItem('dha_member');localStorage.removeItem('dha_last_login');window.location.href='dha-connexion.html';}}
+ function checkQuetes(){
+  const today=new Date().toDateString();
+  ['bloc','chat','parrainage'].forEach(type=>{
+    if(localStorage.getItem('dha_quete_'+type+'_'+today)){
+      const el=document.getElementById('check-'+type);
+      if(el){el.classList.add('done');el.textContent='✓';el.closest('.quete-item').classList.add('done');}
+    }
+  });
 
-// ── Modal Rangs ──
+  // QUÊTE MODULE : vérifie si un module a été complété aujourd'hui
+  checkQueteModule();
+
+  // QUÊTE DISCORD : vérifie si le lien discord a été ouvert aujourd'hui
+  checkQueteDiscord();
+
+  // QUÊTE PARRAINAGE : vérifie si le membre a au moins 1 filleul
+  checkQueteParrainage();
+}
+
+function checkQueteModule(){
+  const today=new Date().toDateString();
+  if(localStorage.getItem('dha_quete_bloc_'+today)) return; // déjà validée
+  if(!member) return;
+  const pseudo=member.pseudo||'guest';
+  const prefix='dha_'+pseudo+'_';
+  // Clés de tous les modules complétés
+  const moduleKeys=[
+    prefix+'module_mindset_done',
+    prefix+'module_trading_done',
+    prefix+'module_ugc_done',
+    prefix+'module_marketing_done',
+    prefix+'bloc_m1_done',prefix+'bloc_m2_b1_done',prefix+'bloc_m3_done',
+    prefix+'bloc_m4_done',prefix+'bloc_m5_done',prefix+'bloc_m6_done'
+  ];
+  // Vérifie si l'un d'eux a été complété aujourd'hui (stocké avec date)
+  const moduleDoneToday=localStorage.getItem(prefix+'last_module_done');
+  if(moduleDoneToday===today){
+    completeQueteAuto('bloc',50);
+  }
+}
+
+function checkQueteDiscord(){
+  const today=new Date().toDateString();
+  if(localStorage.getItem('dha_quete_chat_'+today)) return;
+  const discordOpened=localStorage.getItem('dha_discord_opened');
+  if(discordOpened===today){
+    completeQueteAuto('chat',5);
+  }
+}
+
+async function checkQueteParrainage(){
+  const today=new Date().toDateString();
+  if(localStorage.getItem('dha_quete_parrainage_'+today)) return;
+  if(!member) return;
+  try{
+    const todayISO=new Date().toISOString().split('T')[0];
+    const res=await fetch(SUPABASE_URL+'/rest/v1/membres?parraine_par=eq.'+encodeURIComponent(member.pseudo||'')+'&date_inscription=gte.'+todayISO+'T00:00:00&select=pseudo',{
+      headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY}
+    });
+    const data=await res.json();
+    if(data && data.length>0){
+      completeQueteAuto('parrainage',250);
+    }
+  }catch(e){console.log('Parrainage check error:',e);}
+}
+
+function completeQueteAuto(type,xp){
+  const today=new Date().toDateString();
+  const key='dha_quete_'+type+'_'+today;
+  if(localStorage.getItem(key))return;
+  localStorage.setItem(key,'true');
+  const el=document.getElementById('check-'+type);
+  if(el){el.classList.add('done');el.textContent='✓';el.closest('.quete-item').classList.add('done');}
+  updateXP(xp);
+}
+
+
+// Appelé depuis les pages de modules quand un module est terminé
+function notifyModuleDone(){
+  const today=new Date().toDateString();
+  if(!member) return;
+  const pseudo=member.pseudo||'guest';
+  localStorage.setItem('dha_'+pseudo+'_last_module_done', today);
+  checkQueteModule();
+}
+
+// Appelé quand le membre clique sur le lien Discord
+function openDiscord(url){
+  const today=new Date().toDateString();
+  localStorage.setItem('dha_discord_opened', today);
+  checkQueteDiscord();
+  window.open(url,'_blank');
+}
+
+async function updateXP(amount){
+  if(!member)return;
+  const oldXP=member.xp||0;
+  member.xp=oldXP+amount;
+  member.level=getLevelFromXP(member.xp);
+  member.xp_semaine=(member.xp_semaine||0)+amount;
+  localStorage.setItem('dha_member',JSON.stringify(member));
+  const flash=document.createElement('div');
+  flash.textContent='+'+amount+' XP ⚡';
+  flash.style.cssText='position:fixed;top:80px;right:24px;font-family:Orbitron,sans-serif;font-size:20px;font-weight:900;color:#FFD700;text-shadow:0 0 20px rgba(255,215,0,0.8);z-index:9999;pointer-events:none;animation:xp-float 1.5s ease forwards;';
+  document.body.appendChild(flash);setTimeout(()=>flash.remove(),1500);
+  const startXP=getXPInLevel(oldXP);const endXP=getXPInLevel(member.xp);const levelXP=getXPForCurrentLevel(member.xp);
+  const duration=1000;const startTime=performance.now();
+  function animateBar(currentTime){
+    const elapsed=currentTime-startTime;const progress=Math.min(elapsed/duration,1);
+    const currentPct=(startXP+(endXP-startXP)*progress)/levelXP*100;
+    document.getElementById('xp-fill').style.width=currentPct+'%';
+    document.getElementById('xp-next').textContent=Math.round(startXP+(endXP-startXP)*progress)+' / '+levelXP+' XP';
+    document.getElementById('topbar-xp').textContent=Math.round(oldXP+amount*progress)+' XP';
+    if(progress<1)requestAnimationFrame(animateBar);
+    else renderMember();
+  }
+  requestAnimationFrame(animateBar);
+  try{
+    await fetch(SUPABASE_URL+'/rest/v1/membres?email=eq.'+encodeURIComponent(member.email).replace(/\./g,'%2E'),{
+      method:'PATCH',
+      headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY},
+      body:JSON.stringify({xp:member.xp,level:member.level,rang:getRang(member.xp).name,xp_semaine:member.xp_semaine})
+    });
+  }catch(e){console.log('XP error:',e);}
+}
+
+function renderMember(){
+  if(!member)return;
+  const rang=getRang(member.xp||0);
+  const xp=member.xp||0;
+  const level=getLevelFromXP(xp);
+  const xpInLevel=getXPInLevel(xp);
+  const levelXP=getXPForCurrentLevel(xp);const xpPct=(xpInLevel/levelXP)*100;
+  const classe=member.classe||'trading';
+  const icon=classeIcons[classe]||'🎮';
+  document.getElementById('sb-pseudo').textContent=('@'+(member.pseudo||'HUSTLER')).toUpperCase();
+  document.getElementById('sb-rang').textContent=rang.icon+' '+rang.name;
+  document.getElementById('topbar-xp').textContent=xp+' XP';
+  document.getElementById('player-pseudo').textContent=('@'+(member.pseudo||'HUSTLER')).toUpperCase();
+  document.getElementById('player-classe').textContent=icon+' '+(classeNames[classe]||'TRADING');
+  document.getElementById('player-rang').textContent=rang.icon+' '+rang.name;
+  document.getElementById('player-avatar-emoji').textContent=icon;
+  if(member.avatar)showAvatar(member.avatar);
+  document.getElementById('stat-xp').textContent=xp;
+  document.getElementById('stat-level').textContent=level;
+  if(member.date_inscription){
+    const days=Math.max(1,Math.floor((new Date()-new Date(member.date_inscription))/86400000)+1);
+    document.getElementById('stat-days').textContent=days;
+  }
+  document.getElementById('xp-fill').style.width=xpPct+'%';
+  document.getElementById('xp-next').textContent=xpInLevel+' / '+levelXP+' XP';
+  document.getElementById('module-classe-icon').textContent=icon;
+  document.getElementById('module-classe-name').textContent='MODULE '+(classeNames[classe]||'TRADING');
+  const now=new Date();
+  document.getElementById('topbar-date').textContent=now.toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'}).toUpperCase();
+  const pseudo=member.pseudo||'guest';
+  const prefix='dha_'+pseudo+'_';
+  const keys=[prefix+'bloc_m1_done',prefix+'bloc_m2_b1_done',prefix+'bloc_m3_done',prefix+'bloc_m4_done',prefix+'bloc_m5_done',prefix+'bloc_m6_done',prefix+'bloc_m7_done',prefix+'bloc_m8_done',prefix+'bloc_m9_done',prefix+'bloc_m10_done',prefix+'bloc_m11_done',prefix+'bloc_m12_done',prefix+'bloc_m13_done',prefix+'bloc_m14_done',prefix+'bloc_m15_done'];
+  const completedMods=keys.filter(k=>localStorage.getItem(k)).length;
+  const formPct=Math.round((completedMods/15)*100);
+  document.getElementById('stat-formation').textContent=formPct+'%';
+}
+  function showAvatar(url){
+  if(!url)return;
+  const img=document.getElementById('player-avatar-img');
+  const emoji=document.getElementById('player-avatar-emoji');
+  const sbAvatar=document.getElementById('sb-avatar');
+  img.src=url;img.style.display='block';emoji.style.display='none';
+  sbAvatar.innerHTML='<img src="'+url+'" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"/>';
+}
+
+function triggerAvatarUpload(){document.getElementById('avatar-input').click();}
+
+async function uploadAvatar(event){
+  const file=event.target.files[0];
+  if(!file)return;
+  if(file.size>5000000){alert('Image trop lourde. Max 5MB.');return;}
+  const ext=file.name.split('.').pop();
+  const fileName=member.email.replace('@','_').replace('.','_')+'.'+ext;
+  try{
+    const res=await fetch(SUPABASE_URL+'/storage/v1/object/avatars/'+fileName,{method:'POST',headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY,'Content-Type':file.type,'x-upsert':'true'},body:file});
+    if(res.ok){
+      const avatarUrl=SUPABASE_URL+'/storage/v1/object/public/avatars/'+fileName;
+      member.avatar=avatarUrl;
+      localStorage.setItem('dha_member',JSON.stringify(member));
+      await fetch(SUPABASE_URL+'/rest/v1/membres?email=eq.'+encodeURIComponent(member.email).replace(/\./g,'%2E'),{method:'PATCH',headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY},body:JSON.stringify({avatar:avatarUrl})});
+      showAvatar(avatarUrl);alert('Photo mise à jour ! 🔥');
+    }
+  }catch(e){alert('Erreur upload. Réessaie.');}
+}
+
+async function loadLeaderboard(){
+  try{
+    const res=await fetch(SUPABASE_URL+'/rest/v1/membres?select=pseudo,xp&limit=3',{headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY}});
+    const data=await res.json();
+    const sorted=data.sort((a,b)=>(b.xp||0)-(a.xp||0));
+    const list=document.getElementById('leaderboard-list');
+    const medals=['🥇','🥈','🥉'];
+    const colors=['var(--gold)','rgba(192,192,192,0.8)','rgba(205,127,50,0.8)'];
+    list.innerHTML='';
+    sorted.forEach((m,i)=>{
+      list.innerHTML+=`<div class="lb-item"><div class="lb-rank" style="color:${colors[i]}">${medals[i]}</div><div class="lb-avatar">⚡</div><div class="lb-name">@${m.pseudo}</div><div class="lb-xp">${m.xp||0} XP</div></div>`;
+    });
+  }catch(e){console.log('Leaderboard error:',e);}
+}
+
 function showRangsModal(){
   const rangsData=[
     {icon:'🎮',name:'NEW HUSTLER',xp:'0 XP',    color:'rgba(200,200,200,0.6)',glow:'rgba(200,200,200,0.15)',badge:null},
-    {icon:'⚡',name:'HUSTLER',    xp:'5 000 XP', color:'#1E64FF',             glow:'rgba(30,100,255,0.25)', badge:{icon:'⚡',label:'HUSTLER',bg:'rgba(30,100,255,0.15)',border:'rgba(30,100,255,0.5)',shadow:'0 0 18px rgba(30,100,255,0.5)'}},
-    {icon:'🚀',name:'PRO HUSTLER',xp:'15 000 XP',color:'#00D4FF',             glow:'rgba(0,212,255,0.25)', badge:{icon:'🚀',label:'PRO',    bg:'rgba(0,212,255,0.15)', border:'rgba(0,212,255,0.5)', shadow:'0 0 18px rgba(0,212,255,0.5)'}},
-    {icon:'👑',name:'AMBASSADEUR',xp:'22 000 XP',color:'#FFD700',             glow:'rgba(255,215,0,0.25)', badge:{icon:'👑',label:'AMBASS.',bg:'rgba(255,215,0,0.15)', border:'rgba(255,215,0,0.5)', shadow:'0 0 18px rgba(255,215,0,0.5)'}},
-    {icon:'💎',name:'LEGEND',     xp:'30 000 XP',color:'#9D4EDD',             glow:'rgba(157,78,221,0.25)',badge:{icon:'💎',label:'LEGEND', bg:'rgba(157,78,221,0.15)',border:'rgba(157,78,221,0.5)',shadow:'0 0 18px rgba(157,78,221,0.5)'}},
+    {icon:'⚡',name:'HUSTLER',    xp:'5 000 XP', color:'#1E64FF',             glow:'rgba(30,100,255,0.15)', badge:{icon:'⚡',label:'HUSTLER',bg:'rgba(30,100,255,0.15)',border:'rgba(30,100,255,0.5)',shadow:'0 0 18px rgba(30,100,255,0.5)'}},
+    {icon:'🚀',name:'PRO HUSTLER',xp:'15 000 XP',color:'#00D4FF',             glow:'rgba(0,212,255,0.15)',  badge:{icon:'🚀',label:'PRO',    bg:'rgba(0,212,255,0.15)', border:'rgba(0,212,255,0.5)', shadow:'0 0 18px rgba(0,212,255,0.5)'}},
+    {icon:'👑',name:'AMBASSADEUR',xp:'22 000 XP',color:'#FFD700',             glow:'rgba(255,215,0,0.15)',  badge:{icon:'👑',label:'AMBASS.',bg:'rgba(255,215,0,0.15)', border:'rgba(255,215,0,0.5)', shadow:'0 0 18px rgba(255,215,0,0.5)'}},
+    {icon:'💎',name:'LEGEND',     xp:'30 000 XP',color:'#9D4EDD',             glow:'rgba(157,78,221,0.15)',badge:{icon:'💎',label:'LEGEND', bg:'rgba(157,78,221,0.15)',border:'rgba(157,78,221,0.5)',shadow:'0 0 18px rgba(157,78,221,0.5)'}},
   ];
-  const currentXP=member.xp||0;
+  const currentXP=member?member.xp||0:0;
   let html=`<div style="position:fixed;inset:0;z-index:9999;background:rgba(5,9,20,0.92);backdrop-filter:blur(12px);display:flex;align-items:center;justify-content:center;padding:20px;" onclick="this.remove()">
   <div style="background:#080e1f;border:1px solid rgba(30,100,255,0.2);border-radius:20px;padding:36px;max-width:600px;width:100%;max-height:85vh;overflow-y:auto;position:relative;" onclick="event.stopPropagation()">
-  <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,#1E64FF,#00D4FF,#FFD700);border-radius:20px 20px 0 0;"></div>
+  <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,#1E64FF,#00D4FF,#FFD700,#9D4EDD);border-radius:20px 20px 0 0;"></div>
   <div style="font-family:'Orbitron',sans-serif;font-size:16px;font-weight:900;color:#E8F4FF;margin-bottom:24px;letter-spacing:2px;">🏆 LES RANGS DHA</div>`;
+
   rangsData.forEach(r=>{
     const reqXP=parseInt(r.xp.replace(/\s/g,''));
     const isUnlocked=currentXP>=reqXP;
     const isCurrent=getRang(currentXP).name===r.name;
     const isPassed=isUnlocked&&!isCurrent;
-    // Icône statut
     let statusIcon='';
     if(isCurrent) statusIcon=`<div style="padding:3px 10px;border-radius:99px;background:rgba(0,255,136,0.1);border:1px solid rgba(0,255,136,0.3);font-family:'Orbitron',sans-serif;font-size:7px;color:#00FF88;letter-spacing:1px;">TON RANG</div>`;
     else if(isPassed) statusIcon=`<div style="padding:3px 10px;border-radius:99px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.15);font-family:'Orbitron',sans-serif;font-size:7px;color:rgba(232,244,255,0.4);letter-spacing:1px;">DÉPASSÉ</div>`;
-    else statusIcon=`<div style="font-size:18px;opacity:0.2;">🔒</div>`;
-    // Badge
+    else statusIcon=`<div style="font-size:16px;opacity:0.2;">🔒</div>`;
     const badgeHtml=r.badge
-      ? `<div style="display:inline-flex;align-items:center;gap:7px;padding:8px 16px;border-radius:10px;background:${r.badge.bg};border:1px solid ${r.badge.border};box-shadow:${isUnlocked?r.badge.shadow:'none'};opacity:${isUnlocked?1:0.25};margin-top:14px;">
+      ?`<div style="display:inline-flex;align-items:center;gap:7px;padding:8px 16px;border-radius:10px;background:${r.badge.bg};border:1px solid ${r.badge.border};box-shadow:${isUnlocked?r.badge.shadow:'none'};opacity:${isUnlocked?1:0.25};margin-top:14px;">
           <span style="font-size:18px;">${r.badge.icon}</span>
           <span style="font-family:'Orbitron',sans-serif;font-size:10px;font-weight:900;color:${r.color};letter-spacing:2px;">BADGE ${r.badge.label}</span>
           ${isUnlocked?`<span style="font-size:10px;color:#00FF88;">✓</span>`:`<span style="font-size:10px;color:rgba(255,255,255,0.3);">🔒</span>`}
         </div>`
-      : `<div style="display:inline-flex;align-items:center;gap:7px;padding:8px 16px;border-radius:10px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);margin-top:14px;">
+      :`<div style="display:inline-flex;align-items:center;gap:7px;padding:8px 16px;border-radius:10px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);margin-top:14px;">
           <span style="font-size:13px;color:rgba(255,255,255,0.25);">— Aucun badge</span>
         </div>`;
-    html+=`<div style="padding:20px;border-radius:16px;margin-bottom:12px;background:${isCurrent?'rgba(30,100,255,0.08)':isPassed?'rgba(255,255,255,0.01)':'rgba(255,255,255,0.02)'};border:1px solid ${isCurrent?r.color:isPassed?'rgba(255,255,255,0.05)':'rgba(255,255,255,0.07)'};position:relative;overflow:hidden;${isPassed?'opacity:0.65;':''}">
+    html+=`<div style="padding:20px;border-radius:16px;margin-bottom:12px;background:${isCurrent?'rgba(30,100,255,0.08)':isPassed?'rgba(255,255,255,0.01)':'rgba(255,255,255,0.02)'};border:1px solid ${isCurrent?r.color:isPassed?'rgba(255,255,255,0.05)':'rgba(255,255,255,0.07)'};position:relative;overflow:hidden;${isPassed?'opacity:0.6;':''}">
       ${isCurrent?`<div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,${r.color},transparent);"></div>`:''}
       <div style="display:flex;align-items:center;gap:14px;">
-        <div style="width:52px;height:52px;border-radius:14px;background:${isUnlocked?r.glow:'rgba(255,255,255,0.03)'};border:1px solid ${isCurrent?r.color:isUnlocked?r.color+'88':'rgba(255,255,255,0.08)'};display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0;box-shadow:${isCurrent?r.glow.replace('0.15','0.3')+' 0px 0px 20px':'none'};">${r.icon}</div>
+        <div style="width:52px;height:52px;border-radius:14px;background:${isUnlocked?r.glow:'rgba(255,255,255,0.03)'};border:1px solid ${isCurrent?r.color:isUnlocked?r.color+'88':'rgba(255,255,255,0.08)'};display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0;box-shadow:${isCurrent?'0 0 20px '+r.glow:'none'};">${r.icon}</div>
         <div style="flex:1;">
           <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
             <div style="font-family:'Orbitron',sans-serif;font-size:14px;font-weight:900;color:${isCurrent?r.color:isUnlocked?'rgba(232,244,255,0.5)':'rgba(232,244,255,0.25)'};">${r.name}</div>
@@ -339,82 +557,143 @@ function showRangsModal(){
       ${badgeHtml}
     </div>`;
   });
+
   html+=`<div style="text-align:center;margin-top:8px;"><button onclick="this.closest('[style*=fixed]').remove()" style="padding:12px 28px;border-radius:12px;background:rgba(0,212,255,0.1);border:1px solid rgba(0,212,255,0.3);color:#00D4FF;font-family:'Orbitron',sans-serif;font-size:10px;font-weight:900;cursor:pointer;letter-spacing:2px;">FERMER</button></div>
   </div></div>`;
   document.body.insertAdjacentHTML('beforeend',html);
 }
 
-// ── Guide XP ──
 function showGuideXP(){
-  const currentXP=member.xp||0;
-  const sections=[
-    {label:'QUÊTES QUOTIDIENNES',items:[
-      {icon:'🔌',name:'Connexion quotidienne',desc:'Connecte-toi au dashboard chaque jour',xp:'+10 XP'},
-      {icon:'📚',name:'Finir un module',desc:'Complète un bloc de formation',xp:'+50 XP'},
-      {icon:'💬',name:'Ouvrir le Discord',desc:'Accède au Discord communauté',xp:'+5 XP'},
-      {icon:'🤝',name:'Parrainer un ami',desc:"Un ami s'inscrit avec ton lien aujourd'hui",xp:'+250 XP'},
-    ]},
-    {label:'COMMUNAUTÉ & RÉSEAU',items:[
-      {icon:'✍️',name:'Message dans le groupe Discord',desc:'Chaque message envoyé dans le groupe',xp:'+10 XP'},
-      {icon:'📺',name:'Participer à un live',desc:"Être présent lors d'un live organisé",xp:'+100 XP'},
-      {icon:'🏢',name:'Venir au QG',desc:'Te déplacer physiquement au QG',xp:'+250 XP'},
-      {icon:'🎉',name:'Venir à un événement',desc:'Participer à un événement organisé par la DHA',xp:'+300 XP'},
-    ]},
-    {label:'FORMATION & SUIVI',items:[
-      {icon:'📞',name:'Appel avec un mentor',desc:'Chaque appel passé avec un mentor DHA',xp:'+75 XP'},
-      {icon:'🗓️',name:'Fidélité mensuelle',desc:"Bonus automatique chaque mois d'abonnement actif",xp:'+100 XP'},
-    ]},
-    {label:'TRADING',items:[
-      {icon:'💰',name:'Take Profit validé',desc:'Chaque TP confirmé sur ton compte',xp:'+200 XP'},
-    ]},
-  ];
-  const rangsData=[
+  const html=`<div style="position:fixed;inset:0;z-index:9999;background:rgba(5,9,20,0.92);backdrop-filter:blur(12px);display:flex;align-items:center;justify-content:center;padding:20px;overflow-y:auto;" onclick="this.remove()">
+  <div style="background:#080e1f;border:1px solid rgba(30,100,255,0.2);border-radius:20px;padding:36px;max-width:640px;width:100%;max-height:90vh;overflow-y:auto;position:relative;" onclick="event.stopPropagation()">
+  <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,#1E64FF,#00D4FF,#FFD700,#9D4EDD);border-radius:20px 20px 0 0;"></div>
+
+  <div style="font-family:'Orbitron',sans-serif;font-size:16px;font-weight:900;color:#E8F4FF;margin-bottom:6px;letter-spacing:2px;">⚡ GUIDE XP</div>
+  <div style="font-size:12px;color:rgba(232,244,255,0.4);margin-bottom:28px;">Toutes les façons de gagner de l'XP et de progresser dans la DHA.</div>
+
+  <!-- QUETES QUOTIDIENNES -->
+  <div style="font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:3px;color:rgba(0,212,255,0.6);margin-bottom:14px;">QUÊTES QUOTIDIENNES</div>
+  ${[
+    {icon:'🔌',name:'Connexion quotidienne',desc:'Connecte-toi au dashboard chaque jour',xp:'+10 XP'},
+    {icon:'📚',name:'Finir un module',desc:'Complète un bloc de formation',xp:'+50 XP'},
+    {icon:'💬',name:'Ouvrir le Discord',desc:'Accède au Discord communauté',xp:'+5 XP'},
+    {icon:'🤝',name:'Parrainer un ami',desc:"Un ami s'inscrit avec ton lien aujourd'hui",xp:'+250 XP'},
+  ].map(a=>`
+  <div style="display:flex;align-items:center;gap:14px;padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.05);">
+    <div style="font-size:20px;width:32px;text-align:center;flex-shrink:0;">${a.icon}</div>
+    <div style="flex:1;">
+      <div style="font-size:13px;color:#E8F4FF;font-weight:600;">${a.name}</div>
+      <div style="font-size:11px;color:rgba(232,244,255,0.4);margin-top:2px;">${a.desc}</div>
+    </div>
+    <div style="font-family:'Orbitron',sans-serif;font-size:11px;font-weight:900;color:#FFD700;flex-shrink:0;">${a.xp}</div>
+  </div>`).join('')}
+
+  <!-- COMMUNAUTE -->
+  <div style="font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:3px;color:rgba(0,212,255,0.6);margin-top:24px;margin-bottom:14px;">COMMUNAUTÉ & RÉSEAU</div>
+  ${[
+    {icon:'✍️',name:'Message dans le groupe Discord',desc:'Chaque message envoyé dans le groupe',xp:'+10 XP'},
+    {icon:'📺',name:'Participer à un live',desc:'Être présent lors d\'un live organisé',xp:'+100 XP'},
+    {icon:'🏢',name:'Venir au QG',desc:'Te déplacer physiquement au QG',xp:'+250 XP'},
+    {icon:'🎉',name:'Venir à un événement',desc:'Participer à un événement organisé par la DHA',xp:'+300 XP'},
+  ].map(a=>`
+  <div style="display:flex;align-items:center;gap:14px;padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.05);">
+    <div style="font-size:20px;width:32px;text-align:center;flex-shrink:0;">${a.icon}</div>
+    <div style="flex:1;">
+      <div style="font-size:13px;color:#E8F4FF;font-weight:600;">${a.name}</div>
+      <div style="font-size:11px;color:rgba(232,244,255,0.4);margin-top:2px;">${a.desc}</div>
+    </div>
+    <div style="font-family:'Orbitron',sans-serif;font-size:11px;font-weight:900;color:#FFD700;flex-shrink:0;">${a.xp}</div>
+  </div>`).join('')}
+
+  <!-- FORMATION -->
+  <div style="font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:3px;color:rgba(0,212,255,0.6);margin-top:24px;margin-bottom:14px;">FORMATION & SUIVI</div>
+  ${[
+    {icon:'📞',name:'Appel avec un mentor',desc:'Chaque appel passé avec un mentor DHA',xp:'+75 XP'},
+    {icon:'🗓️',name:'Fidélité mensuelle',desc:'Bonus automatique chaque mois d\'abonnement actif',xp:'+100 XP'},
+  ].map(a=>`
+  <div style="display:flex;align-items:center;gap:14px;padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.05);">
+    <div style="font-size:20px;width:32px;text-align:center;flex-shrink:0;">${a.icon}</div>
+    <div style="flex:1;">
+      <div style="font-size:13px;color:#E8F4FF;font-weight:600;">${a.name}</div>
+      <div style="font-size:11px;color:rgba(232,244,255,0.4);margin-top:2px;">${a.desc}</div>
+    </div>
+    <div style="font-family:'Orbitron',sans-serif;font-size:11px;font-weight:900;color:#FFD700;flex-shrink:0;">${a.xp}</div>
+  </div>`).join('')}
+
+  <!-- TRADING -->
+  <div style="font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:3px;color:rgba(0,212,255,0.6);margin-top:24px;margin-bottom:14px;">TRADING</div>
+  <div style="display:flex;align-items:center;gap:14px;padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.05);">
+    <div style="font-size:20px;width:32px;text-align:center;flex-shrink:0;">💰</div>
+    <div style="flex:1;">
+      <div style="font-size:13px;color:#E8F4FF;font-weight:600;">Take Profit validé</div>
+      <div style="font-size:11px;color:rgba(232,244,255,0.4);margin-top:2px;">Chaque TP confirmé sur ton compte</div>
+    </div>
+    <div style="font-family:'Orbitron',sans-serif;font-size:11px;font-weight:900;color:#FFD700;flex-shrink:0;">+200 XP</div>
+  </div>
+
+  <!-- RANGS -->
+  <div style="font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:3px;color:rgba(0,212,255,0.6);margin-top:28px;margin-bottom:14px;">RANGS & BADGES</div>
+  ${[
     {icon:'🎮',name:'NEW HUSTLER',xp:'0 XP',color:'rgba(200,200,200,0.8)',desc:'Rang de départ — bienvenue dans la DHA'},
     {icon:'⚡',name:'HUSTLER',xp:'5 000 XP',color:'#1E64FF',desc:'Badge ⚡ exclusif sur ton profil'},
     {icon:'🚀',name:'PRO HUSTLER',xp:'15 000 XP',color:'#00D4FF',desc:'Badge 🚀 sur ton profil'},
     {icon:'👑',name:'AMBASSADEUR',xp:'22 000 XP',color:'#FFD700',desc:'Badge 👑 sur ton profil'},
     {icon:'💎',name:'LEGEND',xp:'30 000 XP',color:'#9D4EDD',desc:'Badge 💎 légendaire sur ton profil'},
-  ];
-
-  let html=`<div style="position:fixed;inset:0;z-index:9999;background:rgba(5,9,20,0.92);backdrop-filter:blur(12px);display:flex;align-items:center;justify-content:center;padding:20px;" onclick="this.remove()">
-  <div style="background:#080e1f;border:1px solid rgba(30,100,255,0.2);border-radius:20px;padding:36px;max-width:640px;width:100%;max-height:90vh;overflow-y:auto;position:relative;" onclick="event.stopPropagation()">
-  <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,#1E64FF,#00D4FF,#FFD700,#9D4EDD);border-radius:20px 20px 0 0;"></div>
-  <div style="font-family:'Orbitron',sans-serif;font-size:16px;font-weight:900;color:#E8F4FF;margin-bottom:6px;letter-spacing:2px;">⚡ GUIDE XP</div>
-  <div style="font-size:12px;color:rgba(232,244,255,0.4);margin-bottom:28px;">Toutes les façons de gagner de l'XP et de progresser dans la DHA.</div>`;
-
-  sections.forEach((s,si)=>{
-    html+=`<div style="font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:3px;color:rgba(0,212,255,0.6);${si>0?'margin-top:24px;':''}margin-bottom:14px;">${s.label}</div>`;
-    s.items.forEach(a=>{
-      html+=`<div style="display:flex;align-items:center;gap:14px;padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.05);">
-        <div style="font-size:20px;width:32px;text-align:center;flex-shrink:0;">${a.icon}</div>
-        <div style="flex:1;">
-          <div style="font-size:13px;color:#E8F4FF;font-weight:600;">${a.name}</div>
-          <div style="font-size:11px;color:rgba(232,244,255,0.4);margin-top:2px;">${a.desc}</div>
-        </div>
-        <div style="font-family:'Orbitron',sans-serif;font-size:11px;font-weight:900;color:#FFD700;flex-shrink:0;">${a.xp}</div>
-      </div>`;
-    });
-  });
-
-  html+=`<div style="font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:3px;color:rgba(0,212,255,0.6);margin-top:28px;margin-bottom:14px;">RANGS & BADGES</div>`;
-  rangsData.forEach(r=>{
+  ].map(r=>{
+    const currentXP=member?member.xp||0:0;
     const reqXP=parseInt(r.xp.replace(/\s/g,''));
     const isReached=currentXP>=reqXP;
-    html+=`<div style="display:flex;align-items:center;gap:14px;padding:14px 16px;border-radius:12px;margin-bottom:8px;background:${isReached?'rgba(30,100,255,0.08)':'rgba(255,255,255,0.02)'};border:1px solid ${isReached?r.color:'rgba(255,255,255,0.06)'};">
+    return `
+    <div style="display:flex;align-items:center;gap:14px;padding:14px 16px;border-radius:12px;margin-bottom:8px;background:${isReached?'rgba(30,100,255,0.08)':'rgba(255,255,255,0.02)'};border:1px solid ${isReached?r.color:'rgba(255,255,255,0.06)'};">
       <div style="font-size:24px;flex-shrink:0;">${r.icon}</div>
       <div style="flex:1;">
         <div style="font-family:'Orbitron',sans-serif;font-size:12px;font-weight:900;color:${r.color};">${r.name}</div>
         <div style="font-size:11px;color:rgba(232,244,255,0.4);margin-top:3px;">${r.desc}</div>
       </div>
-      <div style="font-family:'Orbitron',sans-serif;font-size:11px;font-weight:900;color:${isReached?'#00FF88':r.color};flex-shrink:0;">${isReached?'✓ ATTEINT':r.xp}</div>
+      <div style="text-align:right;flex-shrink:0;">
+        <div style="font-family:'Orbitron',sans-serif;font-size:11px;font-weight:900;color:${isReached?'#00FF88':r.color};">${isReached?'✓ ATTEINT':r.xp}</div>
+      </div>
     </div>`;
-  });
+  }).join('')}
 
-  html+=`<div style="text-align:center;margin-top:24px;">
+  <div style="text-align:center;margin-top:24px;">
     <button onclick="this.closest('[style*=fixed]').remove()" style="padding:12px 28px;border-radius:12px;background:rgba(0,212,255,0.1);border:1px solid rgba(0,212,255,0.3);color:#00D4FF;font-family:'Orbitron',sans-serif;font-size:10px;font-weight:900;cursor:pointer;letter-spacing:2px;">FERMER</button>
-  </div></div></div>`;
+  </div>
+  </div></div>`;
   document.body.insertAdjacentHTML('beforeend',html);
 }
+
+async function init(){
+  const stored=localStorage.getItem('dha_member');
+  if(!stored){window.location.href='dha-connexion.html';return;}
+  member=JSON.parse(stored);
+  try{
+    const res=await fetch(SUPABASE_URL+'/rest/v1/membres?email=eq.'+encodeURIComponent(member.email).replace(/\./g,'%2E')+'&select=xp,level,rang,xp_semaine,pseudo,prenom,nom,avatar,nb_affilies,statut_affiliation,date_inscription',{headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY}});
+    const data=await res.json();
+    if(data&&data.length>0){
+      member.xp=data[0].xp||member.xp;
+      member.level=data[0].level||member.level;
+      member.xp_semaine=data[0].xp_semaine||member.xp_semaine;
+      if(data[0].date_inscription) member.date_inscription=data[0].date_inscription;
+      localStorage.setItem('dha_member',JSON.stringify(member));
+    }
+  }catch(e){console.log('Supabase error:',e);}
+  if(member.date_inscription){
+    const days=Math.max(1,Math.floor((new Date()-new Date(member.date_inscription))/86400000)+1);
+    document.getElementById('stat-days').textContent=days;
+  }
+  renderMember();
+  checkQuetes();
+  loadLeaderboard();
+  const lastLogin=localStorage.getItem('dha_last_login');
+  const today=new Date().toDateString();
+  if(lastLogin!==today){
+    localStorage.setItem('dha_last_login',today);
+    setTimeout(()=>updateXP(10),1000);
+  }
+}
+
+init();
 </script>
 </body>
 </html>
