@@ -92,7 +92,7 @@
   .xp-qty-total{font-size:11px;color:var(--gold);font-weight:600}
 
   /* PANIER */
-  .panier-wrap{background:rgba(255,215,0,0.04);border:0.5px solid rgba(255,215,0,0.2);border-radius:10px;padding:14px;margin-top:12px;display:none}
+  .panier-wrap{background:rgba(255,215,0,0.04);border:0.5px solid rgba(255,215,0,0.2);border-radius:10px;padding:14px;margin-top:12px}
   .panier-title{font-size:11px;color:var(--gold);letter-spacing:1px;text-transform:uppercase;margin-bottom:10px;font-weight:600}
   .panier-list{display:flex;flex-direction:column;gap:6px;margin-bottom:12px}
   .panier-row{display:flex;justify-content:space-between;align-items:center;font-size:13px;padding:4px 0;border-bottom:0.5px solid rgba(255,255,255,0.05)}
@@ -357,7 +357,7 @@ function updatePanierUI(id){
   // Afficher/cacher le panier
   var hasItems=false;
   for(var key in p){if(p[key]>0){hasItems=true;break;}}
-  wrap.style.display=hasItems?'block':'none';
+  wrap.setAttribute('style', hasItems ? 'display:block' : 'display:none');
 
   if(!hasItems) return;
 
@@ -439,7 +439,7 @@ function renderMembers(data){
     html+='<div class="xp-actions">'+btnHtml+'</div>';
 
     // PANIER
-    html+='<div class="panier-wrap" id="panier-'+id+'">';
+    html+='<div class="panier-wrap" id="panier-'+id+'" style="display:none">';
     html+='<div class="panier-title">🛒 Récap à valider</div>';
     html+='<div class="panier-list" id="panier-list-'+id+'"></div>';
     html+='<div class="panier-total-row"><span class="panier-total-label">Total à ajouter</span><span class="panier-total-xp" id="panier-total-'+id+'">+0 XP</span></div>';
