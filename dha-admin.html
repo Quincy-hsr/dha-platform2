@@ -15,6 +15,7 @@
   }
   body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-height:100vh}
 
+  /* LOCK */
   #lock{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:999;flex-direction:column;gap:24px}
   .lock-logo{font-family:'Orbitron',sans-serif;font-size:28px;font-weight:900;letter-spacing:6px}
   .lock-logo span{color:var(--cyan)}
@@ -25,6 +26,7 @@
   .lock-btn{width:100%;padding:12px;background:var(--cyan);color:#050914;font-family:'Orbitron',sans-serif;font-size:11px;font-weight:700;letter-spacing:3px;border:none;border-radius:8px;cursor:pointer}
   .lock-error{color:var(--red);font-size:12px;margin-top:8px;min-height:16px}
 
+  /* APP */
   #app{display:none;min-height:100vh}
   .topbar{display:flex;align-items:center;justify-content:space-between;padding:16px 28px;border-bottom:0.5px solid var(--border);position:sticky;top:0;background:var(--bg);z-index:10}
   .topbar-logo{font-family:'Orbitron',sans-serif;font-size:16px;font-weight:900;letter-spacing:4px}
@@ -33,12 +35,13 @@
   .live-dot{width:7px;height:7px;border-radius:50%;background:var(--green);animation:pulse 2s infinite}
   @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
   .live-label{font-size:12px;color:var(--green)}
-  .refresh-btn{padding:6px 14px;border:0.5px solid var(--border2);border-radius:8px;background:transparent;color:var(--muted);font-size:12px;cursor:pointer;font-family:'Inter',sans-serif}
-  .refresh-btn:hover{background:var(--surface);color:var(--text)}
-  .logout-btn{padding:6px 14px;border:0.5px solid rgba(255,68,85,0.3);border-radius:8px;background:transparent;color:var(--red);font-size:12px;cursor:pointer;font-family:'Inter',sans-serif}
+  .topbar-btn{padding:6px 14px;border:0.5px solid var(--border2);border-radius:8px;background:transparent;color:var(--muted);font-size:12px;cursor:pointer;font-family:'Inter',sans-serif}
+  .topbar-btn:hover{background:var(--surface);color:var(--text)}
+  .logout-btn{border-color:rgba(255,68,85,0.3);color:var(--red)}
 
   .main{padding:24px 28px;max-width:1100px;margin:0 auto}
 
+  /* STATS */
   .stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px}
   .stat-card{background:var(--surface);border:0.5px solid var(--border);border-radius:12px;padding:16px 18px}
   .stat-label{font-size:11px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:6px}
@@ -50,6 +53,7 @@
   .search-input:focus{border-color:var(--cyan)}
   .search-input::placeholder{color:var(--muted)}
 
+  /* MEMBER CARDS */
   .members{display:flex;flex-direction:column;gap:8px}
   .mcard{background:var(--surface);border:0.5px solid var(--border);border-radius:12px;overflow:hidden}
   .mcard-head{display:flex;align-items:center;gap:14px;padding:14px 18px;cursor:pointer;user-select:none;-webkit-user-select:none}
@@ -62,60 +66,88 @@
   .badge{font-size:11px;padding:3px 10px;border-radius:99px}
   .badge-xp{background:rgba(255,215,0,0.1);color:var(--gold);border:0.5px solid rgba(255,215,0,0.25)}
   .badge-rang{background:rgba(0,212,255,0.1);color:var(--cyan);border:0.5px solid rgba(0,212,255,0.25)}
-  .badge-rang.ambassadeur{background:rgba(255,215,0,0.1);color:var(--gold);border:0.5px solid rgba(255,215,0,0.3)}
+  .badge-rang.ambass{background:rgba(255,215,0,0.1);color:var(--gold);border:0.5px solid rgba(255,215,0,0.3)}
   .chevron{font-size:20px;color:var(--muted);pointer-events:none;transition:transform .2s;line-height:1}
 
   .mdetails{padding:0 18px 20px;border-top:0.5px solid var(--border);display:none}
+  .sec-title{font-size:10px;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;margin:16px 0 10px}
 
-  /* XP ACTIONS */
-  .section-title{font-size:10px;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;margin:16px 0 10px}
-  .xp-actions{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:4px}
-  .xp-btn{background:var(--surface2);border:0.5px solid var(--border);border-radius:10px;padding:10px 12px;cursor:pointer;transition:all .15s;text-align:left}
-  .xp-btn:hover{border-color:rgba(255,215,0,0.35);background:rgba(255,215,0,0.05)}
-  .xp-btn:active{transform:scale(0.97)}
-  .xp-btn-icon{font-size:18px;margin-bottom:4px}
-  .xp-btn-label{font-size:12px;color:var(--text);line-height:1.3;margin-bottom:4px}
-  .xp-btn-amount{font-family:'Orbitron',sans-serif;font-size:11px;font-weight:700;color:var(--gold)}
+  /* XP ACTIONS GRID */
+  .xp-actions{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+  .xp-btn{background:var(--surface2);border:0.5px solid var(--border);border-radius:10px;padding:10px 12px;cursor:pointer;transition:border-color .15s,background .15s;text-align:left;position:relative}
+  .xp-btn:hover{border-color:rgba(255,215,0,0.3);background:rgba(255,215,0,0.04)}
+  .xp-btn.selected{border-color:rgba(255,215,0,0.6);background:rgba(255,215,0,0.08)}
+  .xp-btn-icon{font-size:18px;margin-bottom:4px;pointer-events:none}
+  .xp-btn-label{font-size:12px;color:var(--text);line-height:1.3;margin-bottom:4px;pointer-events:none}
+  .xp-btn-base{font-size:11px;color:var(--muted);pointer-events:none}
+  .xp-btn-amount{font-family:'Orbitron',sans-serif;font-size:11px;font-weight:700;color:var(--gold);pointer-events:none}
+  /* quantité inline dans le bouton */
+  .xp-qty-row{display:flex;align-items:center;gap:6px;margin-top:8px;pointer-events:all}
+  .xp-qty-lbl{font-size:11px;color:var(--muted)}
+  .xp-qty-input{width:52px;padding:4px 6px;background:var(--bg);border:0.5px solid var(--border2);border-radius:6px;color:var(--text);font-size:13px;text-align:center;font-family:'Inter',sans-serif;outline:none}
+  .xp-qty-input:focus{border-color:var(--gold)}
+  .xp-qty-total{font-size:11px;color:var(--gold);font-weight:600}
 
-  /* XP MANUEL */
-  .xp-manuel{background:var(--surface2);border:0.5px solid var(--border);border-radius:10px;padding:12px;margin-top:4px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-  .xp-manuel-label{font-size:12px;color:var(--muted);flex-shrink:0}
-  .ctrl-input{width:80px;padding:6px 8px;background:var(--bg);border:0.5px solid var(--border2);border-radius:6px;color:var(--text);font-size:13px;text-align:center;font-family:'Inter',sans-serif;outline:none}
-  .ctrl-input:focus{border-color:var(--cyan)}
-  .btn-add,.btn-sub{padding:6px 12px;border-radius:6px;font-size:12px;font-weight:500;cursor:pointer;font-family:'Inter',sans-serif;border:none}
-  .btn-add{background:rgba(0,230,118,0.15);color:var(--green);border:0.5px solid rgba(0,230,118,0.3)}
-  .btn-add:hover{background:rgba(0,230,118,0.25)}
-  .btn-sub{background:rgba(255,68,85,0.12);color:var(--red);border:0.5px solid rgba(255,68,85,0.3)}
-  .btn-sub:hover{background:rgba(255,68,85,0.22)}
+  /* PANIER */
+  .panier-wrap{background:rgba(255,215,0,0.04);border:0.5px solid rgba(255,215,0,0.2);border-radius:10px;padding:14px;margin-top:12px;display:none}
+  .panier-title{font-size:11px;color:var(--gold);letter-spacing:1px;text-transform:uppercase;margin-bottom:10px;font-weight:600}
+  .panier-list{display:flex;flex-direction:column;gap:6px;margin-bottom:12px}
+  .panier-row{display:flex;justify-content:space-between;align-items:center;font-size:13px;padding:4px 0;border-bottom:0.5px solid rgba(255,255,255,0.05)}
+  .panier-row:last-child{border:none}
+  .panier-label{color:var(--muted)}
+  .panier-xp{color:var(--gold);font-weight:600;font-family:'Orbitron',sans-serif;font-size:12px}
+  .panier-total-row{display:flex;justify-content:space-between;align-items:center;padding-top:8px;border-top:0.5px solid rgba(255,215,0,0.2);margin-bottom:12px}
+  .panier-total-label{font-size:13px;color:var(--text);font-weight:500}
+  .panier-total-xp{font-family:'Orbitron',sans-serif;font-size:16px;font-weight:700;color:var(--gold)}
+  .panier-btns{display:flex;gap:8px}
+  .btn-valider{flex:1;padding:10px;background:rgba(0,230,118,0.15);color:var(--green);border:0.5px solid rgba(0,230,118,0.3);border-radius:8px;font-family:'Orbitron',sans-serif;font-size:10px;font-weight:700;letter-spacing:1px;cursor:pointer}
+  .btn-valider:hover{background:rgba(0,230,118,0.25)}
+  .btn-reset{padding:10px 14px;background:rgba(255,68,85,0.1);color:var(--red);border:0.5px solid rgba(255,68,85,0.25);border-radius:8px;font-size:12px;cursor:pointer;font-family:'Inter',sans-serif}
+  .btn-reset:hover{background:rgba(255,68,85,0.2)}
 
-  /* RIB */
-  .rib-box{background:var(--surface2);border:0.5px solid var(--border);border-radius:10px;padding:12px 14px;margin-top:4px}
+  /* CONFIRM MODAL */
+  #confirm-modal{position:fixed;inset:0;background:rgba(5,9,20,0.88);display:none;align-items:center;justify-content:center;z-index:999;padding:20px}
+  #confirm-modal.show{display:flex}
+  .confirm-box{background:var(--surface);border:0.5px solid rgba(255,215,0,0.3);border-radius:16px;padding:28px;width:100%;max-width:400px}
+  .confirm-title{font-family:'Orbitron',sans-serif;font-size:14px;font-weight:900;color:var(--white);letter-spacing:2px;margin-bottom:18px}
+  .confirm-info{font-size:13px;color:var(--muted);line-height:1.8;margin-bottom:8px}
+  .confirm-info strong{color:var(--text)}
+  .confirm-arrow{font-size:22px;font-weight:700;color:var(--gold);font-family:'Orbitron',sans-serif;margin:10px 0;display:block;text-align:center}
+  .confirm-actions-list{background:var(--surface2);border-radius:8px;padding:10px 14px;margin:12px 0;font-size:12px;color:var(--muted);line-height:2}
+  .confirm-btns{display:flex;gap:10px;margin-top:18px}
+  .confirm-yes{flex:1;padding:12px;background:rgba(0,230,118,0.15);color:var(--green);border:0.5px solid rgba(0,230,118,0.3);border-radius:8px;font-family:'Orbitron',sans-serif;font-size:11px;font-weight:700;letter-spacing:1px;cursor:pointer}
+  .confirm-yes:hover{background:rgba(0,230,118,0.25)}
+  .confirm-no{padding:12px 18px;background:transparent;color:var(--muted);border:0.5px solid var(--border2);border-radius:8px;font-size:13px;cursor:pointer;font-family:'Inter',sans-serif}
+  .confirm-no:hover{background:var(--surface2)}
+
+  /* RIB + COMMISSIONS */
+  .rib-box{background:var(--surface2);border:0.5px solid var(--border);border-radius:10px;padding:12px 14px}
   .rib-val{font-size:13px;font-weight:500;color:var(--cyan);letter-spacing:1px}
   .rib-empty{font-size:13px;color:var(--muted);font-style:italic}
-
-  /* COMMISSIONS */
-  .comm-cards{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:4px}
+  .comm-cards{display:grid;grid-template-columns:1fr 1fr;gap:10px}
   .ccard{background:var(--surface2);border:0.5px solid var(--border);border-radius:10px;padding:14px}
   .ccard-label{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
   .ccard-val{font-size:22px;font-weight:600;margin-bottom:10px}
-  .ccard-val.encours{color:var(--orange)}
-  .ccard-val.verses{color:var(--green)}
+  .ccard-val.enc{color:var(--orange)}.ccard-val.ver{color:var(--green)}
   .ctrl-row{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
-  .btn-verser{background:rgba(0,230,118,0.12);color:var(--green);border:0.5px solid rgba(0,230,118,0.3);padding:8px 16px;font-size:13px;width:100%;margin-top:8px;border-radius:6px;cursor:pointer;font-family:'Inter',sans-serif;font-weight:500}
-  .btn-verser:hover{background:rgba(0,230,118,0.22)}
+  .ctrl-input{width:76px;padding:6px 8px;background:var(--bg);border:0.5px solid var(--border2);border-radius:6px;color:var(--text);font-size:13px;text-align:center;font-family:'Inter',sans-serif;outline:none}
+  .ctrl-input:focus{border-color:var(--cyan)}
+  .btn-sm{padding:6px 11px;border-radius:6px;font-size:12px;font-weight:500;cursor:pointer;font-family:'Inter',sans-serif;border:none}
+  .btn-green{background:rgba(0,230,118,0.15);color:var(--green);border:0.5px solid rgba(0,230,118,0.3)}
+  .btn-green:hover{background:rgba(0,230,118,0.25)}
+  .btn-red{background:rgba(255,68,85,0.12);color:var(--red);border:0.5px solid rgba(255,68,85,0.3)}
+  .btn-red:hover{background:rgba(255,68,85,0.22)}
+  .btn-verser{width:100%;margin-top:8px;padding:9px;background:rgba(0,230,118,0.1);color:var(--green);border:0.5px solid rgba(0,230,118,0.25);border-radius:6px;font-family:'Inter',sans-serif;font-size:12px;font-weight:500;cursor:pointer}
+  .btn-verser:hover{background:rgba(0,230,118,0.2)}
   .btn-verser:disabled{opacity:.4;cursor:not-allowed}
-
-  /* BAREME */
-  .calc-box{background:rgba(0,212,255,0.04);border:0.5px solid rgba(0,212,255,0.15);border-radius:10px;padding:12px;margin-top:4px}
-  .calc-row{display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:0.5px solid rgba(255,255,255,0.05);font-size:13px}
-  .calc-row:last-child{border-bottom:none}
-  .calc-label{color:var(--muted)}
-  .calc-amount{color:var(--green)}
+  .calc-box{background:rgba(0,212,255,0.04);border:0.5px solid rgba(0,212,255,0.15);border-radius:10px;padding:12px}
+  .calc-row{display:flex;justify-content:space-between;font-size:13px;padding:5px 0;border-bottom:0.5px solid rgba(255,255,255,0.05)}
+  .calc-row:last-child{border:none}
+  .c-dim{color:var(--muted)}.c-pos{color:var(--green)}
 
   #toast{position:fixed;bottom:24px;right:24px;padding:12px 18px;border-radius:10px;font-size:13px;font-weight:500;opacity:0;transition:opacity .25s;pointer-events:none;z-index:9999;max-width:300px}
   #toast.ok{opacity:1;background:rgba(0,230,118,0.15);color:var(--green);border:0.5px solid rgba(0,230,118,0.35)}
   #toast.err{opacity:1;background:rgba(255,68,85,0.15);color:var(--red);border:0.5px solid rgba(255,68,85,0.35)}
-
   .loader{text-align:center;padding:40px;color:var(--muted);font-size:14px}
   .empty-state{text-align:center;padding:40px;color:var(--muted);font-size:14px}
 
@@ -123,8 +155,7 @@
     .stats-grid{grid-template-columns:repeat(2,1fr)}
     .xp-actions{grid-template-columns:repeat(2,1fr)}
     .comm-cards{grid-template-columns:1fr}
-    .main{padding:14px}
-    .topbar{padding:12px 14px}
+    .main{padding:14px}.topbar{padding:12px 14px}
   }
 </style>
 </head>
@@ -146,8 +177,8 @@
     <div class="topbar-right">
       <div class="live-dot"></div>
       <span class="live-label">En ligne</span>
-      <button class="refresh-btn" id="refresh-btn">↻ Actualiser</button>
-      <button class="logout-btn" id="logout-btn">Déconnexion</button>
+      <button class="topbar-btn" id="refresh-btn">↻ Actualiser</button>
+      <button class="topbar-btn logout-btn" id="logout-btn">Déconnexion</button>
     </div>
   </div>
   <div class="main">
@@ -160,8 +191,21 @@
     <div class="search-row">
       <input class="search-input" type="text" id="search" placeholder="Rechercher par pseudo, prénom, email...">
     </div>
-    <div class="members" id="members-list">
-      <div class="loader">Chargement des membres...</div>
+    <div class="members" id="members-list"><div class="loader">Chargement...</div></div>
+  </div>
+</div>
+
+<!-- CONFIRM MODAL -->
+<div id="confirm-modal">
+  <div class="confirm-box">
+    <div class="confirm-title">⚡ CONFIRMER L'AJOUT XP</div>
+    <div class="confirm-info">Membre : <strong id="cm-pseudo">—</strong></div>
+    <div class="confirm-info">XP actuel : <strong id="cm-xp-before" style="color:var(--gold)">—</strong></div>
+    <div class="confirm-actions-list" id="cm-actions-list">—</div>
+    <span class="confirm-arrow" id="cm-arrow">→ — XP</span>
+    <div class="confirm-btns">
+      <button class="confirm-no" id="cm-no">Annuler</button>
+      <button class="confirm-yes" id="cm-yes">✓ OUI VALIDER</button>
     </div>
   </div>
 </div>
@@ -169,46 +213,49 @@
 <div id="toast"></div>
 
 <script>
-var PASS = '050876';
-var SUPA = 'https://kdetwppxsfoagyndrlzr.supabase.co';
-var KEY  = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtkZXR3cHB4c2ZvYWd5bmRybHpyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzcyMzM3NjQsImV4cCI6MjA5MjgwOTc2NH0.OodaFQKEHcncDYdO6uM121NAUbyxD4UxpptSjzzZOi0';
-var H = {'apikey':KEY,'Authorization':'Bearer '+KEY,'Content-Type':'application/json'};
-var members = [];
+var PASS='050876';
+var SUPA='https://kdetwppxsfoagyndrlzr.supabase.co';
+var KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtkZXR3cHB4c2ZvYWd5bmRybHpyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzcyMzM3NjQsImV4cCI6MjA5MjgwOTc2NH0.OodaFQKEHcncDYdO6uM121NAUbyxD4UxpptSjzzZOi0';
+var H={'apikey':KEY,'Authorization':'Bearer '+KEY,'Content-Type':'application/json'};
+var members=[];
 var toastTimer;
+var confirmCallback=null;
 
-var XP_ACTIONS = [
-  {icon:'🔌', label:'Connexion quotidienne', xp:10},
-  {icon:'📚', label:'Finir un module',        xp:50},
-  {icon:'💬', label:'Ouvrir Discord',         xp:5},
-  {icon:'✍️',  label:'Messages Discord',       xp:10},
-  {icon:'📺', label:'Participer à un live',   xp:100},
-  {icon:'📞', label:'Appel mentor',            xp:75},
-  {icon:'🗓️', label:'Fidélité mensuelle',      xp:100},
-  {icon:'🤝', label:'Parrainer un ami',        xp:250},
-  {icon:'💰', label:'Take Profit validé',      xp:200},
-  {icon:'🏢', label:'Venir au QG',             xp:250},
-  {icon:'🎉', label:'Venir à un événement',    xp:300}
+var XP_ACTIONS=[
+  {key:'connexion', icon:'🔌', label:'Connexion quotidienne',  xp:10},
+  {key:'module',    icon:'📚', label:'Finir un module',         xp:50},
+  {key:'discord',   icon:'💬', label:'Ouvrir Discord',          xp:5},
+  {key:'messages',  icon:'✍️',  label:'Messages Discord',        xp:10},
+  {key:'live',      icon:'📺', label:'Participer à un live',    xp:100},
+  {key:'mentor',    icon:'📞', label:'Appel mentor',             xp:75},
+  {key:'fidelite',  icon:'🗓️', label:'Fidélité mensuelle',       xp:100},
+  {key:'parrain',   icon:'🤝', label:'Parrainer un ami',         xp:250},
+  {key:'tp',        icon:'💰', label:'Take Profit validé',       xp:200},
+  {key:'qg',        icon:'🏢', label:'Venir au QG',              xp:250},
+  {key:'event',     icon:'🎉', label:'Venir à un événement',     xp:300}
 ];
 
-var RANGS = {
-  'membre simple':{pct_n1:0,  pct_n2:0},
-  'affilié':      {pct_n1:20, pct_n2:0},
-  'ambassadeur':  {pct_n1:25, pct_n2:5}
+var RANGS={
+  'membre simple':{pct_n1:0,pct_n2:0},
+  'affilié':{pct_n1:20,pct_n2:0},
+  'ambassadeur':{pct_n1:25,pct_n2:5}
 };
 
 function getRang(m){
-  var s=(m.statut_affiliation||m.rang||'membre simple').toLowerCase();
+  var s=(m.statut_affiliation||m.rang||'').toLowerCase();
   if(s.indexOf('ambass')>-1) return 'ambassadeur';
   if(s.indexOf('affil')>-1)  return 'affilié';
   return 'membre simple';
 }
 
 // AUTH
-document.getElementById('lock-btn').addEventListener('click', unlock);
-document.getElementById('pwd-input').addEventListener('keydown', function(e){if(e.key==='Enter')unlock();});
-document.getElementById('refresh-btn').addEventListener('click', loadAll);
-document.getElementById('logout-btn').addEventListener('click', function(){sessionStorage.removeItem('dha_admin');location.reload();});
-document.getElementById('search').addEventListener('input', filterMembers);
+document.getElementById('lock-btn').addEventListener('click',unlock);
+document.getElementById('pwd-input').addEventListener('keydown',function(e){if(e.key==='Enter')unlock();});
+document.getElementById('refresh-btn').addEventListener('click',loadAll);
+document.getElementById('logout-btn').addEventListener('click',function(){sessionStorage.removeItem('dha_admin');location.reload();});
+document.getElementById('search').addEventListener('input',filterMembers);
+document.getElementById('cm-no').addEventListener('click',function(){document.getElementById('confirm-modal').className='';confirmCallback=null;});
+document.getElementById('cm-yes').addEventListener('click',function(){if(confirmCallback){confirmCallback();document.getElementById('confirm-modal').className='';confirmCallback=null;}});
 
 function unlock(){
   if(document.getElementById('pwd-input').value===PASS){
@@ -243,10 +290,10 @@ function loadAll(){
 }
 
 function updateStats(d){
-  document.getElementById('s-total').textContent   = d.length;
-  document.getElementById('s-xp').textContent      = d.reduce(function(s,m){return s+(m.xp||0);},0).toLocaleString()+' XP';
-  document.getElementById('s-encours').textContent = d.reduce(function(s,m){return s+(m.commissions_encours||0);},0).toLocaleString()+'€';
-  document.getElementById('s-verses').textContent  = d.reduce(function(s,m){return s+(m.commissions_verses||0);},0).toLocaleString()+'€';
+  document.getElementById('s-total').textContent  = d.length;
+  document.getElementById('s-xp').textContent     = d.reduce(function(s,m){return s+(m.xp||0);},0).toLocaleString()+' XP';
+  document.getElementById('s-encours').textContent= d.reduce(function(s,m){return s+(m.commissions_encours||0);},0).toLocaleString()+'€';
+  document.getElementById('s-verses').textContent = d.reduce(function(s,m){return s+(m.commissions_verses||0);},0).toLocaleString()+'€';
 }
 
 function filterMembers(){
@@ -263,9 +310,68 @@ function initials(m){return((m.pseudo||m.prenom||'?').substring(0,2)).toUpperCas
 
 function rangBadge(m){
   var r=getRang(m);
-  if(r==='ambassadeur') return '<span class="badge badge-rang ambassadeur">👑 Ambassadeur</span>';
+  if(r==='ambassadeur') return '<span class="badge badge-rang ambass">👑 Ambassadeur</span>';
   if(r==='affilié')     return '<span class="badge badge-rang">⚡ Affilié</span>';
   return '<span class="badge badge-rang" style="opacity:.5">Membre Simple</span>';
+}
+
+// Panier par membre : {key: quantite}
+var paniers={};
+
+function getPanier(id){
+  if(!paniers[id]) paniers[id]={};
+  return paniers[id];
+}
+
+function getPanierTotal(id){
+  var p=getPanier(id);
+  var total=0;
+  for(var k in p){
+    var action=getAction(k);
+    if(action) total+=action.xp*p[k];
+  }
+  return total;
+}
+
+function getAction(key){
+  for(var i=0;i<XP_ACTIONS.length;i++){if(XP_ACTIONS[i].key===key)return XP_ACTIONS[i];}
+  return null;
+}
+
+function updatePanierUI(id){
+  var p=getPanier(id);
+  var total=getPanierTotal(id);
+  var wrap=document.getElementById('panier-'+id);
+  if(!wrap) return;
+
+  // Mettre à jour chaque bouton
+  for(var k in p){
+    var qtySpan=document.getElementById('qty-total-'+id+'-'+k);
+    var action=getAction(k);
+    if(qtySpan&&action) qtySpan.textContent='= '+(action.xp*p[k])+' XP';
+  }
+
+  // Afficher/cacher le panier
+  var hasItems=false;
+  for(var key in p){if(p[key]>0){hasItems=true;break;}}
+  wrap.style.display=hasItems?'block':'none';
+
+  if(!hasItems) return;
+
+  // Construire la liste du panier
+  var listHtml='';
+  for(var k2 in p){
+    if(p[k2]>0){
+      var a=getAction(k2);
+      if(a) listHtml+='<div class="panier-row"><span class="panier-label">'+a.icon+' '+a.label+' × '+p[k2]+'</span><span class="panier-xp">+'+( a.xp*p[k2])+' XP</span></div>';
+    }
+  }
+  document.getElementById('panier-list-'+id).innerHTML=listHtml;
+
+  var m=getMember(id);
+  var xpActuel=m?m.xp||0:0;
+  document.getElementById('panier-total-'+id).textContent='+'+total+' XP';
+  document.getElementById('panier-after-'+id).textContent='→ '+(xpActuel+total).toLocaleString()+' XP au total';
 }
 
 function renderMembers(data){
@@ -280,31 +386,35 @@ function renderMembers(data){
     var rang=getRang(m);
     var taux=RANGS[rang];
 
-    // XP action buttons
+    // XP BUTTONS
     var btnHtml='';
     for(var j=0;j<XP_ACTIONS.length;j++){
       var a=XP_ACTIONS[j];
-      btnHtml+='<button class="xp-btn" data-id="'+id+'" data-xp="'+a.xp+'" data-label="'+a.label+'">';
+      btnHtml+='<div class="xp-btn" id="xpbtn-'+id+'-'+a.key+'" data-id="'+id+'" data-key="'+a.key+'">';
       btnHtml+='<div class="xp-btn-icon">'+a.icon+'</div>';
       btnHtml+='<div class="xp-btn-label">'+a.label+'</div>';
-      btnHtml+='<div class="xp-btn-amount">+'+a.xp+' XP</div>';
-      btnHtml+='</button>';
+      btnHtml+='<div class="xp-btn-base" style="margin-bottom:4px">'+a.xp+' XP / unité</div>';
+      btnHtml+='<div class="xp-qty-row">';
+      btnHtml+='<span class="xp-qty-lbl">Qté :</span>';
+      btnHtml+='<input class="xp-qty-input" id="qty-'+id+'-'+a.key+'" type="number" min="1" value="1" data-id="'+id+'" data-key="'+a.key+'">';
+      btnHtml+='<span class="xp-qty-total" id="qty-total-'+id+'-'+a.key+'"></span>';
+      btnHtml+='</div>';
+      btnHtml+='<div class="xp-btn-amount" id="btn-add-label-'+id+'-'+a.key+'">+ Ajouter</div>';
+      btnHtml+='</div>';
     }
 
     // RIB
-    var ribHtml=m.rib&&m.rib.length>2
-      ? '<div class="rib-val">'+m.rib+'</div>'
-      : '<div class="rib-empty">Aucun RIB enregistré</div>';
+    var ribHtml=m.rib&&m.rib.length>2?'<div class="rib-val">'+m.rib+'</div>':'<div class="rib-empty">Aucun RIB enregistré</div>';
 
-    // Barème
+    // BAREME
     var baremeHtml='';
     if(rang==='membre simple'){
       baremeHtml='<div style="font-size:13px;color:var(--muted)">Pas de commission — statut membre simple</div>';
     } else {
-      baremeHtml='<div class="calc-row"><span class="calc-label">Taux N1</span><span class="calc-amount">'+taux.pct_n1+'%</span></div>';
-      if(taux.pct_n2>0) baremeHtml+='<div class="calc-row"><span class="calc-label">Taux N2</span><span class="calc-amount">'+taux.pct_n2+'%</span></div>';
-      baremeHtml+='<div class="calc-row"><span class="calc-label">Pack Medium (180€)</span><span class="calc-amount">'+Math.round(180*taux.pct_n1/100)+'€/vente</span></div>';
-      baremeHtml+='<div class="calc-row"><span class="calc-label">Pack Premium (500€)</span><span class="calc-amount">'+Math.round(500*taux.pct_n1/100)+'€/vente</span></div>';
+      baremeHtml+='<div class="calc-row"><span class="c-dim">Taux N1</span><span class="c-pos">'+taux.pct_n1+'%</span></div>';
+      if(taux.pct_n2>0) baremeHtml+='<div class="calc-row"><span class="c-dim">Taux N2</span><span class="c-pos">'+taux.pct_n2+'%</span></div>';
+      baremeHtml+='<div class="calc-row"><span class="c-dim">Pack Medium (180€)</span><span class="c-pos">'+Math.round(180*taux.pct_n1/100)+'€/vente</span></div>';
+      baremeHtml+='<div class="calc-row"><span class="c-dim">Pack Premium (500€)</span><span class="c-pos">'+Math.round(500*taux.pct_n1/100)+'€/vente</span></div>';
     }
 
     html+='<div class="mcard" id="card-'+id+'">';
@@ -322,46 +432,49 @@ function renderMembers(data){
     html+='<div class="mdetails" id="det-'+id+'">';
 
     // XP ACTIONS
-    html+='<div class="section-title">Ajouter des XP — clique sur l\'action</div>';
+    html+='<div class="sec-title">Actions XP — sélectionne et indique la quantité</div>';
     html+='<div class="xp-actions">'+btnHtml+'</div>';
-    // XP Manuel
-    html+='<div class="xp-manuel">';
-    html+='<span class="xp-manuel-label">Manuel :</span>';
-    html+='<input class="ctrl-input" id="xpi-'+id+'" type="number" min="1" placeholder="XP">';
-    html+='<button class="btn-add" data-id="'+id+'" data-action="xp-add">+ Ajouter</button>';
-    html+='<button class="btn-sub" data-id="'+id+'" data-action="xp-sub">− Retirer</button>';
-    html+='</div>';
+
+    // PANIER
+    html+='<div class="panier-wrap" id="panier-'+id+'">';
+    html+='<div class="panier-title">🛒 Récap à valider</div>';
+    html+='<div class="panier-list" id="panier-list-'+id+'"></div>';
+    html+='<div class="panier-total-row"><span class="panier-total-label">Total à ajouter</span><span class="panier-total-xp" id="panier-total-'+id+'">+0 XP</span></div>';
+    html+='<div style="font-size:13px;color:var(--muted);margin-bottom:12px" id="panier-after-'+id+'"></div>';
+    html+='<div class="panier-btns">';
+    html+='<button class="btn-reset" data-id="'+id+'" data-action="reset-panier">✕ Vider</button>';
+    html+='<button class="btn-valider" data-id="'+id+'" data-action="valider-panier">✓ VALIDER ET APPLIQUER</button>';
+    html+='</div></div>';
 
     // RIB
-    html+='<div class="section-title">RIB / IBAN</div>';
-    html+='<div class="rib-box">'+ribHtml+'</div>';
+    html+='<div class="sec-title">RIB / IBAN</div><div class="rib-box">'+ribHtml+'</div>';
 
     // COMMISSIONS
-    html+='<div class="section-title">Commissions</div>';
+    html+='<div class="sec-title">Commissions</div>';
     html+='<div class="comm-cards">';
     html+='<div class="ccard"><div class="ccard-label">En cours — à verser</div>';
-    html+='<div class="ccard-val encours" id="cv-enc-'+id+'">'+enc+'€</div>';
+    html+='<div class="ccard-val enc" id="cv-enc-'+id+'">'+enc+'€</div>';
     html+='<div class="ctrl-row"><input class="ctrl-input" id="ci-enc-'+id+'" type="number" min="1" placeholder="25">';
-    html+='<button class="btn-add" data-id="'+id+'" data-action="enc-add">+</button>';
-    html+='<button class="btn-sub" data-id="'+id+'" data-action="enc-sub">−</button></div>';
-    html+='<button class="btn-verser" data-id="'+id+'" data-action="tout-verser"'+(enc===0?' disabled':'')+'>✓ Marquer tout comme versé ('+enc+'€)</button>';
+    html+='<button class="btn-sm btn-green" data-id="'+id+'" data-action="enc-add">+</button>';
+    html+='<button class="btn-sm btn-red" data-id="'+id+'" data-action="enc-sub">−</button></div>';
+    html+='<button class="btn-verser" data-id="'+id+'" data-action="tout-verser"'+(enc===0?' disabled':'')+'>✓ Tout marquer comme versé ('+enc+'€)</button>';
     html+='</div>';
     html+='<div class="ccard"><div class="ccard-label">Total versé</div>';
-    html+='<div class="ccard-val verses" id="cv-ver-'+id+'">'+ver+'€</div>';
+    html+='<div class="ccard-val ver" id="cv-ver-'+id+'">'+ver+'€</div>';
     html+='<div class="ctrl-row"><input class="ctrl-input" id="ci-ver-'+id+'" type="number" min="1" placeholder="25">';
-    html+='<button class="btn-add" data-id="'+id+'" data-action="ver-add">+</button>';
-    html+='<button class="btn-sub" data-id="'+id+'" data-action="ver-sub">−</button></div>';
+    html+='<button class="btn-sm btn-green" data-id="'+id+'" data-action="ver-add">+</button>';
+    html+='<button class="btn-sm btn-red" data-id="'+id+'" data-action="ver-sub">−</button></div>';
     html+='</div></div>';
 
     // BAREME
-    html+='<div class="section-title">Barème — '+rang.toUpperCase()+'</div>';
+    html+='<div class="sec-title">Barème — '+rang.toUpperCase()+'</div>';
     html+='<div class="calc-box">'+baremeHtml+'</div>';
 
-    html+='</div></div>'; // mdetails + mcard
+    html+='</div></div>';
   }
   el.innerHTML=html;
 
-  // Toggle
+  // Toggle heads
   var heads=document.querySelectorAll('.mcard-head');
   for(var k=0;k<heads.length;k++){
     heads[k].addEventListener('click',function(){
@@ -374,19 +487,36 @@ function renderMembers(data){
     });
   }
 
-  // XP action buttons (clique direct)
+  // XP buttons — clic sur le bouton = ajouter au panier
   var xpBtns=document.querySelectorAll('.xp-btn');
   for(var b=0;b<xpBtns.length;b++){
     xpBtns[b].addEventListener('click',function(e){
       e.stopPropagation();
       var mid=parseInt(this.getAttribute('data-id'));
-      var xp=parseInt(this.getAttribute('data-xp'));
-      var label=this.getAttribute('data-label');
-      addXPDirect(mid,xp,label,this);
+      var key=this.getAttribute('data-key');
+      var qtyInput=document.getElementById('qty-'+mid+'-'+key);
+      var qty=parseInt(qtyInput.value)||1;
+      if(qty<1) qty=1;
+      var action=getAction(key);
+      if(!action) return;
+      var p=getPanier(mid);
+      p[key]=(p[key]||0)+qty;
+      // reset input
+      qtyInput.value=1;
+      // highlight btn
+      var btn=document.getElementById('xpbtn-'+mid+'-'+key);
+      if(btn) btn.className='xp-btn selected';
+      updatePanierUI(mid);
     });
   }
 
-  // Boutons manuels
+  // Stop propagation sur les inputs qty
+  var qtyInputs=document.querySelectorAll('.xp-qty-input');
+  for(var q=0;q<qtyInputs.length;q++){
+    qtyInputs[q].addEventListener('click',function(e){e.stopPropagation();});
+  }
+
+  // Boutons actions (commissions + panier)
   var btns=document.querySelectorAll('[data-action]');
   for(var n=0;n<btns.length;n++){
     btns[n].addEventListener('click',handleAction);
@@ -397,54 +527,64 @@ function handleAction(e){
   e.stopPropagation();
   var id=parseInt(this.getAttribute('data-id'));
   var act=this.getAttribute('data-action');
-  if(act==='xp-add')        adjXP(id,1);
-  else if(act==='xp-sub')   adjXP(id,-1);
-  else if(act==='enc-add')  adjComm(id,'commissions_encours',1);
-  else if(act==='enc-sub')  adjComm(id,'commissions_encours',-1);
-  else if(act==='ver-add')  adjComm(id,'commissions_verses',1);
-  else if(act==='ver-sub')  adjComm(id,'commissions_verses',-1);
+  if(act==='valider-panier')  demanderConfirmation(id);
+  else if(act==='reset-panier') resetPanier(id);
+  else if(act==='enc-add')    adjComm(id,'commissions_encours',1);
+  else if(act==='enc-sub')    adjComm(id,'commissions_encours',-1);
+  else if(act==='ver-add')    adjComm(id,'commissions_verses',1);
+  else if(act==='ver-sub')    adjComm(id,'commissions_verses',-1);
   else if(act==='tout-verser') toutVerser(id);
 }
 
-// XP direct (bouton action)
-function addXPDirect(id,xp,label,btn){
+function resetPanier(id){
+  paniers[id]={};
+  // reset boutons
+  var btns=document.querySelectorAll('.xp-btn[data-id="'+id+'"]');
+  for(var i=0;i<btns.length;i++) btns[i].className='xp-btn';
+  updatePanierUI(id);
+}
+
+function demanderConfirmation(id){
   var m=getMember(id);
   if(!m) return;
-  var nv=(m.xp||0)+xp;
-  // Feedback visuel immédiat
-  btn.style.borderColor='rgba(255,215,0,0.6)';
-  btn.style.background='rgba(255,215,0,0.1)';
-  patch(id,{xp:nv},function(){
-    m.xp=nv;
-    document.getElementById('bxp-'+id).textContent=nv.toLocaleString()+' XP';
-    var xpv=document.getElementById('xpv-'+id);
-    if(xpv) xpv.textContent=nv.toLocaleString();
+  var p=getPanier(id);
+  var total=getPanierTotal(id);
+  if(total<=0){toast('Aucune action sélectionnée','err');return;}
+
+  var xpAvant=m.xp||0;
+  var xpApres=xpAvant+total;
+
+  // Construire liste actions
+  var actionsText='';
+  for(var k in p){
+    if(p[k]>0){
+      var a=getAction(k);
+      if(a) actionsText+=a.icon+' '+a.label+' × '+p[k]+' = +'+(a.xp*p[k])+' XP\n';
+    }
+  }
+
+  document.getElementById('cm-pseudo').textContent=m.pseudo||m.prenom||'Membre';
+  document.getElementById('cm-xp-before').textContent=xpAvant.toLocaleString()+' XP';
+  document.getElementById('cm-actions-list').textContent=actionsText.trim();
+  document.getElementById('cm-arrow').textContent='→ '+xpApres.toLocaleString()+' XP au total (+'+total+' XP)';
+  document.getElementById('confirm-modal').className='show';
+
+  confirmCallback=function(){
+    appliquerPanier(id,xpApres,total);
+  };
+}
+
+function appliquerPanier(id,xpApres,total){
+  patch(id,{xp:xpApres},function(){
+    var m=getMember(id);
+    m.xp=xpApres;
+    document.getElementById('bxp-'+id).textContent=xpApres.toLocaleString()+' XP';
     updateStats(members);
-    toast('+'+xp+' XP — '+label+' ✓','ok');
-    setTimeout(function(){
-      btn.style.borderColor='';
-      btn.style.background='';
-    },1000);
+    resetPanier(id);
+    toast('+'+total+' XP appliqués ✓','ok');
   });
 }
 
-// XP Manuel
-function adjXP(id,sign){
-  var inp=document.getElementById('xpi-'+id);
-  var amt=parseInt(inp.value);
-  if(!amt||amt<=0){toast('Entre un montant valide','err');return;}
-  var m=getMember(id);
-  var nv=Math.max(0,(m.xp||0)+sign*amt);
-  patch(id,{xp:nv},function(){
-    m.xp=nv;
-    document.getElementById('bxp-'+id).textContent=nv.toLocaleString()+' XP';
-    updateStats(members);
-    inp.value='';
-    toast((sign>0?'+':'-')+amt+' XP appliqué','ok');
-  });
-}
-
-// Commissions
 function adjComm(id,field,sign){
   var isEnc=(field==='commissions_encours');
   var inp=document.getElementById(isEnc?'ci-enc-'+id:'ci-ver-'+id);
@@ -458,7 +598,7 @@ function adjComm(id,field,sign){
     document.getElementById(isEnc?'cv-enc-'+id:'cv-ver-'+id).textContent=nv+'€';
     if(isEnc){
       var btn=document.querySelector('button[data-id="'+id+'"][data-action="tout-verser"]');
-      if(btn){btn.textContent='✓ Marquer tout comme versé ('+nv+'€)';btn.disabled=(nv===0);}
+      if(btn){btn.textContent='✓ Tout marquer comme versé ('+nv+'€)';btn.disabled=(nv===0);}
     }
     updateStats(members);
     inp.value='';
@@ -477,7 +617,7 @@ function toutVerser(id){
     document.getElementById('cv-enc-'+id).textContent='0€';
     document.getElementById('cv-ver-'+id).textContent=nv+'€';
     var btn=document.querySelector('button[data-id="'+id+'"][data-action="tout-verser"]');
-    if(btn){btn.textContent='✓ Marquer tout comme versé (0€)';btn.disabled=true;}
+    if(btn){btn.textContent='✓ Tout marquer comme versé (0€)';btn.disabled=true;}
     updateStats(members);
     toast('✓ '+enc+'€ versés à '+(m.pseudo||m.prenom),'ok');
   });
