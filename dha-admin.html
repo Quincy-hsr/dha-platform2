@@ -15,7 +15,6 @@
   }
   body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-height:100vh}
 
-  /* LOCK */
   #lock{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:999;flex-direction:column;gap:24px}
   .lock-logo{font-family:'Orbitron',sans-serif;font-size:28px;font-weight:900;letter-spacing:6px}
   .lock-logo span{color:var(--cyan)}
@@ -26,7 +25,6 @@
   .lock-btn{width:100%;padding:12px;background:var(--cyan);color:#050914;font-family:'Orbitron',sans-serif;font-size:11px;font-weight:700;letter-spacing:3px;border:none;border-radius:8px;cursor:pointer}
   .lock-error{color:var(--red);font-size:12px;margin-top:8px;min-height:16px}
 
-  /* APP */
   #app{display:none;min-height:100vh}
   .topbar{display:flex;align-items:center;justify-content:space-between;padding:16px 28px;border-bottom:0.5px solid var(--border);position:sticky;top:0;background:var(--bg);z-index:10}
   .topbar-logo{font-family:'Orbitron',sans-serif;font-size:16px;font-weight:900;letter-spacing:4px}
@@ -41,28 +39,25 @@
 
   .main{padding:24px 28px;max-width:1100px;margin:0 auto}
 
-  /* STATS */
   .stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px}
   .stat-card{background:var(--surface);border:0.5px solid var(--border);border-radius:12px;padding:16px 18px}
   .stat-label{font-size:11px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:6px}
   .stat-val{font-size:22px;font-weight:600}
   .c-cyan{color:var(--cyan)}.c-gold{color:var(--gold)}.c-green{color:var(--green)}.c-orange{color:var(--orange)}
 
-  /* SEARCH */
   .search-row{margin-bottom:20px}
   .search-input{width:100%;background:var(--surface);border:0.5px solid var(--border2);border-radius:8px;padding:10px 16px;color:var(--text);font-family:'Inter',sans-serif;font-size:14px;outline:none}
   .search-input:focus{border-color:var(--cyan)}
   .search-input::placeholder{color:var(--muted)}
 
-  /* CARDS */
   .members{display:flex;flex-direction:column;gap:8px}
   .mcard{background:var(--surface);border:0.5px solid var(--border);border-radius:12px;overflow:hidden}
   .mcard-head{display:flex;align-items:center;gap:14px;padding:14px 18px;cursor:pointer;user-select:none;-webkit-user-select:none}
   .mcard-head:hover{background:rgba(255,255,255,0.02)}
   .avatar{width:40px;height:40px;border-radius:50%;background:rgba(0,212,255,0.12);border:0.5px solid rgba(0,212,255,0.25);display:flex;align-items:center;justify-content:center;font-family:'Orbitron',sans-serif;font-size:12px;font-weight:700;color:var(--cyan);flex-shrink:0;pointer-events:none}
   .minfo{flex:1;min-width:0;pointer-events:none}
-  .mname{font-size:14px;font-weight:500;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .memail{font-size:12px;color:var(--muted);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .mname{font-size:14px;font-weight:500;color:var(--text)}
+  .memail{font-size:12px;color:var(--muted);margin-top:2px}
   .mbadges{display:flex;gap:6px;align-items:center;flex-shrink:0;pointer-events:none}
   .badge{font-size:11px;padding:3px 10px;border-radius:99px}
   .badge-xp{background:rgba(255,215,0,0.1);color:var(--gold);border:0.5px solid rgba(255,215,0,0.25)}
@@ -70,64 +65,66 @@
   .badge-rang.ambassadeur{background:rgba(255,215,0,0.1);color:var(--gold);border:0.5px solid rgba(255,215,0,0.3)}
   .chevron{font-size:20px;color:var(--muted);pointer-events:none;transition:transform .2s;line-height:1}
 
-  /* DETAILS */
-  .mdetails{padding:0 18px 18px;border-top:0.5px solid var(--border);display:none}
+  .mdetails{padding:0 18px 20px;border-top:0.5px solid var(--border);display:none}
+
+  /* XP ACTIONS */
+  .section-title{font-size:10px;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;margin:16px 0 10px}
+  .xp-actions{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:4px}
+  .xp-btn{background:var(--surface2);border:0.5px solid var(--border);border-radius:10px;padding:10px 12px;cursor:pointer;transition:all .15s;text-align:left}
+  .xp-btn:hover{border-color:rgba(255,215,0,0.35);background:rgba(255,215,0,0.05)}
+  .xp-btn:active{transform:scale(0.97)}
+  .xp-btn-icon{font-size:18px;margin-bottom:4px}
+  .xp-btn-label{font-size:12px;color:var(--text);line-height:1.3;margin-bottom:4px}
+  .xp-btn-amount{font-family:'Orbitron',sans-serif;font-size:11px;font-weight:700;color:var(--gold)}
+
+  /* XP MANUEL */
+  .xp-manuel{background:var(--surface2);border:0.5px solid var(--border);border-radius:10px;padding:12px;margin-top:4px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .xp-manuel-label{font-size:12px;color:var(--muted);flex-shrink:0}
+  .ctrl-input{width:80px;padding:6px 8px;background:var(--bg);border:0.5px solid var(--border2);border-radius:6px;color:var(--text);font-size:13px;text-align:center;font-family:'Inter',sans-serif;outline:none}
+  .ctrl-input:focus{border-color:var(--cyan)}
+  .btn-add,.btn-sub{padding:6px 12px;border-radius:6px;font-size:12px;font-weight:500;cursor:pointer;font-family:'Inter',sans-serif;border:none}
+  .btn-add{background:rgba(0,230,118,0.15);color:var(--green);border:0.5px solid rgba(0,230,118,0.3)}
+  .btn-add:hover{background:rgba(0,230,118,0.25)}
+  .btn-sub{background:rgba(255,68,85,0.12);color:var(--red);border:0.5px solid rgba(255,68,85,0.3)}
+  .btn-sub:hover{background:rgba(255,68,85,0.22)}
 
   /* RIB */
-  .rib-box{background:var(--surface2);border:0.5px solid var(--border);border-radius:10px;padding:14px;margin-top:14px}
-  .rib-label{font-size:10px;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px}
-  .rib-val{font-size:14px;font-weight:500;color:var(--cyan);letter-spacing:1px;font-family:'Inter',sans-serif}
+  .rib-box{background:var(--surface2);border:0.5px solid var(--border);border-radius:10px;padding:12px 14px;margin-top:4px}
+  .rib-val{font-size:13px;font-weight:500;color:var(--cyan);letter-spacing:1px}
   .rib-empty{font-size:13px;color:var(--muted);font-style:italic}
 
-  /* COMMISSION BLOC */
-  .comm-bloc{margin-top:14px}
-  .comm-titre{font-size:11px;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px}
-  .comm-cards{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  /* COMMISSIONS */
+  .comm-cards{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:4px}
   .ccard{background:var(--surface2);border:0.5px solid var(--border);border-radius:10px;padding:14px}
   .ccard-label{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
   .ccard-val{font-size:22px;font-weight:600;margin-bottom:10px}
   .ccard-val.encours{color:var(--orange)}
   .ccard-val.verses{color:var(--green)}
-  .ccard-sub{font-size:11px;color:var(--muted);margin-bottom:10px}
-
-  /* CALCUL AUTO */
-  .calc-box{background:rgba(0,212,255,0.05);border:0.5px solid rgba(0,212,255,0.15);border-radius:10px;padding:12px;margin-top:14px}
-  .calc-titre{font-size:10px;color:var(--cyan);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px}
-  .calc-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:0.5px solid rgba(255,255,255,0.05);font-size:13px}
-  .calc-row:last-child{border-bottom:none;font-weight:600;padding-top:10px}
-  .calc-label{color:var(--muted)}
-  .calc-amount{color:var(--text)}
-  .calc-amount.pos{color:var(--green)}
-
-  /* XP */
-  .xp-bloc{background:var(--surface2);border:0.5px solid var(--border);border-radius:10px;padding:14px;margin-top:10px}
-  .flabel{font-size:10px;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px}
-  .fval{font-size:20px;font-weight:600;color:var(--gold);margin-bottom:10px}
   .ctrl-row{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
-  .ctrl-input{width:80px;padding:6px 8px;background:var(--bg);border:0.5px solid var(--border2);border-radius:6px;color:var(--text);font-size:13px;text-align:center;font-family:'Inter',sans-serif;outline:none}
-  .ctrl-input:focus{border-color:var(--cyan)}
-  .btn-add,.btn-sub,.btn-verser{padding:6px 12px;border-radius:6px;font-size:12px;font-weight:500;cursor:pointer;font-family:'Inter',sans-serif;border:none}
-  .btn-add{background:rgba(0,230,118,0.15);color:var(--green);border:0.5px solid rgba(0,230,118,0.3)}
-  .btn-add:hover{background:rgba(0,230,118,0.25)}
-  .btn-sub{background:rgba(255,68,85,0.12);color:var(--red);border:0.5px solid rgba(255,68,85,0.3)}
-  .btn-sub:hover{background:rgba(255,68,85,0.22)}
-  .btn-verser{background:rgba(0,230,118,0.12);color:var(--green);border:0.5px solid rgba(0,230,118,0.3);padding:8px 16px;font-size:13px;width:100%;margin-top:8px}
+  .btn-verser{background:rgba(0,230,118,0.12);color:var(--green);border:0.5px solid rgba(0,230,118,0.3);padding:8px 16px;font-size:13px;width:100%;margin-top:8px;border-radius:6px;cursor:pointer;font-family:'Inter',sans-serif;font-weight:500}
   .btn-verser:hover{background:rgba(0,230,118,0.22)}
   .btn-verser:disabled{opacity:.4;cursor:not-allowed}
 
-  /* TOAST */
+  /* BAREME */
+  .calc-box{background:rgba(0,212,255,0.04);border:0.5px solid rgba(0,212,255,0.15);border-radius:10px;padding:12px;margin-top:4px}
+  .calc-row{display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:0.5px solid rgba(255,255,255,0.05);font-size:13px}
+  .calc-row:last-child{border-bottom:none}
+  .calc-label{color:var(--muted)}
+  .calc-amount{color:var(--green)}
+
   #toast{position:fixed;bottom:24px;right:24px;padding:12px 18px;border-radius:10px;font-size:13px;font-weight:500;opacity:0;transition:opacity .25s;pointer-events:none;z-index:9999;max-width:300px}
-  #toast.show-ok{opacity:1;background:rgba(0,230,118,0.15);color:var(--green);border:0.5px solid rgba(0,230,118,0.35)}
-  #toast.show-err{opacity:1;background:rgba(255,68,85,0.15);color:var(--red);border:0.5px solid rgba(255,68,85,0.35)}
+  #toast.ok{opacity:1;background:rgba(0,230,118,0.15);color:var(--green);border:0.5px solid rgba(0,230,118,0.35)}
+  #toast.err{opacity:1;background:rgba(255,68,85,0.15);color:var(--red);border:0.5px solid rgba(255,68,85,0.35)}
 
   .loader{text-align:center;padding:40px;color:var(--muted);font-size:14px}
   .empty-state{text-align:center;padding:40px;color:var(--muted);font-size:14px}
 
-  @media(max-width:600px){
+  @media(max-width:700px){
     .stats-grid{grid-template-columns:repeat(2,1fr)}
+    .xp-actions{grid-template-columns:repeat(2,1fr)}
     .comm-cards{grid-template-columns:1fr}
-    .main{padding:16px}
-    .topbar{padding:12px 16px}
+    .main{padding:14px}
+    .topbar{padding:12px 14px}
   }
 </style>
 </head>
@@ -179,47 +176,42 @@ var H = {'apikey':KEY,'Authorization':'Bearer '+KEY,'Content-Type':'application/
 var members = [];
 var toastTimer;
 
-// PACKS
-var PACKS = {moyen:180, medium:180, premium:500};
+var XP_ACTIONS = [
+  {icon:'🔌', label:'Connexion quotidienne', xp:10},
+  {icon:'📚', label:'Finir un module',        xp:50},
+  {icon:'💬', label:'Ouvrir Discord',         xp:5},
+  {icon:'✍️',  label:'Messages Discord',       xp:10},
+  {icon:'📺', label:'Participer à un live',   xp:100},
+  {icon:'📞', label:'Appel mentor',            xp:75},
+  {icon:'🗓️', label:'Fidélité mensuelle',      xp:100},
+  {icon:'🤝', label:'Parrainer un ami',        xp:250},
+  {icon:'💰', label:'Take Profit validé',      xp:200},
+  {icon:'🏢', label:'Venir au QG',             xp:250},
+  {icon:'🎉', label:'Venir à un événement',    xp:300}
+];
 
-// RANGS
 var RANGS = {
-  'membre simple': {pct_n1:0, pct_n2:0},
-  'affilié':       {pct_n1:20, pct_n2:0},
-  'ambassadeur':   {pct_n1:25, pct_n2:5}
+  'membre simple':{pct_n1:0,  pct_n2:0},
+  'affilié':      {pct_n1:20, pct_n2:0},
+  'ambassadeur':  {pct_n1:25, pct_n2:5}
 };
 
 function getRang(m){
-  var s = (m.statut_affiliation||m.rang||'membre simple').toLowerCase();
+  var s=(m.statut_affiliation||m.rang||'membre simple').toLowerCase();
   if(s.indexOf('ambass')>-1) return 'ambassadeur';
-  if(s.indexOf('affil')>-1) return 'affilié';
+  if(s.indexOf('affil')>-1)  return 'affilié';
   return 'membre simple';
-}
-
-function calcComm(m){
-  var rang = getRang(m);
-  var taux = RANGS[rang];
-  var filleuls = m.filleuls || [];
-  var total = 0;
-  var details = [];
-  for(var i=0;i<filleuls.length;i++){
-    var f = filleuls[i];
-    var prix = PACKS[f.paquet] || 0;
-    var c = Math.round(prix * taux.pct_n1 / 100);
-    if(c>0){ total+=c; details.push({pseudo:f.pseudo||'Filleul', paquet:f.paquet, montant:c, niveau:'N1'}); }
-  }
-  return {total:total, details:details, taux:taux, rang:rang};
 }
 
 // AUTH
 document.getElementById('lock-btn').addEventListener('click', unlock);
-document.getElementById('pwd-input').addEventListener('keydown', function(e){ if(e.key==='Enter') unlock(); });
+document.getElementById('pwd-input').addEventListener('keydown', function(e){if(e.key==='Enter')unlock();});
 document.getElementById('refresh-btn').addEventListener('click', loadAll);
-document.getElementById('logout-btn').addEventListener('click', function(){ sessionStorage.removeItem('dha_admin'); location.reload(); });
+document.getElementById('logout-btn').addEventListener('click', function(){sessionStorage.removeItem('dha_admin');location.reload();});
 document.getElementById('search').addEventListener('input', filterMembers);
 
 function unlock(){
-  if(document.getElementById('pwd-input').value === PASS){
+  if(document.getElementById('pwd-input').value===PASS){
     document.getElementById('lock').style.display='none';
     document.getElementById('app').style.display='block';
     sessionStorage.setItem('dha_admin','1');
@@ -235,13 +227,12 @@ if(sessionStorage.getItem('dha_admin')==='1'){
   loadAll();
 }
 
-// LOAD
 function loadAll(){
   document.getElementById('members-list').innerHTML='<div class="loader">Chargement...</div>';
   fetch(SUPA+'/rest/v1/membres?select=*&order=xp.desc',{headers:H})
     .then(function(r){return r.json();})
     .then(function(d){
-      if(!Array.isArray(d)) throw new Error('err');
+      if(!Array.isArray(d)) throw 0;
       members=d;
       updateStats(d);
       renderMembers(d);
@@ -270,7 +261,7 @@ function filterMembers(){
 
 function initials(m){return((m.pseudo||m.prenom||'?').substring(0,2)).toUpperCase();}
 
-function rangLabel(m){
+function rangBadge(m){
   var r=getRang(m);
   if(r==='ambassadeur') return '<span class="badge badge-rang ambassadeur">👑 Ambassadeur</span>';
   if(r==='affilié')     return '<span class="badge badge-rang">⚡ Affilié</span>';
@@ -286,105 +277,94 @@ function renderMembers(data){
     var id=m.id;
     var enc=m.commissions_encours||0;
     var ver=m.commissions_verses||0;
+    var rang=getRang(m);
+    var taux=RANGS[rang];
+
+    // XP action buttons
+    var btnHtml='';
+    for(var j=0;j<XP_ACTIONS.length;j++){
+      var a=XP_ACTIONS[j];
+      btnHtml+='<button class="xp-btn" data-id="'+id+'" data-xp="'+a.xp+'" data-label="'+a.label+'">';
+      btnHtml+='<div class="xp-btn-icon">'+a.icon+'</div>';
+      btnHtml+='<div class="xp-btn-label">'+a.label+'</div>';
+      btnHtml+='<div class="xp-btn-amount">+'+a.xp+' XP</div>';
+      btnHtml+='</button>';
+    }
 
     // RIB
-    var ribHtml='';
-    if(m.rib && m.rib.length>4){
-      ribHtml='<div class="rib-val">'+m.rib+'</div>';
+    var ribHtml=m.rib&&m.rib.length>2
+      ? '<div class="rib-val">'+m.rib+'</div>'
+      : '<div class="rib-empty">Aucun RIB enregistré</div>';
+
+    // Barème
+    var baremeHtml='';
+    if(rang==='membre simple'){
+      baremeHtml='<div style="font-size:13px;color:var(--muted)">Pas de commission — statut membre simple</div>';
     } else {
-      ribHtml='<div class="rib-empty">Aucun RIB enregistré</div>';
+      baremeHtml='<div class="calc-row"><span class="calc-label">Taux N1</span><span class="calc-amount">'+taux.pct_n1+'%</span></div>';
+      if(taux.pct_n2>0) baremeHtml+='<div class="calc-row"><span class="calc-label">Taux N2</span><span class="calc-amount">'+taux.pct_n2+'%</span></div>';
+      baremeHtml+='<div class="calc-row"><span class="calc-label">Pack Medium (180€)</span><span class="calc-amount">'+Math.round(180*taux.pct_n1/100)+'€/vente</span></div>';
+      baremeHtml+='<div class="calc-row"><span class="calc-label">Pack Premium (500€)</span><span class="calc-amount">'+Math.round(500*taux.pct_n1/100)+'€/vente</span></div>';
     }
 
     html+='<div class="mcard" id="card-'+id+'">';
+    // HEAD
     html+='<div class="mcard-head" data-id="'+id+'">';
     html+='<div class="avatar">'+initials(m)+'</div>';
-    html+='<div class="minfo">';
-    html+='<div class="mname">'+(m.pseudo||m.prenom||'Membre')+'</div>';
-    html+='<div class="memail">'+(m.email||'')+''+(m.prenom?' · '+m.prenom+' '+(m.nom||''):'')+'</div>';
-    html+='</div>';
-    html+='<div class="mbadges">';
-    html+=rangLabel(m);
+    html+='<div class="minfo"><div class="mname">'+(m.pseudo||m.prenom||'Membre')+'</div>';
+    html+='<div class="memail">'+(m.email||'')+''+(m.prenom?' · '+m.prenom+' '+(m.nom||''):'')+'</div></div>';
+    html+='<div class="mbadges">'+rangBadge(m);
     html+='<span class="badge badge-xp" id="bxp-'+id+'">'+(m.xp||0).toLocaleString()+' XP</span>';
     if(enc>0) html+='<span class="badge" style="background:rgba(255,152,0,0.12);color:var(--orange);border:0.5px solid rgba(255,152,0,0.3)">'+enc+'€ à verser</span>';
-    html+='</div>';
-    html+='<span class="chevron" id="chev-'+id+'">▾</span>';
-    html+='</div>';
+    html+='</div><span class="chevron" id="chev-'+id+'">▾</span></div>';
 
     // DETAILS
     html+='<div class="mdetails" id="det-'+id+'">';
 
+    // XP ACTIONS
+    html+='<div class="section-title">Ajouter des XP — clique sur l\'action</div>';
+    html+='<div class="xp-actions">'+btnHtml+'</div>';
+    // XP Manuel
+    html+='<div class="xp-manuel">';
+    html+='<span class="xp-manuel-label">Manuel :</span>';
+    html+='<input class="ctrl-input" id="xpi-'+id+'" type="number" min="1" placeholder="XP">';
+    html+='<button class="btn-add" data-id="'+id+'" data-action="xp-add">+ Ajouter</button>';
+    html+='<button class="btn-sub" data-id="'+id+'" data-action="xp-sub">− Retirer</button>';
+    html+='</div>';
+
     // RIB
-    html+='<div class="rib-box"><div class="rib-label">RIB / IBAN pour virement</div>'+ribHtml+'</div>';
+    html+='<div class="section-title">RIB / IBAN</div>';
+    html+='<div class="rib-box">'+ribHtml+'</div>';
 
     // COMMISSIONS
-    html+='<div class="comm-bloc">';
-    html+='<div class="comm-titre" style="margin-top:14px">Commissions</div>';
+    html+='<div class="section-title">Commissions</div>';
     html+='<div class="comm-cards">';
-
-    // En cours
-    html+='<div class="ccard">';
-    html+='<div class="ccard-label">En cours — à verser</div>';
+    html+='<div class="ccard"><div class="ccard-label">En cours — à verser</div>';
     html+='<div class="ccard-val encours" id="cv-enc-'+id+'">'+enc+'€</div>';
-    html+='<div class="ccard-sub">Commissions calculées non encore versées</div>';
-    html+='<div class="ctrl-row">';
-    html+='<input class="ctrl-input" id="ci-enc-'+id+'" type="number" min="1" placeholder="25">';
+    html+='<div class="ctrl-row"><input class="ctrl-input" id="ci-enc-'+id+'" type="number" min="1" placeholder="25">';
     html+='<button class="btn-add" data-id="'+id+'" data-action="enc-add">+</button>';
-    html+='<button class="btn-sub" data-id="'+id+'" data-action="enc-sub">−</button>';
-    html+='</div>';
+    html+='<button class="btn-sub" data-id="'+id+'" data-action="enc-sub">−</button></div>';
     html+='<button class="btn-verser" data-id="'+id+'" data-action="tout-verser"'+(enc===0?' disabled':'')+'>✓ Marquer tout comme versé ('+enc+'€)</button>';
     html+='</div>';
-
-    // Versées
-    html+='<div class="ccard">';
-    html+='<div class="ccard-label">Total versé</div>';
+    html+='<div class="ccard"><div class="ccard-label">Total versé</div>';
     html+='<div class="ccard-val verses" id="cv-ver-'+id+'">'+ver+'€</div>';
-    html+='<div class="ccard-sub">Montant total déjà payé au membre</div>';
-    html+='<div class="ctrl-row">';
-    html+='<input class="ctrl-input" id="ci-ver-'+id+'" type="number" min="1" placeholder="25">';
+    html+='<div class="ctrl-row"><input class="ctrl-input" id="ci-ver-'+id+'" type="number" min="1" placeholder="25">';
     html+='<button class="btn-add" data-id="'+id+'" data-action="ver-add">+</button>';
-    html+='<button class="btn-sub" data-id="'+id+'" data-action="ver-sub">−</button>';
-    html+='</div>';
-    html+='</div>';
-    html+='</div>'; // comm-cards
-
-    // Calcul auto
-    var rang=getRang(m);
-    var taux=RANGS[rang];
-    html+='<div class="calc-box">';
-    html+='<div class="calc-titre">Barème — '+rang.toUpperCase()+'</div>';
-    if(rang==='membre simple'){
-      html+='<div style="font-size:13px;color:var(--muted)">Pas de commission — statut membre simple</div>';
-    } else {
-      html+='<div class="calc-row"><span class="calc-label">Commission N1 (ventes directes)</span><span class="calc-amount">'+taux.pct_n1+'%</span></div>';
-      if(taux.pct_n2>0){
-        html+='<div class="calc-row"><span class="calc-label">Commission N2 (filleuls des filleuls)</span><span class="calc-amount">'+taux.pct_n2+'%</span></div>';
-      }
-      html+='<div class="calc-row"><span class="calc-label">Pack Medium (180€) → commission</span><span class="calc-amount pos">'+Math.round(180*taux.pct_n1/100)+'€ / vente</span></div>';
-      html+='<div class="calc-row"><span class="calc-label">Pack Premium (500€) → commission</span><span class="calc-amount pos">'+Math.round(500*taux.pct_n1/100)+'€ / vente</span></div>';
-    }
-    html+='</div>';
-
-    html+='</div>'; // comm-bloc
-
-    // XP
-    html+='<div class="xp-bloc">';
-    html+='<div class="flabel">Points XP</div>';
-    html+='<div class="fval" id="xpv-'+id+'">'+(m.xp||0).toLocaleString()+'</div>';
-    html+='<div class="ctrl-row">';
-    html+='<input class="ctrl-input" id="xpi-'+id+'" type="number" min="1" placeholder="100">';
-    html+='<button class="btn-add" data-id="'+id+'" data-action="xp-add">+ Ajouter XP</button>';
-    html+='<button class="btn-sub" data-id="'+id+'" data-action="xp-sub">− Retirer XP</button>';
+    html+='<button class="btn-sub" data-id="'+id+'" data-action="ver-sub">−</button></div>';
     html+='</div></div>';
 
-    html+='</div>'; // mdetails
-    html+='</div>'; // mcard
+    // BAREME
+    html+='<div class="section-title">Barème — '+rang.toUpperCase()+'</div>';
+    html+='<div class="calc-box">'+baremeHtml+'</div>';
+
+    html+='</div></div>'; // mdetails + mcard
   }
   el.innerHTML=html;
 
-  // Events toggle
+  // Toggle
   var heads=document.querySelectorAll('.mcard-head');
-  for(var j=0;j<heads.length;j++){
-    heads[j].addEventListener('click',function(){
+  for(var k=0;k<heads.length;k++){
+    heads[k].addEventListener('click',function(){
       var mid=this.getAttribute('data-id');
       var det=document.getElementById('det-'+mid);
       var chev=document.getElementById('chev-'+mid);
@@ -393,10 +373,23 @@ function renderMembers(data){
       chev.style.transform=open?'':'rotate(180deg)';
     });
   }
-  // Events boutons
+
+  // XP action buttons (clique direct)
+  var xpBtns=document.querySelectorAll('.xp-btn');
+  for(var b=0;b<xpBtns.length;b++){
+    xpBtns[b].addEventListener('click',function(e){
+      e.stopPropagation();
+      var mid=parseInt(this.getAttribute('data-id'));
+      var xp=parseInt(this.getAttribute('data-xp'));
+      var label=this.getAttribute('data-label');
+      addXPDirect(mid,xp,label,this);
+    });
+  }
+
+  // Boutons manuels
   var btns=document.querySelectorAll('[data-action]');
-  for(var k=0;k<btns.length;k++){
-    btns[k].addEventListener('click',handleAction);
+  for(var n=0;n<btns.length;n++){
+    btns[n].addEventListener('click',handleAction);
   }
 }
 
@@ -404,15 +397,38 @@ function handleAction(e){
   e.stopPropagation();
   var id=parseInt(this.getAttribute('data-id'));
   var act=this.getAttribute('data-action');
-  if(act==='xp-add')       adjXP(id,1);
-  else if(act==='xp-sub')  adjXP(id,-1);
-  else if(act==='enc-add') adjComm(id,'commissions_encours',1);
-  else if(act==='enc-sub') adjComm(id,'commissions_encours',-1);
-  else if(act==='ver-add') adjComm(id,'commissions_verses',1);
-  else if(act==='ver-sub') adjComm(id,'commissions_verses',-1);
+  if(act==='xp-add')        adjXP(id,1);
+  else if(act==='xp-sub')   adjXP(id,-1);
+  else if(act==='enc-add')  adjComm(id,'commissions_encours',1);
+  else if(act==='enc-sub')  adjComm(id,'commissions_encours',-1);
+  else if(act==='ver-add')  adjComm(id,'commissions_verses',1);
+  else if(act==='ver-sub')  adjComm(id,'commissions_verses',-1);
   else if(act==='tout-verser') toutVerser(id);
 }
 
+// XP direct (bouton action)
+function addXPDirect(id,xp,label,btn){
+  var m=getMember(id);
+  if(!m) return;
+  var nv=(m.xp||0)+xp;
+  // Feedback visuel immédiat
+  btn.style.borderColor='rgba(255,215,0,0.6)';
+  btn.style.background='rgba(255,215,0,0.1)';
+  patch(id,{xp:nv},function(){
+    m.xp=nv;
+    document.getElementById('bxp-'+id).textContent=nv.toLocaleString()+' XP';
+    var xpv=document.getElementById('xpv-'+id);
+    if(xpv) xpv.textContent=nv.toLocaleString();
+    updateStats(members);
+    toast('+'+xp+' XP — '+label+' ✓','ok');
+    setTimeout(function(){
+      btn.style.borderColor='';
+      btn.style.background='';
+    },1000);
+  });
+}
+
+// XP Manuel
 function adjXP(id,sign){
   var inp=document.getElementById('xpi-'+id);
   var amt=parseInt(inp.value);
@@ -421,14 +437,14 @@ function adjXP(id,sign){
   var nv=Math.max(0,(m.xp||0)+sign*amt);
   patch(id,{xp:nv},function(){
     m.xp=nv;
-    document.getElementById('xpv-'+id).textContent=nv.toLocaleString();
     document.getElementById('bxp-'+id).textContent=nv.toLocaleString()+' XP';
     updateStats(members);
     inp.value='';
-    toast((sign>0?'+':'−')+amt+' XP → '+(m.pseudo||m.prenom||'membre'),'ok');
+    toast((sign>0?'+':'-')+amt+' XP appliqué','ok');
   });
 }
 
+// Commissions
 function adjComm(id,field,sign){
   var isEnc=(field==='commissions_encours');
   var inp=document.getElementById(isEnc?'ci-enc-'+id:'ci-ver-'+id);
@@ -440,14 +456,13 @@ function adjComm(id,field,sign){
   patch(id,body,function(){
     m[field]=nv;
     document.getElementById(isEnc?'cv-enc-'+id:'cv-ver-'+id).textContent=nv+'€';
-    // Mettre à jour bouton verser
     if(isEnc){
-      var btn=document.querySelector('[data-id="'+id+'"][data-action="tout-verser"]');
+      var btn=document.querySelector('button[data-id="'+id+'"][data-action="tout-verser"]');
       if(btn){btn.textContent='✓ Marquer tout comme versé ('+nv+'€)';btn.disabled=(nv===0);}
     }
     updateStats(members);
     inp.value='';
-    toast((sign>0?'+':'−')+amt+'€ '+(isEnc?'en cours':'versé'),'ok');
+    toast((sign>0?'+':'-')+amt+'€ '+(isEnc?'en cours':'versé'),'ok');
   });
 }
 
@@ -455,17 +470,16 @@ function toutVerser(id){
   var m=getMember(id);
   var enc=m.commissions_encours||0;
   if(enc===0){toast('Aucune commission en cours','err');return;}
-  var nouvVer=(m.commissions_verses||0)+enc;
-  patch(id,{commissions_encours:0,commissions_verses:nouvVer},function(){
-    m.commissions_verses=nouvVer;
+  var nv=(m.commissions_verses||0)+enc;
+  patch(id,{commissions_encours:0,commissions_verses:nv},function(){
+    m.commissions_verses=nv;
     m.commissions_encours=0;
     document.getElementById('cv-enc-'+id).textContent='0€';
-    document.getElementById('cv-ver-'+id).textContent=nouvVer+'€';
-    var btn=document.querySelector('[data-id="'+id+'"][data-action="tout-verser"]');
+    document.getElementById('cv-ver-'+id).textContent=nv+'€';
+    var btn=document.querySelector('button[data-id="'+id+'"][data-action="tout-verser"]');
     if(btn){btn.textContent='✓ Marquer tout comme versé (0€)';btn.disabled=true;}
-    // Retirer badge orange
     updateStats(members);
-    toast('✓ '+enc+'€ marqués comme versés à '+(m.pseudo||m.prenom||'membre'),'ok');
+    toast('✓ '+enc+'€ versés à '+(m.pseudo||m.prenom),'ok');
   });
 }
 
@@ -475,13 +489,16 @@ function patch(id,body,cb){
     .catch(function(e){toast('Erreur Supabase: '+e.message,'err');});
 }
 
-function getMember(id){for(var i=0;i<members.length;i++){if(members[i].id===id)return members[i];}return null;}
+function getMember(id){
+  for(var i=0;i<members.length;i++){if(members[i].id===id)return members[i];}
+  return null;
+}
 
 function toast(msg,type){
   clearTimeout(toastTimer);
   var el=document.getElementById('toast');
   el.textContent=msg;
-  el.className='show-'+type;
+  el.className=type;
   toastTimer=setTimeout(function(){el.className='';},3000);
 }
 
