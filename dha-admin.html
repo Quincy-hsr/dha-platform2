@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DHA — Admin</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Inter:wght@400;500;600&display=swap');
+
+  *{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --bg:#050914;
+    --surface:#0c1220;
+    --surface2:#111827;
+    --border:rgba(255,255,255,0.07);
+    --border2:rgba(255,255,255,0.12);
+    --text:#e8f4ff;
+    --muted:rgba(232,244,255,0.45);
+    --cyan:#00d4ff;
+    --gold:#ffd700;
+    --green:#00e676;
+    --red:#ff4455;
+    --orange:#ff9800;
+  }
+  body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-height:100vh}
+
+  /* ── LOCK SCREEN ── */
+  #lock{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:999;flex-direction:column;gap:24px}
+  .lock-logo{font-family:'Orbitron',sans-serif;font-size:28px;font-weight:900;letter-spacing:6px}
+  .lock-logo span{color:var(--cyan)}
+  .lock-box{background:var(--surface);border:0.5px solid var(--border2);border-radius:16px;padding:32px;width:340px;text-align:center}
+  .lock-title{font-size:13px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-bottom:20px}
+  .lock-input{width:100%;background:var(--surface2);border:0.5px solid var(--border2);border-radius:8px;padding:12px 16px;color:var(--text);font-family:'Inter',sans-serif;font-size:15px;text-align:center;letter-spacing:4px;outline:none;margin-bottom:12px}
+  .lock-input:focus{border-color:var(--cyan)}
+  .lock-btn{width:100%;padding:12px;background:var(--cyan);color:#050914;font-family:'Orbitron',sans-serif;font-size:11px;font-weight:700;letter-spacing:3px;border:none;border-radius:8px;cursor:pointer}
+  .lock-btn:hover{opacity:.9}
+  .lock-error{color:var(--red);font-size:12px;margin-top:8px;min-height:16px}
+
+  /* ── APP ── */
+  #app{display:none;min-height:100vh}
+  .topbar{display:flex;align-items:center;justify-content:space-between;padding:16px 28px;border-bottom:0.5px solid var(--border);position:sticky;top:0;background:var(--bg);z-index:10}
+  .topbar-logo{font-family:'Orbitron',sans-serif;font-size:16px;font-weight:900;letter-spacing:4px}
+  .topbar-logo span{color:var(--cyan)}
+  .topbar-right{display:flex;align-items:center;gap:10px}
+  .live-dot{width:7px;height:7px;border-radius:50%;background:var(--green);animation:pulse 2s infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+  .live-label{font-size:12px;color:var(--green)}
+  .refresh-btn{padding:6px 14px;border:0.5px solid var(--border2);border-radius:8px;background:transparent;color:var(--muted);font-size:12px;cursor:pointer;font-family:'Inter',sans-serif}
+  .refresh-btn:hover{background:var(--surface);color:var(--text)}
+  .logout-btn{padding:6px 14px;border:0.5px solid rgba(255,68,85,0.3);border-radius:8px;background:transparent;color:var(--red);font-size:12px;cursor:pointer;font-family:'Inter',sans-serif}
+  .logout-btn:hover{background:rgba(255,68,85,0.08)}
+
+  .main{padding:24px 28px;max-width:1100px;margin:0 auto}
+
+  /* ── STATS ── */
+  .stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px}
+  .stat-card{background:var(--surface);border:0.5px solid var(--border);border-radius:12px;padding:16px 18px}
+  .stat-label{font-size:11px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:6px}
+  .stat-val{font-size:26px;font-weight:600;color:var(--text)}
+  .stat-val.cyan{color:var(--cyan)}
+  .stat-val.gold{color:var(--gold)}
+  .stat-val.green{color:var(--green)}
+
+  /* ── SEARCH ── */
+  .search-row{display:flex;gap:10px;margin-bottom:20px}
+  .search-input{flex:1;background:var(--surface);border:0.5px solid var(--border2);border-radius:8px;padding:10px 16px;color:var(--text);font-family:'Inter',sans-serif;font-size:14px;outline:none}
+  .search-input:focus{border-color:var(--cyan)}
+  .search-input::placeholder{color:var(--muted)}
+
+  /* ── MEMBER CARDS ── */
+  .members{display:flex;flex-direction:column;gap:8px}
+  .mcard{background:var(--surface);border:0.5px solid var(--border);border-radius:12px;overflow:hidden;transition:border-color .15s}
+  .mcard:hover{border-color:var(--border2)}
+  .mcard.open{border-color:rgba(0,212,255,0.35)}
+  .mcard-head{display:flex;align-items:center;gap:14px;padding:14px 18px;cursor:pointer;user-select:none}
+  .avatar{width:40px;height:40px;border-radius:50%;background:rgba(0,212,255,0.12);border:0.5px solid rgba(0,212,255,0.25);display:flex;align-items:center;justify-content:center;font-family:'Orbitron',sans-serif;font-size:12px;font-weight:700;color:var(--cyan);flex-shrink:0}
+  .minfo{flex:1;min-width:0}
+  .mname{font-size:14px;font-weight:500;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .memail{font-size:12px;color:var(--muted);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .mbadges{display:flex;gap:6px;align-items:center;flex-shrink:0}
+  .badge{font-size:11px;padding:3px 10px;border-radius:99px;white-space:nowrap}
+  .badge-xp{background:rgba(255,215,0,0.1);color:var(--gold);border:0.5px solid rgba(255,215,0,0.25)}
+  .badge-pack{background:rgba(255,255,255,0.05);color:var(--muted);border:0.5px solid var(--border)}
+  .chevron{font-size:18px;color:var(--muted);transition:transform .2s;flex-shrink:0}
+  .mcard.open .chevron{transform:rotate(180deg)}
+
+  /* ── DETAILS ── */
+  .mdetails{display:none;padding:0 18px 18px;border-top:0.5px solid var(--border)}
+  .mcard.open .mdetails{display:block}
+  .details-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+  .field-box{background:var(--surface2);border:0.5px solid var(--border);border-radius:10px;padding:14px}
+  .field-box.wide{grid-column:span 2}
+  .flabel{font-size:10px;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px}
+  .fval{font-size:20px;font-weight:600;color:var(--text);margin-bottom:10px}
+  .fval.cyan{color:var(--cyan)}
+  .fval.gold{color:var(--gold)}
+  .ctrl-row{display:flex;gap:6px;align-items:center}
+  .ctrl-input{width:80px;padding:6px 8px;background:var(--bg);border:0.5px solid var(--border2);border-radius:6px;color:var(--text);font-size:13px;text-align:center;font-family:'Inter',sans-serif;outline:none}
+  .ctrl-input:focus{border-color:var(--cyan)}
+  .btn-add,.btn-sub{padding:6px 12px;border-radius:6px;font-size:12px;font-weight:500;cursor:pointer;font-family:'Inter',sans-serif;border:none;transition:opacity .15s}
+  .btn-add{background:rgba(0,230,118,0.15);color:var(--green);border:0.5px solid rgba(0,230,118,0.3)}
+  .btn-add:hover{background:rgba(0,230,118,0.25)}
+  .btn-sub{background:rgba(255,68,85,0.12);color:var(--red);border:0.5px solid rgba(255,68,85,0.3)}
+  .btn-sub:hover{background:rgba(255,68,85,0.22)}
+
+  .comm-3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}
+  .cbox{background:var(--surface2);border:0.5px solid var(--border);border-radius:10px;padding:12px}
+  .cval{font-size:18px;font-weight:600;color:var(--text);margin:4px 0 10px}
+  .pack-select{width:100%;padding:7px 10px;background:var(--bg);border:0.5px solid var(--border2);border-radius:6px;color:var(--text);font-family:'Inter',sans-serif;font-size:13px;outline:none;margin-top:6px}
+  .pack-select:focus{border-color:var(--cyan)}
+
+  /* ── TOAST ── */
+  #toast{position:fixed;bottom:24px;right:24px;padding:12px 18px;border-radius:10px;font-size:13px;font-weight:500;opacity:0;transition:opacity .25s;pointer-events:none;z-index:9999;max-width:280px}
+  #toast.show{opacity:1}
+  #toast.ok{background:rgba(0,230,118,0.15);color:var(--green);border:0.5px solid rgba(0,230,118,0.35)}
+  #toast.err{background:rgba(255,68,85,0.15);color:var(--red);border:0.5px solid rgba(255,68,85,0.35)}
+
+  .loader{text-align:center;padding:40px;color:var(--muted);font-size:14px}
+  .empty{text-align:center;padding:40px;color:var(--muted);font-size:14px}
+
+  @media(max-width:600px){
+    .stats-grid{grid-template-columns:repeat(2,1fr)}
+    .details-grid{grid-template-columns:1fr}
+    .field-box.wide{grid-column:span 1}
+    .comm-3{grid-template-columns:1fr}
+    .main{padding:16px}
+    .topbar{padding:12px 16px}
+  }
+</style>
+</head>
+<body>
+
+<!-- LOCK -->
+<div id="lock">
+  <div class="lock-logo">DH<span>A</span></div>
+  <div class="lock-box">
+    <div class="lock-title">Accès administrateur</div>
+    <input class="lock-input" type="password" id="pwd-input" placeholder="••••••••" onkeydown="if(event.key==='Enter')unlock()">
+    <button class="lock-btn" onclick="unlock()">ACCÉDER</button>
+    <div class="lock-error" id="lock-err"></div>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app">
+  <div class="topbar">
+    <div class="topbar-logo">DH<span>A</span> — ADMIN</div>
+    <div class="topbar-right">
+      <div class="live-dot"></div>
+      <span class="live-label">En ligne</span>
+      <button class="refresh-btn" onclick="loadMembers()">↻ Actualiser</button>
+      <button class="logout-btn" onclick="logout()">Déconnexion</button>
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="stats-grid">
+      <div class="stat-card"><div class="stat-label">Membres</div><div class="stat-val cyan" id="s-total">—</div></div>
+      <div class="stat-card"><div class="stat-label">XP total</div><div class="stat-val gold" id="s-xp">—</div></div>
+      <div class="stat-card"><div class="stat-label">Commissions totales</div><div class="stat-val" id="s-comm">—</div></div>
+      <div class="stat-card"><div class="stat-label">Versées</div><div class="stat-val green" id="s-verses">—</div></div>
+    </div>
+
+    <div class="search-row">
+      <input class="search-input" type="text" id="search" placeholder="Rechercher par pseudo, prénom, email..." oninput="filterMembers()">
+    </div>
+
+    <div class="members" id="members-list">
+      <div class="loader">Chargement des membres...</div>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+const PASS = '050876';
+const SUPA = 'https://kdetwppxsfoagyndrlzr.supabase.co';
+const KEY  = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtkZXR3cHB4c2ZvYWd5bmRybHpyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzcyMzM3NjQsImV4cCI6MjA5MjgwOTc2NH0.OodaFQKEHcncDYdO6uM121NAUbyxD4UxpptSjzzZOi0';
+const H    = {'apikey':KEY,'Authorization':'Bearer '+KEY,'Content-Type':'application/json','Prefer':'return=representation'};
+
+let members = [];
+
+/* ── AUTH ── */
+function unlock(){
+  const v = document.getElementById('pwd-input').value;
+  if(v === PASS){
+    document.getElementById('lock').style.display = 'none';
+    document.getElementById('app').style.display  = 'block';
+    sessionStorage.setItem('dha_admin','1');
+    loadMembers();
+  } else {
+    document.getElementById('lock-err').textContent = 'Mot de passe incorrect.';
+    document.getElementById('pwd-input').value = '';
+  }
+}
+function logout(){
+  sessionStorage.removeItem('dha_admin');
+  location.reload();
+}
+if(sessionStorage.getItem('dha_admin')==='1'){
+  document.getElementById('lock').style.display='none';
+  document.getElementById('app').style.display='block';
+  loadMembers();
+}
+
+/* ── LOAD ── */
+async function loadMembers(){
+  try{
+    const r = await fetch(`${SUPA}/rest/v1/membres?select=*&order=xp.desc`,{headers:H});
+    const d = await r.json();
+    if(!Array.isArray(d)) throw 0;
+    members = d;
+    updateStats(d);
+    renderMembers(d);
+  } catch{
+    document.getElementById('members-list').innerHTML='<div class="empty">Erreur de connexion Supabase.</div>';
+  }
+}
+
+function updateStats(d){
+  document.getElementById('s-total').textContent   = d.length;
+  document.getElementById('s-xp').textContent      = d.reduce((s,m)=>s+(m.xp||0),0).toLocaleString()+' XP';
+  document.getElementById('s-comm').textContent    = d.reduce((s,m)=>s+(m.commissions_total||0),0).toLocaleString()+'€';
+  document.getElementById('s-verses').textContent  = d.reduce((s,m)=>s+(m.commissions_verses||0),0).toLocaleString()+'€';
+}
+
+/* ── FILTER ── */
+function filterMembers(){
+  const q = document.getElementById('search').value.toLowerCase();
+  renderMembers(members.filter(m=>
+    (m.pseudo||'').toLowerCase().includes(q)||
+    (m.email||'').toLowerCase().includes(q)||
+    (m.prenom||'').toLowerCase().includes(q)||
+    (m.nom||'').toLowerCase().includes(q)
+  ));
+}
+
+/* ── RENDER ── */
+function initials(m){return((m.pseudo||m.prenom||'?').substring(0,2)).toUpperCase()}
+
+function renderMembers(data){
+  const el = document.getElementById('members-list');
+  if(!data.length){el.innerHTML='<div class="empty">Aucun membre trouvé.</div>';return;}
+  el.innerHTML = data.map(m=>`
+    <div class="mcard" id="card-${m.id}">
+      <div class="mcard-head" onclick="toggle(${m.id})">
+        <div class="avatar">${initials(m)}</div>
+        <div class="minfo">
+          <div class="mname">${m.pseudo||m.prenom||'Membre sans pseudo'}</div>
+          <div class="memail">${m.email||''} ${m.prenom?'· '+m.prenom+' '+(m.nom||''):''}</div>
+        </div>
+        <div class="mbadges">
+          <span class="badge badge-xp" id="bxp-${m.id}">${(m.xp||0).toLocaleString()} XP</span>
+          <span class="badge badge-pack">${m.paquet||'—'}</span>
+        </div>
+        <span class="chevron">⌄</span>
+      </div>
+      <div class="mdetails">
+        <div class="details-grid">
+          <div class="field-box">
+            <div class="flabel">Points XP</div>
+            <div class="fval gold" id="xpv-${m.id}">${(m.xp||0).toLocaleString()}</div>
+            <div class="ctrl-row">
+              <input class="ctrl-input" id="xpi-${m.id}" type="number" min="1" placeholder="ex: 100" onclick="event.stopPropagation()">
+              <button class="btn-add" onclick="event.stopPropagation();adjXP(${m.id},1)">+ Ajouter</button>
+              <button class="btn-sub" onclick="event.stopPropagation();adjXP(${m.id},-1)">− Retirer</button>
+            </div>
+          </div>
+          <div class="field-box">
+            <div class="flabel">Commissions en cours</div>
+            <div class="fval" id="cv-encours-${m.id}">${(m.commissions_encours||0).toLocaleString()}€</div>
+            <div class="ctrl-row">
+              <input class="ctrl-input" id="ci-encours-${m.id}" type="number" min="1" placeholder="ex: 25" onclick="event.stopPropagation()">
+              <button class="btn-add" onclick="event.stopPropagation();adjC(${m.id},'commissions_encours',1)">+</button>
+              <button class="btn-sub" onclick="event.stopPropagation();adjC(${m.id},'commissions_encours',-1)">−</button>
+            </div>
+          </div>
+        </div>
+        <div class="comm-3">
+          <div class="cbox">
+            <div class="flabel">Total commissions</div>
+            <div class="cval" id="cv-total-${m.id}">${(m.commissions_total||0).toLocaleString()}€</div>
+            <div class="ctrl-row">
+              <input class="ctrl-input" id="ci-total-${m.id}" type="number" min="1" placeholder="25" onclick="event.stopPropagation()" style="width:60px">
+              <button class="btn-add" onclick="event.stopPropagation();adjC(${m.id},'commissions_total',1)">+</button>
+              <button class="btn-sub" onclick="event.stopPropagation();adjC(${m.id},'commissions_total',-1)">−</button>
+            </div>
+          </div>
+          <div class="cbox">
+            <div class="flabel">Commissions versées</div>
+            <div class="cval" id="cv-verses-${m.id}">${(m.commissions_verses||0).toLocaleString()}€</div>
+            <div class="ctrl-row">
+              <input class="ctrl-input" id="ci-verses-${m.id}" type="number" min="1" placeholder="25" onclick="event.stopPropagation()" style="width:60px">
+              <button class="btn-add" onclick="event.stopPropagation();adjC(${m.id},'commissions_verses',1)">+</button>
+              <button class="btn-sub" onclick="event.stopPropagation();adjC(${m.id},'commissions_verses',-1)">−</button>
+            </div>
+          </div>
+          <div class="cbox">
+            <div class="flabel">Paquet</div>
+            <div class="cval" style="font-size:15px">${m.paquet||'—'}</div>
+            <select class="pack-select" onchange="chgPack(${m.id},this.value)" onclick="event.stopPropagation()">
+              <option value="">— modifier —</option>
+              <option value="moyen">Moyen</option>
+              <option value="premium">Premium</option>
+              <option value="vip">VIP</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+/* ── TOGGLE ── */
+function toggle(id){
+  document.getElementById('card-'+id).classList.toggle('open');
+}
+
+/* ── XP ── */
+async function adjXP(id,sign){
+  const inp = document.getElementById('xpi-'+id);
+  const amt = parseInt(inp.value);
+  if(!amt||amt<=0){toast('Entre un montant valide','err');return;}
+  const m = members.find(x=>x.id===id);
+  const nv = Math.max(0,(m.xp||0)+sign*amt);
+  try{
+    const r = await fetch(`${SUPA}/rest/v1/membres?id=eq.${id}`,{method:'PATCH',headers:H,body:JSON.stringify({xp:nv})});
+    if(!r.ok) throw 0;
+    m.xp = nv;
+    document.getElementById('xpv-'+id).textContent   = nv.toLocaleString();
+    document.getElementById('bxp-'+id).textContent   = nv.toLocaleString()+' XP';
+    updateStats(members);
+    inp.value='';
+    toast((sign>0?'+':'−')+amt+' XP → '+(m.pseudo||m.prenom||'membre'),'ok');
+  }catch{toast('Erreur Supabase','err');}
+}
+
+/* ── COMMISSIONS ── */
+async function adjC(id,field,sign){
+  const pfx = {'commissions_encours':'encours','commissions_total':'total','commissions_verses':'verses'}[field];
+  const inp = document.getElementById('ci-'+pfx+'-'+id);
+  const amt = parseInt(inp.value);
+  if(!amt||amt<=0){toast('Entre un montant valide','err');return;}
+  const m = members.find(x=>x.id===id);
+  const nv = Math.max(0,(m[field]||0)+sign*amt);
+  try{
+    const r = await fetch(`${SUPA}/rest/v1/membres?id=eq.${id}`,{method:'PATCH',headers:H,body:JSON.stringify({[field]:nv})});
+    if(!r.ok) throw 0;
+    m[field]=nv;
+    document.getElementById('cv-'+pfx+'-'+id).textContent = nv.toLocaleString()+'€';
+    updateStats(members);
+    inp.value='';
+    toast((sign>0?'+':'−')+amt+'€ ('+pfx+')','ok');
+  }catch{toast('Erreur Supabase','err');}
+}
+
+/* ── PAQUET ── */
+async function chgPack(id,pack){
+  if(!pack) return;
+  const m = members.find(x=>x.id===id);
+  try{
+    const r = await fetch(`${SUPA}/rest/v1/membres?id=eq.${id}`,{method:'PATCH',headers:H,body:JSON.stringify({paquet:pack})});
+    if(!r.ok) throw 0;
+    m.paquet=pack;
+    toast('Paquet → '+pack,'ok');
+  }catch{toast('Erreur Supabase','err');}
+}
+
+/* ── TOAST ── */
+let _t;
+function toast(msg,type){
+  clearTimeout(_t);
+  const el=document.getElementById('toast');
+  el.textContent=msg;
+  el.className='show '+type;
+  _t=setTimeout(()=>el.className='',2800);
+}
+
+/* ── AUTO REFRESH 60s ── */
+setInterval(loadMembers,60000);
+</script>
+</body>
+</html>
