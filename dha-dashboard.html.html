@@ -170,7 +170,7 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
     </div>
 
     <div class="card">
-      <div class="card-label">⚡ QUÊTES DU JOUR</div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;"><div class="card-label" style="margin-bottom:0;">⚡ QUÊTES DU JOUR</div><a href="#" onclick="showGuideXP();return false;" style="font-family:'Orbitron',sans-serif;font-size:8px;letter-spacing:2px;color:var(--cyan);text-decoration:none;opacity:0.7;">GUIDE XP →</a></div>
       <div id="quetes-list">
         <div class="quete-item" id="q-connexion">
           <div class="quete-check done" id="check-connexion">✓</div>
@@ -272,12 +272,31 @@ const SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSI
 const classeIcons={trading:'📈',ugc:'🎬',marketing:'🚀',ecommerce:'🛒'};
 const classeNames={trading:'TRADING',ugc:'UGC CREATOR',marketing:'MARKETING DIGITAL',ecommerce:'E-COMMERCE'};
 const rangs=[
-  {min:0,max:499,name:'NEW HUSTLER',icon:'🎮',color:'rgba(200,200,200,0.6)'},
-  {min:500,max:1499,name:'HUSTLER',icon:'⚡',color:'#1E64FF'},
-  {min:1500,max:2999,name:'PRO HUSTLER',icon:'🚀',color:'#00D4FF'},
-  {min:3000,max:5999,name:'AMBASSADEUR',icon:'👑',color:'#FFD700'},
-  {min:6000,max:99999,name:'LEGEND',icon:'💎',color:'#9D4EDD'}
+  {min:0,    max:4999,  name:'NEW HUSTLER',icon:'🎮',color:'rgba(200,200,200,0.6)'},
+  {min:5000, max:14999, name:'HUSTLER',    icon:'⚡',color:'#1E64FF'},
+  {min:15000,max:21999, name:'PRO HUSTLER',icon:'🚀',color:'#00D4FF'},
+  {min:22000,max:29999, name:'AMBASSADEUR',icon:'👑',color:'#FFD700'},
+  {min:30000,max:999999,name:'LEGEND',     icon:'💎',color:'#9D4EDD'}
 ];
+function getXPForLevel(level){
+  if(level<=1)return 0;
+  if(level<=10)return (level-1)*500;
+  if(level<=25)return 5000+(level-10)*667;
+  if(level<=50)return 15000+(level-25)*280;
+  return 22000+(level-50)*160;
+}
+function getLevelFromXP(xp){
+  for(let l=100;l>=1;l--){if(xp>=getXPForLevel(l))return l;}
+  return 1;
+}
+function getXPInLevel(xp){
+  const level=getLevelFromXP(xp);
+  return xp-getXPForLevel(level);
+}
+function getXPForCurrentLevel(xp){
+  const level=getLevelFromXP(xp);
+  return getXPForLevel(level+1)-getXPForLevel(level);
+}
 let member=null;
 
 function getKey(k){const m=JSON.parse(localStorage.getItem('dha_member')||'{}');return 'dha_'+(m.pseudo||'guest')+'_'+k;}
@@ -340,7 +359,8 @@ async function checkQueteParrainage(){
   if(localStorage.getItem('dha_quete_parrainage_'+today)) return;
   if(!member) return;
   try{
-    const res=await fetch(SUPABASE_URL+'/rest/v1/membres?parraine_par=eq.'+encodeURIComponent(member.pseudo||'')+'&select=pseudo',{
+    const todayISO=new Date().toISOString().split('T')[0];
+    const res=await fetch(SUPABASE_URL+'/rest/v1/membres?parraine_par=eq.'+encodeURIComponent(member.pseudo||'')+'&date_inscription=gte.'+todayISO+'T00:00:00&select=pseudo',{
       headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY}
     });
     const data=await res.json();
@@ -382,20 +402,20 @@ async function updateXP(amount){
   if(!member)return;
   const oldXP=member.xp||0;
   member.xp=oldXP+amount;
-  member.level=Math.floor(member.xp/500)+1;
+  member.level=getLevelFromXP(member.xp);
   member.xp_semaine=(member.xp_semaine||0)+amount;
   localStorage.setItem('dha_member',JSON.stringify(member));
   const flash=document.createElement('div');
   flash.textContent='+'+amount+' XP ⚡';
   flash.style.cssText='position:fixed;top:80px;right:24px;font-family:Orbitron,sans-serif;font-size:20px;font-weight:900;color:#FFD700;text-shadow:0 0 20px rgba(255,215,0,0.8);z-index:9999;pointer-events:none;animation:xp-float 1.5s ease forwards;';
   document.body.appendChild(flash);setTimeout(()=>flash.remove(),1500);
-  const startXP=oldXP%500;const endXP=member.xp%500;
+  const startXP=getXPInLevel(oldXP);const endXP=getXPInLevel(member.xp);const levelXP=getXPForCurrentLevel(member.xp);
   const duration=1000;const startTime=performance.now();
   function animateBar(currentTime){
     const elapsed=currentTime-startTime;const progress=Math.min(elapsed/duration,1);
-    const currentPct=(startXP+(endXP-startXP)*progress)/500*100;
+    const currentPct=(startXP+(endXP-startXP)*progress)/levelXP*100;
     document.getElementById('xp-fill').style.width=currentPct+'%';
-    document.getElementById('xp-next').textContent=Math.round(startXP+(endXP-startXP)*progress)+' / 500 XP';
+    document.getElementById('xp-next').textContent=Math.round(startXP+(endXP-startXP)*progress)+' / '+levelXP+' XP';
     document.getElementById('topbar-xp').textContent=Math.round(oldXP+amount*progress)+' XP';
     if(progress<1)requestAnimationFrame(animateBar);
     else renderMember();
@@ -414,9 +434,9 @@ function renderMember(){
   if(!member)return;
   const rang=getRang(member.xp||0);
   const xp=member.xp||0;
-  const level=Math.floor(xp/500)+1;
-  const xpInLevel=xp%500;
-  const xpPct=(xpInLevel/500)*100;
+  const level=getLevelFromXP(xp);
+  const xpInLevel=getXPInLevel(xp);
+  const levelXP=getXPForCurrentLevel(xp);const xpPct=(xpInLevel/levelXP)*100;
   const classe=member.classe||'trading';
   const icon=classeIcons[classe]||'🎮';
   document.getElementById('sb-pseudo').textContent=('@'+(member.pseudo||'HUSTLER')).toUpperCase();
@@ -434,7 +454,7 @@ function renderMember(){
     document.getElementById('stat-days').textContent=days;
   }
   document.getElementById('xp-fill').style.width=xpPct+'%';
-  document.getElementById('xp-next').textContent=xpInLevel+' / 500 XP';
+  document.getElementById('xp-next').textContent=xpInLevel+' / '+levelXP+' XP';
   document.getElementById('module-classe-icon').textContent=icon;
   document.getElementById('module-classe-name').textContent='MODULE '+(classeNames[classe]||'TRADING');
   const now=new Date();
@@ -493,10 +513,10 @@ async function loadLeaderboard(){
 function showRangsModal(){
   const rangsData=[
     {icon:'🎮',name:'NEW HUSTLER',xp:'0 XP',color:'rgba(200,200,200,0.8)',avantages:['Accès à tous les modules','Discord communauté','Système de quêtes quotidiennes','Leaderboard hebdo']},
-    {icon:'⚡',name:'HUSTLER',xp:'500 XP',color:'#1E64FF',avantages:['Tout NEW HUSTLER','Badge ⚡ exclusif sur ton profil','Accès prioritaire aux lives','1 appel mentor offert']},
-    {icon:'🚀',name:'PRO HUSTLER',xp:'1500 XP',color:'#00D4FF',avantages:['Tout HUSTLER','Badge 🚀 sur ton profil','Accès aux sessions privées','Priorité events physiques']},
-    {icon:'👑',name:'AMBASSADEUR',xp:'3000 XP',color:'#FFD700',avantages:['Tout PRO HUSTLER','Badge 👑 sur ton profil','Commissions affiliation boostées','Accès VIP aux villas & events']},
-    {icon:'💎',name:'LEGEND',xp:'6000 XP',color:'#9D4EDD',avantages:['Tout AMBASSADEUR','Badge 💎 légendaire','Accès à vie garanti','Priorité absolue sur tout']}
+    {icon:'⚡',name:'HUSTLER',xp:'5 000 XP',color:'#1E64FF',avantages:['Tout NEW HUSTLER','Badge ⚡ exclusif sur ton profil','Accès prioritaire aux lives','1 appel mentor offert']},
+    {icon:'🚀',name:'PRO HUSTLER',xp:'15 000 XP',color:'#00D4FF',avantages:['Tout HUSTLER','Badge 🚀 sur ton profil','Accès aux sessions privées','Priorité events physiques']},
+    {icon:'👑',name:'AMBASSADEUR',xp:'22 000 XP',color:'#FFD700',avantages:['Tout PRO HUSTLER','Badge 👑 sur ton profil','Commissions affiliation boostées','Accès VIP aux villas & events']},
+    {icon:'💎',name:'LEGEND',xp:'30 000 XP',color:'#9D4EDD',avantages:['Tout AMBASSADEUR','Badge 💎 légendaire','Accès à vie garanti','Priorité absolue sur tout']}
   ];
   const currentXP=member?member.xp||0:0;
   let html=`<div style="position:fixed;inset:0;z-index:9999;background:rgba(5,9,20,0.92);backdrop-filter:blur(12px);display:flex;align-items:center;justify-content:center;padding:20px;" onclick="this.remove()">
@@ -505,7 +525,7 @@ function showRangsModal(){
   <div style="font-family:'Orbitron',sans-serif;font-size:16px;font-weight:900;color:#E8F4FF;margin-bottom:24px;letter-spacing:2px;">🏆 LES RANGS DHA</div>`;
 
   rangsData.forEach(r=>{
-    const isActive=currentXP>=parseInt(r.xp);
+    const isActive=currentXP>=parseInt(r.xp.replace(/\s/g,''));
     const isCurrent=getRang(currentXP).name===r.name;
     html+=`<div style="padding:18px 20px;border-radius:14px;margin-bottom:12px;background:${isCurrent?'rgba(30,100,255,0.1)':'rgba(255,255,255,0.03)'};border:1px solid ${isCurrent?r.color:'rgba(255,255,255,0.07)'};transition:all .2s;">
       <div style="display:flex;align-items:center;gap:12px;margin-bottom:${isActive?'12px':'0'};">
@@ -521,6 +541,106 @@ function showRangsModal(){
   });
 
   html+=`<div style="text-align:center;margin-top:8px;"><button onclick="this.closest('[style*=fixed]').remove()" style="padding:12px 28px;border-radius:12px;background:rgba(0,212,255,0.1);border:1px solid rgba(0,212,255,0.3);color:#00D4FF;font-family:'Orbitron',sans-serif;font-size:10px;font-weight:900;cursor:pointer;letter-spacing:2px;">FERMER</button></div>
+  </div></div>`;
+  document.body.insertAdjacentHTML('beforeend',html);
+}
+
+function showGuideXP(){
+  const html=`<div style="position:fixed;inset:0;z-index:9999;background:rgba(5,9,20,0.92);backdrop-filter:blur(12px);display:flex;align-items:center;justify-content:center;padding:20px;overflow-y:auto;" onclick="this.remove()">
+  <div style="background:#080e1f;border:1px solid rgba(30,100,255,0.2);border-radius:20px;padding:36px;max-width:640px;width:100%;max-height:90vh;overflow-y:auto;position:relative;" onclick="event.stopPropagation()">
+  <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,#1E64FF,#00D4FF,#FFD700,#9D4EDD);border-radius:20px 20px 0 0;"></div>
+
+  <div style="font-family:'Orbitron',sans-serif;font-size:16px;font-weight:900;color:#E8F4FF;margin-bottom:6px;letter-spacing:2px;">⚡ GUIDE XP</div>
+  <div style="font-size:12px;color:rgba(232,244,255,0.4);margin-bottom:28px;">Toutes les façons de gagner de l'XP et de progresser dans la DHA.</div>
+
+  <!-- QUETES QUOTIDIENNES -->
+  <div style="font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:3px;color:rgba(0,212,255,0.6);margin-bottom:14px;">QUÊTES QUOTIDIENNES</div>
+  ${[
+    {icon:'🔌',name:'Connexion quotidienne',desc:'Connecte-toi au dashboard chaque jour',xp:'+10 XP'},
+    {icon:'📚',name:'Finir un module',desc:'Complète un bloc de formation',xp:'+50 XP'},
+    {icon:'💬',name:'Ouvrir le Discord',desc:'Accède au Discord communauté',xp:'+5 XP'},
+    {icon:'🤝',name:'Parrainer un ami',desc:"Un ami s'inscrit avec ton lien aujourd'hui",xp:'+250 XP'},
+  ].map(a=>`
+  <div style="display:flex;align-items:center;gap:14px;padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.05);">
+    <div style="font-size:20px;width:32px;text-align:center;flex-shrink:0;">${a.icon}</div>
+    <div style="flex:1;">
+      <div style="font-size:13px;color:#E8F4FF;font-weight:600;">${a.name}</div>
+      <div style="font-size:11px;color:rgba(232,244,255,0.4);margin-top:2px;">${a.desc}</div>
+    </div>
+    <div style="font-family:'Orbitron',sans-serif;font-size:11px;font-weight:900;color:#FFD700;flex-shrink:0;">${a.xp}</div>
+  </div>`).join('')}
+
+  <!-- COMMUNAUTE -->
+  <div style="font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:3px;color:rgba(0,212,255,0.6);margin-top:24px;margin-bottom:14px;">COMMUNAUTÉ & RÉSEAU</div>
+  ${[
+    {icon:'✍️',name:'Message dans le groupe Discord',desc:'Chaque message envoyé dans le groupe',xp:'+10 XP'},
+    {icon:'📺',name:'Participer à un live',desc:'Être présent lors d\'un live organisé',xp:'+100 XP'},
+    {icon:'🏢',name:'Venir au QG',desc:'Te déplacer physiquement au QG',xp:'+250 XP'},
+    {icon:'🎉',name:'Venir à un événement',desc:'Participer à un événement organisé par la DHA',xp:'+300 XP'},
+  ].map(a=>`
+  <div style="display:flex;align-items:center;gap:14px;padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.05);">
+    <div style="font-size:20px;width:32px;text-align:center;flex-shrink:0;">${a.icon}</div>
+    <div style="flex:1;">
+      <div style="font-size:13px;color:#E8F4FF;font-weight:600;">${a.name}</div>
+      <div style="font-size:11px;color:rgba(232,244,255,0.4);margin-top:2px;">${a.desc}</div>
+    </div>
+    <div style="font-family:'Orbitron',sans-serif;font-size:11px;font-weight:900;color:#FFD700;flex-shrink:0;">${a.xp}</div>
+  </div>`).join('')}
+
+  <!-- FORMATION -->
+  <div style="font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:3px;color:rgba(0,212,255,0.6);margin-top:24px;margin-bottom:14px;">FORMATION & SUIVI</div>
+  ${[
+    {icon:'📞',name:'Appel avec un mentor',desc:'Chaque appel passé avec un mentor DHA',xp:'+75 XP'},
+    {icon:'🗓️',name:'Fidélité mensuelle',desc:'Bonus automatique chaque mois d\'abonnement actif',xp:'+100 XP'},
+  ].map(a=>`
+  <div style="display:flex;align-items:center;gap:14px;padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.05);">
+    <div style="font-size:20px;width:32px;text-align:center;flex-shrink:0;">${a.icon}</div>
+    <div style="flex:1;">
+      <div style="font-size:13px;color:#E8F4FF;font-weight:600;">${a.name}</div>
+      <div style="font-size:11px;color:rgba(232,244,255,0.4);margin-top:2px;">${a.desc}</div>
+    </div>
+    <div style="font-family:'Orbitron',sans-serif;font-size:11px;font-weight:900;color:#FFD700;flex-shrink:0;">${a.xp}</div>
+  </div>`).join('')}
+
+  <!-- TRADING -->
+  <div style="font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:3px;color:rgba(0,212,255,0.6);margin-top:24px;margin-bottom:14px;">TRADING</div>
+  <div style="display:flex;align-items:center;gap:14px;padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.05);">
+    <div style="font-size:20px;width:32px;text-align:center;flex-shrink:0;">💰</div>
+    <div style="flex:1;">
+      <div style="font-size:13px;color:#E8F4FF;font-weight:600;">Take Profit validé</div>
+      <div style="font-size:11px;color:rgba(232,244,255,0.4);margin-top:2px;">Chaque TP confirmé sur ton compte</div>
+    </div>
+    <div style="font-family:'Orbitron',sans-serif;font-size:11px;font-weight:900;color:#FFD700;flex-shrink:0;">+200 XP</div>
+  </div>
+
+  <!-- RANGS -->
+  <div style="font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:3px;color:rgba(0,212,255,0.6);margin-top:28px;margin-bottom:14px;">RANGS & BADGES</div>
+  ${[
+    {icon:'🎮',name:'NEW HUSTLER',xp:'0 XP',color:'rgba(200,200,200,0.8)',desc:'Rang de départ — bienvenue dans la DHA'},
+    {icon:'⚡',name:'HUSTLER',xp:'5 000 XP',color:'#1E64FF',desc:'Badge ⚡ exclusif sur ton profil'},
+    {icon:'🚀',name:'PRO HUSTLER',xp:'15 000 XP',color:'#00D4FF',desc:'Badge 🚀 sur ton profil'},
+    {icon:'👑',name:'AMBASSADEUR',xp:'22 000 XP',color:'#FFD700',desc:'Badge 👑 sur ton profil'},
+    {icon:'💎',name:'LEGEND',xp:'30 000 XP',color:'#9D4EDD',desc:'Badge 💎 légendaire sur ton profil'},
+  ].map(r=>{
+    const currentXP=member?member.xp||0:0;
+    const reqXP=parseInt(r.xp.replace(/\s/g,''));
+    const isReached=currentXP>=reqXP;
+    return `
+    <div style="display:flex;align-items:center;gap:14px;padding:14px 16px;border-radius:12px;margin-bottom:8px;background:${isReached?'rgba(30,100,255,0.08)':'rgba(255,255,255,0.02)'};border:1px solid ${isReached?r.color:'rgba(255,255,255,0.06)'};">
+      <div style="font-size:24px;flex-shrink:0;">${r.icon}</div>
+      <div style="flex:1;">
+        <div style="font-family:'Orbitron',sans-serif;font-size:12px;font-weight:900;color:${r.color};">${r.name}</div>
+        <div style="font-size:11px;color:rgba(232,244,255,0.4);margin-top:3px;">${r.desc}</div>
+      </div>
+      <div style="text-align:right;flex-shrink:0;">
+        <div style="font-family:'Orbitron',sans-serif;font-size:11px;font-weight:900;color:${isReached?'#00FF88':r.color};">${isReached?'✓ ATTEINT':r.xp}</div>
+      </div>
+    </div>`;
+  }).join('')}
+
+  <div style="text-align:center;margin-top:24px;">
+    <button onclick="this.closest('[style*=fixed]').remove()" style="padding:12px 28px;border-radius:12px;background:rgba(0,212,255,0.1);border:1px solid rgba(0,212,255,0.3);color:#00D4FF;font-family:'Orbitron',sans-serif;font-size:10px;font-weight:900;cursor:pointer;letter-spacing:2px;">FERMER</button>
+  </div>
   </div></div>`;
   document.body.insertAdjacentHTML('beforeend',html);
 }
