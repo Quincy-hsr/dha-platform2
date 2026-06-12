@@ -369,7 +369,7 @@ document.addEventListener('click',function(e){
   // + Ajouter au panier
   if(t.classList.contains('xadd')||t.closest('.xadd')){
     var btn=t.classList.contains('xadd')?t:t.closest('.xadd');
-    var mid=parseInt(btn.getAttribute('data-mid'));
+    var mid=btn.getAttribute('data-mid');
     var ak=btn.getAttribute('data-ak');
     var inp=document.getElementById('qi-'+mid+'-'+ak);
     var qty=parseInt(inp?inp.value:1)||1;if(qty<1)qty=1;
@@ -385,16 +385,16 @@ document.addEventListener('click',function(e){
 
   // Vider panier
   var resBtn=t.closest('[data-res]');
-  if(resBtn){var mid=parseInt(resBtn.getAttribute('data-res'));resetPan(mid);return;}
+  if(resBtn){var mid=resBtn.getAttribute('data-res');resetPan(mid);return;}
 
   // Valider panier
   var valBtn=t.closest('[data-val]');
-  if(valBtn){var mid=parseInt(valBtn.getAttribute('data-val'));confirmer(mid);return;}
+  if(valBtn){var mid=valBtn.getAttribute('data-val');confirmer(mid);return;}
 
   // Commissions +/-
   var caBtn=t.closest('[data-ca]');
   if(caBtn&&caBtn.hasAttribute('data-cf')){
-    var id=parseInt(caBtn.getAttribute('data-ca'));
+    var id=caBtn.getAttribute('data-ca');
     var field=caBtn.getAttribute('data-cf');
     var sign=parseInt(caBtn.getAttribute('data-cs'));
     var isE=(field==='commissions_encours');
@@ -417,7 +417,7 @@ document.addEventListener('click',function(e){
   // Tout verser
   var verBtn=t.closest('[data-ver]');
   if(verBtn){
-    var id=parseInt(verBtn.getAttribute('data-ver'));
+    var id=verBtn.getAttribute('data-ver');
     var m=getMember(id);if(!m)return;
     var enc=m.commissions_encours||0;
     if(enc===0){toast('Aucune commission','err');return;}
