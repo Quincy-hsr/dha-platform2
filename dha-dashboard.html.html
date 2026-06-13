@@ -114,7 +114,7 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
   <a class="nav-item" href="dha-formation.html"><span class="nav-icon">📈</span> Formation Trading</a>
   <a class="nav-item" href="dha-mindset.html"><span class="nav-icon">🧠</span> Mindset</a>
   <div class="sidebar-section">NETWORK</div>
-  <a class="nav-item" href="dha-squad.html" onclick="localStorage.setItem('dha_discord_opened',new Date().toDateString())"><span class="nav-icon">👥</span> Mon Squad</a>
+  <a class="nav-item" href="dha-squad.html" onclick="localStorage.setItem(getKey('discord_opened'),new Date().toDateString())"><span class="nav-icon">👥</span> Mon Squad</a>
   <a class="nav-item" href="dha-leaderboard.html"><span class="nav-icon">🏆</span> Leaderboard</a>
   <div class="sidebar-section">EARN</div>
   <a class="nav-item" href="dha-affiliation.html"><span class="nav-icon">💰</span> Affiliation</a>
@@ -182,7 +182,7 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
         </div>
         <div class="quete-item" id="q-chat">
           <div class="quete-check" id="check-chat" title="Se valide automatiquement quand tu ouvres le Squad Discord">○</div>
-          <div class="quete-info"><div class="quete-name">Envoyer un message dans le chat Discord</div><div class="quete-xp">+5 XP</div></div>
+          <div class="quete-info"><div class="quete-name">Ouvrir le Squad</div><div class="quete-xp">+5 XP</div></div>
         </div>
         <div class="quete-item" id="q-parrainage">
           <div class="quete-check" id="check-parrainage" title="Se valide automatiquement dès que tu as un filleul">○</div>
@@ -307,7 +307,7 @@ function logout(){if(confirm('Tu veux vraiment te déconnecter ?')){localStorage
  function checkQuetes(){
   const today=new Date().toDateString();
   ['bloc','chat','parrainage'].forEach(type=>{
-    if(localStorage.getItem('dha_quete_'+type+'_'+today)){
+    if(localStorage.getItem(getKey('quete_'+type+'_'+today))){
       const el=document.getElementById('check-'+type);
       if(el){el.classList.add('done');el.textContent='✓';el.closest('.quete-item').classList.add('done');}
     }
@@ -325,7 +325,7 @@ function logout(){if(confirm('Tu veux vraiment te déconnecter ?')){localStorage
 
 function checkQueteModule(){
   const today=new Date().toDateString();
-  if(localStorage.getItem('dha_quete_bloc_'+today)) return; // déjà validée
+  if(localStorage.getItem(getKey('quete_bloc_'+today))) return; // déjà validée
   if(!member) return;
   const pseudo=member.pseudo||'guest';
   const prefix='dha_'+pseudo+'_';
@@ -347,8 +347,8 @@ function checkQueteModule(){
 
 function checkQueteDiscord(){
   const today=new Date().toDateString();
-  if(localStorage.getItem('dha_quete_chat_'+today)) return;
-  const discordOpened=localStorage.getItem('dha_discord_opened');
+  if(localStorage.getItem(getKey('quete_chat_'+today))) return;
+  const discordOpened=localStorage.getItem(getKey('discord_opened'));
   if(discordOpened===today){
     completeQueteAuto('chat',5);
   }
@@ -356,7 +356,7 @@ function checkQueteDiscord(){
 
 async function checkQueteParrainage(){
   const today=new Date().toDateString();
-  if(localStorage.getItem('dha_quete_parrainage_'+today)) return;
+  if(localStorage.getItem(getKey('quete_parrainage_'+today))) return;
   if(!member) return;
   try{
     const todayISO=new Date().toISOString().split('T')[0];
@@ -372,7 +372,7 @@ async function checkQueteParrainage(){
 
 function completeQueteAuto(type,xp){
   const today=new Date().toDateString();
-  const key='dha_quete_'+type+'_'+today;
+  const key=getKey('quete_'+type+'_'+today);
   if(localStorage.getItem(key))return;
   localStorage.setItem(key,'true');
   const el=document.getElementById('check-'+type);
@@ -393,7 +393,7 @@ function notifyModuleDone(){
 // Appelé quand le membre clique sur le lien Discord
 function openDiscord(url){
   const today=new Date().toDateString();
-  localStorage.setItem('dha_discord_opened', today);
+  localStorage.setItem(getKey('discord_opened'), today);
   checkQueteDiscord();
   window.open(url,'_blank');
 }
@@ -576,7 +576,7 @@ function showGuideXP(){
   ${[
     {icon:'🔌',name:'Connexion quotidienne',desc:'Connecte-toi au dashboard chaque jour',xp:'+10 XP'},
     {icon:'📚',name:'Finir un module',desc:'Complète un bloc de formation',xp:'+50 XP'},
-    {icon:'💬',name:'Ouvrir le Discord',desc:'Accède au Discord communauté',xp:'+5 XP'},
+    {icon:'💬',name:'Ouvrir le Squad',desc:'Accède à la page Mon Squad',xp:'+5 XP'},
     {icon:'🤝',name:'Parrainer un ami',desc:"Un ami s'inscrit avec ton lien aujourd'hui",xp:'+250 XP'},
   ].map(a=>`
   <div style="display:flex;align-items:center;gap:14px;padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.05);">
