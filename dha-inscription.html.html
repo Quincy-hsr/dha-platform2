@@ -405,6 +405,95 @@ body {
   transform:translateY(-2px);box-shadow:0 8px 32px rgba(0,212,255,0.5);
 }
 
+/* MODALE ONBOARDING */
+.onboarding-overlay {
+  position:fixed;inset:0;z-index:99999;
+  background:rgba(5,9,20,0.92);backdrop-filter:blur(8px);
+  display:none;align-items:center;justify-content:center;padding:20px;
+}
+.onboarding-overlay.active { display:flex; }
+.onboarding-box {
+  background:#080e1f;border:1px solid rgba(0,212,255,0.35);
+  border-radius:20px;width:100%;max-width:440px;
+  box-shadow:0 8px 60px rgba(0,212,255,0.15);
+  animation:fadeup .35s ease;overflow:hidden;
+}
+.onboarding-step { display:none; }
+.onboarding-step.active { display:block; }
+
+/* Step 1 — Réserver l'appel */
+.onboarding-step-1 {
+  padding:36px 28px;text-align:center;
+}
+.onboarding-icon {
+  width:60px;height:60px;border-radius:50%;margin:0 auto 20px;
+  background:linear-gradient(135deg,rgba(30,100,255,0.2),rgba(0,212,255,0.1));
+  border:1px solid rgba(0,212,255,0.3);
+  display:flex;align-items:center;justify-content:center;font-size:26px;
+}
+.onboarding-title {
+  font-family:'Orbitron',sans-serif;font-size:15px;font-weight:900;
+  color:#E8F4FF;letter-spacing:1px;margin-bottom:8px;
+}
+.onboarding-sub {
+  font-size:13px;color:rgba(232,244,255,0.5);line-height:1.7;margin-bottom:6px;
+}
+.onboarding-warning {
+  font-size:13px;color:var(--cyan);font-weight:600;margin-bottom:24px;
+}
+.onboarding-btn-primary {
+  display:block;width:100%;padding:15px;border-radius:12px;
+  background:linear-gradient(135deg,var(--blue),var(--cyan));
+  color:#000;font-family:'Orbitron',sans-serif;font-size:11px;
+  font-weight:900;letter-spacing:2px;border:none;cursor:pointer;
+  box-shadow:0 6px 24px rgba(0,212,255,0.35);transition:all .2s;
+  text-decoration:none;text-align:center;margin-bottom:12px;
+}
+.onboarding-btn-primary:hover { transform:translateY(-2px); }
+.onboarding-btn-skip {
+  background:none;border:none;font-size:11px;
+  color:rgba(232,244,255,0.2);cursor:pointer;
+  font-family:'Exo 2',sans-serif;
+}
+.onboarding-btn-skip:hover { color:rgba(232,244,255,0.4); }
+
+/* Step 2 — Choix après réservation */
+.onboarding-step-2 { padding:28px; }
+.onboarding-step-2 .onboarding-title { text-align:center;margin-bottom:6px; }
+.onboarding-step-2 .onboarding-sub { text-align:center;margin-bottom:20px; }
+
+.onboarding-card-recommended {
+  border-radius:14px;padding:18px;margin-bottom:12px;
+  background:rgba(0,212,255,0.06);
+  border:1.5px solid rgba(0,212,255,0.4);
+}
+.onboarding-card-badge {
+  display:inline-flex;align-items:center;gap:6px;
+  font-family:'Orbitron',sans-serif;font-size:8px;font-weight:900;
+  letter-spacing:1px;color:var(--cyan);margin-bottom:10px;
+}
+.onboarding-card-badge::before { content:'★';font-size:10px; }
+.onboarding-card-text {
+  font-size:12px;color:rgba(232,244,255,0.5);line-height:1.65;margin-bottom:14px;
+}
+.onboarding-card-text strong { color:#E8F4FF; }
+
+.onboarding-card-secondary {
+  border-radius:14px;padding:18px;
+  border:1px solid rgba(255,255,255,0.08);
+  background:rgba(255,255,255,0.02);
+}
+.onboarding-card-secondary .onboarding-card-text { margin-bottom:12px; }
+
+.onboarding-btn-secondary {
+  display:block;width:100%;padding:12px;border-radius:10px;
+  background:transparent;border:1px solid rgba(255,255,255,0.12);
+  color:rgba(232,244,255,0.4);font-family:'Orbitron',sans-serif;
+  font-size:10px;font-weight:900;letter-spacing:1px;cursor:pointer;
+  transition:all .2s;text-decoration:none;text-align:center;
+}
+.onboarding-btn-secondary:hover { border-color:rgba(255,255,255,0.25);color:rgba(232,244,255,0.6); }
+
 </style>
 </head>
 <body>
@@ -591,7 +680,6 @@ body {
         Ton compte a été créé avec succès.<br/>
         Prépare-toi — l'aventure commence maintenant.
       </div>
-      <a href="dha-dashboard.html" class="btn-dashboard">▶ ACCÉDER AU DASHBOARD</a>
     </div>
 
   </div>
@@ -901,6 +989,8 @@ emailjs.send('service_4wng58y', 'template_5zg1ys4', {
         'Bienvenue <strong style="color:var(--cyan)">' + userData.prenom + '</strong> ! 🔥<br/>' +
         'Classe choisie : <strong style="color:var(--gold)">' + classeNames[selectedClasse] + '</strong><br/>' +
         'Tu as gagné <strong style="color:var(--green)">+10 XP</strong> pour ta connexion. L\'aventure commence maintenant.';
+
+      setTimeout(() => { showOnboardingModal(); }, 800);
     }, 400);
 
   } catch(err) {
@@ -954,6 +1044,15 @@ function validerReglement() {
   goStep3();
 }
 
+function showOnboardingModal() {
+  document.getElementById('onboarding-overlay').classList.add('active');
+}
+
+function showOnboardingStep2() {
+  document.getElementById('onboarding-step-1').classList.remove('active');
+  document.getElementById('onboarding-step-2').classList.add('active');
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   const overlay = document.getElementById('reglement-overlay');
   if(overlay) {
@@ -964,6 +1063,52 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 </script>
+
+<!-- MODALE ONBOARDING -->
+<div class="onboarding-overlay" id="onboarding-overlay">
+  <div class="onboarding-box">
+
+    <!-- STEP 1 — Réserver l'appel -->
+    <div class="onboarding-step active" id="onboarding-step-1">
+      <div class="onboarding-step-1">
+        <div class="onboarding-icon">📞</div>
+        <div class="onboarding-title">ÉTAPE OBLIGATOIRE</div>
+        <div class="onboarding-sub">Tu dois réserver ton appel d'initiation avec Quincy avant de commencer les modules. Sans cet appel, tu risques de passer à côté de l'essentiel.</div>
+        <div class="onboarding-warning">Ça prend 15 minutes et ça change tout. 🔥</div>
+        <div style="background:rgba(255,215,0,0.06);border:1px solid rgba(255,215,0,0.25);border-radius:10px;padding:10px 14px;margin-bottom:18px;font-size:12px;color:rgba(255,215,0,0.85);line-height:1.6;">
+          ⚠️ Sur Calendly, sélectionne bien le type <strong style="color:var(--gold);">"Appel d'initiation (nouveaux membres)"</strong>
+        </div>
+        <a href="https://calendly.com/quincy-massol/appel-pour-huslter" target="_blank" class="onboarding-btn-primary" onclick="showOnboardingStep2()">📅 RÉSERVER MON APPEL D'INITIATION</a>
+        <button class="onboarding-btn-skip" onclick="showOnboardingStep2()">Passer pour l'instant</button>
+      </div>
+    </div>
+
+    <!-- STEP 2 — Choix après réservation -->
+    <div class="onboarding-step" id="onboarding-step-2">
+      <div class="onboarding-step-2">
+        <div class="onboarding-icon" style="margin:0 auto 16px;">✅</div>
+        <div class="onboarding-title">ET MAINTENANT ?</div>
+        <div class="onboarding-sub">En attendant ton appel, que veux-tu faire ?</div>
+
+        <!-- Option recommandée -->
+        <div class="onboarding-card-recommended">
+          <div class="onboarding-card-badge">FORTEMENT RECOMMANDÉ</div>
+          <div class="onboarding-card-text">
+            Regarde le fichier <strong>Prise de conscience</strong> avant ton appel. Les vidéos qu'il contient ont changé la vie de millions de personnes. Prends-les au sérieux — ce que tu vas apprendre ici commence dans ta tête.
+          </div>
+          <a href="https://gentle-cart-f82.notion.site/Prise-de-conscience-03ea3cd27f0d4cfd9b3b06e1674ecf4b" target="_blank" class="onboarding-btn-primary" style="margin-bottom:0;">▶ ACCÉDER À LA PRISE DE CONSCIENCE</a>
+        </div>
+
+        <!-- Option secondaire -->
+        <div class="onboarding-card-secondary">
+          <div class="onboarding-card-text">Accéder à la plateforme maintenant — mais sans ton appel d'initiation, les modules n'auront pas encore de sens.</div>
+          <a href="dha-dashboard.html" class="onboarding-btn-secondary">ACCÉDER AU DASHBOARD →</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
 
 <!-- MODALE RÈGLEMENT -->
 <div class="reglement-overlay" id="reglement-overlay">
