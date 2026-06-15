@@ -182,7 +182,10 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
       <div class="xp-bar-wrap">
         <div class="xp-bar-header"><span>PROGRESSION VERS LE PROCHAIN LEVEL</span><span id="xp-next">0 / 500 XP</span></div>
         <div class="xp-bar"><div class="xp-fill" id="xp-fill" style="width:0%"></div></div>
-        <div style="text-align:right;margin-top:8px;"><a href="#" onclick="showRangsModal();return false;" style="font-family:'Orbitron',sans-serif;font-size:8px;letter-spacing:2px;color:var(--cyan);text-decoration:none;">VOIR TOUS LES RANGS →</a></div>
+        <div style="display:flex;justify-content:space-between;margin-top:8px;">
+          <a href="#" onclick="showHistoriqueXP();return false;" style="font-family:'Orbitron',sans-serif;font-size:8px;letter-spacing:2px;color:var(--gold);text-decoration:none;opacity:0.7;">📋 HISTORIQUE XP</a>
+          <a href="#" onclick="showRangsModal();return false;" style="font-family:'Orbitron',sans-serif;font-size:8px;letter-spacing:2px;color:var(--cyan);text-decoration:none;">VOIR TOUS LES RANGS →</a>
+        </div>
       </div>
     </div>
 
@@ -394,6 +397,13 @@ function completeQueteAuto(type,xp){
   localStorage.setItem(key,'true');
   const el=document.getElementById('check-'+type);
   if(el){el.classList.add('done');el.textContent='✓';el.closest('.quete-item').classList.add('done');}
+  const raisonsQuetes={
+    'connexion':'🔌 Connexion quotidienne',
+    'bloc':'📚 Finir un module',
+    'chat':'💬 Ouvrir le Squad',
+    'parrainage':'🤝 Parrainer un ami'
+  };
+  logXPHistorique(xp, raisonsQuetes[type]||'Quête quotidienne');
   updateXP(xp);
 }
 
@@ -680,6 +690,56 @@ function showGuideXP(){
   document.body.insertAdjacentHTML('beforeend',html);
 }
 
+async function showHistoriqueXP(){
+  const pseudo=member?member.pseudo||'guest':'guest';
+  const modal=document.createElement('div');
+  modal.style.cssText='position:fixed;inset:0;z-index:9999;background:rgba(5,9,20,0.92);backdrop-filter:blur(12px);display:flex;align-items:center;justify-content:center;padding:20px;';
+  modal.innerHTML=`<div style="background:#080e1f;border:1px solid rgba(255,215,0,0.2);border-radius:20px;padding:32px;max-width:580px;width:100%;max-height:85vh;overflow-y:auto;position:relative;" onclick="event.stopPropagation()">
+    <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,#1E64FF,#FFD700,#9D4EDD);border-radius:20px 20px 0 0;"></div>
+    <div style="font-family:'Orbitron',sans-serif;font-size:15px;font-weight:900;color:#E8F4FF;margin-bottom:4px;letter-spacing:2px;">📋 HISTORIQUE XP</div>
+    <div style="font-size:12px;color:rgba(232,244,255,0.4);margin-bottom:20px;">Tous tes gains d'XP</div>
+    <div id="histo-list" style="font-size:13px;color:rgba(232,244,255,0.6);">Chargement...</div>
+    <div style="text-align:center;margin-top:20px;"><button onclick="this.closest('[style*=fixed]').remove()" style="padding:10px 24px;border-radius:10px;background:rgba(255,215,0,0.1);border:1px solid rgba(255,215,0,0.3);color:#FFD700;font-family:'Orbitron',sans-serif;font-size:9px;font-weight:900;cursor:pointer;letter-spacing:2px;">FERMER</button></div>
+  </div>`;
+  modal.onclick=()=>modal.remove();
+  document.body.appendChild(modal);
+  try{
+    const res=await fetch(SUPABASE_URL+'/rest/v1/xp_historique?membre_pseudo=eq.'+encodeURIComponent(pseudo)+'&order=created_at.desc&limit=50',{
+      headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY}
+    });
+    const data=await res.json();
+    const list=document.getElementById('histo-list');
+    if(!data||data.length===0){list.innerHTML='<div style="text-align:center;padding:20px;color:rgba(232,244,255,0.3);">Aucun historique pour l\'instant.</div>';return;}
+    list.innerHTML=data.map(h=>{
+      const d=new Date(h.created_at);
+      const dateStr=d.toLocaleDateString('fr-FR',{day:'numeric',month:'short',year:'numeric'});
+      const timeStr=d.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});
+      return `<div style="display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.05);">
+        <div style="flex-shrink:0;font-family:'Orbitron',sans-serif;font-size:14px;font-weight:900;color:#FFD700;min-width:64px;text-align:right;">+${h.xp_gagne} XP</div>
+        <div style="flex:1;">
+          <div style="font-size:12px;color:#E8F4FF;line-height:1.4;">${h.raison}</div>
+          <div style="font-size:10px;color:rgba(232,244,255,0.3);margin-top:2px;">${dateStr} · ${timeStr}</div>
+        </div>
+      </div>`;
+    }).join('');
+  }catch(e){
+    const list=document.getElementById('histo-list');
+    if(list) list.innerHTML='<div style="color:#FF4466;text-align:center;">Erreur de chargement.</div>';
+  }
+}
+
+async function logXPHistorique(xp, raison){
+  if(!member) return;
+  const pseudo=member.pseudo||'guest';
+  try{
+    await fetch(SUPABASE_URL+'/rest/v1/xp_historique',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY},
+      body:JSON.stringify({membre_pseudo:pseudo,xp_gagne:xp,raison:raison})
+    });
+  }catch(e){console.log('Historique log error:',e);}
+}
+
 async function init(){
   const stored=localStorage.getItem('dha_member');
   if(!stored){window.location.href='dha-connexion.html';return;}
@@ -710,7 +770,10 @@ async function init(){
   const today=new Date().toDateString();
   if(lastLogin!==today){
     localStorage.setItem('dha_last_login',today);
-    setTimeout(()=>updateXP(10),1000);
+    setTimeout(()=>{
+      logXPHistorique(10,'🔌 Connexion quotidienne');
+      updateXP(10);
+    },1000);
   }
 }
 
