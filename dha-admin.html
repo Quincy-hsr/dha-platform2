@@ -516,10 +516,29 @@ function confirmer(id){
   document.getElementById('conf').style.display='flex';
   confCb=function(){
     var nv=xa+total;
+    var pseudo=m.pseudo||m.prenom||'?';
+    // Construire le détail des actions pour l'historique
+    var lignes=[];
+    for(var k in p){
+      if(p[k]>0){
+        var a=getAction(k);if(!a)continue;
+        var mt=a.x*p[k];
+        for(var n=0;n<p[k];n++) lignes.push(a.i+' '+a.l+' (+'+a.x+' XP)');
+      }
+    }
+    var raison=lignes.join(' · ');
     patch(id,{xp:nv},function(){
       var m2=getMember(id);if(m2)m2.xp=nv;
       document.getElementById('bxp-'+id).textContent=nv.toLocaleString()+' XP';
       stats(members);resetPan(id);
+      // Insert dans xp_historique
+      fetch(SUPA+'/rest/v1/xp_historique',{
+        method:'POST',
+        headers:H,
+        body:JSON.stringify({membre_pseudo:pseudo,xp_gagne:total,raison:raison})
+      }).then(function(r){
+        if(!r.ok) r.text().then(function(t){console.error('Historique error:',t);});
+      }).catch(function(e){console.error('Historique error:',e);});
       toast('+'+total+' XP appliqués ✓','ok');
     });
   };
