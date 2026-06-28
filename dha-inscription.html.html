@@ -863,11 +863,12 @@ async function goStep3() {
       pays: userData.pays,
       ville: userData.ville,
       classe: classeChoisie,
+      password: userData.password,
       xp: 10,
       level: 1,
       rang: 'NEW HUSTLER',
       statut: 'membre',
-parraine_par: refParam
+      parraine_par: refParam
     };
 
     await supabaseInsert('membres', membre);
@@ -954,24 +955,30 @@ parraine_par: refParam
     }
     // ── FIN CALCUL COMMISSIONS ──────────────────────────────────
 
-   // EmailJS — Bienvenue membre
-emailjs.send('service_4wng58y', 'template_klrot5u', {
-  prenom: userData.prenom,
-  nom: userData.nom,
-  pseudo: userData.pseudo,
-  email: userData.email
-});
-// EmailJS — Notification CEO
-emailjs.send('service_4wng58y', 'template_5zg1ys4', {
-  prenom: userData.prenom,
-  nom: userData.nom,
-  pseudo: userData.pseudo,
-  email: userData.email,
-  telephone: userData.telephone || '',
-  pays: userData.pays || '',
-  parrain: refParam || 'Aucun',
-  pack: 'Medium'
-});
+    // Brevo — ajout contact liste
+    addToBrevo(userData.prenom, userData.nom, userData.email);
+
+    // EmailJS — isolé dans son propre try/catch pour ne pas bloquer l'inscription
+    try {
+      emailjs.send('service_4wng58y', 'template_klrot5u', {
+        prenom: userData.prenom,
+        nom: userData.nom,
+        pseudo: userData.pseudo,
+        email: userData.email
+      });
+      emailjs.send('service_4wng58y', 'template_5zg1ys4', {
+        prenom: userData.prenom,
+        nom: userData.nom,
+        pseudo: userData.pseudo,
+        email: userData.email,
+        telephone: userData.telephone || '',
+        pays: userData.pays || '',
+        parrain: refParam || 'Aucun',
+        pack: 'Medium'
+      });
+    } catch(emailErr) {
+      console.log('EmailJS error (non-bloquant):', emailErr);
+    }
 
     localStorage.setItem('dha_member', JSON.stringify(membre));
 
