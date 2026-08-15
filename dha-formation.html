@@ -139,7 +139,7 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
           <div class="module-tag">MODULE 01 · INTRODUCTION</div>
           <div class="module-title">Introduction au Trading</div>
           <div class="module-desc">Les bases du trading, comment gagner, le stop loss.</div>
-          <div class="module-meta"><div class="module-meta-item">📚 1 Bloc</div><div class="module-meta-item">⚡ 175 XP</div><div class="module-meta-item">⏱️ 15 min</div></div>
+          <div class="module-meta"><div class="module-meta-item">📚 1 Bloc</div><div class="module-meta-item">⚡ 150 XP</div><div class="module-meta-item">⏱️ 15 min</div></div>
         </div>
         <div class="module-right"><div class="module-badge available" id="badge-m1">▶ COMMENCER</div></div>
       </div>
@@ -152,7 +152,7 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
           <div class="module-tag">MODULE 02 · GRAPHIQUES</div>
           <div class="module-title">Les bougies japonaises</div>
           <div class="module-desc">Lire une bougie, types de traders, bougies d'indécision.</div>
-          <div class="module-meta"><div class="module-meta-item">📚 1 Bloc</div><div class="module-meta-item">⚡ 175 XP</div><div class="module-meta-item">⏱️ 15 min</div></div>
+          <div class="module-meta"><div class="module-meta-item">📚 1 Bloc</div><div class="module-meta-item">⚡ 150 XP</div><div class="module-meta-item">⏱️ 15 min</div></div>
         </div>
         <div class="module-right"><div class="module-badge available" id="badge-m2">▶ COMMENCER</div></div>
       </div>
@@ -165,7 +165,7 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
           <div class="module-tag">MODULE 03 · OUTILS</div>
           <div class="module-title">Outils de trading</div>
           <div class="module-desc">MetaTrader, TradingView — maîtrise tes outils.</div>
-          <div class="module-meta"><div class="module-meta-item">📚 2 Blocs</div><div class="module-meta-item">⚡ 175 XP</div><div class="module-meta-item">⏱️ 20 min</div></div>
+          <div class="module-meta"><div class="module-meta-item">📚 2 Blocs</div><div class="module-meta-item">⚡ 150 XP</div><div class="module-meta-item">⏱️ 20 min</div></div>
         </div>
         <div class="module-right"><div class="module-badge available" id="badge-m3">▶ COMMENCER</div></div>
       </div>
@@ -178,7 +178,7 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
           <div class="module-tag">MODULE 04 · ANALYSE</div>
           <div class="module-title">Les tendances</div>
           <div class="module-desc">High, Low, direction du marché — lire la tendance à l'œil nu.</div>
-          <div class="module-meta"><div class="module-meta-item">📚 1 Bloc</div><div class="module-meta-item">⚡ 175 XP</div><div class="module-meta-item">⏱️ 15 min</div></div>
+          <div class="module-meta"><div class="module-meta-item">📚 1 Bloc</div><div class="module-meta-item">⚡ 150 XP</div><div class="module-meta-item">⏱️ 15 min</div></div>
         </div>
         <div class="module-right"><div class="module-badge available" id="badge-m4">▶ COMMENCER</div></div>
       </div>
@@ -191,7 +191,7 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
           <div class="module-tag">MODULE 05 · STRUCTURE</div>
           <div class="module-title">BOS & CHOCH</div>
           <div class="module-desc">Break of Structure et Change of Character — continuation et retournement.</div>
-          <div class="module-meta"><div class="module-meta-item">📚 1 Bloc</div><div class="module-meta-item">⚡ 175 XP</div><div class="module-meta-item">⏱️ 20 min</div></div>
+          <div class="module-meta"><div class="module-meta-item">📚 1 Bloc</div><div class="module-meta-item">⚡ 150 XP</div><div class="module-meta-item">⏱️ 20 min</div></div>
         </div>
         <div class="module-right"><div class="module-badge available" id="badge-m5">▶ COMMENCER</div></div>
       </div>
@@ -353,19 +353,26 @@ function showLockedModule(n){
   document.getElementById('locked-modal').style.display='flex';
 }
 
-function updateFormationStats(){
+async function updateFormationStats(){
   const pseudo=member?member.pseudo||'guest':'guest';
-  const prefix='dha_'+pseudo+'_';
-  const keys=[prefix+'bloc_m1_done',prefix+'bloc_m2_b1_done',prefix+'bloc_m3_done',prefix+'bloc_m4_done',prefix+'bloc_m5_done',prefix+'bloc_m6_done',prefix+'bloc_m7_done',prefix+'bloc_m8_done',prefix+'bloc_m9_done',prefix+'bloc_m10_done',prefix+'bloc_m11_done',prefix+'bloc_m12_done',prefix+'bloc_m13_done',prefix+'bloc_m14_done',prefix+'bloc_m15_done'];
-  const completed=keys.filter(k=>localStorage.getItem(k)).length;
+  const actionKeys=['bloc_m1','bloc_m2_b1','bloc_m3','bloc_m4','bloc_m5'];
+  let completedSet=new Set();
+  try{
+    const res=await fetch(SUPABASE_URL+'/rest/v1/xp_historique?membre_pseudo=eq.'+encodeURIComponent(pseudo)+'&action_key=in.('+actionKeys.join(',')+')&select=action_key',{
+      headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY}
+    });
+    const data=await res.json();
+    (data||[]).forEach(r=>completedSet.add(r.action_key));
+  }catch(e){}
+  const completed=completedSet.size;
   const pct=Math.round((completed/15)*100);
   document.getElementById('stat-modules').textContent=completed+'/15';
   document.getElementById('stat-pct').textContent=pct+'%';
   document.getElementById('progress-fill').style.width=pct+'%';
   document.getElementById('progress-text').textContent=pct+'%';
-  const moduleKeys={m1:prefix+'bloc_m1_done',m2:prefix+'bloc_m2_b1_done',m3:prefix+'bloc_m3_done',m4:prefix+'bloc_m4_done',m5:prefix+'bloc_m5_done'};
+  const moduleKeys={m1:'bloc_m1',m2:'bloc_m2_b1',m3:'bloc_m3',m4:'bloc_m4',m5:'bloc_m5'};
   Object.keys(moduleKeys).forEach(mod=>{
-    if(localStorage.getItem(moduleKeys[mod])){
+    if(completedSet.has(moduleKeys[mod])){
       const num=document.getElementById('num-'+mod);
       const badge=document.getElementById('badge-'+mod);
       if(num){num.textContent='✓';num.className='module-num completed';}
@@ -389,7 +396,7 @@ async function init(){
     }
   }catch(e){}
   document.getElementById('topbar-xp').textContent=(member.xp||0)+' XP';
-  updateFormationStats();
+  await updateFormationStats();
 }
 
 init();
