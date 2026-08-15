@@ -137,7 +137,7 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
     <div class="module-desc">Avant de placer ton premier trade tu dois comprendre comment ça marche. Dans ce module on voit les bases — comment gagner de l'argent en trading, ce qu'est un stop loss et pourquoi les pertes font partie du jeu.</div>
     <div class="module-meta">
       <div class="module-meta-item">📚 1 Bloc</div>
-      <div class="module-meta-item">⚡ Jusqu'à 175 XP</div>
+      <div class="module-meta-item">⚡ Jusqu'à 150 XP</div>
       <div class="module-meta-item">⏱️ 15 min</div>
     </div>
   </div>
@@ -415,6 +415,43 @@ const SUPABASE_URL='https://kdetwppxsfoagyndrlzr.supabase.co';
 const SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtkZXR3cHB4c2ZvYWd5bmRybHpyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzcyMzM3NjQsImV4cCI6MjA5MjgwOTc2NH0.OodaFQKEHcncDYdO6uM121NAUbyxD4UxpptSjzzZOi0';
 const FORMSPREE='https://formspree.io/f/mjgjrojb';
   function getKey(k){const m=JSON.parse(localStorage.getItem('dha_member')||'{}');return 'dha_'+(m.pseudo||'guest')+'_'+k;}
+let completedActions=new Set();
+function todayISO(){return new Date().toISOString().split('T')[0];}
+async function loadCompletedActions(pseudo,keys){
+  try{
+    const res=await fetch(SUPABASE_URL+'/rest/v1/xp_historique?membre_pseudo=eq.'+encodeURIComponent(pseudo)+'&action_key=in.('+keys.join(',')+')&select=action_key',{
+      headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY}
+    });
+    const data=await res.json();
+    (data||[]).forEach(r=>completedActions.add(r.action_key));
+  }catch(e){}
+}
+async function awardXP(actionKey,amount,raison){
+  if(!member)return false;
+  if(completedActions.has(actionKey))return false;
+  completedActions.add(actionKey);
+  member.xp=(member.xp||0)+amount;
+  member.xp_semaine=(member.xp_semaine||0)+amount;
+  localStorage.setItem('dha_member',JSON.stringify(member));
+  document.getElementById('topbar-xp').textContent=member.xp+' XP';
+  const flash=document.createElement('div');
+  flash.textContent='+'+amount+' XP ⚡';
+  flash.style.cssText='position:fixed;top:40%;left:60%;transform:translate(-50%,-50%);font-family:Orbitron,sans-serif;font-size:36px;font-weight:900;color:#FFD700;text-shadow:0 0 30px rgba(255,215,0,0.8);z-index:9999;pointer-events:none;animation:xp-pop .9s ease forwards;';
+  document.body.appendChild(flash);setTimeout(()=>flash.remove(),900);
+  try{
+    await fetch(SUPABASE_URL+'/rest/v1/membres?email=eq.'+encodeURIComponent(member.email),{
+      method:'PATCH',
+      headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY},
+      body:JSON.stringify({xp:member.xp,xp_semaine:member.xp_semaine})
+    });
+    await fetch(SUPABASE_URL+'/rest/v1/xp_historique',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY},
+      body:JSON.stringify({membre_pseudo:member.pseudo||'guest',xp_gagne:amount,raison:raison,action_key:actionKey})
+    });
+  }catch(e){}
+  return true;
+}
 let member=null;
 let quizAnswers={q1:null,q2:null,q3:null,q4:null,q5:null};
 let quizDone=false;
@@ -437,12 +474,9 @@ function selectOption(el,qId,letter){
 }
 
 function submitQuiz(){
-  const quizKey=getKey('quiz_m1_done');
-  if(quizDone)return;
-  if(localStorage.getItem(quizKey)){alert('Tu as déjà fait ce quiz ! 💪');return;}
+  if(quizDone||completedActions.has('quiz_m1'))return;
   if(Object.values(quizAnswers).filter(v=>v===null).length>0){alert('Réponds à toutes les questions !');return;}
   quizDone=true;
-  localStorage.setItem(quizKey,'true');
   let score=0;
   Object.keys(quizAnswers).forEach(qId=>{
     const ans=quizAnswers[qId];const correct=correctAnswers[qId];
@@ -459,18 +493,15 @@ function submitQuiz(){
   document.getElementById('quiz-score').textContent=score+'/5';
   document.getElementById('quiz-text').textContent=score===5?'Parfait ! Tu as tout compris ! 🔥':score>=3?'Bon travail ! Relis les points manqués.':'Continue à apprendre — relis le bloc.';
   document.getElementById('quiz-xp-text').textContent='+'+xpEarned+' XP gagnés !';
-  if(xpEarned>0)addXP(xpEarned);
+  if(xpEarned>0)awardXP('quiz_m1',xpEarned,'🧠 Quiz Module 1 ('+score+'/5)');
 }
 
 function validateExercice(){
-  const exerciceKey=getKey('exercice_m1_done');
-  if(exerciceDone)return;
-  if(localStorage.getItem(exerciceKey)){alert('Tu as déjà validé cet exercice ! 💪');return;}
+  if(exerciceDone||completedActions.has('exercice_m1'))return;
   exerciceDone=true;
-  localStorage.setItem(exerciceKey,'true');
   document.getElementById('exercice-btn').disabled=true;
   document.getElementById('exercice-btn').textContent='✅ EXERCICE VALIDÉ !';
-  addXP(75);
+  awardXP('exercice_m1',75,'💪 Exercice pratique Module 1');
 }
 
 function sendQuestion(){
@@ -481,38 +512,13 @@ function sendQuestion(){
   document.getElementById('question-confirm').classList.add('show');
 }
 
-function completeBloc(){
-  const blocKey=getKey('bloc_m1_done');
-  if(localStorage.getItem(blocKey)){alert('Tu as déjà terminé ce bloc ! 💪');return;}
-  localStorage.setItem(blocKey,'true');
-  // Notifie le dashboard pour valider la quête automatiquement
-  const today=new Date().toDateString();
-  const pseudo=(JSON.parse(localStorage.getItem('dha_member')||'{}')).pseudo||'guest';
-  localStorage.setItem('dha_'+pseudo+'_last_module_done', today);
-  addXP(25);
+async function completeBloc(){
+  if(completedActions.has('bloc_m1')){alert('Tu as déjà terminé ce module ! 💪');return;}
   document.getElementById('complete-btn').textContent='✅ MODULE 1 TERMINÉ !';
   document.getElementById('complete-btn').disabled=true;
+  await awardXP('bloc_m1',25,'📚 Bloc terminé — Module 1');
+  await awardXP('quete_bloc_'+todayISO(),50,'📚 Finir un module (quête du jour)');
   setTimeout(()=>{window.location.href='dha-formation.html';},1500);
-}
-
-async function addXP(amount){
-  if(!member)return;
-  member.xp=(member.xp||0)+amount;
-  member.xp_semaine=(member.xp_semaine||0)+amount;
-  member.level=Math.floor(member.xp/500)+1;
-  localStorage.setItem('dha_member',JSON.stringify(member));
-  document.getElementById('topbar-xp').textContent=member.xp+' XP';
-  const flash=document.createElement('div');
-  flash.textContent='+'+amount+' XP ⚡';
-  flash.style.cssText='position:fixed;top:40%;left:60%;transform:translate(-50%,-50%);font-family:Orbitron,sans-serif;font-size:36px;font-weight:900;color:#FFD700;text-shadow:0 0 30px rgba(255,215,0,0.8);z-index:9999;pointer-events:none;animation:xp-pop .9s ease forwards;';
-  document.body.appendChild(flash);setTimeout(()=>flash.remove(),900);
-  try{
-    await fetch(SUPABASE_URL+'/rest/v1/membres?email=eq.'+encodeURIComponent(member.email),{
-      method:'PATCH',
-      headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY},
-      body:JSON.stringify({xp:member.xp,xp_semaine:member.xp_semaine,level:member.level})
-    });
-  }catch(e){}
 }
 
 async function init(){
@@ -523,21 +529,21 @@ async function init(){
   document.getElementById('topbar-xp').textContent=(member.xp||0)+' XP';
   if(member.avatar){document.getElementById('sb-avatar').innerHTML='<img src="'+member.avatar+'" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"/>';}
   try{
-    const res=await fetch(SUPABASE_URL+'/rest/v1/membres?email=eq.'+encodeURIComponent(member.email)+'&select=xp,level,rang,xp_semaine',{
+    const res=await fetch(SUPABASE_URL+'/rest/v1/membres?email=eq.'+encodeURIComponent(member.email)+'&select=xp,xp_semaine',{
       headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY}
     });
     const data=await res.json();
     if(data&&data.length>0){
       member.xp=data[0].xp||member.xp;
-      member.level=data[0].level||member.level;
       member.xp_semaine=data[0].xp_semaine||member.xp_semaine;
       localStorage.setItem('dha_member',JSON.stringify(member));
       document.getElementById('topbar-xp').textContent=member.xp+' XP';
     }
   }catch(e){}
-  if(localStorage.getItem(getKey('bloc_m1_done'))){document.getElementById('complete-btn').textContent='✅ DÉJÀ TERMINÉ';document.getElementById('complete-btn').disabled=true;}
-  if(localStorage.getItem(getKey('quiz_m1_done'))){document.getElementById('quiz-btn').textContent='✅ QUIZ DÉJÀ FAIT';document.getElementById('quiz-btn').disabled=true;}
-  if(localStorage.getItem(getKey('exercice_m1_done'))){document.getElementById('exercice-btn').textContent='✅ DÉJÀ VALIDÉ';document.getElementById('exercice-btn').disabled=true;}
+  await loadCompletedActions(member.pseudo||'guest',['bloc_m1','quiz_m1','exercice_m1']);
+  if(completedActions.has('bloc_m1')){document.getElementById('complete-btn').textContent='✅ DÉJÀ TERMINÉ';document.getElementById('complete-btn').disabled=true;}
+  if(completedActions.has('quiz_m1')){document.getElementById('quiz-btn').textContent='✅ QUIZ DÉJÀ FAIT';document.getElementById('quiz-btn').disabled=true;quizDone=true;}
+  if(completedActions.has('exercice_m1')){document.getElementById('exercice-btn').textContent='✅ DÉJÀ VALIDÉ';document.getElementById('exercice-btn').disabled=true;exerciceDone=true;}
 }
 
 init();
