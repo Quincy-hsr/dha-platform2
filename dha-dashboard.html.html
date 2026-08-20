@@ -445,12 +445,27 @@ function renderMember(){
   document.getElementById('module-classe-name').textContent='MODULE '+(classeNames[classe]||'TRADING');
   const now=new Date();
   document.getElementById('topbar-date').textContent=now.toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'}).toUpperCase();
+  updateFormationStat();
+}
+async function updateFormationStat(){
+  if(!member)return;
   const pseudo=member.pseudo||'guest';
-  const prefix='dha_'+pseudo+'_';
-  const keys=[prefix+'bloc_m1_done',prefix+'bloc_m2_b1_done',prefix+'bloc_m3_done',prefix+'bloc_m4_done',prefix+'bloc_m5_done',prefix+'bloc_m6_done',prefix+'bloc_m7_done',prefix+'bloc_m8_done',prefix+'bloc_m9_done',prefix+'bloc_m10_done',prefix+'bloc_m11_done',prefix+'bloc_m12_done',prefix+'bloc_m13_done',prefix+'bloc_m14_done',prefix+'bloc_m15_done'];
-  const completedMods=keys.filter(k=>localStorage.getItem(k)).length;
-  const formPct=Math.round((completedMods/15)*100);
-  document.getElementById('stat-formation').textContent=formPct+'%';
+  const actionKeys=['bloc_m1','bloc_m2_b1','bloc_m3','bloc_m4','bloc_m5','bloc_m6','bloc_m7','bloc_m8','bloc_m9','bloc_m10','bloc_m11','bloc_m12','bloc_m13','bloc_m14','bloc_m15'];
+  try{
+    const res=await fetch(SUPABASE_URL+'/rest/v1/xp_historique?membre_pseudo=eq.'+encodeURIComponent(pseudo)+'&action_key=in.('+actionKeys.join(',')+')&select=action_key',{
+      headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY}
+    });
+    if(!res.ok){
+      const errText=await res.text();
+      console.error('Formation stat: requete Supabase echouee',res.status,errText);
+      return;
+    }
+    const data=await res.json();
+    console.log('Formation stat: pseudo=',pseudo,'lignes trouvees=',data);
+    const completedMods=new Set((data||[]).map(r=>r.action_key)).size;
+    const formPct=Math.round((completedMods/15)*100);
+    document.getElementById('stat-formation').textContent=formPct+'%';
+  }catch(e){console.error('Formation stat: erreur reseau',e);}
 }
   function showAvatar(url){
   if(!url)return;
