@@ -74,39 +74,11 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
 .quiz-result-score{font-family:'Orbitron',sans-serif;font-size:40px;font-weight:900;color:var(--gold);}
 .quiz-result-xp{font-family:'Orbitron',sans-serif;font-size:14px;color:var(--green);margin-top:8px;}
 .exercice-section{background:rgba(0,212,255,0.05);border:1px solid rgba(0,212,255,0.2);border-radius:16px;padding:24px;margin-top:16px;}
-.exercice-title{font-family:'Orbitron',sans-serif;font-size:13px;font-weight:900;color:var(--cyan);letter-spacing:1px;margin-bottom:14px;display:flex;align-items:center;gap:10px;}
-.exercice-desc{font-size:13px;color:rgba(232,244,255,0.7);line-height:1.7;margin-bottom:16px;}
-.ex-chart{position:relative;height:230px;background:#0a0f1e;border-radius:14px;border:1px solid rgba(30,100,255,0.2);margin-bottom:14px;overflow:hidden;}
-.ex-cols{position:absolute;inset:0;display:flex;}
-.ex-col{position:relative;flex:1;height:100%;cursor:pointer;border-right:1px solid rgba(255,255,255,0.02);}
-.ex-col:last-child{border-right:none;}
-.ex-col:hover{background:rgba(0,212,255,0.06);}
-.ex-col.locked{cursor:default;}
-.ex-wick{position:absolute;left:50%;transform:translateX(-50%);width:3px;border-radius:2px;}
-.ex-body{position:absolute;left:50%;transform:translateX(-50%);width:60%;max-width:30px;border-radius:3px;}
-.ex-body.red{background:var(--red);}
-.ex-body.green{background:var(--green);}
-.ex-wick.red{background:var(--red);}
-.ex-wick.green{background:var(--green);}
-.ex-col.selected .ex-body{outline:2px solid var(--gold);outline-offset:2px;}
-.ex-col.correct-reveal .ex-body{outline:2px solid var(--green);outline-offset:2px;box-shadow:0 0 14px rgba(0,255,136,0.6);}
-.ex-hint{font-size:13px;padding:10px 14px;border-radius:10px;margin-bottom:12px;display:none;line-height:1.6;}
-.ex-hint.show{display:block;}
-.ex-hint.wrong{background:rgba(255,68,102,0.08);border:1px solid rgba(255,68,102,0.2);color:rgba(255,68,102,0.9);}
-.ex-hint.correct{background:rgba(0,255,136,0.08);border:1px solid rgba(0,255,136,0.2);color:rgba(0,255,136,0.9);}
-.qcm-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;}
-.qcm-card{background:#0a0f1e;border:2px solid rgba(30,100,255,0.15);border-radius:14px;padding:10px;cursor:pointer;transition:all .2s;}
-.qcm-card:hover{border-color:rgba(0,212,255,0.4);}
-.qcm-card.selected-correct{border-color:var(--green);box-shadow:0 0 14px rgba(0,255,136,0.4);}
-.qcm-card.selected-wrong{border-color:var(--red);box-shadow:0 0 14px rgba(255,68,102,0.3);}
-.qcm-label{text-align:center;font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:1px;color:var(--dim);margin-top:8px;}
-.zone-tray{display:flex;justify-content:center;margin-bottom:14px;}
-.zone-piece{width:70px;height:44px;border:2px dashed var(--gold);border-radius:8px;background:rgba(255,215,0,0.1);cursor:grab;display:flex;align-items:center;justify-content:center;font-family:'Orbitron',sans-serif;font-size:8px;letter-spacing:1px;color:var(--gold);text-align:center;user-select:none;transition:transform .15s;}
-.zone-piece.dragging{cursor:grabbing;opacity:0.8;}
-.zone-piece.placed{border-color:var(--green);background:rgba(0,255,136,0.1);color:var(--green);}
-.zone-piece.placed-wrong{border-color:var(--red);background:rgba(255,68,102,0.1);color:var(--red);}
-.exercice-validate{width:100%;padding:13px;border-radius:12px;background:linear-gradient(135deg,#006644,var(--green));color:#000;font-family:'Orbitron',sans-serif;font-size:11px;font-weight:900;letter-spacing:2px;border:none;cursor:not-allowed;transition:all .2s;opacity:0.4;}
-.exercice-validate.ready{cursor:pointer;opacity:1;}
+.exercice-title{font-family:'Orbitron',sans-serif;font-size:13px;font-weight:900;color:var(--cyan);letter-spacing:1px;margin-bottom:16px;}
+.exercice-step{display:flex;align-items:flex-start;gap:12px;padding:10px 14px;border-radius:10px;background:rgba(0,212,255,0.04);border:1px solid rgba(0,212,255,0.1);margin-bottom:8px;}
+.exercice-step-num{width:24px;height:24px;border-radius:6px;background:rgba(0,212,255,0.15);display:flex;align-items:center;justify-content:center;font-family:'Orbitron',sans-serif;font-size:10px;font-weight:900;color:var(--cyan);flex-shrink:0;}
+.exercice-step-text{font-size:13px;color:rgba(232,244,255,0.7);line-height:1.6;}
+.exercice-validate{width:100%;padding:13px;border-radius:12px;background:linear-gradient(135deg,#006644,var(--green));color:#000;font-family:'Orbitron',sans-serif;font-size:11px;font-weight:900;letter-spacing:2px;border:none;cursor:pointer;transition:all .2s;margin-top:12px;}
 .exercice-validate:disabled{opacity:0.5;cursor:not-allowed;}
 .question-box{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:24px;margin-top:16px;}
 .question-box-title{font-family:'Orbitron',sans-serif;font-size:12px;font-weight:900;color:var(--white);letter-spacing:1px;margin-bottom:8px;}
@@ -119,7 +91,7 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
 .complete-btn{width:100%;padding:16px;border-radius:14px;background:linear-gradient(135deg,var(--blue),var(--cyan));color:#000;font-family:'Orbitron',sans-serif;font-size:12px;font-weight:900;letter-spacing:2px;border:none;cursor:pointer;margin-top:24px;box-shadow:0 6px 24px rgba(0,212,255,0.3);}
 .complete-btn:disabled{opacity:0.5;cursor:not-allowed;}
 @keyframes xp-pop{0%{opacity:1;transform:translate(-50%,-50%) scale(0.8);}60%{opacity:1;transform:translate(-50%,-80%) scale(1.2);}100%{opacity:0;transform:translate(-50%,-120%) scale(0.9);}}
-@media(max-width:768px){.sidebar{display:none;}.main{margin-left:0;padding:16px;}.qcm-grid{grid-template-columns:1fr;}}
+@media(max-width:768px){.sidebar{display:none;}.main{margin-left:0;padding:16px;}}
 </style>
 </head>
 <body>
@@ -195,8 +167,9 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
         <rect x="155" y="168" width="22" height="20" fill="#FF4466" opacity="0.85"/><line x1="166" y1="158" x2="166" y2="198" stroke="#FF4466" stroke-width="2"/>
         <!-- bougie OB -->
         <rect x="210" y="178" width="26" height="30" fill="#FF4466" rx="2"/><line x1="223" y1="165" x2="223" y2="218" stroke="#FF4466" stroke-width="3"/>
-        <rect x="185" y="130" width="150" height="18" rx="4" fill="rgba(255,215,0,0.15)"/>
-        <text x="260" y="143" fill="var(--gold)" font-size="10" font-family="Orbitron" font-weight="bold" text-anchor="middle">ORDER BLOCK</text>
+        <rect x="138" y="222" width="170" height="18" rx="4" fill="rgba(255,215,0,0.15)"/>
+        <text x="223" y="235" fill="var(--gold)" font-size="10" font-family="Orbitron" font-weight="bold" text-anchor="middle">ORDER BLOCK</text>
+        <line x1="223" y1="218" x2="223" y2="222" stroke="var(--gold)" stroke-width="1.5"/>
         <!-- zone rectangle -->
         <rect x="185" y="178" width="420" height="30" fill="rgba(255,215,0,0.08)" stroke="rgba(255,215,0,0.35)" stroke-width="1.5" stroke-dasharray="5,4"/>
         <!-- mouvement impulsif -->
@@ -230,8 +203,9 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
         <rect x="100" y="80" width="22" height="18" fill="#00FF88" opacity="0.85"/><line x1="111" y1="70" x2="111" y2="108" stroke="#00FF88" stroke-width="2"/>
         <rect x="155" y="72" width="22" height="20" fill="#00FF88" opacity="0.85"/><line x1="166" y1="62" x2="166" y2="102" stroke="#00FF88" stroke-width="2"/>
         <rect x="210" y="52" width="26" height="30" fill="#00FF88" rx="2"/><line x1="223" y1="40" x2="223" y2="92" stroke="#00FF88" stroke-width="3"/>
-        <rect x="185" y="95" width="150" height="18" rx="4" fill="rgba(255,215,0,0.15)"/>
-        <text x="260" y="108" fill="var(--gold)" font-size="10" font-family="Orbitron" font-weight="bold" text-anchor="middle">ORDER BLOCK</text>
+        <rect x="175" y="16" width="100" height="18" rx="4" fill="rgba(255,215,0,0.15)"/>
+        <text x="225" y="29" fill="var(--gold)" font-size="10" font-family="Orbitron" font-weight="bold" text-anchor="middle">ORDER BLOCK</text>
+        <line x1="223" y1="34" x2="223" y2="40" stroke="var(--gold)" stroke-width="1.5"/>
         <rect x="185" y="52" width="420" height="30" fill="rgba(255,215,0,0.08)" stroke="rgba(255,215,0,0.35)" stroke-width="1.5" stroke-dasharray="5,4"/>
         <rect x="270" y="85" width="26" height="85" fill="#FF4466" rx="2"/><line x1="283" y1="80" x2="283" y2="180" stroke="#FF4466" stroke-width="3"/>
         <rect x="325" y="165" width="26" height="60" fill="#FF4466" rx="2"/><line x1="338" y1="160" x2="338" y2="235" stroke="#FF4466" stroke-width="3"/>
@@ -309,36 +283,25 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
         <div class="quiz-result" id="quiz-result"><div class="quiz-result-score" id="quiz-score">0/5</div><div style="font-size:14px;color:var(--dim);margin-top:8px;" id="quiz-text"></div><div class="quiz-result-xp" id="quiz-xp-text"></div></div>
       </div>
 
-      <!-- EXERCICE 1 : CLIC -->
+      <!-- EXERCICE -->
       <div class="exercice-section">
-        <div class="exercice-title"><span style="font-size:22px;">🖱️</span> EXERCICE 1 — CLIQUE SUR L'ORDER BLOCK — +25 XP</div>
-        <div class="exercice-desc">Un mouvement haussier fort se prépare. Clique sur la bougie qui représente l'Order Block Bullish.</div>
-        <div class="ex-hint" id="ex1-hint"></div>
-        <div class="ex-chart">
-          <div class="ex-cols" id="ex1-cols"></div>
-        </div>
-        <button class="exercice-validate" id="ex1-btn" disabled>✅ EXERCICE 1 VALIDÉ</button>
-      </div>
-
-      <!-- EXERCICE 2 : QCM VISUEL -->
-      <div class="exercice-section">
-        <div class="exercice-title"><span style="font-size:22px;">👁️</span> EXERCICE 2 — REPÈRE LE BON GRAPHIQUE — +25 XP</div>
-        <div class="exercice-desc">Un seul de ces 4 graphiques montre un Order Block valide (bougie marquée en jaune suivie d'un vrai mouvement impulsif). Clique dessus.</div>
-        <div class="ex-hint" id="ex2-hint"></div>
-        <div class="qcm-grid" id="ex2-grid"></div>
-        <button class="exercice-validate" id="ex2-btn" disabled>✅ EXERCICE 2 VALIDÉ</button>
-      </div>
-
-      <!-- EXERCICE 3 : DRAG & DROP -->
-      <div class="exercice-section">
-        <div class="exercice-title"><span style="font-size:22px;">✋</span> EXERCICE 3 — PLACE LA ZONE — +25 XP</div>
-        <div class="exercice-desc">Fais glisser la zone jaune ci-dessous et dépose-la sur la bonne bougie du graphique.</div>
-        <div class="ex-hint" id="ex3-hint"></div>
-        <div class="ex-chart">
-          <div class="ex-cols" id="ex3-cols"></div>
-        </div>
-        <div class="zone-tray"><div class="zone-piece" id="ex3-zone">ZONE<br/>OB</div></div>
-        <button class="exercice-validate" id="ex3-btn" disabled>✅ EXERCICE 3 VALIDÉ</button>
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;"><div style="font-size:22px;">💪</div><div class="exercice-title">EXERCICE PRATIQUE — +75 XP</div></div>
+        <div style="font-size:14px;color:rgba(232,244,255,0.75);line-height:1.8;margin-bottom:16px;">Ouvre TradingView et entraîne-toi à repérer des Order Blocks sur un vrai graphique.</div>
+        <div class="exercice-step"><div class="exercice-step-num">1</div><div class="exercice-step-text">Ouvre <strong>TradingView.com</strong> sur le graphique EUR/USD</div></div>
+        <div class="exercice-step"><div class="exercice-step-num">2</div><div class="exercice-step-text">Passe en timeframe <strong>H1</strong></div></div>
+        <div class="exercice-step"><div class="exercice-step-num">3</div><div class="exercice-step-text">Repère un <strong>mouvement impulsif fort</strong> — plusieurs bougies qui s'enchaînent dans le même sens</div></div>
+        <div class="exercice-step"><div class="exercice-step-num">4</div><div class="exercice-step-text">Identifie la <strong>dernière bougie de couleur opposée</strong> juste avant ce mouvement — c'est ton Order Block</div></div>
+        <div class="exercice-step"><div class="exercice-step-num">5</div><div class="exercice-step-text">Regarde si le prix est <strong>revenu dessus</strong> plus tard avant de repartir</div></div>
+        <a href="https://www.tradingview.com" target="_blank" style="
+          display:flex;align-items:center;justify-content:center;gap:10px;
+          width:100%;padding:13px;border-radius:12px;margin-bottom:10px;
+          background:rgba(0,212,255,0.08);border:1px solid rgba(0,212,255,0.3);
+          color:var(--cyan);font-family:'Orbitron',sans-serif;font-size:11px;
+          font-weight:900;letter-spacing:2px;text-decoration:none;transition:all .2s;
+        " onmouseover="this.style.background='rgba(0,212,255,0.15)'" onmouseout="this.style.background='rgba(0,212,255,0.08)'">
+          📊 OUVRIR TRADINGVIEW
+        </a>
+        <button class="exercice-validate" id="exercice-btn" onclick="validateExercice()">✅ J'AI FAIT L'EXERCICE — +75 XP</button>
       </div>
 
       <!-- QUESTION BOX -->
@@ -450,194 +413,13 @@ function submitQuiz(){
   if(xpEarned>0)awardXP('quiz_m7_b1',xpEarned,'🧠 Quiz Module 7 ('+score+'/5)');
 }
 
-/* ============ EXERCICE 1 : CLIC ============ */
-const ex1Candles=[
-  {red:1,bTop:110,bH:25,wTop:100,wH:45},
-  {red:0,bTop:100,bH:20,wTop:90,wH:40},
-  {red:1,bTop:115,bH:22,wTop:105,wH:42},
-  {red:0,bTop:105,bH:18,wTop:95,wH:38},
-  {red:1,bTop:120,bH:35,wTop:105,wH:65},
-  {red:0,bTop:55,bH:65,wTop:45,wH:85},
-  {red:0,bTop:20,bH:55,wTop:10,wH:75},
-  {red:0,bTop:5,bH:35,wTop:0,wH:45}
-];
-const ex1Correct=4;
-let ex1Done=false,ex1Attempts=0;
-function renderCandles(containerId,data,onClickFn){
-  const el=document.getElementById(containerId);
-  el.innerHTML='';
-  data.forEach((c,i)=>{
-    const col=document.createElement('div');
-    col.className='ex-col';col.dataset.i=i;
-    const color=c.red?'red':'green';
-    col.innerHTML='<div class="ex-wick '+color+'" style="top:'+c.wTop+'px;height:'+c.wH+'px;"></div><div class="ex-body '+color+'" style="top:'+c.bTop+'px;height:'+c.bH+'px;"></div>';
-    if(onClickFn)col.addEventListener('click',()=>onClickFn(i,col));
-    el.appendChild(col);
-  });
+let exerciceDone=false;
+function validateExercice(){
+  if(exerciceDone||completedActions.has('exercice_m7_b1'))return;
+  exerciceDone=true;
+  document.getElementById('exercice-btn').disabled=true;document.getElementById('exercice-btn').textContent='✅ EXERCICE VALIDÉ !';
+  awardXP('exercice_m7_b1',75,'💪 Exercice pratique Module 7');
 }
-renderCandles('ex1-cols',ex1Candles,function(i,col){
-  if(ex1Done)return;
-  if(i===ex1Correct){
-    ex1Done=true;
-    col.classList.add('correct-reveal');
-    document.querySelectorAll('#ex1-cols .ex-col').forEach(c=>c.classList.add('locked'));
-    const hint=document.getElementById('ex1-hint');hint.className='ex-hint show correct';hint.textContent='✅ Exact ! C\'est la dernière bougie rouge juste avant l\'explosion haussière.';
-    const btn=document.getElementById('ex1-btn');btn.disabled=false;btn.classList.add('ready');
-    btn.onclick=function(){if(completedActions.has('exercice1_m7_b1'))return;btn.disabled=true;btn.textContent='✅ EXERCICE 1 VALIDÉ !';awardXP('exercice1_m7_b1',25,'💪 Exercice 1 Module 7');};
-  }else{
-    ex1Attempts++;
-    const hint=document.getElementById('ex1-hint');hint.className='ex-hint show wrong';
-    hint.textContent='❌ Regarde juste avant le mouvement fort — quelle est la dernière bougie rouge avant que ça explose vers le haut ?';
-  }
-});
-
-/* ============ EXERCICE 2 : QCM VISUEL ============ */
-function miniChartSVG(kind){
-  // kind: 'correct' | 'no_impulse' | 'gradual' | 'wrong_candle'
-  const w=260,h=150;
-  let candles=[];
-  if(kind==='correct'){
-    candles=[{r:1,t:70,h:14},{r:1,t:75,h:12},{r:1,t:85,h:18,mark:1},{r:0,t:40,h:45},{r:0,t:10,h:30},{r:0,t:0,h:10}];
-  }else if(kind==='no_impulse'){
-    candles=[{r:1,t:70,h:14},{r:1,t:75,h:12},{r:1,t:85,h:18,mark:1},{r:0,t:78,h:10},{r:1,t:80,h:12},{r:0,t:76,h:14}];
-  }else if(kind==='gradual'){
-    candles=[{r:1,t:70,h:14},{r:1,t:75,h:12},{r:1,t:85,h:18,mark:1},{r:0,t:78,h:12},{r:0,t:70,h:12},{r:0,t:62,h:12}];
-  }else if(kind==='wrong_candle'){
-    candles=[{r:0,t:95,h:20},{r:0,t:60,h:35},{r:0,t:20,h:30,mark:1},{r:0,t:5,h:15},{r:1,t:8,h:10},{r:0,t:2,h:8}];
-  }
-  const gap=w/candles.length;
-  let svg='<svg viewBox="0 0 '+w+' '+h+'" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block;background:#0a0f1e;border-radius:8px;">';
-  candles.forEach((c,i)=>{
-    const x=gap*i+gap/2;
-    const color=c.r?'#FF4466':'#00FF88';
-    if(c.mark){svg+='<rect x="'+(x-16)+'" y="'+(c.t-4)+'" width="32" height="'+(c.h+8)+'" fill="none" stroke="#FFD700" stroke-width="2" stroke-dasharray="3,2" rx="4"/>';}
-    svg+='<rect x="'+(x-8)+'" y="'+c.t+'" width="16" height="'+c.h+'" fill="'+color+'" rx="2"/>';
-    svg+='<line x1="'+x+'" y1="'+(c.t-8)+'" x2="'+x+'" y2="'+(c.t+c.h+8)+'" stroke="'+color+'" stroke-width="2"/>';
-  });
-  svg+='</svg>';
-  return svg;
-}
-const ex2Options=[
-  {kind:'gradual',label:'GRAPHIQUE B',correct:false},
-  {kind:'correct',label:'GRAPHIQUE A',correct:true},
-  {kind:'wrong_candle',label:'GRAPHIQUE C',correct:false},
-  {kind:'no_impulse',label:'GRAPHIQUE D',correct:false}
-];
-let ex2Done=false;
-(function renderEx2(){
-  const grid=document.getElementById('ex2-grid');
-  ex2Options.forEach((opt,idx)=>{
-    const card=document.createElement('div');
-    card.className='qcm-card';
-    card.innerHTML=miniChartSVG(opt.kind)+'<div class="qcm-label">'+opt.label+'</div>';
-    card.addEventListener('click',()=>{
-      if(ex2Done)return;
-      if(opt.correct){
-        ex2Done=true;
-        card.classList.add('selected-correct');
-        const hint=document.getElementById('ex2-hint');hint.className='ex-hint show correct';hint.textContent='✅ Exact ! Bougie marquée suivie d\'un vrai mouvement impulsif net dans une direction.';
-        const btn=document.getElementById('ex2-btn');btn.disabled=false;btn.classList.add('ready');
-        btn.onclick=function(){if(completedActions.has('exercice2_m7_b1'))return;btn.disabled=true;btn.textContent='✅ EXERCICE 2 VALIDÉ !';awardXP('exercice2_m7_b1',25,'💪 Exercice 2 Module 7');};
-      }else{
-        card.classList.add('selected-wrong');
-        setTimeout(()=>card.classList.remove('selected-wrong'),700);
-        const hint=document.getElementById('ex2-hint');hint.className='ex-hint show wrong';hint.textContent='❌ Pas celui-là — regarde si le mouvement après la bougie marquée est vraiment impulsif et net.';
-      }
-    });
-    grid.appendChild(card);
-  });
-})();
-
-/* ============ EXERCICE 3 : DRAG & DROP ============ */
-const ex3Candles=[
-  {red:1,bTop:105,bH:24,wTop:95,wH:44},
-  {red:0,bTop:95,bH:20,wTop:85,wH:40},
-  {red:1,bTop:112,bH:22,wTop:102,wH:42},
-  {red:0,bTop:100,bH:18,wTop:90,wH:38},
-  {red:1,bTop:118,bH:34,wTop:103,wH:64},
-  {red:0,bTop:50,bH:68,wTop:40,wH:88},
-  {red:0,bTop:18,bH:52,wTop:8,wH:72},
-  {red:0,bTop:4,bH:32,wTop:0,wH:42}
-];
-const ex3Correct=4;
-let ex3Done=false;
-renderCandles('ex3-cols',ex3Candles,null);
-
-(function setupDrag(){
-  const zone=document.getElementById('ex3-zone');
-  const chart=document.getElementById('ex3-cols');
-  let dragging=false;
-  let startX=0,startY=0,origLeft=0,origTop=0;
-  let originalParent=zone.parentElement;
-  zone.style.position='relative';
-
-  function pointerDown(e){
-    if(ex3Done)return;
-    dragging=true;
-    zone.classList.add('dragging');
-    const rect=zone.getBoundingClientRect();
-    zone.style.position='fixed';
-    zone.style.left=rect.left+'px';
-    zone.style.top=rect.top+'px';
-    zone.style.zIndex=9999;
-    document.body.appendChild(zone);
-    const clientX=e.touches?e.touches[0].clientX:e.clientX;
-    const clientY=e.touches?e.touches[0].clientY:e.clientY;
-    startX=clientX-rect.left;startY=clientY-rect.top;
-    e.preventDefault();
-  }
-  function pointerMove(e){
-    if(!dragging)return;
-    const clientX=e.touches?e.touches[0].clientX:e.clientX;
-    const clientY=e.touches?e.touches[0].clientY:e.clientY;
-    zone.style.left=(clientX-startX)+'px';
-    zone.style.top=(clientY-startY)+'px';
-  }
-  function pointerUp(e){
-    if(!dragging)return;
-    dragging=false;
-    zone.classList.remove('dragging');
-    const zRect=zone.getBoundingClientRect();
-    const zCenterX=zRect.left+zRect.width/2;
-    const zCenterY=zRect.top+zRect.height/2;
-    const chartRect=chart.getBoundingClientRect();
-    const overChart=zCenterX>=chartRect.left&&zCenterX<=chartRect.right&&zCenterY>=chartRect.top&&zCenterY<=chartRect.bottom;
-    if(overChart){
-      const relX=zCenterX-chartRect.left;
-      const colWidth=chartRect.width/ex3Candles.length;
-      const idx=Math.min(ex3Candles.length-1,Math.max(0,Math.floor(relX/colWidth)));
-      if(idx===ex3Correct){
-        ex3Done=true;
-        zone.classList.add('placed');
-        zone.style.position='absolute';
-        zone.style.left=(idx*colWidth+colWidth/2-35)+'px';
-        zone.style.top='95px';
-        zone.style.zIndex=5;
-        chart.appendChild(zone);
-        const hint=document.getElementById('ex3-hint');hint.className='ex-hint show correct';hint.textContent='✅ Parfait ! Zone placée pile sur l\'Order Block.';
-        const btn=document.getElementById('ex3-btn');btn.disabled=false;btn.classList.add('ready');
-        btn.onclick=function(){if(completedActions.has('exercice3_m7_b1'))return;btn.disabled=true;btn.textContent='✅ EXERCICE 3 VALIDÉ !';awardXP('exercice3_m7_b1',25,'💪 Exercice 3 Module 7');};
-        return;
-      }else{
-        zone.classList.add('placed-wrong');
-        setTimeout(()=>zone.classList.remove('placed-wrong'),700);
-        const hint=document.getElementById('ex3-hint');hint.className='ex-hint show wrong';hint.textContent='❌ Pas la bonne bougie — cherche la dernière rouge juste avant le grand mouvement vert.';
-      }
-    }
-    resetZone();
-  }
-  function resetZone(){
-    zone.style.position='relative';
-    zone.style.left='';zone.style.top='';zone.style.zIndex='';
-    document.querySelector('.zone-tray').appendChild(zone);
-  }
-  zone.addEventListener('mousedown',pointerDown);
-  zone.addEventListener('touchstart',pointerDown,{passive:false});
-  document.addEventListener('mousemove',pointerMove);
-  document.addEventListener('touchmove',pointerMove,{passive:false});
-  document.addEventListener('mouseup',pointerUp);
-  document.addEventListener('touchend',pointerUp);
-})();
 
 function sendQuestion(){
   const q=document.getElementById('question-input').value.trim();
@@ -675,12 +457,10 @@ async function init(){
       document.getElementById('topbar-xp').textContent=member.xp+' XP';
     }
   }catch(e){}
-  await loadCompletedActions(member.pseudo||'guest',['bloc_m7_b1','quiz_m7_b1','exercice1_m7_b1','exercice2_m7_b1','exercice3_m7_b1']);
+  await loadCompletedActions(member.pseudo||'guest',['bloc_m7_b1','quiz_m7_b1','exercice_m7_b1']);
   if(completedActions.has('bloc_m7_b1')){document.getElementById('complete-btn').textContent='✅ DÉJÀ TERMINÉ';document.getElementById('complete-btn').disabled=true;}
   if(completedActions.has('quiz_m7_b1')){document.getElementById('quiz-btn').textContent='✅ QUIZ DÉJÀ FAIT';document.getElementById('quiz-btn').disabled=true;quizDone=true;}
-  if(completedActions.has('exercice1_m7_b1')){ex1Done=true;const btn=document.getElementById('ex1-btn');btn.disabled=true;btn.textContent='✅ DÉJÀ VALIDÉ';}
-  if(completedActions.has('exercice2_m7_b1')){ex2Done=true;const btn=document.getElementById('ex2-btn');btn.disabled=true;btn.textContent='✅ DÉJÀ VALIDÉ';}
-  if(completedActions.has('exercice3_m7_b1')){ex3Done=true;const btn=document.getElementById('ex3-btn');btn.disabled=true;btn.textContent='✅ DÉJÀ VALIDÉ';}
+  if(completedActions.has('exercice_m7_b1')){document.getElementById('exercice-btn').textContent='✅ DÉJÀ VALIDÉ';document.getElementById('exercice-btn').disabled=true;exerciceDone=true;}
 }
 
 init();
