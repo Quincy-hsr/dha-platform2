@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>DHA — Module 12 : Gestion d'un trade</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600;700&display=swap" rel="stylesheet"/>
+<style>
+:root{--bg:#050914;--card:#080e1f;--blue:#1E64FF;--cyan:#00D4FF;--gold:#FFD700;--green:#00FF88;--red:#FF4466;--purple:#9D4EDD;--white:#E8F4FF;--dim:rgba(232,244,255,0.5);--border:rgba(30,100,255,0.15);--sidebar-w:240px;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-height:100vh;display:flex;}
+.bg-grid{position:fixed;inset:0;z-index:0;background-image:linear-gradient(rgba(30,100,255,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(30,100,255,0.03) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;}
+.sidebar{position:fixed;left:0;top:0;bottom:0;width:var(--sidebar-w);background:rgba(8,14,31,0.97);border-right:1px solid var(--border);display:flex;flex-direction:column;z-index:100;padding:24px 0;}
+.sidebar-logo{padding:0 24px 24px;border-bottom:1px solid var(--border);margin-bottom:16px;}
+.sidebar-logo-text{font-family:'Orbitron',sans-serif;font-size:28px;font-weight:900;letter-spacing:4px;color:var(--white);text-shadow:0 0 20px rgba(30,100,255,0.6);}
+.sidebar-logo-sub{font-family:'Orbitron',sans-serif;font-size:6px;letter-spacing:3px;color:rgba(0,212,255,0.5);margin-top:2px;}
+.sidebar-section{padding:8px 24px 4px;font-family:'Orbitron',sans-serif;font-size:7px;letter-spacing:3px;color:rgba(255,255,255,0.2);margin-top:8px;}
+.nav-item{display:flex;align-items:center;gap:12px;padding:11px 24px;cursor:pointer;transition:all .2s;font-size:13px;color:var(--dim);text-decoration:none;}
+.nav-item:hover{background:rgba(30,100,255,0.08);color:var(--white);}
+.nav-item.active{background:rgba(30,100,255,0.12);color:var(--cyan);border-right:2px solid var(--cyan);}
+.nav-icon{font-size:16px;width:20px;text-align:center;flex-shrink:0;}
+.sidebar-bottom{margin-top:auto;padding:16px 24px;border-top:1px solid var(--border);}
+.sidebar-member{display:flex;align-items:center;gap:12px;}
+.sidebar-avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--cyan));display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;overflow:hidden;}
+.sidebar-member-name{font-family:'Orbitron',sans-serif;font-size:10px;font-weight:900;color:var(--white);}
+.sidebar-member-rang{font-size:10px;color:var(--dim);margin-top:2px;}
+.main{margin-left:var(--sidebar-w);flex:1;padding:32px;position:relative;z-index:1;max-width:900px;}
+.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:32px;}
+.topbar-title{font-family:'Orbitron',sans-serif;font-size:18px;font-weight:900;color:var(--white);letter-spacing:2px;}
+.topbar-title span{color:var(--cyan);}
+.xp-pill{display:flex;align-items:center;gap:8px;padding:8px 16px;border-radius:99px;background:rgba(255,215,0,0.1);border:1px solid rgba(255,215,0,0.25);}
+.xp-pill-val{font-family:'Orbitron',sans-serif;font-size:12px;font-weight:900;color:var(--gold);}
+.module-header{background:linear-gradient(135deg,#0a1428,#080e1f);border:1px solid rgba(30,100,255,0.25);border-radius:20px;padding:32px;margin-bottom:28px;position:relative;overflow:hidden;}
+.module-header::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--cyan),transparent);}
+.module-glow{position:absolute;top:-60px;right:-60px;width:300px;height:300px;background:radial-gradient(ellipse,rgba(30,100,255,0.15) 0%,transparent 70%);pointer-events:none;}
+.module-tag{font-family:'Orbitron',sans-serif;font-size:8px;letter-spacing:3px;color:var(--cyan);margin-bottom:10px;}
+.module-title{font-family:'Orbitron',sans-serif;font-size:28px;font-weight:900;color:var(--white);margin-bottom:8px;line-height:1.2;}
+.module-desc{font-size:14px;color:var(--dim);line-height:1.7;}
+.module-meta{display:flex;gap:16px;margin-top:20px;flex-wrap:wrap;}
+.module-meta-item{display:flex;align-items:center;gap:6px;font-family:'Orbitron',sans-serif;font-size:8px;letter-spacing:1px;color:var(--dim);padding:6px 12px;border-radius:8px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);}
+.bloc{background:var(--card);border:1px solid var(--border);border-radius:20px;margin-bottom:24px;overflow:hidden;}
+.bloc-header{padding:24px 28px;border-bottom:1px solid rgba(255,255,255,0.05);}
+.bloc-num{font-family:'Orbitron',sans-serif;font-size:8px;letter-spacing:3px;color:var(--cyan);margin-bottom:8px;}
+.bloc-title{font-family:'Orbitron',sans-serif;font-size:18px;font-weight:900;color:var(--white);letter-spacing:1px;}
+.bloc-body{padding:28px;}
+.bloc-text{font-size:15px;color:rgba(232,244,255,0.75);line-height:1.9;margin-bottom:20px;}
+.bloc-text strong{color:var(--cyan);}
+.info-box{padding:16px 20px;border-radius:14px;margin:16px 0;font-size:14px;line-height:1.7;}
+.info-box.cyan{background:rgba(0,212,255,0.06);border-left:3px solid var(--cyan);color:rgba(232,244,255,0.8);}
+.info-box.gold{background:rgba(255,215,0,0.06);border-left:3px solid var(--gold);color:rgba(255,215,0,0.9);}
+.info-box.green{background:rgba(0,255,136,0.06);border-left:3px solid var(--green);color:rgba(0,255,136,0.9);}
+.info-box.red{background:rgba(255,68,102,0.06);border-left:3px solid var(--red);color:rgba(255,68,102,0.9);}
+.calc-box{background:rgba(0,212,255,0.04);border:1px solid rgba(0,212,255,0.15);border-radius:14px;padding:22px;margin:16px 0;}
+.calc-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px;}
+.calc-field label{display:block;font-size:11px;color:var(--dim);margin-bottom:6px;}
+.calc-field input{width:100%;padding:10px 12px;border-radius:8px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);color:var(--white);font-family:'Exo 2',sans-serif;font-size:14px;outline:none;}
+.calc-btn{width:100%;padding:13px;border-radius:12px;background:linear-gradient(135deg,var(--blue),var(--cyan));color:#000;font-family:'Orbitron',sans-serif;font-size:11px;font-weight:900;letter-spacing:2px;border:none;cursor:pointer;}
+.calc-result{display:none;margin-top:16px;padding:16px 18px;border-radius:10px;background:rgba(0,255,136,0.06);border:1px solid rgba(0,255,136,0.2);}
+.calc-result.show{display:block;}
+.calc-result-line{display:flex;justify-content:space-between;font-size:14px;color:rgba(232,244,255,0.85);padding:6px 0;}
+.calc-result-line b{color:var(--green);font-family:'Orbitron',sans-serif;}
+.quiz-section{background:linear-gradient(135deg,rgba(157,78,221,0.08),rgba(30,100,255,0.05));border:1px solid rgba(157,78,221,0.2);border-radius:16px;padding:24px;margin-top:24px;}
+.quiz-header{display:flex;align-items:center;gap:10px;margin-bottom:20px;}
+.quiz-title{font-family:'Orbitron',sans-serif;font-size:14px;font-weight:900;color:var(--white);letter-spacing:1px;}
+.quiz-xp{margin-left:auto;font-family:'Orbitron',sans-serif;font-size:10px;color:var(--gold);background:rgba(255,215,0,0.1);border:1px solid rgba(255,215,0,0.25);padding:4px 10px;border-radius:6px;}
+.quiz-question{margin-bottom:20px;}
+.quiz-q-num{font-family:'Orbitron',sans-serif;font-size:8px;letter-spacing:2px;color:var(--purple);margin-bottom:8px;}
+.quiz-q-text{font-size:15px;color:var(--white);font-weight:600;margin-bottom:12px;line-height:1.5;}
+.quiz-options{display:flex;flex-direction:column;gap:8px;}
+.quiz-option{padding:12px 16px;border-radius:10px;border:1px solid rgba(255,255,255,0.08);background:rgba(255,255,255,0.03);cursor:pointer;transition:all .2s;font-size:14px;color:var(--dim);display:flex;align-items:center;gap:10px;}
+.quiz-option:hover{border-color:rgba(157,78,221,0.4);background:rgba(157,78,221,0.08);color:var(--white);}
+.quiz-option.correct{border-color:rgba(0,255,136,0.5);background:rgba(0,255,136,0.1);color:var(--green);}
+.quiz-option.wrong{border-color:rgba(255,68,102,0.5);background:rgba(255,68,102,0.1);color:var(--red);}
+.quiz-option-letter{width:24px;height:24px;border-radius:6px;background:rgba(255,255,255,0.06);display:flex;align-items:center;justify-content:center;font-family:'Orbitron',sans-serif;font-size:10px;font-weight:900;flex-shrink:0;}
+.quiz-feedback{display:none;padding:12px 16px;border-radius:10px;font-size:13px;margin-top:10px;line-height:1.6;}
+.quiz-feedback.show{display:block;}
+.quiz-feedback.correct{background:rgba(0,255,136,0.08);border:1px solid rgba(0,255,136,0.2);color:rgba(0,255,136,0.9);}
+.quiz-feedback.wrong{background:rgba(255,68,102,0.08);border:1px solid rgba(255,68,102,0.2);color:rgba(255,68,102,0.9);}
+.quiz-submit{width:100%;padding:14px;border-radius:12px;background:linear-gradient(135deg,var(--purple),#7B2FBE);color:var(--white);font-family:'Orbitron',sans-serif;font-size:11px;font-weight:900;letter-spacing:2px;border:none;cursor:pointer;margin-top:16px;transition:all .2s;}
+.quiz-submit:disabled{opacity:0.5;cursor:not-allowed;}
+.quiz-result{display:none;text-align:center;padding:20px;border-radius:12px;background:rgba(255,215,0,0.06);border:1px solid rgba(255,215,0,0.2);margin-top:16px;}
+.quiz-result.show{display:block;}
+.quiz-result-score{font-family:'Orbitron',sans-serif;font-size:40px;font-weight:900;color:var(--gold);}
+.quiz-result-xp{font-family:'Orbitron',sans-serif;font-size:14px;color:var(--green);margin-top:8px;}
+.exercice-section{background:rgba(0,212,255,0.05);border:1px solid rgba(0,212,255,0.2);border-radius:16px;padding:24px;margin-top:16px;}
+.exercice-title{font-family:'Orbitron',sans-serif;font-size:13px;font-weight:900;color:var(--cyan);letter-spacing:1px;margin-bottom:16px;}
+.exercice-step{display:flex;align-items:flex-start;gap:12px;padding:10px 14px;border-radius:10px;background:rgba(0,212,255,0.04);border:1px solid rgba(0,212,255,0.1);margin-bottom:8px;}
+.exercice-step-num{width:24px;height:24px;border-radius:6px;background:rgba(0,212,255,0.15);display:flex;align-items:center;justify-content:center;font-family:'Orbitron',sans-serif;font-size:10px;font-weight:900;color:var(--cyan);flex-shrink:0;}
+.exercice-step-text{font-size:13px;color:rgba(232,244,255,0.7);line-height:1.6;}
+.exercice-validate{width:100%;padding:13px;border-radius:12px;background:linear-gradient(135deg,#006644,var(--green));color:#000;font-family:'Orbitron',sans-serif;font-size:11px;font-weight:900;letter-spacing:2px;border:none;cursor:pointer;transition:all .2s;margin-top:12px;}
+.exercice-validate:disabled{opacity:0.5;cursor:not-allowed;}
+.question-box{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:24px;margin-top:16px;}
+.question-box-title{font-family:'Orbitron',sans-serif;font-size:12px;font-weight:900;color:var(--white);letter-spacing:1px;margin-bottom:8px;}
+.question-box-desc{font-size:13px;color:var(--dim);margin-bottom:16px;line-height:1.6;font-style:italic;}
+.question-box-input{width:100%;padding:14px 16px;border-radius:12px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);color:var(--white);font-family:'Exo 2',sans-serif;font-size:14px;outline:none;resize:vertical;min-height:100px;}
+.question-box-input::placeholder{color:rgba(255,255,255,0.2);}
+.question-box-send{width:100%;padding:13px;border-radius:12px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);color:var(--white);font-family:'Orbitron',sans-serif;font-size:10px;font-weight:900;letter-spacing:2px;cursor:pointer;margin-top:10px;}
+.question-box-confirm{display:none;padding:12px;border-radius:10px;background:rgba(0,255,136,0.08);border:1px solid rgba(0,255,136,0.2);font-size:13px;color:var(--green);text-align:center;margin-top:10px;}
+.question-box-confirm.show{display:block;}
+.complete-btn{width:100%;padding:16px;border-radius:14px;background:linear-gradient(135deg,var(--blue),var(--cyan));color:#000;font-family:'Orbitron',sans-serif;font-size:12px;font-weight:900;letter-spacing:2px;border:none;cursor:pointer;margin-top:24px;box-shadow:0 6px 24px rgba(0,212,255,0.3);}
+.complete-btn:disabled{opacity:0.5;cursor:not-allowed;}
+@keyframes xp-pop{0%{opacity:1;transform:translate(-50%,-50%) scale(0.8);}60%{opacity:1;transform:translate(-50%,-80%) scale(1.2);}100%{opacity:0;transform:translate(-50%,-120%) scale(0.9);}}
+@media(max-width:768px){.sidebar{display:none;}.main{margin-left:0;padding:16px;}.calc-grid{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<div class="bg-grid"></div>
+<aside class="sidebar">
+  <div class="sidebar-logo"><div class="sidebar-logo-text">DHA</div><div class="sidebar-logo-sub">DIGITAL HUSTLER ACADEMY</div></div>
+  <div class="sidebar-section">MAIN</div>
+  <a class="nav-item" href="dha-dashboard.html"><span class="nav-icon">🎮</span> Dashboard</a>
+  <div class="sidebar-section">LEARN</div>
+  <a class="nav-item active" href="dha-formation.html"><span class="nav-icon">📈</span> Formation Trading</a>
+  <a class="nav-item" href="dha-mindset.html"><span class="nav-icon">🧠</span> Mindset</a>
+  <div class="sidebar-section">NETWORK</div>
+  <a class="nav-item" href="dha-squad.html"><span class="nav-icon">👥</span> Mon Squad</a>
+  <a class="nav-item" href="dha-leaderboard.html"><span class="nav-icon">🏆</span> Leaderboard</a>
+  <div class="sidebar-section">EARN</div>
+  <a class="nav-item" href="dha-affiliation.html"><span class="nav-icon">💰</span> Affiliation</a>
+  <div class="sidebar-section">TOOLS</div>
+  <a class="nav-item" href="dha-mentor.html"><span class="nav-icon">📞</span> Appel Mentor</a>
+  <div class="sidebar-bottom">
+    <div class="sidebar-member">
+      <div class="sidebar-avatar" id="sb-avatar">📈</div>
+      <div><div class="sidebar-member-name" id="sb-pseudo">HUSTLER</div><div class="sidebar-member-rang" id="sb-rang">NEW HUSTLER</div></div>
+    </div>
+  </div>
+</aside>
+
+<main class="main">
+  <div class="topbar">
+    <div><div class="topbar-title">MODULE 12 — <span>GESTION D'UN TRADE</span></div><div style="font-size:12px;color:var(--dim);margin-top:2px;">Entrée, gestion en cours, sortie — le cycle complet</div></div>
+    <div class="xp-pill"><span>⚡</span><span class="xp-pill-val" id="topbar-xp">0 XP</span></div>
+  </div>
+
+  <div class="module-header">
+    <div class="module-glow"></div>
+    <div class="module-tag">MODULE 12 · GESTION</div>
+    <div class="module-title">Gestion d'un trade<br/>le cycle complet</div>
+    <div class="module-desc">Prendre une position, c'est facile. Bien la gérer jusqu'à la sortie, c'est ce qui sépare les traders qui durent des traders qui rendent leurs gains. Ici tu vas apprendre à sécuriser tes profits en cours de route et à sortir proprement, à chaque fois.</div>
+    <div class="module-meta">
+      <div class="module-meta-item">📚 Bloc 1 — Gestion d'un trade</div>
+      <div class="module-meta-item">⚡ Jusqu'à 150 XP</div>
+      <div class="module-meta-item">⏱️ 20 min</div>
+    </div>
+  </div>
+
+  <div class="bloc">
+    <div class="bloc-header">
+      <div class="bloc-num">BLOC 01</div>
+      <div class="bloc-title">Gestion d'un trade</div>
+    </div>
+    <div class="bloc-body">
+
+      <!-- SECTION 1 : POURQUOI LA GESTION NE S'ARRETE PAS A L'ENTREE -->
+      <div class="bloc-text">
+        Jusqu'ici tu as appris à repérer des setups et à entrer sur le marché. Mais un trade ne se joue pas qu'à l'entrée : entre le moment où tu ouvres ta position et le moment où tu la fermes, il se passe plein de choses — et c'est là que beaucoup de traders perdent des gains qu'ils avaient pourtant déjà dans la poche.
+      </div>
+
+      <div class="info-box gold">💡 En clair : bien entrer sur un trade, c'est 30% du travail. Bien le gérer jusqu'à la sortie, c'est les 70% restants.</div>
+
+      <!-- SECTION 2 : TP PARTIEL + BREAKEVEN -->
+      <div class="bloc-text" style="margin-top:24px;">
+        Première étape de la gestion en cours : le <strong>TP partiel</strong>. Plutôt que d'attendre ton take-profit final sur toute la position, tu peux clôturer une partie du trade dès qu'il atteint un premier objectif — ça sécurise déjà du gain, quoi qu'il arrive ensuite. Le ratio auquel tu prends ce TP partiel (1R, 2R, ou autre) reste ton choix, tant qu'il est cohérent avec ton plan.
+      </div>
+
+      <div style="margin:20px 0;border-radius:16px;overflow:hidden;border:1px solid rgba(0,212,255,0.2);">
+      <svg viewBox="0 0 640 260" xmlns="http://www.w3.org/2000/svg" style="width:100%;background:#0a0f1e;">
+        <defs><pattern id="gridm12a" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(255,255,255,0.04)" stroke-width="1"/></pattern></defs>
+        <rect width="640" height="260" fill="url(#gridm12a)"/>
+        <text x="20" y="24" fill="var(--dim)" font-size="10" font-family="Orbitron" letter-spacing="1">TP PARTIEL PUIS SL À BREAKEVEN</text>
+        <!-- entry line -->
+        <line x1="60" y1="190" x2="580" y2="190" stroke="var(--cyan)" stroke-width="2" stroke-dasharray="0"/>
+        <text x="588" y="194" fill="var(--cyan)" font-size="10" font-family="Orbitron" font-weight="bold">ENTRÉE</text>
+        <!-- initial SL (dashed red, from start to TP partiel point) -->
+        <line x1="60" y1="225" x2="260" y2="225" stroke="#FF4466" stroke-width="2" stroke-dasharray="6,4"/>
+        <text x="30" y="229" fill="#FF4466" font-size="9" font-family="Orbitron" font-weight="bold" text-anchor="end">SL</text>
+        <!-- breakeven SL after partial (dashed red -> becomes cyan, from 260 to 580, level = entry) -->
+        <line x1="260" y1="190" x2="580" y2="190" stroke="#FFD700" stroke-width="2" stroke-dasharray="6,4"/>
+        <!-- TP partial marker line -->
+        <line x1="60" y1="120" x2="580" y2="120" stroke="#00FF88" stroke-width="1.5" stroke-dasharray="4,4"/>
+        <text x="588" y="124" fill="#00FF88" font-size="10" font-family="Orbitron" font-weight="bold">TP PARTIEL</text>
+        <!-- price path -->
+        <path d="M 60 190 L 140 175 L 190 155 L 260 120 L 320 105 L 400 85 L 470 65 L 550 55" fill="none" stroke="var(--white)" stroke-width="2.5"/>
+        <!-- marker at TP partiel touch -->
+        <circle cx="260" cy="120" r="6" fill="#00FF88"/>
+        <text x="260" y="245" fill="#00FF88" font-size="9" font-family="Orbitron" text-anchor="middle">CLÔTURE PARTIELLE</text>
+        <text x="260" y="257" fill="#FFD700" font-size="9" font-family="Orbitron" text-anchor="middle">+ SL → BREAKEVEN</text>
+      </svg>
+      </div>
+
+      <div class="info-box green">🎯 Dès que ton premier TP partiel est touché, tu clôtures une partie de la position ET tu remontes ton stop-loss à ton prix d'entrée (breakeven). Résultat : le reste du trade ne peut plus te faire perdre d'argent, seulement en gagner plus ou moins.</div>
+
+      <!-- SECTION 3 : TRAILING STOP -->
+      <div class="bloc-text" style="margin-top:24px;">
+        Deuxième outil de gestion en cours : le <strong>trailing stop</strong>. Une fois ton SL passé à breakeven, tu peux le laisser "suivre" le prix à mesure qu'il évolue en ta faveur, en gardant toujours une distance de sécurité. Si le prix continue de monter, ton stop monte avec lui. S'il redescend et touche ton trailing stop, le trade se ferme automatiquement avec le gain déjà accumulé.
+      </div>
+
+      <div style="margin:20px 0;border-radius:16px;overflow:hidden;border:1px solid rgba(0,212,255,0.2);">
+      <svg viewBox="0 0 640 260" xmlns="http://www.w3.org/2000/svg" style="width:100%;background:#0a0f1e;">
+        <defs><pattern id="gridm12b" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(255,255,255,0.04)" stroke-width="1"/></pattern></defs>
+        <rect width="640" height="260" fill="url(#gridm12b)"/>
+        <text x="20" y="24" fill="var(--dim)" font-size="10" font-family="Orbitron" letter-spacing="1">TRAILING STOP EN ACTION</text>
+        <!-- price path (steps up then reverses at the end) -->
+        <path d="M 60 210 L 130 190 L 180 170 L 240 175 L 300 130 L 360 135 L 420 90 L 480 95 L 540 130" fill="none" stroke="var(--white)" stroke-width="2.5"/>
+        <!-- trailing stop line (steps, always below, only moves up) -->
+        <path d="M 60 235 L 180 235 L 180 205 L 300 205 L 300 160 L 420 160 L 420 120 L 540 120" fill="none" stroke="#00FF88" stroke-width="2" stroke-dasharray="6,4"/>
+        <text x="548" y="124" fill="#00FF88" font-size="9" font-family="Orbitron" font-weight="bold">TRAILING STOP</text>
+        <!-- exit marker where price touches trailing stop -->
+        <circle cx="540" cy="130" r="6" fill="#FF4466"/>
+        <text x="540" y="245" fill="#FF4466" font-size="9" font-family="Orbitron" text-anchor="middle">SORTIE AUTO</text>
+        <text x="540" y="257" fill="var(--dim)" font-size="9" font-family="Orbitron" text-anchor="middle">gain sécurisé</text>
+      </svg>
+      </div>
+
+      <div class="info-box cyan">🎯 Le trailing stop ne recule jamais — il ne fait que suivre le prix dans le sens gagnant du trade. C'est ce qui te permet de laisser courir un trade sans avoir à surveiller ton écran en permanence.</div>
+
+      <!-- SECTION 4 : SORTIE -->
+      <div class="bloc-text" style="margin-top:24px;">
+        Un trade se termine toujours d'une de ces trois façons :
+      </div>
+
+      <div class="info-box gold">🏁 <strong>TP touché</strong> — ton objectif final est atteint, le trade se ferme avec le gain prévu.<br/><br/>⚠️ <strong>SL touché</strong> — le prix est allé contre toi jusqu'à ton stop, la perte est limitée à ce que tu avais prévu (ou zéro si le SL était déjà à breakeven).<br/><br/>✋ <strong>Sortie manuelle</strong> — tu décides de clôturer toi-même, par exemple si le contexte de marché change ou si une news importante approche.</div>
+
+      <div class="info-box red">⚠️ Une sortie manuelle doit rester l'exception, pas la règle. Sortir "à l'instinct" à chaque fois que le trade bouge dans le mauvais sens, c'est souvent pire que de laisser ton plan (SL, TP, trailing) faire le travail.</div>
+
+      <!-- SECTION 5 : RAPPEL TAILLE DE POSITION -->
+      <div class="bloc-text" style="margin-top:24px;">
+        Petit rappel avant de passer à l'exercice : tout ce qui précède ne fonctionne que si ta <strong>taille de position</strong> est correcte dès le départ. Si tu risques trop sur un trade, même la meilleure gestion en cours ne te sauvera pas. Le calcul complet (capital, % de risque, distance du stop) a été vu en détail dans le <strong>Module 11 — Risk Management</strong> : vas-y faire un tour si besoin avant l'exercice ci-dessous.
+      </div>
+
+      <!-- QUIZ -->
+      <div class="quiz-section">
+        <div class="quiz-header"><div style="font-size:22px;">🧠</div><div class="quiz-title">QUIZ — TESTE TES CONNAISSANCES</div><div class="quiz-xp">+10 XP / bonne réponse</div></div>
+
+        <div class="quiz-question" id="q1"><div class="quiz-q-num">QUESTION 1 / 5</div><div class="quiz-q-text">Quand doit-on typiquement passer le stop-loss à breakeven ?</div><div class="quiz-options">
+          <div class="quiz-option" onclick="selectOption(this,'q1','A')"><div class="quiz-option-letter">A</div>Dès l'ouverture de la position</div>
+          <div class="quiz-option" onclick="selectOption(this,'q1','B')"><div class="quiz-option-letter">B</div>Quand le prix atteint le premier take-profit partiel</div>
+          <div class="quiz-option" onclick="selectOption(this,'q1','C')"><div class="quiz-option-letter">C</div>Uniquement en fin de journée de trading</div>
+          <div class="quiz-option" onclick="selectOption(this,'q1','D')"><div class="quiz-option-letter">D</div>Jamais, le stop-loss doit rester fixe</div>
+        </div><div class="quiz-feedback" id="fb-q1"></div></div>
+
+        <div class="quiz-question" id="q2"><div class="quiz-q-num">QUESTION 2 / 5</div><div class="quiz-q-text">Que permet de faire un TP partiel ?</div><div class="quiz-options">
+          <div class="quiz-option" onclick="selectOption(this,'q2','A')"><div class="quiz-option-letter">A</div>Sécuriser une partie des gains tout en laissant le reste courir</div>
+          <div class="quiz-option" onclick="selectOption(this,'q2','B')"><div class="quiz-option-letter">B</div>Annuler complètement le stop-loss du trade</div>
+          <div class="quiz-option" onclick="selectOption(this,'q2','C')"><div class="quiz-option-letter">C</div>Augmenter automatiquement la taille de la position</div>
+          <div class="quiz-option" onclick="selectOption(this,'q2','D')"><div class="quiz-option-letter">D</div>Éviter d'avoir à surveiller le trade</div>
+        </div><div class="quiz-feedback" id="fb-q2"></div></div>
+
+        <div class="quiz-question" id="q3"><div class="quiz-q-num">QUESTION 3 / 5</div><div class="quiz-q-text">Comment fonctionne un trailing stop ?</div><div class="quiz-options">
+          <div class="quiz-option" onclick="selectOption(this,'q3','A')"><div class="quiz-option-letter">A</div>Il reste fixe une fois placé, quoi qu'il arrive</div>
+          <div class="quiz-option" onclick="selectOption(this,'q3','B')"><div class="quiz-option-letter">B</div>Il suit le prix dans le sens du trade pour protéger les gains</div>
+          <div class="quiz-option" onclick="selectOption(this,'q3','C')"><div class="quiz-option-letter">C</div>Il déplace le take-profit plus loin automatiquement</div>
+          <div class="quiz-option" onclick="selectOption(this,'q3','D')"><div class="quiz-option-letter">D</div>Il double la taille de position à chaque étape favorable</div>
+        </div><div class="quiz-feedback" id="fb-q3"></div></div>
+
+        <div class="quiz-question" id="q4"><div class="quiz-q-num">QUESTION 4 / 5</div><div class="quiz-q-text">Quelles sont les façons normales de sortir d'un trade ?</div><div class="quiz-options">
+          <div class="quiz-option" onclick="selectOption(this,'q4','A')"><div class="quiz-option-letter">A</div>TP touché, SL touché, ou sortie manuelle</div>
+          <div class="quiz-option" onclick="selectOption(this,'q4','B')"><div class="quiz-option-letter">B</div>Uniquement en attendant l'expiration du graphique</div>
+          <div class="quiz-option" onclick="selectOption(this,'q4','C')"><div class="quiz-option-letter">C</div>Seulement si le broker ferme la position lui-même</div>
+          <div class="quiz-option" onclick="selectOption(this,'q4','D')"><div class="quiz-option-letter">D</div>En changeant de paire de devises en cours de route</div>
+        </div><div class="quiz-feedback" id="fb-q4"></div></div>
+
+        <div class="quiz-question" id="q5"><div class="quiz-q-num">QUESTION 5 / 5</div><div class="quiz-q-text">Pourquoi passer le SL à breakeven après un TP partiel ?</div><div class="quiz-options">
+          <div class="quiz-option" onclick="selectOption(this,'q5','A')"><div class="quiz-option-letter">A</div>Pour garantir de ne plus pouvoir perdre d'argent sur ce trade</div>
+          <div class="quiz-option" onclick="selectOption(this,'q5','B')"><div class="quiz-option-letter">B</div>Pour augmenter le risque restant sur la position</div>
+          <div class="quiz-option" onclick="selectOption(this,'q5','C')"><div class="quiz-option-letter">C</div>Pour forcer une sortie immédiate du trade</div>
+          <div class="quiz-option" onclick="selectOption(this,'q5','D')"><div class="quiz-option-letter">D</div>Pour annuler les gains déjà pris sur le trade</div>
+        </div><div class="quiz-feedback" id="fb-q5"></div></div>
+
+        <button class="quiz-submit" id="quiz-btn" onclick="submitQuiz()">✓ VALIDER MES RÉPONSES</button>
+        <div class="quiz-result" id="quiz-result"><div class="quiz-result-score" id="quiz-score">0/5</div><div style="font-size:14px;color:var(--dim);margin-top:8px;" id="quiz-text"></div><div class="quiz-result-xp" id="quiz-xp-text"></div></div>
+      </div>
+
+      <!-- EXERCICE -->
+      <div class="exercice-section">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;"><div style="font-size:22px;">💪</div><div class="exercice-title">EXERCICE PRATIQUE — +75 XP</div></div>
+        <div style="font-size:14px;color:rgba(232,244,255,0.75);line-height:1.8;margin-bottom:16px;">Cette fois, pas de graphique statique — direction ton compte démo pour t'entraîner en conditions réelles.</div>
+        <div class="exercice-step"><div class="exercice-step-num">1</div><div class="exercice-step-text">Ouvre une position sur ton <strong>compte démo</strong>, avec un setup, un stop-loss et un take-profit définis à l'avance</div></div>
+        <div class="exercice-step"><div class="exercice-step-num">2</div><div class="exercice-step-text">Dès que ton <strong>premier TP partiel</strong> est touché, clôture une partie de la position (le ratio est ton choix)</div></div>
+        <div class="exercice-step"><div class="exercice-step-num">3</div><div class="exercice-step-text">Au même moment, déplace ton <strong>stop-loss à breakeven</strong> (ton prix d'entrée)</div></div>
+        <div class="exercice-step"><div class="exercice-step-num">4</div><div class="exercice-step-text">Active un <strong>trailing stop</strong> sur le reste de la position pour laisser courir le trade</div></div>
+        <div class="exercice-step"><div class="exercice-step-num">5</div><div class="exercice-step-text">Laisse le trade se terminer (TP final, SL, ou sortie manuelle) et <strong>note le résultat</strong></div></div>
+        <button class="exercice-validate" id="exercice-btn" onclick="validateExercice()">✅ J'AI FAIT L'EXERCICE — +75 XP</button>
+      </div>
+
+      <!-- QUESTION BOX -->
+      <div class="question-box">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;"><div style="font-size:22px;">💬</div><div class="question-box-title">TU AS UNE QUESTION ?</div></div>
+        <div class="question-box-desc">"Pas de question bête ici. Si quelque chose n'est pas clair, pose ta question — on est là pour apprendre ensemble. 🙌"</div>
+        <textarea class="question-box-input" id="question-input" placeholder="Écris ta question ici..."></textarea>
+        <button class="question-box-send" onclick="sendQuestion()">📩 ENVOYER MA QUESTION</button>
+        <div class="question-box-confirm" id="question-confirm">✅ Question envoyée ! On te répond très vite. 🔥</div>
+      </div>
+
+      <button class="complete-btn" id="complete-btn" onclick="completeBloc()">▶ TERMINER LE BLOC 1 — CONTINUER</button>
+    </div>
+  </div>
+</main>
+
+<script>
+const SUPABASE_URL='https://kdetwppxsfoagyndrlzr.supabase.co';
+const SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtkZXR3cHB4c2ZvYWd5bmRybHpyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzcyMzM3NjQsImV4cCI6MjA5MjgwOTc2NH0.OodaFQKEHcncDYdO6uM121NAUbyxD4UxpptSjzzZOi0';
+const FORMSPREE='https://formspree.io/f/mjgjrojb';
+function getKey(k){const m=JSON.parse(localStorage.getItem('dha_member')||'{}');return 'dha_'+(m.pseudo||'guest')+'_'+k;}
+let completedActions=new Set();
+function todayISO(){return new Date().toISOString().split('T')[0];}
+async function loadCompletedActions(pseudo,keys){
+  try{
+    const res=await fetch(SUPABASE_URL+'/rest/v1/xp_historique?membre_pseudo=eq.'+encodeURIComponent(pseudo)+'&action_key=in.('+keys.join(',')+')&select=action_key',{
+      headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY}
+    });
+    const data=await res.json();
+    (data||[]).forEach(r=>completedActions.add(r.action_key));
+  }catch(e){}
+}
+async function awardXP(actionKey,amount,raison){
+  if(!member)return false;
+  if(completedActions.has(actionKey))return false;
+  completedActions.add(actionKey);
+  member.xp=(member.xp||0)+amount;
+  member.xp_semaine=(member.xp_semaine||0)+amount;
+  localStorage.setItem('dha_member',JSON.stringify(member));
+  document.getElementById('topbar-xp').textContent=member.xp+' XP';
+  const flash=document.createElement('div');
+  flash.textContent='+'+amount+' XP ⚡';
+  flash.style.cssText='position:fixed;top:40%;left:60%;transform:translate(-50%,-50%);font-family:Orbitron,sans-serif;font-size:36px;font-weight:900;color:#FFD700;text-shadow:0 0 30px rgba(255,215,0,0.8);z-index:9999;pointer-events:none;animation:xp-pop .9s ease forwards;';
+  document.body.appendChild(flash);setTimeout(()=>flash.remove(),900);
+  try{
+    const patchRes=await fetch(SUPABASE_URL+'/rest/v1/membres?email=eq.'+encodeURIComponent(member.email).replace(/\./g,'%2E'),{
+      method:'PATCH',
+      headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY,'Prefer':'return=representation'},
+      body:JSON.stringify({xp:member.xp,xp_semaine:member.xp_semaine})
+    });
+    if(!patchRes.ok){console.error('Echec PATCH membres.xp:',patchRes.status,await patchRes.text());showSaveError();}
+    else{const patchData=await patchRes.json();if(!patchData||patchData.length===0){console.error('PATCH membres.xp: aucune ligne mise a jour');showSaveError();}}
+    const postRes=await fetch(SUPABASE_URL+'/rest/v1/xp_historique',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY},
+      body:JSON.stringify({membre_pseudo:member.pseudo||'guest',xp_gagne:amount,raison:raison,action_key:actionKey})
+    });
+    if(!postRes.ok)console.error('Echec POST xp_historique:',postRes.status,await postRes.text());
+  }catch(e){console.error('Erreur reseau awardXP:',e);showSaveError();}
+  return true;
+}
+function showSaveError(){
+  if(document.getElementById('xp-save-error'))return;
+  const banner=document.createElement('div');
+  banner.id='xp-save-error';
+  banner.textContent='\u26a0\ufe0f Erreur de sauvegarde XP - ouvre la console (F12) et envoie la capture au support';
+  banner.style.cssText='position:fixed;top:0;left:0;right:0;background:#FF4466;color:#fff;text-align:center;padding:10px;font-family:Orbitron,sans-serif;font-size:11px;font-weight:900;z-index:99999;';
+  document.body.appendChild(banner);
+}
+let member=null;
+let quizAnswers={q1:null,q2:null,q3:null,q4:null,q5:null};
+let quizDone=false;
+
+const correctAnswers={q1:'B',q2:'A',q3:'B',q4:'A',q5:'A'};
+const feedbacks={
+  q1:{B:'✅ Exact ! On passe le SL à breakeven quand le premier TP partiel est touché.',wrong:'❌ Le bon moment est quand le prix atteint le premier take-profit partiel.'},
+  q2:{A:'✅ Parfait ! Le TP partiel sécurise une partie des gains tout en laissant le reste courir.',wrong:'❌ Le TP partiel sert avant tout à sécuriser une partie du gain, pas à modifier le SL ou la taille du trade.'},
+  q3:{B:'✅ Exact ! Le trailing stop suit le prix dans le sens du trade pour protéger les gains déjà acquis.',wrong:'❌ Le trailing stop suit le prix dans le sens gagnant du trade, il ne reste pas fixe.'},
+  q4:{A:'✅ Parfait ! Un trade se termine par TP touché, SL touché, ou une sortie manuelle.',wrong:'❌ Les trois façons normales de sortir sont : TP touché, SL touché, ou sortie manuelle.'},
+  q5:{A:'✅ Exact ! Une fois le SL à breakeven, le trade ne peut plus te faire perdre d\'argent.',wrong:'❌ Passer le SL à breakeven garantit justement que tu ne peux plus perdre d\'argent sur ce trade.'}
+};
+
+function selectOption(el,qId,letter){
+  if(quizDone)return;
+  const opts=el.closest('.quiz-options').querySelectorAll('.quiz-option');
+  opts.forEach(o=>{o.style.borderColor='';o.style.background='';o.style.color='';});
+  el.style.borderColor='rgba(157,78,221,0.5)';el.style.background='rgba(157,78,221,0.12)';el.style.color='var(--white)';
+  quizAnswers[qId]=letter;
+}
+function submitQuiz(){
+  if(quizDone||completedActions.has('quiz_m12_b1'))return;
+  if(Object.values(quizAnswers).filter(v=>v===null).length>0){alert('Réponds à toutes les questions !');return;}
+  quizDone=true;
+  let score=0;
+  Object.keys(quizAnswers).forEach(qId=>{
+    const ans=quizAnswers[qId];const correct=correctAnswers[qId];
+    const opts=document.getElementById(qId).querySelectorAll('.quiz-option');
+    opts.forEach(o=>{o.onclick=null;const letter=o.querySelector('.quiz-option-letter').textContent;if(letter===correct)o.classList.add('correct');else if(letter===ans&&ans!==correct)o.classList.add('wrong');});
+    const fb=document.getElementById('fb-'+qId);
+    if(ans===correct){score++;fb.textContent=feedbacks[qId][correct];fb.className='quiz-feedback show correct';}
+    else{fb.textContent=feedbacks[qId].wrong;fb.className='quiz-feedback show wrong';}
+  });
+  const xpEarned=score*10;
+  document.getElementById('quiz-btn').disabled=true;document.getElementById('quiz-btn').textContent='✅ QUIZ VALIDÉ';
+  const result=document.getElementById('quiz-result');result.classList.add('show');
+  document.getElementById('quiz-score').textContent=score+'/5';
+  document.getElementById('quiz-text').textContent=score===5?'Parfait ! Tu as tout compris ! 🔥':score>=3?'Bon travail ! Relis les points manqués.':'Continue à apprendre — relis le bloc.';
+  document.getElementById('quiz-xp-text').textContent='+'+xpEarned+' XP gagnés !';
+  if(xpEarned>0)awardXP('quiz_m12_b1',xpEarned,'🧠 Quiz Module 12 ('+score+'/5)');
+}
+
+let exerciceDone=false;
+function validateExercice(){
+  if(exerciceDone||completedActions.has('exercice_m12_b1'))return;
+  exerciceDone=true;
+  document.getElementById('exercice-btn').disabled=true;document.getElementById('exercice-btn').textContent='✅ EXERCICE VALIDÉ !';
+  awardXP('exercice_m12_b1',75,'💪 Exercice pratique Module 12');
+}
+
+function sendQuestion(){
+  const q=document.getElementById('question-input').value.trim();
+  if(!q){alert('Écris ta question d\'abord !');return;}
+  fetch(FORMSPREE,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({sujet:'Question Module 12 Bloc 1',question:q,membre:member?member.email:'inconnu'})});
+  document.getElementById('question-input').value='';
+  document.getElementById('question-confirm').classList.add('show');
+}
+
+async function completeBloc(){
+  if(completedActions.has('bloc_m12_b1')){alert('Tu as déjà terminé ce module ! 💪');return;}
+  document.getElementById('complete-btn').textContent='✅ BLOC 1 TERMINÉ !';
+  document.getElementById('complete-btn').disabled=true;
+  await awardXP('bloc_m12_b1',25,'📚 Bloc terminé — Module 12');
+  await awardXP('quete_bloc_'+todayISO(),50,'📚 Finir un module (quête du jour)');
+  setTimeout(()=>{window.location.href='dha-formation.html';},1500);
+}
+
+async function init(){
+  const stored=localStorage.getItem('dha_member');
+  if(!stored){window.location.href='dha-connexion.html';return;}
+  member=JSON.parse(stored);
+  document.getElementById('sb-pseudo').textContent=('@'+(member.pseudo||'HUSTLER')).toUpperCase();
+  document.getElementById('topbar-xp').textContent=(member.xp||0)+' XP';
+  if(member.avatar){document.getElementById('sb-avatar').innerHTML='<img src="'+member.avatar+'" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"/>';}
+  try{
+    const res=await fetch(SUPABASE_URL+'/rest/v1/membres?email=eq.'+encodeURIComponent(member.email).replace(/\./g,'%2E')+'&select=xp,xp_semaine',{
+      headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY}
+    });
+    const data=await res.json();
+    if(data&&data.length>0){
+      member.xp=data[0].xp!=null?data[0].xp:member.xp;
+      member.xp_semaine=data[0].xp_semaine!=null?data[0].xp_semaine:member.xp_semaine;
+      localStorage.setItem('dha_member',JSON.stringify(member));
+      document.getElementById('topbar-xp').textContent=member.xp+' XP';
+    }
+  }catch(e){}
+  await loadCompletedActions(member.pseudo||'guest',['bloc_m12_b1','quiz_m12_b1','exercice_m12_b1']);
+  if(completedActions.has('bloc_m12_b1')){document.getElementById('complete-btn').textContent='✅ DÉJÀ TERMINÉ';document.getElementById('complete-btn').disabled=true;}
+  if(completedActions.has('quiz_m12_b1')){document.getElementById('quiz-btn').textContent='✅ QUIZ DÉJÀ FAIT';document.getElementById('quiz-btn').disabled=true;quizDone=true;}
+  if(completedActions.has('exercice_m12_b1')){document.getElementById('exercice-btn').textContent='✅ DÉJÀ VALIDÉ';document.getElementById('exercice-btn').disabled=true;exerciceDone=true;}
+}
+
+init();
+</script>
+</body>
+</html>
