@@ -270,18 +270,19 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
       </div>
     </a>
 
-    <div class="module-card locked" onclick="showLockedModule(11)">
+    <a href="dha-module11.html" class="module-card" style="text-decoration:none;">
       <div class="module-card-inner">
-        <div class="module-num locked">🔒</div>
+        <div class="module-num active" id="num-m11">11</div>
         <div class="module-content">
+          <div class="module-strategy-tag">🔴 STRATÉGIE</div>
           <div class="module-tag">MODULE 11 · RISK</div>
           <div class="module-title">Risk Management</div>
           <div class="module-desc">Calcul des lots, ratio R/R, ne jamais exploser son compte.</div>
-          <div class="module-meta"><div class="module-meta-item">🔒 BIENTÔT</div></div>
+          <div class="module-meta"><div class="module-meta-item">📚 1 Bloc</div><div class="module-meta-item">⚡ 150 XP</div><div class="module-meta-item">⏱️ 20 min</div></div>
         </div>
-        <div class="module-right"><div class="module-badge locked">🔒 BIENTÔT</div></div>
+        <div class="module-right"><div class="module-badge available" id="badge-m11">▶ COMMENCER</div></div>
       </div>
-    </div>
+    </a>
 
     <div class="module-card locked" onclick="showLockedModule(12)">
       <div class="module-card-inner">
@@ -363,7 +364,7 @@ function showLockedModule(n){
 
 async function updateFormationStats(){
   const pseudo=member?member.pseudo||'guest':'guest';
-  const actionKeys=['bloc_m1','bloc_m2_b1','bloc_m3','bloc_m4','bloc_m5','bloc_m7_b1','bloc_m8_b1','bloc_m9_b1','bloc_m10_b1'];
+  const actionKeys=['bloc_m1','bloc_m2_b1','bloc_m3','bloc_m4','bloc_m5','bloc_m7_b1','bloc_m8_b1','bloc_m9_b1','bloc_m10_b1','bloc_m11_b1'];
   let completedSet=new Set();
   try{
     const res=await fetch(SUPABASE_URL+'/rest/v1/xp_historique?membre_pseudo=eq.'+encodeURIComponent(pseudo)+'&action_key=in.('+actionKeys.join(',')+')&select=action_key',{
@@ -378,7 +379,7 @@ async function updateFormationStats(){
   document.getElementById('stat-pct').textContent=pct+'%';
   document.getElementById('progress-fill').style.width=pct+'%';
   document.getElementById('progress-text').textContent=pct+'%';
-  const moduleKeys={m1:'bloc_m1',m2:'bloc_m2_b1',m3:'bloc_m3',m4:'bloc_m4',m5:'bloc_m5',m7:'bloc_m7_b1',m8:'bloc_m8_b1',m9:'bloc_m9_b1',m10:'bloc_m10_b1'};
+  const moduleKeys={m1:'bloc_m1',m2:'bloc_m2_b1',m3:'bloc_m3',m4:'bloc_m4',m5:'bloc_m5',m7:'bloc_m7_b1',m8:'bloc_m8_b1',m9:'bloc_m9_b1',m10:'bloc_m10_b1',m11:'bloc_m11_b1'};
   Object.keys(moduleKeys).forEach(mod=>{
     if(completedSet.has(moduleKeys[mod])){
       const num=document.getElementById('num-'+mod);
