@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>DHA — Module 7 : Order Blocks</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600;700&display=swap" rel="stylesheet"/>
+<style>
+:root{--bg:#050914;--card:#080e1f;--blue:#1E64FF;--cyan:#00D4FF;--gold:#FFD700;--green:#00FF88;--red:#FF4466;--purple:#9D4EDD;--white:#E8F4FF;--dim:rgba(232,244,255,0.5);--border:rgba(30,100,255,0.15);--sidebar-w:240px;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-height:100vh;display:flex;}
+.bg-grid{position:fixed;inset:0;z-index:0;background-image:linear-gradient(rgba(30,100,255,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(30,100,255,0.03) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;}
+.sidebar{position:fixed;left:0;top:0;bottom:0;width:var(--sidebar-w);background:rgba(8,14,31,0.97);border-right:1px solid var(--border);display:flex;flex-direction:column;z-index:100;padding:24px 0;}
+.sidebar-logo{padding:0 24px 24px;border-bottom:1px solid var(--border);margin-bottom:16px;}
+.sidebar-logo-text{font-family:'Orbitron',sans-serif;font-size:28px;font-weight:900;letter-spacing:4px;color:var(--white);text-shadow:0 0 20px rgba(30,100,255,0.6);}
+.sidebar-logo-sub{font-family:'Orbitron',sans-serif;font-size:6px;letter-spacing:3px;color:rgba(0,212,255,0.5);margin-top:2px;}
+.sidebar-section{padding:8px 24px 4px;font-family:'Orbitron',sans-serif;font-size:7px;letter-spacing:3px;color:rgba(255,255,255,0.2);margin-top:8px;}
+.nav-item{display:flex;align-items:center;gap:12px;padding:11px 24px;cursor:pointer;transition:all .2s;font-size:13px;color:var(--dim);text-decoration:none;}
+.nav-item:hover{background:rgba(30,100,255,0.08);color:var(--white);}
+.nav-item.active{background:rgba(30,100,255,0.12);color:var(--cyan);border-right:2px solid var(--cyan);}
+.nav-icon{font-size:16px;width:20px;text-align:center;flex-shrink:0;}
+.sidebar-bottom{margin-top:auto;padding:16px 24px;border-top:1px solid var(--border);}
+.sidebar-member{display:flex;align-items:center;gap:12px;}
+.sidebar-avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--cyan));display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;overflow:hidden;}
+.sidebar-member-name{font-family:'Orbitron',sans-serif;font-size:10px;font-weight:900;color:var(--white);}
+.sidebar-member-rang{font-size:10px;color:var(--dim);margin-top:2px;}
+.main{margin-left:var(--sidebar-w);flex:1;padding:32px;position:relative;z-index:1;max-width:900px;}
+.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:32px;}
+.topbar-title{font-family:'Orbitron',sans-serif;font-size:18px;font-weight:900;color:var(--white);letter-spacing:2px;}
+.topbar-title span{color:var(--cyan);}
+.xp-pill{display:flex;align-items:center;gap:8px;padding:8px 16px;border-radius:99px;background:rgba(255,215,0,0.1);border:1px solid rgba(255,215,0,0.25);}
+.xp-pill-val{font-family:'Orbitron',sans-serif;font-size:12px;font-weight:900;color:var(--gold);}
+.module-header{background:linear-gradient(135deg,#0a1428,#080e1f);border:1px solid rgba(30,100,255,0.25);border-radius:20px;padding:32px;margin-bottom:28px;position:relative;overflow:hidden;}
+.module-header::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--cyan),transparent);}
+.module-glow{position:absolute;top:-60px;right:-60px;width:300px;height:300px;background:radial-gradient(ellipse,rgba(30,100,255,0.15) 0%,transparent 70%);pointer-events:none;}
+.module-tag{font-family:'Orbitron',sans-serif;font-size:8px;letter-spacing:3px;color:var(--cyan);margin-bottom:10px;}
+.module-title{font-family:'Orbitron',sans-serif;font-size:28px;font-weight:900;color:var(--white);margin-bottom:8px;line-height:1.2;}
+.module-desc{font-size:14px;color:var(--dim);line-height:1.7;}
+.module-meta{display:flex;gap:16px;margin-top:20px;flex-wrap:wrap;}
+.module-meta-item{display:flex;align-items:center;gap:6px;font-family:'Orbitron',sans-serif;font-size:8px;letter-spacing:1px;color:var(--dim);padding:6px 12px;border-radius:8px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);}
+.bloc{background:var(--card);border:1px solid var(--border);border-radius:20px;margin-bottom:24px;overflow:hidden;}
+.bloc-header{padding:24px 28px;border-bottom:1px solid rgba(255,255,255,0.05);}
+.bloc-num{font-family:'Orbitron',sans-serif;font-size:8px;letter-spacing:3px;color:var(--cyan);margin-bottom:8px;}
+.bloc-title{font-family:'Orbitron',sans-serif;font-size:18px;font-weight:900;color:var(--white);letter-spacing:1px;}
+.bloc-body{padding:28px;}
+.bloc-text{font-size:15px;color:rgba(232,244,255,0.75);line-height:1.9;margin-bottom:20px;}
+.bloc-text strong{color:var(--cyan);}
+.info-box{padding:16px 20px;border-radius:14px;margin:16px 0;font-size:14px;line-height:1.7;}
+.info-box.cyan{background:rgba(0,212,255,0.06);border-left:3px solid var(--cyan);color:rgba(232,244,255,0.8);}
+.info-box.gold{background:rgba(255,215,0,0.06);border-left:3px solid var(--gold);color:rgba(255,215,0,0.9);}
+.info-box.green{background:rgba(0,255,136,0.06);border-left:3px solid var(--green);color:rgba(0,255,136,0.9);}
+.info-box.red{background:rgba(255,68,102,0.06);border-left:3px solid var(--red);color:rgba(255,68,102,0.9);}
+.quiz-section{background:linear-gradient(135deg,rgba(157,78,221,0.08),rgba(30,100,255,0.05));border:1px solid rgba(157,78,221,0.2);border-radius:16px;padding:24px;margin-top:24px;}
+.quiz-header{display:flex;align-items:center;gap:10px;margin-bottom:20px;}
+.quiz-title{font-family:'Orbitron',sans-serif;font-size:14px;font-weight:900;color:var(--white);letter-spacing:1px;}
+.quiz-xp{margin-left:auto;font-family:'Orbitron',sans-serif;font-size:10px;color:var(--gold);background:rgba(255,215,0,0.1);border:1px solid rgba(255,215,0,0.25);padding:4px 10px;border-radius:6px;}
+.quiz-question{margin-bottom:20px;}
+.quiz-q-num{font-family:'Orbitron',sans-serif;font-size:8px;letter-spacing:2px;color:var(--purple);margin-bottom:8px;}
+.quiz-q-text{font-size:15px;color:var(--white);font-weight:600;margin-bottom:12px;line-height:1.5;}
+.quiz-options{display:flex;flex-direction:column;gap:8px;}
+.quiz-option{padding:12px 16px;border-radius:10px;border:1px solid rgba(255,255,255,0.08);background:rgba(255,255,255,0.03);cursor:pointer;transition:all .2s;font-size:14px;color:var(--dim);display:flex;align-items:center;gap:10px;}
+.quiz-option:hover{border-color:rgba(157,78,221,0.4);background:rgba(157,78,221,0.08);color:var(--white);}
+.quiz-option.correct{border-color:rgba(0,255,136,0.5);background:rgba(0,255,136,0.1);color:var(--green);}
+.quiz-option.wrong{border-color:rgba(255,68,102,0.5);background:rgba(255,68,102,0.1);color:var(--red);}
+.quiz-option-letter{width:24px;height:24px;border-radius:6px;background:rgba(255,255,255,0.06);display:flex;align-items:center;justify-content:center;font-family:'Orbitron',sans-serif;font-size:10px;font-weight:900;flex-shrink:0;}
+.quiz-feedback{display:none;padding:12px 16px;border-radius:10px;font-size:13px;margin-top:10px;line-height:1.6;}
+.quiz-feedback.show{display:block;}
+.quiz-feedback.correct{background:rgba(0,255,136,0.08);border:1px solid rgba(0,255,136,0.2);color:rgba(0,255,136,0.9);}
+.quiz-feedback.wrong{background:rgba(255,68,102,0.08);border:1px solid rgba(255,68,102,0.2);color:rgba(255,68,102,0.9);}
+.quiz-submit{width:100%;padding:14px;border-radius:12px;background:linear-gradient(135deg,var(--purple),#7B2FBE);color:var(--white);font-family:'Orbitron',sans-serif;font-size:11px;font-weight:900;letter-spacing:2px;border:none;cursor:pointer;margin-top:16px;transition:all .2s;}
+.quiz-submit:disabled{opacity:0.5;cursor:not-allowed;}
+.quiz-result{display:none;text-align:center;padding:20px;border-radius:12px;background:rgba(255,215,0,0.06);border:1px solid rgba(255,215,0,0.2);margin-top:16px;}
+.quiz-result.show{display:block;}
+.quiz-result-score{font-family:'Orbitron',sans-serif;font-size:40px;font-weight:900;color:var(--gold);}
+.quiz-result-xp{font-family:'Orbitron',sans-serif;font-size:14px;color:var(--green);margin-top:8px;}
+.exercice-section{background:rgba(0,212,255,0.05);border:1px solid rgba(0,212,255,0.2);border-radius:16px;padding:24px;margin-top:16px;}
+.exercice-title{font-family:'Orbitron',sans-serif;font-size:13px;font-weight:900;color:var(--cyan);letter-spacing:1px;margin-bottom:14px;display:flex;align-items:center;gap:10px;}
+.exercice-desc{font-size:13px;color:rgba(232,244,255,0.7);line-height:1.7;margin-bottom:16px;}
+.ex-chart{position:relative;height:230px;background:#0a0f1e;border-radius:14px;border:1px solid rgba(30,100,255,0.2);margin-bottom:14px;overflow:hidden;}
+.ex-cols{position:absolute;inset:0;display:flex;}
+.ex-col{position:relative;flex:1;height:100%;cursor:pointer;border-right:1px solid rgba(255,255,255,0.02);}
+.ex-col:last-child{border-right:none;}
+.ex-col:hover{background:rgba(0,212,255,0.06);}
+.ex-col.locked{cursor:default;}
+.ex-wick{position:absolute;left:50%;transform:translateX(-50%);width:3px;border-radius:2px;}
+.ex-body{position:absolute;left:50%;transform:translateX(-50%);width:60%;max-width:30px;border-radius:3px;}
+.ex-body.red{background:var(--red);}
+.ex-body.green{background:var(--green);}
+.ex-wick.red{background:var(--red);}
+.ex-wick.green{background:var(--green);}
+.ex-col.selected .ex-body{outline:2px solid var(--gold);outline-offset:2px;}
+.ex-col.correct-reveal .ex-body{outline:2px solid var(--green);outline-offset:2px;box-shadow:0 0 14px rgba(0,255,136,0.6);}
+.ex-hint{font-size:13px;padding:10px 14px;border-radius:10px;margin-bottom:12px;display:none;line-height:1.6;}
+.ex-hint.show{display:block;}
+.ex-hint.wrong{background:rgba(255,68,102,0.08);border:1px solid rgba(255,68,102,0.2);color:rgba(255,68,102,0.9);}
+.ex-hint.correct{background:rgba(0,255,136,0.08);border:1px solid rgba(0,255,136,0.2);color:rgba(0,255,136,0.9);}
+.qcm-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;}
+.qcm-card{background:#0a0f1e;border:2px solid rgba(30,100,255,0.15);border-radius:14px;padding:10px;cursor:pointer;transition:all .2s;}
+.qcm-card:hover{border-color:rgba(0,212,255,0.4);}
+.qcm-card.selected-correct{border-color:var(--green);box-shadow:0 0 14px rgba(0,255,136,0.4);}
+.qcm-card.selected-wrong{border-color:var(--red);box-shadow:0 0 14px rgba(255,68,102,0.3);}
+.qcm-label{text-align:center;font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:1px;color:var(--dim);margin-top:8px;}
+.zone-tray{display:flex;justify-content:center;margin-bottom:14px;}
+.zone-piece{width:70px;height:44px;border:2px dashed var(--gold);border-radius:8px;background:rgba(255,215,0,0.1);cursor:grab;display:flex;align-items:center;justify-content:center;font-family:'Orbitron',sans-serif;font-size:8px;letter-spacing:1px;color:var(--gold);text-align:center;user-select:none;transition:transform .15s;}
+.zone-piece.dragging{cursor:grabbing;opacity:0.8;}
+.zone-piece.placed{border-color:var(--green);background:rgba(0,255,136,0.1);color:var(--green);}
+.zone-piece.placed-wrong{border-color:var(--red);background:rgba(255,68,102,0.1);color:var(--red);}
+.exercice-validate{width:100%;padding:13px;border-radius:12px;background:linear-gradient(135deg,#006644,var(--green));color:#000;font-family:'Orbitron',sans-serif;font-size:11px;font-weight:900;letter-spacing:2px;border:none;cursor:not-allowed;transition:all .2s;opacity:0.4;}
+.exercice-validate.ready{cursor:pointer;opacity:1;}
+.exercice-validate:disabled{opacity:0.5;cursor:not-allowed;}
+.question-box{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:24px;margin-top:16px;}
+.question-box-title{font-family:'Orbitron',sans-serif;font-size:12px;font-weight:900;color:var(--white);letter-spacing:1px;margin-bottom:8px;}
+.question-box-desc{font-size:13px;color:var(--dim);margin-bottom:16px;line-height:1.6;font-style:italic;}
+.question-box-input{width:100%;padding:14px 16px;border-radius:12px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);color:var(--white);font-family:'Exo 2',sans-serif;font-size:14px;outline:none;resize:vertical;min-height:100px;}
+.question-box-input::placeholder{color:rgba(255,255,255,0.2);}
+.question-box-send{width:100%;padding:13px;border-radius:12px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);color:var(--white);font-family:'Orbitron',sans-serif;font-size:10px;font-weight:900;letter-spacing:2px;cursor:pointer;margin-top:10px;}
+.question-box-confirm{display:none;padding:12px;border-radius:10px;background:rgba(0,255,136,0.08);border:1px solid rgba(0,255,136,0.2);font-size:13px;color:var(--green);text-align:center;margin-top:10px;}
+.question-box-confirm.show{display:block;}
+.complete-btn{width:100%;padding:16px;border-radius:14px;background:linear-gradient(135deg,var(--blue),var(--cyan));color:#000;font-family:'Orbitron',sans-serif;font-size:12px;font-weight:900;letter-spacing:2px;border:none;cursor:pointer;margin-top:24px;box-shadow:0 6px 24px rgba(0,212,255,0.3);}
+.complete-btn:disabled{opacity:0.5;cursor:not-allowed;}
+@keyframes xp-pop{0%{opacity:1;transform:translate(-50%,-50%) scale(0.8);}60%{opacity:1;transform:translate(-50%,-80%) scale(1.2);}100%{opacity:0;transform:translate(-50%,-120%) scale(0.9);}}
+@media(max-width:768px){.sidebar{display:none;}.main{margin-left:0;padding:16px;}.qcm-grid{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<div class="bg-grid"></div>
+<aside class="sidebar">
+  <div class="sidebar-logo"><div class="sidebar-logo-text">DHA</div><div class="sidebar-logo-sub">DIGITAL HUSTLER ACADEMY</div></div>
+  <div class="sidebar-section">MAIN</div>
+  <a class="nav-item" href="dha-dashboard.html"><span class="nav-icon">🎮</span> Dashboard</a>
+  <div class="sidebar-section">LEARN</div>
+  <a class="nav-item active" href="dha-formation.html"><span class="nav-icon">📈</span> Formation Trading</a>
+  <a class="nav-item" href="dha-mindset.html"><span class="nav-icon">🧠</span> Mindset</a>
+  <div class="sidebar-section">NETWORK</div>
+  <a class="nav-item" href="dha-squad.html"><span class="nav-icon">👥</span> Mon Squad</a>
+  <a class="nav-item" href="dha-leaderboard.html"><span class="nav-icon">🏆</span> Leaderboard</a>
+  <div class="sidebar-section">EARN</div>
+  <a class="nav-item" href="dha-affiliation.html"><span class="nav-icon">💰</span> Affiliation</a>
+  <div class="sidebar-section">TOOLS</div>
+  <a class="nav-item" href="dha-mentor.html"><span class="nav-icon">📞</span> Appel Mentor</a>
+  <div class="sidebar-bottom">
+    <div class="sidebar-member">
+      <div class="sidebar-avatar" id="sb-avatar">📈</div>
+      <div><div class="sidebar-member-name" id="sb-pseudo">HUSTLER</div><div class="sidebar-member-rang" id="sb-rang">NEW HUSTLER</div></div>
+    </div>
+  </div>
+</aside>
+
+<main class="main">
+  <div class="topbar">
+    <div><div class="topbar-title">MODULE 7 — <span>ORDER BLOCKS</span></div><div style="font-size:12px;color:var(--dim);margin-top:2px;">Repère les zones où les institutions ont placé leurs ordres</div></div>
+    <div class="xp-pill"><span>⚡</span><span class="xp-pill-val" id="topbar-xp">0 XP</span></div>
+  </div>
+
+  <div class="module-header">
+    <div class="module-glow"></div>
+    <div class="module-tag">MODULE 07 · TRADING</div>
+    <div class="module-title">Les Order Blocks<br/>trouver les zones des gros joueurs</div>
+    <div class="module-desc">Les institutions (banques, fonds) ne placent pas leurs ordres n'importe où. Elles laissent une trace sur le graphique — l'Order Block. Apprends à la repérer et tu commences à trader avec la même logique qu'eux.</div>
+    <div class="module-meta">
+      <div class="module-meta-item">📚 Bloc 1 — Order Blocks</div>
+      <div class="module-meta-item">⚡ Jusqu'à 150 XP</div>
+      <div class="module-meta-item">⏱️ 20 min</div>
+    </div>
+  </div>
+
+  <div class="bloc">
+    <div class="bloc-header">
+      <div class="bloc-num">BLOC 01</div>
+      <div class="bloc-title">Les Order Blocks</div>
+    </div>
+    <div class="bloc-body">
+
+      <!-- SECTION 1 : DEFINITION -->
+      <div class="bloc-text">
+        Quand les banques et les gros fonds veulent entrer sur le marché avec des millions d'euros, ils ne peuvent pas juste "acheter" comme toi et moi — leur ordre est trop gros pour être exécuté d'un coup. Ils doivent l'accumuler petit à petit, souvent pendant une phase où le prix a l'air calme ou légèrement à l'inverse du mouvement qui va suivre.<br/><br/>
+        Cette zone où ils ont accumulé leurs ordres, c'est ce qu'on appelle un <strong>Order Block</strong>. Et bonne nouvelle : elle laisse une trace visible sur le graphique.
+      </div>
+
+      <div class="info-box gold">💡 En clair : un Order Block, c'est une zone de prix où les gros acteurs du marché ont posé leurs ordres avant un mouvement fort. C'est un peu leur "signature" sur le graphique.</div>
+
+      <!-- SECTION 2 : OB BULLISH -->
+      <div class="bloc-text" style="margin-top:24px;">
+        Sur un graphique, un Order Block se repère toujours de la même façon : c'est <strong>la dernière bougie avant un mouvement impulsif fort</strong>. Regarde ce schéma :
+      </div>
+
+      <div style="margin:20px 0;border-radius:16px;overflow:hidden;border:1px solid rgba(0,255,136,0.2);">
+      <svg viewBox="0 0 640 260" xmlns="http://www.w3.org/2000/svg" style="width:100%;background:#0a0f1e;">
+        <defs><pattern id="gridm7a" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(255,255,255,0.04)" stroke-width="1"/></pattern></defs>
+        <rect width="640" height="260" fill="url(#gridm7a)"/>
+        <text x="20" y="24" fill="var(--dim)" font-size="10" font-family="Orbitron" letter-spacing="1">ORDER BLOCK BULLISH</text>
+        <!-- petites bougies de derive -->
+        <rect x="45" y="150" width="22" height="20" fill="#FF4466" opacity="0.85"/><line x1="56" y1="140" x2="56" y2="180" stroke="#FF4466" stroke-width="2"/>
+        <rect x="100" y="160" width="22" height="18" fill="#FF4466" opacity="0.85"/><line x1="111" y1="150" x2="111" y2="188" stroke="#FF4466" stroke-width="2"/>
+        <rect x="155" y="168" width="22" height="20" fill="#FF4466" opacity="0.85"/><line x1="166" y1="158" x2="166" y2="198" stroke="#FF4466" stroke-width="2"/>
+        <!-- bougie OB -->
+        <rect x="210" y="178" width="26" height="30" fill="#FF4466" rx="2"/><line x1="223" y1="165" x2="223" y2="218" stroke="#FF4466" stroke-width="3"/>
+        <rect x="185" y="130" width="150" height="18" rx="4" fill="rgba(255,215,0,0.15)"/>
+        <text x="260" y="143" fill="var(--gold)" font-size="10" font-family="Orbitron" font-weight="bold" text-anchor="middle">ORDER BLOCK</text>
+        <!-- zone rectangle -->
+        <rect x="185" y="178" width="420" height="30" fill="rgba(255,215,0,0.08)" stroke="rgba(255,215,0,0.35)" stroke-width="1.5" stroke-dasharray="5,4"/>
+        <!-- mouvement impulsif -->
+        <rect x="270" y="95" width="26" height="85" fill="#00FF88" rx="2"/><line x1="283" y1="85" x2="283" y2="185" stroke="#00FF88" stroke-width="3"/>
+        <rect x="325" y="40" width="26" height="60" fill="#00FF88" rx="2"/><line x1="338" y1="30" x2="338" y2="105" stroke="#00FF88" stroke-width="3"/>
+        <rect x="380" y="15" width="26" height="30" fill="#00FF88" rx="2"/><line x1="393" y1="8" x2="393" y2="48" stroke="#00FF88" stroke-width="3"/>
+        <!-- retour sur zone -->
+        <path d="M 420 25 Q 500 60 540 190" fill="none" stroke="rgba(232,244,255,0.4)" stroke-width="1.5" stroke-dasharray="4,4"/>
+        <rect x="530" y="185" width="26" height="22" fill="#00FF88" rx="2" opacity="0.9"/><line x1="543" y1="178" x2="543" y2="215" stroke="#00FF88" stroke-width="2"/>
+        <path d="M 543 200 L 543 235" stroke="#00FF88" stroke-width="2" marker-end="url(#arrow7a)"/>
+        <defs><marker id="arrow7a" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#00FF88"/></marker></defs>
+        <text x="543" y="248" fill="#00FF88" font-size="9" font-family="Orbitron" text-anchor="middle">REBOND</text>
+      </svg>
+      </div>
+
+      <div class="bloc-text">
+        <strong>Order Block Bullish</strong> = la dernière bougie baissière (rouge) avant une forte poussée haussière. Elle marque l'endroit où les acheteurs institutionnels ont accumulé leurs ordres avant de faire monter le prix.
+      </div>
+
+      <!-- SECTION 3 : OB BEARISH -->
+      <div class="bloc-text" style="margin-top:24px;">
+        Ça marche aussi dans l'autre sens :
+      </div>
+
+      <div style="margin:20px 0;border-radius:16px;overflow:hidden;border:1px solid rgba(255,68,102,0.2);">
+      <svg viewBox="0 0 640 260" xmlns="http://www.w3.org/2000/svg" style="width:100%;background:#0a0f1e;">
+        <defs><pattern id="gridm7b" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(255,255,255,0.04)" stroke-width="1"/></pattern></defs>
+        <rect width="640" height="260" fill="url(#gridm7b)"/>
+        <text x="20" y="24" fill="var(--dim)" font-size="10" font-family="Orbitron" letter-spacing="1">ORDER BLOCK BEARISH</text>
+        <rect x="45" y="90" width="22" height="20" fill="#00FF88" opacity="0.85"/><line x1="56" y1="80" x2="56" y2="120" stroke="#00FF88" stroke-width="2"/>
+        <rect x="100" y="80" width="22" height="18" fill="#00FF88" opacity="0.85"/><line x1="111" y1="70" x2="111" y2="108" stroke="#00FF88" stroke-width="2"/>
+        <rect x="155" y="72" width="22" height="20" fill="#00FF88" opacity="0.85"/><line x1="166" y1="62" x2="166" y2="102" stroke="#00FF88" stroke-width="2"/>
+        <rect x="210" y="52" width="26" height="30" fill="#00FF88" rx="2"/><line x1="223" y1="40" x2="223" y2="92" stroke="#00FF88" stroke-width="3"/>
+        <rect x="185" y="95" width="150" height="18" rx="4" fill="rgba(255,215,0,0.15)"/>
+        <text x="260" y="108" fill="var(--gold)" font-size="10" font-family="Orbitron" font-weight="bold" text-anchor="middle">ORDER BLOCK</text>
+        <rect x="185" y="52" width="420" height="30" fill="rgba(255,215,0,0.08)" stroke="rgba(255,215,0,0.35)" stroke-width="1.5" stroke-dasharray="5,4"/>
+        <rect x="270" y="85" width="26" height="85" fill="#FF4466" rx="2"/><line x1="283" y1="80" x2="283" y2="180" stroke="#FF4466" stroke-width="3"/>
+        <rect x="325" y="165" width="26" height="60" fill="#FF4466" rx="2"/><line x1="338" y1="160" x2="338" y2="235" stroke="#FF4466" stroke-width="3"/>
+        <rect x="380" y="215" width="26" height="30" fill="#FF4466" rx="2"/><line x1="393" y1="208" x2="393" y2="252" stroke="#FF4466" stroke-width="3"/>
+        <path d="M 420 240 Q 500 200 540 75" fill="none" stroke="rgba(232,244,255,0.4)" stroke-width="1.5" stroke-dasharray="4,4"/>
+        <rect x="530" y="58" width="26" height="22" fill="#FF4466" rx="2" opacity="0.9"/><line x1="543" y1="50" x2="543" y2="88" stroke="#FF4466" stroke-width="2"/>
+        <path d="M 543 65 L 543 30" stroke="#FF4466" stroke-width="2" marker-end="url(#arrow7b)"/>
+        <defs><marker id="arrow7b" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#FF4466"/></marker></defs>
+        <text x="543" y="20" fill="#FF4466" font-size="9" font-family="Orbitron" text-anchor="middle">REJET</text>
+      </svg>
+      </div>
+
+      <div class="bloc-text">
+        <strong>Order Block Bearish</strong> = la dernière bougie haussière (verte) avant une forte chute. Même logique, mais pour les vendeurs institutionnels.
+      </div>
+
+      <!-- SECTION 4 : POURQUOI LE PRIX REVIENT -->
+      <div class="bloc-text" style="margin-top:24px;">
+        Tu as remarqué la flèche pointillée sur les deux schémas ? C'est le point le plus important à comprendre.
+      </div>
+
+      <div class="info-box cyan">🎯 Les institutions n'arrivent jamais à placer <strong>tous</strong> leurs ordres d'un coup. Une fois le mouvement lancé, le prix revient souvent sur la zone d'Order Block pour que les gros joueurs puissent finir de remplir leurs ordres restants — avant de repartir dans la direction du mouvement initial. C'est pour ça que cette zone reste importante même après le mouvement.</div>
+
+      <!-- SECTION 5 : VALIDITE -->
+      <div class="bloc-text" style="margin-top:24px;">
+        Attention, toutes les bougies rouges ou vertes ne sont pas des Order Blocks. Pour qu'une zone soit valide, il faut une seule condition :
+      </div>
+
+      <div class="info-box green">✅ La bougie doit être suivie d'un <strong>mouvement impulsif fort et clair</strong> dans une direction. Pas une petite dérive, pas une consolidation molle — un vrai déplacement net, avec des bougies qui s'enchaînent dans le même sens.</div>
+
+      <div class="bloc-text">
+        Si après ta bougie le prix stagne, hésite, ou avance mollement — ce n'est pas un Order Block valide. C'est ce qu'on va s'entraîner à repérer dans les exercices juste en dessous.
+      </div>
+
+      <!-- QUIZ -->
+      <div class="quiz-section">
+        <div class="quiz-header"><div style="font-size:22px;">🧠</div><div class="quiz-title">QUIZ — TESTE TES CONNAISSANCES</div><div class="quiz-xp">+10 XP / bonne réponse</div></div>
+
+        <div class="quiz-question" id="q1"><div class="quiz-q-num">QUESTION 1 / 5</div><div class="quiz-q-text">Qu'est-ce qu'un Order Block ?</div><div class="quiz-options">
+          <div class="quiz-option" onclick="selectOption(this,'q1','A')"><div class="quiz-option-letter">A</div>Une zone où les institutions ont placé leurs gros ordres</div>
+          <div class="quiz-option" onclick="selectOption(this,'q1','B')"><div class="quiz-option-letter">B</div>Une ligne qui indique le sens de la tendance générale</div>
+          <div class="quiz-option" onclick="selectOption(this,'q1','C')"><div class="quiz-option-letter">C</div>Un indicateur technique basé sur le volume moyen</div>
+          <div class="quiz-option" onclick="selectOption(this,'q1','D')"><div class="quiz-option-letter">D</div>Une bougie qui annonce toujours un retournement</div>
+        </div><div class="quiz-feedback" id="fb-q1"></div></div>
+
+        <div class="quiz-question" id="q2"><div class="quiz-q-num">QUESTION 2 / 5</div><div class="quiz-q-text">Quelle bougie identifie-t-on comme Order Block Bullish ?</div><div class="quiz-options">
+          <div class="quiz-option" onclick="selectOption(this,'q2','A')"><div class="quiz-option-letter">A</div>La première bougie haussière après une consolidation</div>
+          <div class="quiz-option" onclick="selectOption(this,'q2','B')"><div class="quiz-option-letter">B</div>La dernière bougie baissière avant une forte hausse</div>
+          <div class="quiz-option" onclick="selectOption(this,'q2','C')"><div class="quiz-option-letter">C</div>La bougie avec la plus grosse mèche du graphique</div>
+          <div class="quiz-option" onclick="selectOption(this,'q2','D')"><div class="quiz-option-letter">D</div>La bougie qui clôture au plus haut de la séance</div>
+        </div><div class="quiz-feedback" id="fb-q2"></div></div>
+
+        <div class="quiz-question" id="q3"><div class="quiz-q-num">QUESTION 3 / 5</div><div class="quiz-q-text">Quelle bougie identifie-t-on comme Order Block Bearish ?</div><div class="quiz-options">
+          <div class="quiz-option" onclick="selectOption(this,'q3','A')"><div class="quiz-option-letter">A</div>La bougie qui clôture au plus bas de la séance</div>
+          <div class="quiz-option" onclick="selectOption(this,'q3','B')"><div class="quiz-option-letter">B</div>La première bougie baissière après une consolidation</div>
+          <div class="quiz-option" onclick="selectOption(this,'q3','C')"><div class="quiz-option-letter">C</div>La dernière bougie haussière avant une forte baisse</div>
+          <div class="quiz-option" onclick="selectOption(this,'q3','D')"><div class="quiz-option-letter">D</div>La bougie avec la plus grosse mèche du graphique</div>
+        </div><div class="quiz-feedback" id="fb-q3"></div></div>
+
+        <div class="quiz-question" id="q4"><div class="quiz-q-num">QUESTION 4 / 5</div><div class="quiz-q-text">Pourquoi le prix retourne-t-il souvent sur un Order Block ?</div><div class="quiz-options">
+          <div class="quiz-option" onclick="selectOption(this,'q4','A')"><div class="quiz-option-letter">A</div>Pour que les institutions finissent leurs ordres restants</div>
+          <div class="quiz-option" onclick="selectOption(this,'q4','B')"><div class="quiz-option-letter">B</div>Parce que les débutants placent leurs stops à cet endroit</div>
+          <div class="quiz-option" onclick="selectOption(this,'q4','C')"><div class="quiz-option-letter">C</div>Parce que le prix suit toujours une moyenne mobile</div>
+          <div class="quiz-option" onclick="selectOption(this,'q4','D')"><div class="quiz-option-letter">D</div>Parce que c'est une règle fixe du marché</div>
+        </div><div class="quiz-feedback" id="fb-q4"></div></div>
+
+        <div class="quiz-question" id="q5"><div class="quiz-q-num">QUESTION 5 / 5</div><div class="quiz-q-text">Qu'est-ce qui rend un Order Block valide ?</div><div class="quiz-options">
+          <div class="quiz-option" onclick="selectOption(this,'q5','A')"><div class="quiz-option-letter">A</div>Il doit contenir trois bougies de taille identique</div>
+          <div class="quiz-option" onclick="selectOption(this,'q5','B')"><div class="quiz-option-letter">B</div>Il doit se former uniquement en unité de temps 1 heure</div>
+          <div class="quiz-option" onclick="selectOption(this,'q5','C')"><div class="quiz-option-letter">C</div>Il doit être suivi d'un mouvement impulsif fort et clair</div>
+          <div class="quiz-option" onclick="selectOption(this,'q5','D')"><div class="quiz-option-letter">D</div>Il doit être de la même taille que la bougie précédente</div>
+        </div><div class="quiz-feedback" id="fb-q5"></div></div>
+
+        <button class="quiz-submit" id="quiz-btn" onclick="submitQuiz()">✓ VALIDER MES RÉPONSES</button>
+        <div class="quiz-result" id="quiz-result"><div class="quiz-result-score" id="quiz-score">0/5</div><div style="font-size:14px;color:var(--dim);margin-top:8px;" id="quiz-text"></div><div class="quiz-result-xp" id="quiz-xp-text"></div></div>
+      </div>
+
+      <!-- EXERCICE 1 : CLIC -->
+      <div class="exercice-section">
+        <div class="exercice-title"><span style="font-size:22px;">🖱️</span> EXERCICE 1 — CLIQUE SUR L'ORDER BLOCK — +25 XP</div>
+        <div class="exercice-desc">Un mouvement haussier fort se prépare. Clique sur la bougie qui représente l'Order Block Bullish.</div>
+        <div class="ex-hint" id="ex1-hint"></div>
+        <div class="ex-chart">
+          <div class="ex-cols" id="ex1-cols"></div>
+        </div>
+        <button class="exercice-validate" id="ex1-btn" disabled>✅ EXERCICE 1 VALIDÉ</button>
+      </div>
+
+      <!-- EXERCICE 2 : QCM VISUEL -->
+      <div class="exercice-section">
+        <div class="exercice-title"><span style="font-size:22px;">👁️</span> EXERCICE 2 — REPÈRE LE BON GRAPHIQUE — +25 XP</div>
+        <div class="exercice-desc">Un seul de ces 4 graphiques montre un Order Block valide (bougie marquée en jaune suivie d'un vrai mouvement impulsif). Clique dessus.</div>
+        <div class="ex-hint" id="ex2-hint"></div>
+        <div class="qcm-grid" id="ex2-grid"></div>
+        <button class="exercice-validate" id="ex2-btn" disabled>✅ EXERCICE 2 VALIDÉ</button>
+      </div>
+
+      <!-- EXERCICE 3 : DRAG & DROP -->
+      <div class="exercice-section">
+        <div class="exercice-title"><span style="font-size:22px;">✋</span> EXERCICE 3 — PLACE LA ZONE — +25 XP</div>
+        <div class="exercice-desc">Fais glisser la zone jaune ci-dessous et dépose-la sur la bonne bougie du graphique.</div>
+        <div class="ex-hint" id="ex3-hint"></div>
+        <div class="ex-chart">
+          <div class="ex-cols" id="ex3-cols"></div>
+        </div>
+        <div class="zone-tray"><div class="zone-piece" id="ex3-zone">ZONE<br/>OB</div></div>
+        <button class="exercice-validate" id="ex3-btn" disabled>✅ EXERCICE 3 VALIDÉ</button>
+      </div>
+
+      <!-- QUESTION BOX -->
+      <div class="question-box">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;"><div style="font-size:22px;">💬</div><div class="question-box-title">TU AS UNE QUESTION ?</div></div>
+        <div class="question-box-desc">"Pas de question bête ici. Si quelque chose n'est pas clair, pose ta question — on est là pour apprendre ensemble. 🙌"</div>
+        <textarea class="question-box-input" id="question-input" placeholder="Écris ta question ici..."></textarea>
+        <button class="question-box-send" onclick="sendQuestion()">📩 ENVOYER MA QUESTION</button>
+        <div class="question-box-confirm" id="question-confirm">✅ Question envoyée ! On te répond très vite. 🔥</div>
+      </div>
+
+      <button class="complete-btn" id="complete-btn" onclick="completeBloc()">▶ TERMINER LE BLOC 1 — CONTINUER</button>
+    </div>
+  </div>
+</main>
+
+<script>
+const SUPABASE_URL='https://kdetwppxsfoagyndrlzr.supabase.co';
+const SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtkZXR3cHB4c2ZvYWd5bmRybHpyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzcyMzM3NjQsImV4cCI6MjA5MjgwOTc2NH0.OodaFQKEHcncDYdO6uM121NAUbyxD4UxpptSjzzZOi0';
+const FORMSPREE='https://formspree.io/f/mjgjrojb';
+function getKey(k){const m=JSON.parse(localStorage.getItem('dha_member')||'{}');return 'dha_'+(m.pseudo||'guest')+'_'+k;}
+let completedActions=new Set();
+function todayISO(){return new Date().toISOString().split('T')[0];}
+async function loadCompletedActions(pseudo,keys){
+  try{
+    const res=await fetch(SUPABASE_URL+'/rest/v1/xp_historique?membre_pseudo=eq.'+encodeURIComponent(pseudo)+'&action_key=in.('+keys.join(',')+')&select=action_key',{
+      headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY}
+    });
+    const data=await res.json();
+    (data||[]).forEach(r=>completedActions.add(r.action_key));
+  }catch(e){}
+}
+async function awardXP(actionKey,amount,raison){
+  if(!member)return false;
+  if(completedActions.has(actionKey))return false;
+  completedActions.add(actionKey);
+  member.xp=(member.xp||0)+amount;
+  member.xp_semaine=(member.xp_semaine||0)+amount;
+  localStorage.setItem('dha_member',JSON.stringify(member));
+  document.getElementById('topbar-xp').textContent=member.xp+' XP';
+  const flash=document.createElement('div');
+  flash.textContent='+'+amount+' XP ⚡';
+  flash.style.cssText='position:fixed;top:40%;left:60%;transform:translate(-50%,-50%);font-family:Orbitron,sans-serif;font-size:36px;font-weight:900;color:#FFD700;text-shadow:0 0 30px rgba(255,215,0,0.8);z-index:9999;pointer-events:none;animation:xp-pop .9s ease forwards;';
+  document.body.appendChild(flash);setTimeout(()=>flash.remove(),900);
+  try{
+    const patchRes=await fetch(SUPABASE_URL+'/rest/v1/membres?email=eq.'+encodeURIComponent(member.email).replace(/\./g,'%2E'),{
+      method:'PATCH',
+      headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY,'Prefer':'return=representation'},
+      body:JSON.stringify({xp:member.xp,xp_semaine:member.xp_semaine})
+    });
+    if(!patchRes.ok){console.error('Echec PATCH membres.xp:',patchRes.status,await patchRes.text());showSaveError();}
+    else{const patchData=await patchRes.json();if(!patchData||patchData.length===0){console.error('PATCH membres.xp: aucune ligne mise a jour');showSaveError();}}
+    const postRes=await fetch(SUPABASE_URL+'/rest/v1/xp_historique',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY},
+      body:JSON.stringify({membre_pseudo:member.pseudo||'guest',xp_gagne:amount,raison:raison,action_key:actionKey})
+    });
+    if(!postRes.ok)console.error('Echec POST xp_historique:',postRes.status,await postRes.text());
+  }catch(e){console.error('Erreur reseau awardXP:',e);showSaveError();}
+  return true;
+}
+function showSaveError(){
+  if(document.getElementById('xp-save-error'))return;
+  const banner=document.createElement('div');
+  banner.id='xp-save-error';
+  banner.textContent='\u26a0\ufe0f Erreur de sauvegarde XP - ouvre la console (F12) et envoie la capture au support';
+  banner.style.cssText='position:fixed;top:0;left:0;right:0;background:#FF4466;color:#fff;text-align:center;padding:10px;font-family:Orbitron,sans-serif;font-size:11px;font-weight:900;z-index:99999;';
+  document.body.appendChild(banner);
+}
+let member=null;
+let quizAnswers={q1:null,q2:null,q3:null,q4:null,q5:null};
+let quizDone=false;
+
+const correctAnswers={q1:'A',q2:'B',q3:'C',q4:'A',q5:'C'};
+const feedbacks={
+  q1:{A:'✅ Exact ! C\'est la zone où les institutions accumulent leurs gros ordres.',wrong:'❌ Un Order Block, c\'est la zone où les institutions ont placé leurs gros ordres.'},
+  q2:{B:'✅ Parfait ! La dernière bougie baissière avant la hausse marque l\'OB Bullish.',wrong:'❌ L\'OB Bullish, c\'est la dernière bougie baissière avant une forte hausse.'},
+  q3:{C:'✅ Exact ! La dernière bougie haussière avant la baisse marque l\'OB Bearish.',wrong:'❌ L\'OB Bearish, c\'est la dernière bougie haussière avant une forte baisse.'},
+  q4:{A:'✅ Parfait ! Les institutions reviennent finir de remplir leurs ordres restants.',wrong:'❌ Le prix revient sur l\'OB pour que les institutions finissent leurs ordres restants.'},
+  q5:{C:'✅ Exact ! Sans mouvement impulsif fort après, ce n\'est pas un OB valide.',wrong:'❌ Un OB valide doit être suivi d\'un mouvement impulsif fort et clair.'}
+};
+
+function selectOption(el,qId,letter){
+  if(quizDone)return;
+  const opts=el.closest('.quiz-options').querySelectorAll('.quiz-option');
+  opts.forEach(o=>{o.style.borderColor='';o.style.background='';o.style.color='';});
+  el.style.borderColor='rgba(157,78,221,0.5)';el.style.background='rgba(157,78,221,0.12)';el.style.color='var(--white)';
+  quizAnswers[qId]=letter;
+}
+function submitQuiz(){
+  if(quizDone||completedActions.has('quiz_m7_b1'))return;
+  if(Object.values(quizAnswers).filter(v=>v===null).length>0){alert('Réponds à toutes les questions !');return;}
+  quizDone=true;
+  let score=0;
+  Object.keys(quizAnswers).forEach(qId=>{
+    const ans=quizAnswers[qId];const correct=correctAnswers[qId];
+    const opts=document.getElementById(qId).querySelectorAll('.quiz-option');
+    opts.forEach(o=>{o.onclick=null;const letter=o.querySelector('.quiz-option-letter').textContent;if(letter===correct)o.classList.add('correct');else if(letter===ans&&ans!==correct)o.classList.add('wrong');});
+    const fb=document.getElementById('fb-'+qId);
+    if(ans===correct){score++;fb.textContent=feedbacks[qId][correct];fb.className='quiz-feedback show correct';}
+    else{fb.textContent=feedbacks[qId].wrong;fb.className='quiz-feedback show wrong';}
+  });
+  const xpEarned=score*10;
+  document.getElementById('quiz-btn').disabled=true;document.getElementById('quiz-btn').textContent='✅ QUIZ VALIDÉ';
+  const result=document.getElementById('quiz-result');result.classList.add('show');
+  document.getElementById('quiz-score').textContent=score+'/5';
+  document.getElementById('quiz-text').textContent=score===5?'Parfait ! Tu as tout compris ! 🔥':score>=3?'Bon travail ! Relis les points manqués.':'Continue à apprendre — relis le bloc.';
+  document.getElementById('quiz-xp-text').textContent='+'+xpEarned+' XP gagnés !';
+  if(xpEarned>0)awardXP('quiz_m7_b1',xpEarned,'🧠 Quiz Module 7 ('+score+'/5)');
+}
+
+/* ============ EXERCICE 1 : CLIC ============ */
+const ex1Candles=[
+  {red:1,bTop:110,bH:25,wTop:100,wH:45},
+  {red:0,bTop:100,bH:20,wTop:90,wH:40},
+  {red:1,bTop:115,bH:22,wTop:105,wH:42},
+  {red:0,bTop:105,bH:18,wTop:95,wH:38},
+  {red:1,bTop:120,bH:35,wTop:105,wH:65},
+  {red:0,bTop:55,bH:65,wTop:45,wH:85},
+  {red:0,bTop:20,bH:55,wTop:10,wH:75},
+  {red:0,bTop:5,bH:35,wTop:0,wH:45}
+];
+const ex1Correct=4;
+let ex1Done=false,ex1Attempts=0;
+function renderCandles(containerId,data,onClickFn){
+  const el=document.getElementById(containerId);
+  el.innerHTML='';
+  data.forEach((c,i)=>{
+    const col=document.createElement('div');
+    col.className='ex-col';col.dataset.i=i;
+    const color=c.red?'red':'green';
+    col.innerHTML='<div class="ex-wick '+color+'" style="top:'+c.wTop+'px;height:'+c.wH+'px;"></div><div class="ex-body '+color+'" style="top:'+c.bTop+'px;height:'+c.bH+'px;"></div>';
+    if(onClickFn)col.addEventListener('click',()=>onClickFn(i,col));
+    el.appendChild(col);
+  });
+}
+renderCandles('ex1-cols',ex1Candles,function(i,col){
+  if(ex1Done)return;
+  if(i===ex1Correct){
+    ex1Done=true;
+    col.classList.add('correct-reveal');
+    document.querySelectorAll('#ex1-cols .ex-col').forEach(c=>c.classList.add('locked'));
+    const hint=document.getElementById('ex1-hint');hint.className='ex-hint show correct';hint.textContent='✅ Exact ! C\'est la dernière bougie rouge juste avant l\'explosion haussière.';
+    const btn=document.getElementById('ex1-btn');btn.disabled=false;btn.classList.add('ready');
+    btn.onclick=function(){if(completedActions.has('exercice1_m7_b1'))return;btn.disabled=true;btn.textContent='✅ EXERCICE 1 VALIDÉ !';awardXP('exercice1_m7_b1',25,'💪 Exercice 1 Module 7');};
+  }else{
+    ex1Attempts++;
+    const hint=document.getElementById('ex1-hint');hint.className='ex-hint show wrong';
+    hint.textContent='❌ Regarde juste avant le mouvement fort — quelle est la dernière bougie rouge avant que ça explose vers le haut ?';
+  }
+});
+
+/* ============ EXERCICE 2 : QCM VISUEL ============ */
+function miniChartSVG(kind){
+  // kind: 'correct' | 'no_impulse' | 'gradual' | 'wrong_candle'
+  const w=260,h=150;
+  let candles=[];
+  if(kind==='correct'){
+    candles=[{r:1,t:70,h:14},{r:1,t:75,h:12},{r:1,t:85,h:18,mark:1},{r:0,t:40,h:45},{r:0,t:10,h:30},{r:0,t:0,h:10}];
+  }else if(kind==='no_impulse'){
+    candles=[{r:1,t:70,h:14},{r:1,t:75,h:12},{r:1,t:85,h:18,mark:1},{r:0,t:78,h:10},{r:1,t:80,h:12},{r:0,t:76,h:14}];
+  }else if(kind==='gradual'){
+    candles=[{r:1,t:70,h:14},{r:1,t:75,h:12},{r:1,t:85,h:18,mark:1},{r:0,t:78,h:12},{r:0,t:70,h:12},{r:0,t:62,h:12}];
+  }else if(kind==='wrong_candle'){
+    candles=[{r:0,t:95,h:20},{r:0,t:60,h:35},{r:0,t:20,h:30,mark:1},{r:0,t:5,h:15},{r:1,t:8,h:10},{r:0,t:2,h:8}];
+  }
+  const gap=w/candles.length;
+  let svg='<svg viewBox="0 0 '+w+' '+h+'" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block;background:#0a0f1e;border-radius:8px;">';
+  candles.forEach((c,i)=>{
+    const x=gap*i+gap/2;
+    const color=c.r?'#FF4466':'#00FF88';
+    if(c.mark){svg+='<rect x="'+(x-16)+'" y="'+(c.t-4)+'" width="32" height="'+(c.h+8)+'" fill="none" stroke="#FFD700" stroke-width="2" stroke-dasharray="3,2" rx="4"/>';}
+    svg+='<rect x="'+(x-8)+'" y="'+c.t+'" width="16" height="'+c.h+'" fill="'+color+'" rx="2"/>';
+    svg+='<line x1="'+x+'" y1="'+(c.t-8)+'" x2="'+x+'" y2="'+(c.t+c.h+8)+'" stroke="'+color+'" stroke-width="2"/>';
+  });
+  svg+='</svg>';
+  return svg;
+}
+const ex2Options=[
+  {kind:'gradual',label:'GRAPHIQUE B',correct:false},
+  {kind:'correct',label:'GRAPHIQUE A',correct:true},
+  {kind:'wrong_candle',label:'GRAPHIQUE C',correct:false},
+  {kind:'no_impulse',label:'GRAPHIQUE D',correct:false}
+];
+let ex2Done=false;
+(function renderEx2(){
+  const grid=document.getElementById('ex2-grid');
+  ex2Options.forEach((opt,idx)=>{
+    const card=document.createElement('div');
+    card.className='qcm-card';
+    card.innerHTML=miniChartSVG(opt.kind)+'<div class="qcm-label">'+opt.label+'</div>';
+    card.addEventListener('click',()=>{
+      if(ex2Done)return;
+      if(opt.correct){
+        ex2Done=true;
+        card.classList.add('selected-correct');
+        const hint=document.getElementById('ex2-hint');hint.className='ex-hint show correct';hint.textContent='✅ Exact ! Bougie marquée suivie d\'un vrai mouvement impulsif net dans une direction.';
+        const btn=document.getElementById('ex2-btn');btn.disabled=false;btn.classList.add('ready');
+        btn.onclick=function(){if(completedActions.has('exercice2_m7_b1'))return;btn.disabled=true;btn.textContent='✅ EXERCICE 2 VALIDÉ !';awardXP('exercice2_m7_b1',25,'💪 Exercice 2 Module 7');};
+      }else{
+        card.classList.add('selected-wrong');
+        setTimeout(()=>card.classList.remove('selected-wrong'),700);
+        const hint=document.getElementById('ex2-hint');hint.className='ex-hint show wrong';hint.textContent='❌ Pas celui-là — regarde si le mouvement après la bougie marquée est vraiment impulsif et net.';
+      }
+    });
+    grid.appendChild(card);
+  });
+})();
+
+/* ============ EXERCICE 3 : DRAG & DROP ============ */
+const ex3Candles=[
+  {red:1,bTop:105,bH:24,wTop:95,wH:44},
+  {red:0,bTop:95,bH:20,wTop:85,wH:40},
+  {red:1,bTop:112,bH:22,wTop:102,wH:42},
+  {red:0,bTop:100,bH:18,wTop:90,wH:38},
+  {red:1,bTop:118,bH:34,wTop:103,wH:64},
+  {red:0,bTop:50,bH:68,wTop:40,wH:88},
+  {red:0,bTop:18,bH:52,wTop:8,wH:72},
+  {red:0,bTop:4,bH:32,wTop:0,wH:42}
+];
+const ex3Correct=4;
+let ex3Done=false;
+renderCandles('ex3-cols',ex3Candles,null);
+
+(function setupDrag(){
+  const zone=document.getElementById('ex3-zone');
+  const chart=document.getElementById('ex3-cols');
+  let dragging=false;
+  let startX=0,startY=0,origLeft=0,origTop=0;
+  let originalParent=zone.parentElement;
+  zone.style.position='relative';
+
+  function pointerDown(e){
+    if(ex3Done)return;
+    dragging=true;
+    zone.classList.add('dragging');
+    const rect=zone.getBoundingClientRect();
+    zone.style.position='fixed';
+    zone.style.left=rect.left+'px';
+    zone.style.top=rect.top+'px';
+    zone.style.zIndex=9999;
+    document.body.appendChild(zone);
+    const clientX=e.touches?e.touches[0].clientX:e.clientX;
+    const clientY=e.touches?e.touches[0].clientY:e.clientY;
+    startX=clientX-rect.left;startY=clientY-rect.top;
+    e.preventDefault();
+  }
+  function pointerMove(e){
+    if(!dragging)return;
+    const clientX=e.touches?e.touches[0].clientX:e.clientX;
+    const clientY=e.touches?e.touches[0].clientY:e.clientY;
+    zone.style.left=(clientX-startX)+'px';
+    zone.style.top=(clientY-startY)+'px';
+  }
+  function pointerUp(e){
+    if(!dragging)return;
+    dragging=false;
+    zone.classList.remove('dragging');
+    const zRect=zone.getBoundingClientRect();
+    const zCenterX=zRect.left+zRect.width/2;
+    const zCenterY=zRect.top+zRect.height/2;
+    const chartRect=chart.getBoundingClientRect();
+    const overChart=zCenterX>=chartRect.left&&zCenterX<=chartRect.right&&zCenterY>=chartRect.top&&zCenterY<=chartRect.bottom;
+    if(overChart){
+      const relX=zCenterX-chartRect.left;
+      const colWidth=chartRect.width/ex3Candles.length;
+      const idx=Math.min(ex3Candles.length-1,Math.max(0,Math.floor(relX/colWidth)));
+      if(idx===ex3Correct){
+        ex3Done=true;
+        zone.classList.add('placed');
+        zone.style.position='absolute';
+        zone.style.left=(idx*colWidth+colWidth/2-35)+'px';
+        zone.style.top='95px';
+        zone.style.zIndex=5;
+        chart.appendChild(zone);
+        const hint=document.getElementById('ex3-hint');hint.className='ex-hint show correct';hint.textContent='✅ Parfait ! Zone placée pile sur l\'Order Block.';
+        const btn=document.getElementById('ex3-btn');btn.disabled=false;btn.classList.add('ready');
+        btn.onclick=function(){if(completedActions.has('exercice3_m7_b1'))return;btn.disabled=true;btn.textContent='✅ EXERCICE 3 VALIDÉ !';awardXP('exercice3_m7_b1',25,'💪 Exercice 3 Module 7');};
+        return;
+      }else{
+        zone.classList.add('placed-wrong');
+        setTimeout(()=>zone.classList.remove('placed-wrong'),700);
+        const hint=document.getElementById('ex3-hint');hint.className='ex-hint show wrong';hint.textContent='❌ Pas la bonne bougie — cherche la dernière rouge juste avant le grand mouvement vert.';
+      }
+    }
+    resetZone();
+  }
+  function resetZone(){
+    zone.style.position='relative';
+    zone.style.left='';zone.style.top='';zone.style.zIndex='';
+    document.querySelector('.zone-tray').appendChild(zone);
+  }
+  zone.addEventListener('mousedown',pointerDown);
+  zone.addEventListener('touchstart',pointerDown,{passive:false});
+  document.addEventListener('mousemove',pointerMove);
+  document.addEventListener('touchmove',pointerMove,{passive:false});
+  document.addEventListener('mouseup',pointerUp);
+  document.addEventListener('touchend',pointerUp);
+})();
+
+function sendQuestion(){
+  const q=document.getElementById('question-input').value.trim();
+  if(!q){alert('Écris ta question d\'abord !');return;}
+  fetch(FORMSPREE,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({sujet:'Question Module 7 Bloc 1',question:q,membre:member?member.email:'inconnu'})});
+  document.getElementById('question-input').value='';
+  document.getElementById('question-confirm').classList.add('show');
+}
+
+async function completeBloc(){
+  if(completedActions.has('bloc_m7_b1')){alert('Tu as déjà terminé ce module ! 💪');return;}
+  document.getElementById('complete-btn').textContent='✅ BLOC 1 TERMINÉ !';
+  document.getElementById('complete-btn').disabled=true;
+  await awardXP('bloc_m7_b1',25,'📚 Bloc terminé — Module 7');
+  await awardXP('quete_bloc_'+todayISO(),50,'📚 Finir un module (quête du jour)');
+  setTimeout(()=>{window.location.href='dha-formation.html';},1500);
+}
+
+async function init(){
+  const stored=localStorage.getItem('dha_member');
+  if(!stored){window.location.href='dha-connexion.html';return;}
+  member=JSON.parse(stored);
+  document.getElementById('sb-pseudo').textContent=('@'+(member.pseudo||'HUSTLER')).toUpperCase();
+  document.getElementById('topbar-xp').textContent=(member.xp||0)+' XP';
+  if(member.avatar){document.getElementById('sb-avatar').innerHTML='<img src="'+member.avatar+'" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"/>';}
+  try{
+    const res=await fetch(SUPABASE_URL+'/rest/v1/membres?email=eq.'+encodeURIComponent(member.email).replace(/\./g,'%2E')+'&select=xp,xp_semaine',{
+      headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY}
+    });
+    const data=await res.json();
+    if(data&&data.length>0){
+      member.xp=data[0].xp!=null?data[0].xp:member.xp;
+      member.xp_semaine=data[0].xp_semaine!=null?data[0].xp_semaine:member.xp_semaine;
+      localStorage.setItem('dha_member',JSON.stringify(member));
+      document.getElementById('topbar-xp').textContent=member.xp+' XP';
+    }
+  }catch(e){}
+  await loadCompletedActions(member.pseudo||'guest',['bloc_m7_b1','quiz_m7_b1','exercice1_m7_b1','exercice2_m7_b1','exercice3_m7_b1']);
+  if(completedActions.has('bloc_m7_b1')){document.getElementById('complete-btn').textContent='✅ DÉJÀ TERMINÉ';document.getElementById('complete-btn').disabled=true;}
+  if(completedActions.has('quiz_m7_b1')){document.getElementById('quiz-btn').textContent='✅ QUIZ DÉJÀ FAIT';document.getElementById('quiz-btn').disabled=true;quizDone=true;}
+  if(completedActions.has('exercice1_m7_b1')){ex1Done=true;const btn=document.getElementById('ex1-btn');btn.disabled=true;btn.textContent='✅ DÉJÀ VALIDÉ';}
+  if(completedActions.has('exercice2_m7_b1')){ex2Done=true;const btn=document.getElementById('ex2-btn');btn.disabled=true;btn.textContent='✅ DÉJÀ VALIDÉ';}
+  if(completedActions.has('exercice3_m7_b1')){ex3Done=true;const btn=document.getElementById('ex3-btn');btn.disabled=true;btn.textContent='✅ DÉJÀ VALIDÉ';}
+}
+
+init();
+</script>
+</body>
+</html>
