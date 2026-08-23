@@ -66,6 +66,7 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
 .module-badge.available{background:rgba(30,100,255,0.15);color:var(--cyan);border:1px solid rgba(30,100,255,0.3);}
 .module-badge.completed{background:rgba(0,255,136,0.15);color:var(--green);border:1px solid rgba(0,255,136,0.3);}
 .module-badge.locked{background:rgba(255,255,255,0.05);color:var(--dim);border:1px solid rgba(255,255,255,0.08);}
+.module-strategy-tag{display:inline-block;font-family:'Orbitron',sans-serif;font-size:7px;letter-spacing:2px;color:var(--red);background:rgba(255,68,102,0.1);border:1px solid rgba(255,68,102,0.3);padding:3px 8px;border-radius:6px;margin-bottom:6px;}
 @media(max-width:768px){.sidebar{display:none;}.main{margin-left:0;padding:16px;}.module-card-inner{flex-wrap:wrap;}.module-right{align-items:flex-start;}}
 
 /* ── MOBILE MENU ── */
@@ -175,6 +176,7 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
       <div class="module-card-inner">
         <div class="module-num active" id="num-m4">04</div>
         <div class="module-content">
+          <div class="module-strategy-tag">🔴 STRATÉGIE</div>
           <div class="module-tag">MODULE 04 · ANALYSE</div>
           <div class="module-title">Les tendances</div>
           <div class="module-desc">High, Low, direction du marché — lire la tendance à l'œil nu.</div>
@@ -188,6 +190,7 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
       <div class="module-card-inner">
         <div class="module-num active" id="num-m5">05</div>
         <div class="module-content">
+          <div class="module-strategy-tag">🔴 STRATÉGIE</div>
           <div class="module-tag">MODULE 05 · STRUCTURE</div>
           <div class="module-title">BOS & CHOCH</div>
           <div class="module-desc">Break of Structure et Change of Character — continuation et retournement.</div>
@@ -201,6 +204,7 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
       <div class="module-card-inner">
         <div class="module-num active" id="num-m6">06</div>
         <div class="module-content">
+          <div class="module-strategy-tag">🔴 STRATÉGIE</div>
           <div class="module-tag">MODULE 06 · PROP FIRM</div>
           <div class="module-title">Prop Firm</div>
           <div class="module-desc">Trade avec un gros capital sans risquer le tien — FTMO et le système des prop firms.</div>
@@ -210,23 +214,25 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
       </div>
     </a>
 
-    <div class="module-card locked" onclick="showLockedModule(7)">
+    <a class="module-card" href="dha-module7.html">
       <div class="module-card-inner">
-        <div class="module-num locked">🔒</div>
+        <div class="module-num active" id="num-m7">07</div>
         <div class="module-content">
+          <div class="module-strategy-tag">🔴 STRATÉGIE</div>
           <div class="module-tag">MODULE 07 · ZONES</div>
           <div class="module-title">Order Blocks</div>
           <div class="module-desc">Les zones institutionnelles — où les gros joueurs achètent.</div>
-          <div class="module-meta"><div class="module-meta-item">🔒 BIENTÔT</div></div>
+          <div class="module-meta"><div class="module-meta-item">📚 1 Bloc</div><div class="module-meta-item">⚡ 150 XP</div><div class="module-meta-item">⏱️ 20 min</div></div>
         </div>
-        <div class="module-right"><div class="module-badge locked">🔒 BIENTÔT</div></div>
+        <div class="module-right"><div class="module-badge available" id="badge-m7">▶ COMMENCER</div></div>
       </div>
-    </div>
+    </a>
 
     <div class="module-card locked" onclick="showLockedModule(8)">
       <div class="module-card-inner">
         <div class="module-num locked">🔒</div>
         <div class="module-content">
+          <div class="module-strategy-tag">🔴 STRATÉGIE</div>
           <div class="module-tag">MODULE 08 · ZONES</div>
           <div class="module-title">Imbalance / FVG</div>
           <div class="module-desc">Fair Value Gap — les déséquilibres que le marché comble.</div>
@@ -240,6 +246,7 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
       <div class="module-card-inner">
         <div class="module-num locked">🔒</div>
         <div class="module-content">
+          <div class="module-strategy-tag">🔴 STRATÉGIE</div>
           <div class="module-tag">MODULE 09 · LIQUIDITÉ</div>
           <div class="module-title">Prise de liquidité</div>
           <div class="module-desc">Comment le marché piège les traders avant de repartir.</div>
@@ -355,7 +362,7 @@ function showLockedModule(n){
 
 async function updateFormationStats(){
   const pseudo=member?member.pseudo||'guest':'guest';
-  const actionKeys=['bloc_m1','bloc_m2_b1','bloc_m3','bloc_m4','bloc_m5'];
+  const actionKeys=['bloc_m1','bloc_m2_b1','bloc_m3','bloc_m4','bloc_m5','bloc_m7_b1'];
   let completedSet=new Set();
   try{
     const res=await fetch(SUPABASE_URL+'/rest/v1/xp_historique?membre_pseudo=eq.'+encodeURIComponent(pseudo)+'&action_key=in.('+actionKeys.join(',')+')&select=action_key',{
@@ -370,7 +377,7 @@ async function updateFormationStats(){
   document.getElementById('stat-pct').textContent=pct+'%';
   document.getElementById('progress-fill').style.width=pct+'%';
   document.getElementById('progress-text').textContent=pct+'%';
-  const moduleKeys={m1:'bloc_m1',m2:'bloc_m2_b1',m3:'bloc_m3',m4:'bloc_m4',m5:'bloc_m5'};
+  const moduleKeys={m1:'bloc_m1',m2:'bloc_m2_b1',m3:'bloc_m3',m4:'bloc_m4',m5:'bloc_m5',m7:'bloc_m7_b1'};
   Object.keys(moduleKeys).forEach(mod=>{
     if(completedSet.has(moduleKeys[mod])){
       const num=document.getElementById('num-'+mod);
