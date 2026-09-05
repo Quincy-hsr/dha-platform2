@@ -4,22 +4,18 @@
 <meta charset="UTF-8"/>
 <meta name="google-site-verification" content="UJ3PP_MMIDMjHvImQrBSHaOIDvh0sEqOrHENL11zmbQ" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Digital Hustler Academy — L'Écosystème Business #1</title>
-<meta name="description" content="Rejoins l'académie où l'apprentissage devient un jeu. Trading, UGC, Marketing Digital. Monte en level. Génère des revenus réels."/>
+<title>Digital Hustler Academy — Tes premiers 1000€ à 3000€ en trading</title>
+<meta name="description" content="J'aide les jeunes salariés à générer leurs premiers 1000€ à 3000€ en trading en 6 mois. Aucun résultat après 2 mois ? Remboursé."/>
 
-<!-- Open Graph (partage réseaux sociaux / WhatsApp / Facebook / Discord) -->
 <meta property="og:title" content="Digital Hustler Academy (DHA)"/>
-<meta property="og:description" content="L'académie business gamifiée : trading, marketing digital, UGC. Apprends et gagne en t'amusant."/>
+<meta property="og:description" content="Tes premiers 1000€ à 3000€ en trading en 6 mois. Garantie ou remboursé."/>
 <meta property="og:url" content="https://digitalhustleracademy.digital"/>
 <meta property="og:type" content="website"/>
 <meta property="og:locale" content="fr_FR"/>
-
-<!-- Twitter / X card -->
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Digital Hustler Academy (DHA)"/>
-<meta name="twitter:description" content="L'académie business gamifiée : trading, marketing digital, UGC."/>
+<meta name="twitter:description" content="Tes premiers 1000€ à 3000€ en trading en 6 mois."/>
 
-<!-- Schema.org (aide Google à comprendre ton site) -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -30,7 +26,7 @@
 }
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Exo+2:wght@300;400;600;700;800&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet"/>
 <style>
   *{margin:0;padding:0;box-sizing:border-box;}
   :root{
@@ -42,162 +38,128 @@
     --border:rgba(30,100,255,0.18);
   }
   html{scroll-behavior:smooth;}
-  body{background:var(--bg);color:var(--white);font-family:'Exo 2',sans-serif;overflow-x:hidden;}
+  body{background:var(--bg);color:var(--white);font-family:'Rajdhani',sans-serif;font-size:16px;overflow-x:hidden;}
+  h1,h2,h3,.font-display{font-family:'Chakra Petch',sans-serif;}
 
-  /* SCROLLBAR */
   ::-webkit-scrollbar{width:4px;}
   ::-webkit-scrollbar-track{background:var(--bg);}
   ::-webkit-scrollbar-thumb{background:#1E64FF44;border-radius:99px;}
 
-  /* GRID BG */
-  .grid-bg{
-    position:fixed;inset:0;pointer-events:none;z-index:0;
-    background-image:linear-gradient(rgba(30,100,255,0.03) 1px,transparent 1px),
-                     linear-gradient(90deg,rgba(30,100,255,0.03) 1px,transparent 1px);
-    background-size:60px 60px;
-  }
-  .radial-bg{
-    position:fixed;inset:0;pointer-events:none;z-index:0;
-    background:radial-gradient(ellipse 80% 50% at 50% 0%,rgba(30,100,255,0.08) 0%,transparent 70%);
-  }
-  .scanlines{
-    position:fixed;inset:0;pointer-events:none;z-index:1;
-    background-image:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.025) 2px,rgba(0,0,0,0.025) 4px);
-  }
+  .grid-bg{position:fixed;inset:0;pointer-events:none;z-index:0;background-image:linear-gradient(rgba(30,100,255,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(30,100,255,0.03) 1px,transparent 1px);background-size:60px 60px;}
+  .radial-bg{position:fixed;inset:0;pointer-events:none;z-index:0;background:radial-gradient(ellipse 80% 50% at 50% 0%,rgba(30,100,255,0.08) 0%,transparent 70%);}
+  .scanlines{position:fixed;inset:0;pointer-events:none;z-index:1;background-image:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.025) 2px,rgba(0,0,0,0.025) 4px);}
 
-  /* NAV */
-  nav{
-    position:fixed;top:0;left:0;right:0;z-index:100;
-    padding:16px 40px;display:flex;align-items:center;justify-content:space-between;
-    background:rgba(5,9,20,0.85);backdrop-filter:blur(20px);
-    border-bottom:1px solid var(--border);
-  }
-  .nav-logo{font-family:'Orbitron',sans-serif;font-size:22px;font-weight:900;color:var(--white);letter-spacing:3px;text-shadow:0 0 25px rgba(30,100,255,0.6);}
-  .nav-logo span{color:var(--cyan);text-shadow:0 0 20px var(--cyan);}
+  nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:16px 40px;display:flex;align-items:center;justify-content:space-between;background:rgba(5,9,20,0.85);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);}
+  .nav-logo{font-family:'Chakra Petch',sans-serif;font-size:22px;font-weight:700;color:var(--white);letter-spacing:3px;text-shadow:0 0 25px rgba(30,100,255,0.6);}
   .nav-links{display:flex;gap:28px;align-items:center;}
-  .nav-links a{font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:2px;color:var(--dim);text-decoration:none;transition:color .2s;}
+  .nav-links a{font-family:'Chakra Petch',sans-serif;font-size:12px;letter-spacing:1px;color:var(--dim);text-decoration:none;transition:color .2s;}
   .nav-links a:hover{color:var(--cyan);}
-  .nav-cta{padding:10px 22px;border-radius:7px;background:linear-gradient(135deg,var(--blue),var(--cyan));color:#000;font-family:'Orbitron',sans-serif;font-size:9px;font-weight:900;letter-spacing:2px;border:none;cursor:pointer;text-decoration:none;box-shadow:0 4px 20px rgba(0,212,255,0.3);transition:all .2s;}
+  .nav-cta{padding:10px 22px;border-radius:7px;background:linear-gradient(135deg,var(--blue),var(--cyan));color:#000;font-family:'Chakra Petch',sans-serif;font-size:12px;font-weight:700;letter-spacing:1px;border:none;cursor:pointer;text-decoration:none;box-shadow:0 4px 20px rgba(0,212,255,0.3);transition:all .2s;}
   .nav-cta:hover{box-shadow:0 4px 30px rgba(0,212,255,0.5);transform:translateY(-1px);}
-  .nav-login{padding:10px 22px;border-radius:7px;background:transparent;color:var(--cyan);font-family:'Orbitron',sans-serif;font-size:9px;font-weight:900;letter-spacing:2px;border:1px solid var(--cyan);cursor:pointer;text-decoration:none;transition:all .2s;}
+  .nav-login{padding:10px 22px;border-radius:7px;background:transparent;color:var(--cyan);font-family:'Chakra Petch',sans-serif;font-size:12px;font-weight:700;letter-spacing:1px;border:1px solid var(--cyan);cursor:pointer;text-decoration:none;transition:all .2s;}
   .nav-login:hover{background:rgba(0,212,255,0.08);transform:translateY(-1px);}
 
-  /* SECTIONS */
   section{position:relative;z-index:2;}
 
-  /* HERO */
-  .hero{
-    min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;
-    text-align:center;padding:100px 24px 60px;position:relative;overflow:hidden;
-  }
-  .hero-badge{
-    display:inline-flex;align-items:center;gap:8px;
-    padding:6px 16px;border-radius:99px;
-    background:rgba(0,212,255,0.1);border:1px solid rgba(0,212,255,0.3);
-    font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:3px;color:var(--cyan);
-    margin-bottom:28px;animation:fadeup .8s ease forwards;
-  }
-  .hero-badge .dot{width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);animation:pulse 1.5s infinite;}
-  .hero-title{
-    font-family:'Orbitron',sans-serif;font-weight:900;
-    font-size:clamp(48px,10vw,110px);letter-spacing:6px;line-height:.9;
-    color:var(--white);text-shadow:0 0 60px rgba(30,100,255,0.5),0 0 120px rgba(30,100,255,0.2);
-    animation:fadeup .8s .1s ease both;margin-bottom:8px;
-  }
-  .hero-sub{
-    font-family:'Orbitron',sans-serif;font-size:clamp(12px,2vw,18px);
-    letter-spacing:8px;color:var(--cyan);
-    text-shadow:0 0 20px var(--cyan);animation:fadeup .8s .2s ease both;margin-bottom:32px;
-  }
-  .hero-desc{
-    font-size:clamp(14px,2vw,18px);color:var(--dim);line-height:1.8;
-    max-width:620px;animation:fadeup .8s .3s ease both;margin-bottom:40px;
-  }
-  .hero-desc span{color:var(--cyan);}
-  .hero-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;animation:fadeup .8s .4s ease both;}
-  .btn-primary{
-    padding:16px 40px;border-radius:10px;
-    background:linear-gradient(135deg,var(--blue),var(--cyan));
-    color:#000;font-family:'Orbitron',sans-serif;font-size:13px;font-weight:900;
-    letter-spacing:2px;border:none;cursor:pointer;text-decoration:none;
-    box-shadow:0 6px 30px rgba(0,212,255,0.4);transition:all .2s;display:inline-block;
-  }
-  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 40px rgba(0,212,255,0.6);}
-  .btn-secondary{
-    padding:16px 40px;border-radius:10px;
-    border:1px solid rgba(0,212,255,0.4);background:transparent;
-    color:var(--cyan);font-family:'Orbitron',sans-serif;font-size:13px;font-weight:700;
-    letter-spacing:2px;cursor:pointer;text-decoration:none;
-    box-shadow:0 0 20px rgba(30,100,255,0.2);transition:all .2s;display:inline-block;
-  }
-  .btn-secondary:hover{background:rgba(0,212,255,0.08);box-shadow:0 0 30px rgba(0,212,255,0.3);}
-  .hero-stats{
-    display:flex;gap:40px;justify-content:center;flex-wrap:wrap;
-    margin-top:60px;padding-top:40px;border-top:1px solid var(--border);
-    animation:fadeup .8s .5s ease both;width:100%;max-width:700px;
-  }
-  .stat{text-align:center;}
-  .stat-val{font-family:'Orbitron',sans-serif;font-size:36px;font-weight:900;color:var(--cyan);text-shadow:0 0 20px rgba(0,212,255,0.5);line-height:1;}
-  .stat-label{font-family:'Orbitron',sans-serif;font-size:8px;letter-spacing:2px;color:var(--dim);margin-top:6px;}
+  /* GUARANTEE BAR */
+  .guarantee-bar{background:linear-gradient(90deg,rgba(0,255,136,0.1),rgba(0,212,255,0.1));border-bottom:1px solid rgba(0,255,136,0.2);padding:10px 20px;text-align:center;font-family:'Chakra Petch',sans-serif;font-size:12px;letter-spacing:0.5px;color:var(--green);margin-top:0;}
 
-  /* STARS */
+  /* HERO */
+  .hero{min-height:95vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:130px 24px 60px;position:relative;overflow:hidden;}
+  .hero-badge{display:inline-flex;align-items:center;gap:8px;padding:6px 16px;border-radius:99px;background:rgba(0,212,255,0.1);border:1px solid rgba(0,212,255,0.3);font-family:'Chakra Petch',sans-serif;font-size:12px;letter-spacing:1px;color:var(--cyan);margin-bottom:24px;animation:fadeup .8s ease forwards;}
+  .hero-badge .dot{width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);animation:pulse 1.5s infinite;}
+  .hero-title{font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:clamp(32px,6vw,60px);letter-spacing:0.5px;line-height:1.15;color:var(--white);text-shadow:0 0 60px rgba(30,100,255,0.4);animation:fadeup .8s .1s ease both;margin-bottom:18px;max-width:900px;}
+  .hero-title em{font-style:normal;color:var(--cyan);text-shadow:0 0 30px var(--cyan);}
+  .hero-desc{font-size:clamp(16px,2vw,20px);color:var(--dim);line-height:1.7;max-width:640px;animation:fadeup .8s .3s ease both;margin-bottom:28px;}
+  .hero-guarantee{font-family:'Chakra Petch',sans-serif;font-size:14px;color:var(--green);background:rgba(0,255,136,0.08);border:1px solid rgba(0,255,136,0.3);padding:12px 24px;border-radius:12px;margin-bottom:32px;animation:fadeup .8s .35s ease both;max-width:560px;line-height:1.6;}
+  .hero-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;animation:fadeup .8s .4s ease both;}
+  .btn-primary{padding:16px 40px;border-radius:10px;background:linear-gradient(135deg,var(--blue),var(--cyan));color:#000;font-family:'Chakra Petch',sans-serif;font-size:14px;font-weight:700;letter-spacing:0.5px;border:none;cursor:pointer;text-decoration:none;box-shadow:0 6px 30px rgba(0,212,255,0.4);transition:all .2s;display:inline-block;}
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 40px rgba(0,212,255,0.6);}
+  .btn-secondary{padding:16px 40px;border-radius:10px;border:1px solid rgba(0,212,255,0.4);background:transparent;color:var(--cyan);font-family:'Chakra Petch',sans-serif;font-size:14px;font-weight:600;letter-spacing:0.5px;cursor:pointer;text-decoration:none;box-shadow:0 0 20px rgba(30,100,255,0.2);transition:all .2s;display:inline-block;}
+  .btn-secondary:hover{background:rgba(0,212,255,0.08);box-shadow:0 0 30px rgba(0,212,255,0.3);}
+  .hero-stats{display:flex;gap:40px;justify-content:center;flex-wrap:wrap;margin-top:56px;padding-top:36px;border-top:1px solid var(--border);animation:fadeup .8s .5s ease both;width:100%;max-width:760px;}
+  .stat{text-align:center;}
+  .stat-val{font-family:'Chakra Petch',sans-serif;font-size:32px;font-weight:700;color:var(--cyan);text-shadow:0 0 20px rgba(0,212,255,0.5);line-height:1;}
+  .stat-label{font-family:'Rajdhani',sans-serif;font-size:12px;font-weight:600;letter-spacing:0.5px;color:var(--dim);margin-top:6px;}
+
   .stars{position:absolute;inset:0;pointer-events:none;}
   .star{position:absolute;border-radius:50%;animation:float linear infinite;}
 
-  /* SECTION HEADERS */
-  .section-label{font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:4px;color:var(--cyan);text-align:center;margin-bottom:12px;text-shadow:0 0 10px rgba(0,212,255,0.4);}
-  .section-title{font-family:'Orbitron',sans-serif;font-size:clamp(28px,5vw,48px);font-weight:900;letter-spacing:2px;text-align:center;color:var(--white);margin-bottom:16px;text-shadow:0 0 30px rgba(30,100,255,0.4);}
-  .section-desc{font-size:15px;color:var(--dim);text-align:center;max-width:560px;margin:0 auto 60px;line-height:1.8;}
+  .section-label{font-family:'Chakra Petch',sans-serif;font-size:12px;letter-spacing:2px;color:var(--cyan);text-align:center;margin-bottom:12px;text-shadow:0 0 10px rgba(0,212,255,0.4);}
+  .section-title{font-family:'Chakra Petch',sans-serif;font-size:clamp(26px,4.5vw,42px);font-weight:700;letter-spacing:0.3px;text-align:center;color:var(--white);margin-bottom:16px;text-shadow:0 0 30px rgba(30,100,255,0.4);}
+  .section-desc{font-size:17px;color:var(--dim);text-align:center;max-width:600px;margin:0 auto 60px;line-height:1.7;}
+
+  /* PROBLEM / SOLUTION shared card system */
+  .dim-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;max-width:1100px;margin:0 auto;}
+  .dim-card{padding:30px 26px;border-radius:16px;background:var(--card);border:1px solid var(--border);transition:all .3s;}
+  .dim-card.pain{border-color:rgba(255,68,102,0.25);}
+  .dim-card.gain{border-color:rgba(0,255,136,0.25);}
+  .dim-card:hover{transform:translateY(-4px);}
+  .dim-tag{font-family:'Chakra Petch',sans-serif;font-size:11px;letter-spacing:1px;margin-bottom:14px;display:inline-block;padding:3px 10px;border-radius:5px;}
+  .dim-tag.pain{color:var(--red);background:rgba(255,68,102,0.1);border:1px solid rgba(255,68,102,0.25);}
+  .dim-tag.gain{color:var(--green);background:rgba(0,255,136,0.1);border:1px solid rgba(0,255,136,0.25);}
+  .dim-icon{font-size:30px;margin-bottom:14px;}
+  .dim-title{font-family:'Chakra Petch',sans-serif;font-size:16px;font-weight:600;color:var(--white);margin-bottom:10px;line-height:1.3;}
+  .dim-text{font-size:15px;color:var(--dim);line-height:1.65;}
+
+  .problem{padding:90px 40px 60px;}
+  .solution{padding:60px 40px 90px;background:linear-gradient(180deg,transparent,rgba(0,255,136,0.02),transparent);}
+
+  /* BRIDGE / POSITIONING */
+  .bridge{padding:90px 40px;background:var(--card2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);}
+  .bridge-inner{max-width:800px;margin:0 auto;text-align:center;}
+  .bridge-text{font-size:18px;color:var(--dim);line-height:1.8;margin-bottom:32px;}
+  .bridge-list{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-bottom:32px;}
+  .bridge-no{font-family:'Rajdhani',sans-serif;font-size:14px;font-weight:600;color:var(--red);background:rgba(255,68,102,0.08);border:1px solid rgba(255,68,102,0.25);padding:8px 16px;border-radius:99px;}
+  .bridge-yes{font-family:'Chakra Petch',sans-serif;font-size:15px;font-weight:600;color:var(--cyan);background:rgba(0,212,255,0.1);border:1px solid rgba(0,212,255,0.3);padding:10px 22px;border-radius:99px;display:inline-block;margin-bottom:28px;}
+  .bridge-note{font-size:14px;color:var(--dimmer);line-height:1.7;max-width:640px;margin:0 auto;}
+
+  /* METHOD STEPS */
+  .method{padding:90px 40px;}
+  .method-steps{max-width:780px;margin:0 auto;display:flex;flex-direction:column;gap:16px;}
+  .method-step{display:flex;gap:20px;align-items:flex-start;padding:20px 24px;border-radius:14px;background:var(--card);border:1px solid var(--border);}
+  .method-num{font-family:'Chakra Petch',sans-serif;font-size:20px;font-weight:700;color:var(--cyan);background:rgba(0,212,255,0.1);border:1px solid rgba(0,212,255,0.3);width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .method-step-title{font-family:'Chakra Petch',sans-serif;font-size:15px;font-weight:600;color:var(--white);margin-bottom:4px;}
+  .method-step-text{font-size:14px;color:var(--dim);line-height:1.6;}
+  .method-disclaimer{max-width:780px;margin:32px auto 0;font-size:12px;color:var(--dimmer);line-height:1.7;text-align:center;padding:0 20px;}
 
   /* WHY */
-  .why{padding:100px 40px;}
+  .why{padding:90px 40px;}
   .why-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;max-width:1100px;margin:0 auto;}
-  .why-card{
-    padding:28px 24px;border-radius:16px;
-    background:var(--card);border:1px solid var(--border);
-    position:relative;overflow:hidden;transition:all .3s;
-  }
+  .why-card{padding:28px 24px;border-radius:16px;background:var(--card);border:1px solid var(--border);position:relative;overflow:hidden;transition:all .3s;}
   .why-card:hover{transform:translateY(-4px);box-shadow:0 20px 40px rgba(30,100,255,0.1);}
-  .why-card::before{content:'';position:absolute;top:0;right:0;width:80px;height:80px;border-radius:0 16px 0 80px;opacity:.5;}
-  .why-icon{font-size:32px;margin-bottom:16px;}
-  .why-title{font-family:'Orbitron',sans-serif;font-size:13px;font-weight:700;letter-spacing:1px;color:var(--white);margin-bottom:10px;}
-  .why-text{font-size:13px;color:var(--dim);line-height:1.7;}
+  .why-icon{font-size:30px;margin-bottom:16px;}
+  .why-title{font-family:'Chakra Petch',sans-serif;font-size:14px;font-weight:600;letter-spacing:0.3px;color:var(--white);margin-bottom:10px;}
+  .why-text{font-size:14px;color:var(--dim);line-height:1.65;}
 
   /* CLASSES */
-  .classes{padding:100px 40px;background:linear-gradient(180deg,transparent,rgba(30,100,255,0.03),transparent);}
+  .classes{padding:90px 40px;background:linear-gradient(180deg,transparent,rgba(30,100,255,0.03),transparent);}
   .classes-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;max-width:900px;margin:0 auto;}
-  .class-card{
-    padding:28px 24px;border-radius:18px;
-    background:var(--card);border:1px solid var(--border);
-    position:relative;overflow:hidden;cursor:pointer;transition:all .3s;
-  }
+  .class-card{padding:28px 24px;border-radius:18px;background:var(--card);border:1px solid var(--border);position:relative;overflow:hidden;cursor:pointer;transition:all .3s;}
   .class-card:hover{transform:translateY(-4px);}
   .class-card .glow{position:absolute;inset:0;opacity:0;transition:opacity .3s;}
   .class-card:hover .glow{opacity:1;}
   .class-top{display:flex;align-items:center;gap:14px;margin-bottom:16px;}
   .class-icon{width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;}
-  .class-name{font-family:'Orbitron',sans-serif;font-size:16px;font-weight:900;letter-spacing:1px;color:var(--white);}
-  .class-tag{display:inline-block;padding:2px 8px;border-radius:4px;font-family:'Orbitron',sans-serif;font-size:8px;letter-spacing:2px;font-weight:700;margin-top:4px;}
-  .class-desc{font-size:13px;color:var(--dim);line-height:1.7;margin-bottom:16px;}
+  .class-name{font-family:'Chakra Petch',sans-serif;font-size:16px;font-weight:700;letter-spacing:0.3px;color:var(--white);}
+  .class-tag{display:inline-block;padding:2px 8px;border-radius:4px;font-family:'Chakra Petch',sans-serif;font-size:10px;letter-spacing:1px;font-weight:600;margin-top:4px;}
+  .class-desc{font-size:14px;color:var(--dim);line-height:1.65;margin-bottom:16px;}
   .class-modules{display:flex;flex-wrap:wrap;gap:6px;}
-  .module-pill{padding:4px 10px;border-radius:6px;font-size:10px;background:rgba(255,255,255,0.04);color:var(--dim);border:1px solid var(--border);}
+  .module-pill{padding:4px 10px;border-radius:6px;font-size:12px;background:rgba(255,255,255,0.04);color:var(--dim);border:1px solid var(--border);}
 
   /* GAMIFICATION */
-  .gamif{padding:100px 40px;}
+  .gamif{padding:90px 40px;}
   .gamif-inner{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;}
   .gamif-visual{position:relative;}
-  .player-card{
-    background:var(--card2);border:1px solid rgba(0,212,255,0.3);
-    border-radius:20px;padding:28px;box-shadow:0 0 40px rgba(0,212,255,0.1);
-  }
+  .player-card{background:var(--card2);border:1px solid rgba(0,212,255,0.3);border-radius:20px;padding:28px;box-shadow:0 0 40px rgba(0,212,255,0.1);}
   .player-header{display:flex;align-items:center;gap:14px;margin-bottom:20px;}
-  .player-avatar{width:52px;height:52px;border-radius:50%;background:rgba(0,212,255,0.2);border:2px solid rgba(0,212,255,0.5);display:flex;align-items:center;justify-content:center;font-family:'Orbitron',sans-serif;font-size:16px;font-weight:900;color:var(--cyan);box-shadow:0 0 20px rgba(0,212,255,0.3);}
+  .player-avatar{width:52px;height:52px;border-radius:50%;background:rgba(0,212,255,0.2);border:2px solid rgba(0,212,255,0.5);display:flex;align-items:center;justify-content:center;font-family:'Chakra Petch',sans-serif;font-size:16px;font-weight:700;color:var(--cyan);box-shadow:0 0 20px rgba(0,212,255,0.3);}
   .player-info{flex:1;}
-  .player-name{font-family:'Orbitron',sans-serif;font-size:14px;font-weight:900;color:var(--white);}
-  .player-rank{font-family:'Orbitron',sans-serif;font-size:8px;letter-spacing:2px;color:var(--cyan);margin-top:4px;}
-  .player-level{font-family:'Orbitron',sans-serif;font-size:28px;font-weight:900;color:var(--cyan);text-shadow:0 0 20px var(--cyan);}
+  .player-name{font-family:'Chakra Petch',sans-serif;font-size:14px;font-weight:700;color:var(--white);}
+  .player-rank{font-family:'Rajdhani',sans-serif;font-size:11px;font-weight:600;letter-spacing:1px;color:var(--cyan);margin-top:4px;}
+  .player-level{font-family:'Chakra Petch',sans-serif;font-size:26px;font-weight:700;color:var(--cyan);text-shadow:0 0 20px var(--cyan);}
   .xp-bar-wrap{margin-bottom:16px;}
-  .xp-label{display:flex;justify-content:space-between;margin-bottom:6px;font-family:'Orbitron',sans-serif;font-size:8px;letter-spacing:1.5px;color:var(--dim);}
+  .xp-label{display:flex;justify-content:space-between;margin-bottom:6px;font-family:'Rajdhani',sans-serif;font-size:11px;font-weight:600;letter-spacing:0.5px;color:var(--dim);}
   .xp-bar{height:6px;background:rgba(255,255,255,0.06);border-radius:99px;overflow:hidden;}
   .xp-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,rgba(0,212,255,.6),var(--cyan));box-shadow:0 0 12px rgba(0,212,255,.5);animation:xpgrow 2s 1s ease both;}
   .badges-row{display:flex;gap:10px;margin-top:16px;}
@@ -205,309 +167,365 @@
   .quests{margin-top:20px;display:flex;flex-direction:column;gap:8px;}
   .quest-item{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:10px;background:rgba(255,255,255,0.02);border:1px solid var(--border);}
   .quest-check{width:20px;height:20px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:10px;flex-shrink:0;}
-  .quest-text{font-family:'Exo 2',sans-serif;font-size:12px;color:var(--dim);flex:1;}
-  .quest-xp{font-family:'Orbitron',sans-serif;font-size:8px;letter-spacing:1px;}
-  .floating-badge{
-    position:absolute;top:-20px;right:-20px;
-    background:var(--card);border:1px solid rgba(255,215,0,0.4);
-    border-radius:14px;padding:12px 16px;text-align:center;
-    box-shadow:0 0 30px rgba(255,215,0,0.2);animation:float2 3s ease-in-out infinite;
-  }
+  .quest-text{font-family:'Rajdhani',sans-serif;font-size:13px;color:var(--dim);flex:1;}
+  .quest-xp{font-family:'Rajdhani',sans-serif;font-size:11px;font-weight:600;letter-spacing:0.5px;}
+  .floating-badge{position:absolute;top:-20px;right:-20px;background:var(--card);border:1px solid rgba(255,215,0,0.4);border-radius:14px;padding:12px 16px;text-align:center;box-shadow:0 0 30px rgba(255,215,0,0.2);animation:float2 3s ease-in-out infinite;}
 
   /* ECOSYSTEM */
-  .ecosystem{padding:100px 40px;background:linear-gradient(180deg,transparent,rgba(30,100,255,0.03),transparent);}
+  .ecosystem{padding:90px 40px;background:linear-gradient(180deg,transparent,rgba(30,100,255,0.03),transparent);}
   .eco-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;max-width:1100px;margin:0 auto;}
-  .eco-card{
-    padding:28px 24px;border-radius:16px;background:var(--card);
-    border:1px solid var(--border);text-align:center;transition:all .3s;position:relative;overflow:hidden;
-  }
+  .eco-card{padding:28px 24px;border-radius:16px;background:var(--card);border:1px solid var(--border);text-align:center;transition:all .3s;position:relative;overflow:hidden;}
   .eco-card:hover{transform:translateY(-4px);}
-  .eco-icon{font-size:40px;margin-bottom:16px;display:block;}
-  .eco-title{font-family:'Orbitron',sans-serif;font-size:13px;font-weight:700;letter-spacing:1px;color:var(--white);margin-bottom:10px;}
-  .eco-text{font-size:12px;color:var(--dim);line-height:1.7;}
-
-  /* AFFILIATION */
-  .affil{padding:100px 40px;}
-  .affil-inner{max-width:1000px;margin:0 auto;}
-  .paliers{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:40px;}
-  .palier-card{
-    padding:24px;border-radius:16px;background:var(--card);border:1px solid var(--border);
-    text-align:center;position:relative;transition:all .3s;
-  }
-  .palier-card:hover{transform:translateY(-3px);}
-  .palier-icon{font-size:36px;margin-bottom:12px;}
-  .palier-name{font-family:'Orbitron',sans-serif;font-size:14px;font-weight:900;letter-spacing:2px;margin-bottom:8px;}
-  .palier-desc{font-size:12px;color:var(--dim);line-height:1.6;margin-bottom:16px;}
-  .palier-pct{font-family:'Orbitron',sans-serif;font-size:40px;font-weight:900;line-height:1;}
-  .palier-sub{font-family:'Orbitron',sans-serif;font-size:8px;letter-spacing:2px;color:var(--dim);margin-top:4px;}
-  .affil-calc{
-    padding:28px 32px;border-radius:18px;
-    background:linear-gradient(135deg,rgba(255,215,0,0.08),rgba(255,215,0,0.03));
-    border:1px solid rgba(255,215,0,0.3);display:flex;align-items:center;justify-content:space-between;
-    box-shadow:0 0 40px rgba(255,215,0,0.08);flex-wrap:wrap;gap:20px;
-  }
-
-  /* PRICING */
-  .pricing{padding:100px 40px;background:linear-gradient(180deg,transparent,rgba(30,100,255,0.04),transparent);}
-  .pricing-card{
-    max-width:480px;margin:0 auto;
-    padding:40px;border-radius:24px;
-    background:var(--card2);
-    border:1px solid rgba(0,212,255,0.3);
-    box-shadow:0 0 60px rgba(30,100,255,0.15);
-    text-align:center;position:relative;overflow:hidden;
-  }
-  .pricing-glow{position:absolute;top:-50%;left:50%;transform:translateX(-50%);width:300px;height:300px;background:radial-gradient(circle,rgba(30,100,255,0.15),transparent 70%);pointer-events:none;}
-  .pricing-badge{display:inline-block;padding:4px 14px;border-radius:99px;background:rgba(0,255,136,0.15);border:1px solid rgba(0,255,136,0.4);font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:2px;color:var(--green);margin-bottom:20px;}
-  .pricing-price{font-family:'Orbitron',sans-serif;font-size:72px;font-weight:900;color:var(--white);line-height:1;text-shadow:0 0 30px rgba(30,100,255,0.5);}
-  .pricing-price span{font-size:24px;color:var(--dim);}
-  .pricing-period{font-family:'Orbitron',sans-serif;font-size:10px;letter-spacing:3px;color:var(--dim);margin-bottom:32px;}
-  .pricing-features{display:flex;flex-direction:column;gap:12px;margin-bottom:32px;text-align:left;}
-  .feature-item{display:flex;align-items:center;gap:12px;font-size:13px;color:var(--dim);}
-  .feature-check{width:20px;height:20px;border-radius:6px;background:rgba(0,255,136,0.15);border:1px solid rgba(0,255,136,0.4);display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--green);flex-shrink:0;}
-  .pricing-btn{
-    width:100%;padding:18px;border-radius:12px;
-    background:linear-gradient(135deg,var(--blue),var(--cyan));
-    color:#000;font-family:'Orbitron',sans-serif;font-size:15px;font-weight:900;
-    letter-spacing:3px;border:none;cursor:pointer;
-    box-shadow:0 6px 30px rgba(0,212,255,0.4);transition:all .2s;
-  }
-  .pricing-btn:hover{transform:translateY(-2px);box-shadow:0 8px 40px rgba(0,212,255,0.6);}
-  .pricing-sub{font-family:'Orbitron',sans-serif;font-size:8px;letter-spacing:2px;color:var(--dimmer);margin-top:16px;}
+  .eco-icon{font-size:36px;margin-bottom:16px;display:block;}
+  .eco-title{font-family:'Chakra Petch',sans-serif;font-size:14px;font-weight:600;letter-spacing:0.3px;color:var(--white);margin-bottom:10px;}
+  .eco-text{font-size:13px;color:var(--dim);line-height:1.65;}
 
   /* EVENTS */
-  .events{padding:100px 40px;}
+  .events{padding:90px 40px;}
   .events-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;max-width:1100px;margin:0 auto;}
-  .event-card{
-    padding:24px;border-radius:16px;background:var(--card);border:1px solid var(--border);
-    transition:all .3s;position:relative;overflow:hidden;
-  }
+  .event-card{padding:24px;border-radius:16px;background:var(--card);border:1px solid var(--border);transition:all .3s;position:relative;overflow:hidden;}
   .event-card:hover{transform:translateY(-4px);}
-  .event-type{display:inline-block;padding:3px 10px;border-radius:4px;font-family:'Orbitron',sans-serif;font-size:8px;letter-spacing:2px;font-weight:700;margin-bottom:12px;}
-  .event-title{font-family:'Orbitron',sans-serif;font-size:14px;font-weight:700;letter-spacing:1px;color:var(--white);margin-bottom:8px;}
-  .event-info{font-size:12px;color:var(--dim);line-height:1.7;}
-  .event-icon{font-size:32px;margin-bottom:14px;display:block;}
+  .event-type{display:inline-block;padding:3px 10px;border-radius:4px;font-family:'Chakra Petch',sans-serif;font-size:10px;letter-spacing:1px;font-weight:600;margin-bottom:12px;}
+  .event-title{font-family:'Chakra Petch',sans-serif;font-size:14px;font-weight:600;letter-spacing:0.3px;color:var(--white);margin-bottom:8px;}
+  .event-info{font-size:13px;color:var(--dim);line-height:1.65;}
+  .event-icon{font-size:30px;margin-bottom:14px;display:block;}
 
   /* TESTIMONIALS */
-  .testimonials{padding:100px 40px;background:linear-gradient(180deg,transparent,rgba(30,100,255,0.03),transparent);}
+  .testimonials{padding:90px 40px;background:linear-gradient(180deg,transparent,rgba(30,100,255,0.03),transparent);}
   .testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;max-width:1100px;margin:0 auto;}
-  .testi-card{
-    padding:24px;border-radius:16px;background:var(--card);border:1px solid var(--border);
-    transition:all .3s;
-  }
+  .testi-card{padding:24px;border-radius:16px;background:var(--card);border:1px solid var(--border);transition:all .3s;}
   .testi-card:hover{border-color:rgba(0,212,255,0.3);}
   .testi-stars{color:var(--gold);font-size:14px;margin-bottom:12px;letter-spacing:2px;}
-  .testi-text{font-size:13px;color:var(--dim);line-height:1.7;margin-bottom:16px;font-style:italic;}
+  .testi-text{font-size:14px;color:var(--dim);line-height:1.65;margin-bottom:16px;font-style:italic;}
   .testi-author{display:flex;align-items:center;gap:10px;}
-  .testi-avatar{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Orbitron',sans-serif;font-size:11px;font-weight:900;flex-shrink:0;}
-  .testi-name{font-family:'Orbitron',sans-serif;font-size:10px;font-weight:700;color:var(--white);}
-  .testi-rank{font-family:'Orbitron',sans-serif;font-size:8px;letter-spacing:1px;margin-top:2px;}
+  .testi-avatar{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Chakra Petch',sans-serif;font-size:11px;font-weight:700;flex-shrink:0;}
+  .testi-name{font-family:'Chakra Petch',sans-serif;font-size:12px;font-weight:600;color:var(--white);}
+  .testi-rank{font-family:'Rajdhani',sans-serif;font-size:11px;font-weight:600;margin-top:2px;}
+
+  /* PRICING */
+  .pricing{padding:90px 40px;background:linear-gradient(180deg,transparent,rgba(30,100,255,0.04),transparent);}
+  .pricing-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;max-width:1200px;margin:0 auto;align-items:stretch;}
+  .tier-card{padding:26px 22px;border-radius:18px;background:var(--card2);border:1px solid var(--border);display:flex;flex-direction:column;position:relative;}
+  .tier-card.featured{border-color:rgba(255,215,0,0.4);background:linear-gradient(135deg,#0a1228,#0d1428);box-shadow:0 0 40px rgba(255,215,0,0.08);}
+  .tier-badge{position:absolute;top:-13px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#b8860b,var(--gold));color:#000;font-family:'Chakra Petch',sans-serif;font-size:10px;font-weight:700;letter-spacing:0.5px;padding:5px 14px;border-radius:99px;white-space:nowrap;}
+  .tier-name{font-family:'Chakra Petch',sans-serif;font-size:13px;font-weight:600;letter-spacing:1px;color:var(--dim);margin-bottom:10px;margin-top:6px;}
+  .tier-card.featured .tier-name{color:var(--gold);}
+  .tier-price{font-family:'Chakra Petch',sans-serif;font-size:38px;font-weight:700;color:var(--white);line-height:1;margin-bottom:4px;}
+  .tier-card.featured .tier-price{color:var(--gold);text-shadow:0 0 20px rgba(255,215,0,0.4);}
+  .tier-price span{font-size:16px;color:var(--dim);}
+  .tier-sub{font-size:12px;color:var(--dimmer);margin-bottom:18px;line-height:1.5;min-height:32px;}
+  .tier-features{display:flex;flex-direction:column;gap:9px;margin-bottom:20px;flex:1;}
+  .tier-feature{display:flex;align-items:flex-start;gap:8px;font-size:13px;color:var(--dim);line-height:1.4;}
+  .tier-check{color:var(--green);flex-shrink:0;margin-top:1px;}
+  .tier-card.featured .tier-check{color:var(--gold);}
+  .tier-btn{width:100%;padding:14px;border-radius:10px;background:linear-gradient(135deg,var(--blue),var(--cyan));color:#000;font-family:'Chakra Petch',sans-serif;font-size:13px;font-weight:700;letter-spacing:0.5px;border:none;cursor:pointer;text-align:center;text-decoration:none;display:block;transition:all .2s;}
+  .tier-btn:hover{transform:translateY(-2px);}
+  .tier-card.featured .tier-btn{background:linear-gradient(135deg,#b8860b,var(--gold));}
+  .pricing-guarantee-note{max-width:700px;margin:44px auto 0;text-align:center;font-size:13px;color:var(--dimmer);line-height:1.7;padding:0 20px;}
 
   /* CTA FINAL */
-  .cta-final{
-    padding:120px 40px;text-align:center;position:relative;overflow:hidden;
-  }
+  .cta-final{padding:110px 40px;text-align:center;position:relative;overflow:hidden;}
   .cta-glow{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:600px;height:600px;background:radial-gradient(circle,rgba(30,100,255,0.1),transparent 70%);pointer-events:none;}
-  .cta-title{font-family:'Orbitron',sans-serif;font-size:clamp(32px,6vw,72px);font-weight:900;letter-spacing:3px;color:var(--white);text-shadow:0 0 40px rgba(30,100,255,0.4);margin-bottom:16px;line-height:1.1;}
-  .cta-title span{color:var(--cyan);text-shadow:0 0 30px var(--cyan);}
-  .cta-sub{font-size:16px;color:var(--dim);margin-bottom:40px;line-height:1.8;}
+  .cta-title{font-family:'Chakra Petch',sans-serif;font-size:clamp(28px,5vw,52px);font-weight:700;letter-spacing:0.3px;color:var(--white);text-shadow:0 0 40px rgba(30,100,255,0.4);margin-bottom:16px;line-height:1.2;}
+  .cta-title em{font-style:normal;color:var(--cyan);text-shadow:0 0 30px var(--cyan);}
+  .cta-sub{font-size:16px;color:var(--dim);margin-bottom:36px;line-height:1.7;}
 
-  /* FOOTER */
-  footer{
-    padding:40px;border-top:1px solid var(--border);
-    display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:20px;
-  }
-  .footer-logo{font-family:'Orbitron',sans-serif;font-size:18px;font-weight:900;color:var(--white);letter-spacing:3px;}
+  footer{padding:40px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:20px;}
+  .footer-logo{font-family:'Chakra Petch',sans-serif;font-size:18px;font-weight:700;color:var(--white);letter-spacing:2px;}
   .footer-logo span{color:var(--cyan);}
   .footer-links{display:flex;gap:24px;}
-  .footer-links a{font-family:'Orbitron',sans-serif;font-size:8px;letter-spacing:2px;color:var(--dim);text-decoration:none;transition:color .2s;}
+  .footer-links a{font-family:'Rajdhani',sans-serif;font-size:12px;font-weight:600;letter-spacing:0.5px;color:var(--dim);text-decoration:none;transition:color .2s;}
   .footer-links a:hover{color:var(--cyan);}
-  .footer-copy{font-family:'Orbitron',sans-serif;font-size:8px;letter-spacing:2px;color:var(--dimmer);}
+  .footer-copy{font-family:'Rajdhani',sans-serif;font-size:12px;letter-spacing:0.5px;color:var(--dimmer);}
 
-  /* ANIMATIONS */
-  @keyframes glow-pulse{from{filter:drop-shadow(0 0 20px rgba(30,100,255,0.5)) drop-shadow(0 0 40px rgba(0,212,255,0.2));}to{filter:drop-shadow(0 0 40px rgba(30,100,255,0.8)) drop-shadow(0 0 80px rgba(0,212,255,0.4));}}
   @keyframes fadeup{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
   @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-16px)}}
   @keyframes float2{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-10px) rotate(2deg)}}
   @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.8)}}
   @keyframes xpgrow{from{width:0}to{width:72%}}
   @keyframes glow{0%,100%{box-shadow:0 0 10px rgba(30,100,255,.3)}50%{box-shadow:0 0 30px rgba(0,212,255,.5)}}
-  @keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
 
-  /* SCROLL ANIMATIONS */
   .reveal{opacity:0;transform:translateY(30px);transition:all .7s cubic-bezier(.4,0,.2,1);}
   .reveal.visible{opacity:1;transform:translateY(0);}
 
-  /* RESPONSIVE */
-  @media(max-width:768px){
+  @media(max-width:900px){
+    .dim-grid,.why-grid,.classes-grid,.eco-grid,.events-grid,.testi-grid{grid-template-columns:1fr;}
+    .gamif-inner{grid-template-columns:1fr;}
+    .pricing-grid{grid-template-columns:1fr 1fr;}
+  }
+  @media(max-width:600px){
     nav{padding:14px 20px;}
     .nav-links{display:none;}
-    .why-grid,.classes-grid,.eco-grid,.paliers,.events-grid,.testi-grid{grid-template-columns:1fr;}
-    .gamif-inner{grid-template-columns:1fr;}
-    .affil-calc{flex-direction:column;text-align:center;}
+    .pricing-grid{grid-template-columns:1fr;}
+    .bridge-list{flex-direction:column;align-items:center;}
     footer{flex-direction:column;text-align:center;}
-  }
-
-  /* MOBILE : Lifetime Premium avant Mensuel dans la section tarifs */
-  @media(max-width:640px){
-    #card-lifetime{ order:1; margin-top:0; }
-    #card-mensuel{ order:2; margin-top:0; }
-    .pricing > div[style*="grid-template-columns"],
-    .pricing div[style*="grid-template-columns"] { display:flex !important; flex-direction:column !important; }
   }
 </style>
 </head>
 <body>
 
-<!-- BACKGROUNDS -->
 <div class="grid-bg"></div>
 <div class="radial-bg"></div>
 <div class="scanlines"></div>
-
-<!-- STARS -->
 <div class="stars" id="stars"></div>
 
-<!-- NAV -->
+<div class="guarantee-bar">🛡️ AUCUN RÉSULTAT APRÈS 2 MOIS ? ON TE REMBOURSE TON INVESTISSEMENT DE DÉPART.</div>
+
 <nav>
-  <div class="nav-logo"><img src="DHA_logo.png" alt="DHA - Digital Hustler Academy" style="height:44px;width:auto;filter:drop-shadow(0 0 10px rgba(30,100,255,0.6));"/></div>
+  <div class="nav-logo">DHA</div>
   <div class="nav-links">
+    <a href="#probleme">LE CONSTAT</a>
+    <a href="#methode">LA MÉTHODE</a>
     <a href="#formations">FORMATIONS</a>
-    <a href="#gamification">GAME SYSTEM</a>
-    <a href="#affiliation">AFFILIATION</a>
-    <a href="#events">EVENTS</a>
+    <a href="#affiliation">COMMUNAUTÉ</a>
     <a href="#pricing">TARIFS</a>
   </div>
-  <a href="#pricing" class="nav-cta">REJOINDRE →</a>
+  <a href="#pricing" class="nav-cta">RÉSERVER UN APPEL →</a>
   <a href="dha-connexion.html" class="nav-login">CONNEXION →</a>
 </nav>
 
 <!-- HERO -->
 <section class="hero">
-
-  <div class="hero-title">DHA</div>
-  <div class="hero-sub">DIGITAL HUSTLER ACADEMY</div>
-  <p class="hero-desc">
-    Pas une formation. <span>Un jeu de rôle business.</span><br/>
-    Choisis ta classe. Monte en level. Génère des revenus réels.<br/>
-    Rejoins l'écosystème où chacun évolue de la meilleure des manières.
-  </p>
-
-
-
+  <div class="hero-badge"><span class="dot"></span>ADMISSION SUR ENTRETIEN · PLACES LIMITÉES</div>
+  <h1 class="hero-title">Tes premiers <em>1000€ à 3000€</em> en trading. En 6 mois.</h1>
+  <p class="hero-desc">Pas de prospection. Pas de produit à vendre. Pas besoin de montrer ton visage. Juste une stratégie que tu maîtrises, un écran, et une connexion internet.</p>
+  <div class="hero-guarantee">Si au bout de tes 2 premiers mois tu n'as généré aucun résultat en appliquant la méthode, on te rembourse ton investissement de départ.</div>
   <div class="hero-btns">
-    <a href="https://buy.stripe.com/28E9AU6SmaPkcdN0pC6g80c" target="_blank" class="btn-primary">▶ REJOINDRE MAINTENANT — 180€</a>
-    <a href="#formations" class="btn-secondary">DÉCOUVRIR →</a>
+    <a href="#pricing" class="btn-primary">▶ RÉSERVER UN APPEL</a>
+    <a href="#methode" class="btn-secondary">VOIR LA MÉTHODE →</a>
   </div>
+  <p style="font-size:13px;color:var(--dimmer);margin-top:14px;max-width:480px;line-height:1.6" class="reveal">On ne prend pas tout le monde. Un entretien de sélection est nécessaire pour rejoindre la communauté et garantir le niveau d'engagement du groupe.</p>
   <div class="hero-stats">
-    <div class="stat">
-      <div class="stat-val">4</div>
-      <div class="stat-label">CLASSES DISPONIBLES</div>
+    <div class="stat"><div class="stat-val">1K-3K€</div><div class="stat-label">OBJECTIF EN 6 MOIS</div></div>
+    <div class="stat"><div class="stat-val">60J</div><div class="stat-label">GARANTIE REMBOURSEMENT</div></div>
+    <div class="stat"><div class="stat-val">2X/SEM</div><div class="stat-label">APPELS DE GROUPE</div></div>
+    <div class="stat"><div class="stat-val">∞</div><div class="stat-label">POTENTIEL À TERME</div></div>
+  </div>
+</section>
+
+<!-- PROBLEM -->
+<section class="problem" id="probleme">
+  <div class="section-label reveal">LE CONSTAT</div>
+  <div class="section-title reveal">Tu reconnais cette vie ?</div>
+  <p class="section-desc reveal">Avant de parler de solution, regardons les choses en face. Ça se joue sur trois plans.</p>
+  <div class="dim-grid">
+    <div class="dim-card pain reveal">
+      <div class="dim-tag pain">ÉMOTIONNEL</div>
+      <div class="dim-icon">🔒</div>
+      <div class="dim-title">Prisonnier de ton CDI</div>
+      <div class="dim-text">Tu comptes les jours avant le week-end. L'impression de passer à côté de ta vie pendant que d'autres construisent la leur. La fatigue s'accumule, et le dimanche soir pèse plus lourd que le lundi matin.</div>
     </div>
-    <div class="stat">
-      <div class="stat-val">5</div>
-      <div class="stat-label">RANGS À ATTEINDRE</div>
+    <div class="dim-card pain reveal" style="transition-delay:.1s">
+      <div class="dim-tag pain">FINANCIER</div>
+      <div class="dim-icon">💸</div>
+      <div class="dim-title">Ton argent file sans jamais rester</div>
+      <div class="dim-text">Le salaire tombe, il repart aussi vite. Rien de côté, rien d'investi. Tu sais que ça devrait changer, mais tu ne sais pas par où commencer ni comment t'y prendre.</div>
     </div>
-    <div class="stat">
-      <div class="stat-val">3</div>
-      <div class="stat-label">NIVEAUX D'AFFILIATION</div>
-    </div>
-    <div class="stat">
-      <div class="stat-val">∞</div>
-      <div class="stat-label">POTENTIEL DE REVENUS</div>
+    <div class="dim-card pain reveal" style="transition-delay:.2s">
+      <div class="dim-tag pain">IDENTITAIRE</div>
+      <div class="dim-icon">🪞</div>
+      <div class="dim-title">L'impression de n'être bon à rien</div>
+      <div class="dim-text">Une vie lambda, sans rien de concret à montrer. Difficile de faire plaisir à tes proches comme tu le voudrais. Au fond, tu n'es pas encore le modèle de réussite que tu aimerais être pour eux.</div>
     </div>
   </div>
 </section>
 
+<!-- BRIDGE / POSITIONING -->
+<section class="bridge">
+  <div class="bridge-inner">
+    <div class="section-label reveal">LA CLÉ</div>
+    <div class="section-title reveal">Le trading, ta voie vers la liberté</div>
+    <p class="bridge-text reveal">Contrairement à la plupart des business en ligne, le trading ne demande ni produit à vendre, ni prospection, ni équipe à gérer, ni visage à montrer sur les réseaux.</p>
+    <div class="bridge-list reveal">
+      <span class="bridge-no">❌ Pas de produit</span>
+      <span class="bridge-no">❌ Pas de prospection</span>
+      <span class="bridge-no">❌ Pas d'équipe</span>
+      <span class="bridge-no">❌ Pas de visage à montrer</span>
+    </div>
+    <div class="bridge-yes reveal">✅ Juste un ordinateur, une connexion, et une stratégie maîtrisée</div>
+    <p class="bridge-note reveal">Pour ça, il faut comprendre comment les marchés fonctionnent et exécuter un plan avec discipline — c'est exactement ce qu'on t'apprend ici. Tu commences en double actif : ton salaire d'un côté, ton trading de l'autre. Avec l'expérience, certains membres franchissent le pas et quittent leur emploi. Ce n'est pas automatique — ça dépend de ton travail, de ta régularité et du respect de la méthode.</p>
+  </div>
+</section>
 
-<!-- COMMUNITY PHOTOS -->
-<section style="padding:60px 40px 0;position:relative;z-index:2;">
-  <div style="max-width:1100px;margin:0 auto;">
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;border-radius:20px;overflow:hidden;">
-      <div style="position:relative;overflow:hidden;border-radius:16px;aspect-ratio:4/3;">
-        <img src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=600&q=80" 
-             alt="Groupe de jeunes entrepreneurs" 
-             style="width:100%;height:100%;object-fit:cover;filter:brightness(0.8) saturate(1.2);transition:transform .4s;"
-             onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'"/>
-        <div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(30,100,255,0.3),transparent);"></div>
-        <div style="position:absolute;bottom:12px;left:12px;font-family:Orbitron,sans-serif;font-size:9px;letter-spacing:2px;color:#fff;text-shadow:0 0 10px rgba(0,212,255,0.8);">SQUAD GOALS 🎮</div>
+<!-- SOLUTION -->
+<section class="solution">
+  <div class="section-label reveal">LA TRANSFORMATION</div>
+  <div class="section-title reveal">Ce que tu gagnes réellement</div>
+  <p class="section-desc reveal">Les trois mêmes dimensions, dans l'autre sens.</p>
+  <div class="dim-grid">
+    <div class="dim-card gain reveal">
+      <div class="dim-tag gain">ÉMOTIONNEL</div>
+      <div class="dim-icon">🕊️</div>
+      <div class="dim-title">Liberté et paix</div>
+      <div class="dim-text">Tu apprends, tu progresses, tu reprends le contrôle de ton temps. Le plaisir revient parce que tu construis quelque chose qui t'appartient vraiment.</div>
+    </div>
+    <div class="dim-card gain reveal" style="transition-delay:.1s">
+      <div class="dim-tag gain">FINANCIER</div>
+      <div class="dim-icon">📈</div>
+      <div class="dim-title">De l'épargne à l'investissement</div>
+      <div class="dim-text">Tu apprends à gérer ton argent, à en mettre de côté, et à le faire grandir grâce à une compétence que tu maîtrises toi-même — pas un intermédiaire.</div>
+    </div>
+    <div class="dim-card gain reveal" style="transition-delay:.2s">
+      <div class="dim-tag gain">IDENTITAIRE</div>
+      <div class="dim-icon">🚀</div>
+      <div class="dim-title">Un modèle pour tes proches</div>
+      <div class="dim-text">Tu deviens l'investisseur compétent que tu voulais être. Tu peux enfin faire plaisir à ceux que tu aimes, et inspirer par l'exemple plutôt que par les mots.</div>
+    </div>
+  </div>
+</section>
+
+<!-- METHOD -->
+<section class="method" id="methode">
+  <div class="section-label reveal">LA MÉTHODE</div>
+  <div class="section-title reveal">Simple. Guidé. Sécurisé.</div>
+  <p class="section-desc reveal">La méthode est simple à comprendre, mais elle demande du travail — rien ne remplace la pratique. La différence avec DHA : tu n'es jamais seul face à l'écran.</p>
+  <div class="method-steps">
+    <div class="method-step reveal">
+      <div class="method-num">1</div>
+      <div><div class="method-step-title">Tu apprends les bases</div><div class="method-step-text">Modules gamifiés, structurés étape par étape. Chaque notion débloque la suivante.</div></div>
+    </div>
+    <div class="method-step reveal" style="transition-delay:.1s">
+      <div class="method-num">2</div>
+      <div><div class="method-step-title">Tu t'entraînes avec accompagnement</div><div class="method-step-text">Compte démo, retours réguliers, questions posées en direct pendant les appels de groupe.</div></div>
+    </div>
+    <div class="method-step reveal" style="transition-delay:.2s">
+      <div class="method-num">3</div>
+      <div><div class="method-step-title">Tu exécutes avec discipline</div><div class="method-step-text">Tu appliques ta stratégie, tu journalises tes trades, tu ajustes avec ton mentor.</div></div>
+    </div>
+    <div class="method-step reveal" style="transition-delay:.3s">
+      <div class="method-num">4</div>
+      <div><div class="method-step-title">Tu passes à l'échelle</div><div class="method-step-text">Copy trading, prop firm — selon ton offre, tu montes en capital géré sans y mettre plus que nécessaire.</div></div>
+    </div>
+  </div>
+  <p class="method-disclaimer reveal">Le trading comporte des risques de perte en capital. Les résultats dépendent de ton investissement personnel, de ta régularité et du respect de la méthode enseignée — ils ne sont pas garantis, seul le remboursement conditionnel décrit dans nos CGV l'est.</p>
+</section>
+
+<!-- TESTIMONIALS (remontés) -->
+<section class="testimonials">
+  <div class="section-label reveal">ILS L'ONT FAIT</div>
+  <div class="section-title reveal">Ils ont rejoint la DHA</div>
+  <p class="section-desc reveal">Des membres réels qui transforment leur vie grâce à l'écosystème.</p>
+  <div class="testi-grid">
+    <div class="testi-card reveal">
+      <div class="testi-stars">★★★★★</div>
+      <div class="testi-text">"En 3 mois j'ai appris à trader sérieusement et j'ai généré mes premiers résultats concrets. L'accompagnement est incroyable, rien de comparable sur le marché."</div>
+      <div class="testi-author">
+        <div class="testi-avatar" style="background:rgba(0,212,255,0.2);border:1.5px solid rgba(0,212,255,0.4);color:var(--cyan)">KB</div>
+        <div><div class="testi-name">Karim B.</div><div class="testi-rank" style="color:var(--gold)">Membre Trading</div></div>
       </div>
-      <div style="position:relative;overflow:hidden;border-radius:16px;aspect-ratio:4/3;">
-        <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=600&q=80" 
-             alt="Jeunes qui travaillent ensemble" 
-             style="width:100%;height:100%;object-fit:cover;filter:brightness(0.8) saturate(1.2);transition:transform .4s;"
-             onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'"/>
-        <div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(0,212,255,0.2),transparent);"></div>
-        <div style="position:absolute;bottom:12px;left:12px;font-family:Orbitron,sans-serif;font-size:9px;letter-spacing:2px;color:#fff;text-shadow:0 0 10px rgba(0,212,255,0.8);">LEVEL UP ENSEMBLE ⚡</div>
+    </div>
+    <div class="testi-card reveal" style="transition-delay:.1s">
+      <div class="testi-stars">★★★★★</div>
+      <div class="testi-text">"Le système de progression m'a maintenu motivé quand j'ai eu envie de lâcher. Les appels 2x/semaine, ça change tout — je ne suis jamais bloqué seul."</div>
+      <div class="testi-author">
+        <div class="testi-avatar" style="background:rgba(157,78,221,0.2);border:1.5px solid rgba(157,78,221,0.4);color:var(--purple)">LD</div>
+        <div><div class="testi-name">Léa D.</div><div class="testi-rank" style="color:var(--cyan)">Membre Trading</div></div>
       </div>
-      <div style="position:relative;overflow:hidden;border-radius:16px;aspect-ratio:4/3;">
-        <img src="https://images.unsplash.com/photo-1543269664-56d93c1b41a6?w=600&q=80" 
-             alt="Communauté de jeunes ambitieux" 
-             style="width:100%;height:100%;object-fit:cover;filter:brightness(0.8) saturate(1.2);transition:transform .4s;"
-             onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'"/>
-        <div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(157,78,221,0.3),transparent);"></div>
-        <div style="position:absolute;bottom:12px;left:12px;font-family:Orbitron,sans-serif;font-size:9px;letter-spacing:2px;color:#fff;text-shadow:0 0 10px rgba(157,78,221,0.8);">THE NETWORK 👑</div>
+    </div>
+    <div class="testi-card reveal" style="transition-delay:.2s">
+      <div class="testi-stars">★★★★★</div>
+      <div class="testi-text">"Ce qui m'a convaincu c'est le cadre. Ce n'est pas 'débrouille-toi', c'est structuré, étape par étape. Et le réseau de membres vaut à lui seul l'accompagnement."</div>
+      <div class="testi-author">
+        <div class="testi-avatar" style="background:rgba(0,255,136,0.2);border:1.5px solid rgba(0,255,136,0.4);color:var(--green)">AT</div>
+        <div><div class="testi-name">Alex T.</div><div class="testi-rank" style="color:var(--cyan)">Membre Trading</div></div>
+      </div>
+    </div>
+    <div class="testi-card reveal">
+      <div class="testi-stars">★★★★★</div>
+      <div class="testi-text">"J'étais scolaire dans mon approche du trading avant, je perdais tout le temps. Avec la méthode et le suivi individuel j'ai enfin compris où étaient mes erreurs."</div>
+      <div class="testi-author">
+        <div class="testi-avatar" style="background:rgba(255,140,0,0.2);border:1.5px solid rgba(255,140,0,0.4);color:var(--orange)">SM</div>
+        <div><div class="testi-name">Sofiane M.</div><div class="testi-rank" style="color:var(--cyan)">Membre Trading</div></div>
+      </div>
+    </div>
+    <div class="testi-card reveal" style="transition-delay:.1s">
+      <div class="testi-stars">★★★★★</div>
+      <div class="testi-text">"Ce que j'apprécie le plus c'est de ne jamais être seule face à un doute. Il y a toujours quelqu'un du groupe ou un appel pour débloquer une question."</div>
+      <div class="testi-author">
+        <div class="testi-avatar" style="background:rgba(255,68,102,0.2);border:1.5px solid rgba(255,68,102,0.4);color:var(--red)">CN</div>
+        <div><div class="testi-name">Camille N.</div><div class="testi-rank" style="color:var(--cyan)">Membre Trading</div></div>
+      </div>
+    </div>
+    <div class="testi-card reveal" style="transition-delay:.2s">
+      <div class="testi-stars">★★★★★</div>
+      <div class="testi-text">"J'ai hésité longtemps à cause du prix. Avec le recul c'est le meilleur investissement que j'ai fait sur moi-même cette année, largement rentabilisé."</div>
+      <div class="testi-author">
+        <div class="testi-avatar" style="background:rgba(0,212,255,0.2);border:1.5px solid rgba(0,212,255,0.4);color:var(--cyan)">YR</div>
+        <div><div class="testi-name">Yanis R.</div><div class="testi-rank" style="color:var(--gold)">Membre Trading</div></div>
+      </div>
+    </div>
+    <div class="testi-card reveal">
+      <div class="testi-stars">★★★★★</div>
+      <div class="testi-text">"Le module Mindset m'a autant servi que les modules techniques. J'ai arrêté de sauter sur chaque opportunité et j'ai enfin de la discipline dans mon exécution."</div>
+      <div class="testi-author">
+        <div class="testi-avatar" style="background:rgba(157,78,221,0.2);border:1.5px solid rgba(157,78,221,0.4);color:var(--purple)">MB</div>
+        <div><div class="testi-name">Mehdi B.</div><div class="testi-rank" style="color:var(--cyan)">Membre Trading</div></div>
+      </div>
+    </div>
+    <div class="testi-card reveal" style="transition-delay:.1s">
+      <div class="testi-stars">★★★★★</div>
+      <div class="testi-text">"Les rencontres en présentiel ont tout changé pour moi. Mettre des visages sur les pseudos du groupe, ça crée une vraie cohésion, on se motive entre nous."</div>
+      <div class="testi-author">
+        <div class="testi-avatar" style="background:rgba(0,255,136,0.2);border:1.5px solid rgba(0,255,136,0.4);color:var(--green)">JD</div>
+        <div><div class="testi-name">Jade D.</div><div class="testi-rank" style="color:var(--cyan)">Membre Trading</div></div>
+      </div>
+    </div>
+    <div class="testi-card reveal" style="transition-delay:.2s">
+      <div class="testi-stars">★★★★★</div>
+      <div class="testi-text">"Salarié le jour, trader le soir. C'est exigeant mais faisable avec le cadre qu'ils donnent. Mes premiers gains réguliers sont arrivés au bout du 4e mois."</div>
+      <div class="testi-author">
+        <div class="testi-avatar" style="background:rgba(255,140,0,0.2);border:1.5px solid rgba(255,140,0,0.4);color:var(--orange)">TL</div>
+        <div><div class="testi-name">Thomas L.</div><div class="testi-rank" style="color:var(--gold)">Membre Trading</div></div>
+      </div>
+    </div>
+    <div class="testi-card reveal">
+      <div class="testi-stars">★★★★★</div>
+      <div class="testi-text">"J'ai testé d'autres formations avant, jamais aussi structuré. Le fait d'avoir des niveaux et des objectifs clairs m'a évité de me disperser dans tous les sens."</div>
+      <div class="testi-author">
+        <div class="testi-avatar" style="background:rgba(255,68,102,0.2);border:1.5px solid rgba(255,68,102,0.4);color:var(--red)">EP</div>
+        <div><div class="testi-name">Elisa P.</div><div class="testi-rank" style="color:var(--cyan)">Membre Trading</div></div>
       </div>
     </div>
   </div>
 </section>
 
 <!-- WHY -->
-<section class="why" id="why">
+<section class="why">
   <div class="section-label reveal">POURQUOI DHA</div>
-  <div class="section-title reveal">CE QUI NOUS REND<br/>DIFFÉRENTS</div>
-  <p class="section-desc reveal">On a cassé les codes de la formation en ligne. L'apprentissage devient un jeu. La communauté devient une famille. Les revenus deviennent une réalité.</p>
+  <div class="section-title reveal">Ce qui nous rend différents</div>
+  <p class="section-desc reveal">On a innové en combinant apprentissage gamifié et accompagnement humain réel — un mix qu'aucune autre formation trading ne propose.</p>
   <div class="why-grid">
-    <div class="why-card reveal" style="--c:var(--cyan)">
-      <div class="why-card" style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(0,212,255,0.05),transparent);border-radius:16px;"></div>
+    <div class="why-card reveal">
       <div class="why-icon">🎮</div>
       <div class="why-title">APPRENTISSAGE GAMIFIÉ</div>
-      <div class="why-text">Système d'XP, niveaux, rangs et quêtes quotidiennes. Chaque vidéo vue te rapproche de ton prochain level. L'apprentissage devient addictif.</div>
+      <div class="why-text">Système de niveaux et de progression. Chaque module complété te rapproche du suivant. Apprendre devient addictif plutôt que fastidieux.</div>
     </div>
     <div class="why-card reveal" style="transition-delay:.1s">
       <div class="why-icon">👥</div>
-      <div class="why-title">SQUADS & COMMUNAUTÉ</div>
-      <div class="why-text">Intègre ta squad selon ta classe. Un chat exclusif, des membres qui partagent tes objectifs, un réseau qui grandit avec toi.</div>
+      <div class="why-title">ACCOMPAGNEMENT PHYSIQUE</div>
+      <div class="why-text">Appels de groupe 2x/semaine, rencontres en présentiel, une vraie communauté — pas juste un accès à des vidéos qu'on regarde seul.</div>
     </div>
     <div class="why-card reveal" style="transition-delay:.2s">
-      <div class="why-icon">💰</div>
-      <div class="why-title">REVENUS RÉELS</div>
-      <div class="why-text">Système d'affiliation sur 3 niveaux. Tu apprends ET tu gagnes en même temps. Chaque membre que tu parraines te génère des commissions automatiques.</div>
-    </div>
-    <div class="why-card reveal" style="transition-delay:.1s">
-      <div class="why-icon">🧠</div>
-      <div class="why-title">EXPERTS QUALIFIÉS</div>
-      <div class="why-text">Chaque domaine est enseigné par des personnes qui ont des résultats réels. Pas de théorie. Des méthodes qui fonctionnent aujourd'hui.</div>
-    </div>
-    <div class="why-card reveal" style="transition-delay:.2s">
-      <div class="why-icon">🌍</div>
-      <div class="why-title">ÉCOSYSTÈME PHYSIQUE</div>
-      <div class="why-text">Locaux dans chaque région, séminaires, conférences, voyages récompenses. La DHA c'est pas juste un site. C'est une vraie communauté physique.</div>
-    </div>
-    <div class="why-card reveal" style="transition-delay:.3s">
-      <div class="why-icon">🚀</div>
-      <div class="why-title">CROISSANCE INTERNATIONALE</div>
-      <div class="why-text">La vision c'est un écosystème mondial. Des conventions internationales, des Chapter Leaders dans chaque pays, une famille sans frontières.</div>
+      <div class="why-icon">🛡️</div>
+      <div class="why-title">GARANTIE RÉSULTAT</div>
+      <div class="why-text">Aucun résultat après 2 mois d'application sérieuse de la méthode ? Ton investissement de départ t'est remboursé.</div>
     </div>
   </div>
 </section>
 
 <!-- FORMATIONS -->
 <section class="classes" id="formations">
-  <div class="section-label reveal">LES CLASSES</div>
-  <div class="section-title reveal">CHOISIS TON<br/>DOMAINE</div>
-  <p class="section-desc reveal">4 spécialités. Des experts qui enseignent ce qu'ils vivent. Et un module Mindset obligatoire pour tous — parce que sans fondation solide, rien ne dure.</p>
+  <div class="section-label reveal">LA FORMATION</div>
+  <div class="section-title reveal">Ce que tu apprends</div>
+  <p class="section-desc reveal">Un parcours structuré, du premier graphique à la gestion de ton propre capital.</p>
   <div class="classes-grid" style="max-width:1000px;margin:0 auto;">
-
-    <div class="class-card reveal" onmouseenter="this.style.borderColor='rgba(0,212,255,0.4)';this.style.boxShadow='0 20px 40px rgba(0,212,255,0.1)'" onmouseleave="this.style.borderColor='var(--border)';this.style.boxShadow='none'">
+    <div class="class-card reveal">
       <div class="glow" style="background:linear-gradient(135deg,rgba(0,212,255,0.05),transparent)"></div>
       <div class="class-top">
         <div class="class-icon" style="background:rgba(0,212,255,0.15);border:1.5px solid rgba(0,212,255,0.3);">📈</div>
-        <div>
-          <div class="class-name">TRADING</div>
-          <div class="class-tag" style="background:rgba(0,212,255,0.15);color:var(--cyan);border:1px solid rgba(0,212,255,0.3);">FINANCE</div>
-        </div>
+        <div><div class="class-name">TRADING</div><div class="class-tag" style="background:rgba(0,212,255,0.15);color:var(--cyan);border:1px solid rgba(0,212,255,0.3);">CŒUR DE FORMATION</div></div>
       </div>
-      <div class="class-desc">Maîtrise les marchés financiers. Analyse technique, gestion du risque, sessions live. De débutant à trader professionnel.</div>
+      <div class="class-desc">Maîtrise les marchés financiers. Analyse technique, gestion du risque, sessions live. De débutant à trader autonome.</div>
       <div class="class-modules">
         <span class="module-pill">Psychologie</span>
         <span class="module-pill">Analyse technique</span>
@@ -516,75 +534,17 @@
         <span class="module-pill">Live sessions</span>
       </div>
     </div>
-
-    <div class="class-card reveal" style="transition-delay:.1s;opacity:0.75;" onmouseenter="this.style.borderColor='rgba(157,78,221,0.4)';this.style.boxShadow='0 20px 40px rgba(157,78,221,0.1)'" onmouseleave="this.style.borderColor='var(--border)';this.style.boxShadow='none'">
-      <div class="class-top">
-        <div class="class-icon" style="background:rgba(157,78,221,0.15);border:1.5px solid rgba(157,78,221,0.3);">🎬</div>
-        <div>
-          <div class="class-name">UGC CREATOR</div>
-          <div class="class-tag" style="background:rgba(157,78,221,0.15);color:var(--purple);border:1px solid rgba(157,78,221,0.3);">CRÉATIVITÉ</div>
-        </div>
-        <div style="margin-left:auto;font-family:'Orbitron',sans-serif;font-size:8px;color:rgba(255,215,0,0.8);letter-spacing:1px;background:rgba(255,215,0,0.08);border:1px solid rgba(255,215,0,0.25);border-radius:6px;padding:4px 8px;white-space:nowrap;">⏳ BIENTÔT</div>
-      </div>
-      <div class="class-desc">Monétise ta créativité avec les marques. Crée du contenu qui convertit et construis un business de contenu rentable.</div>
-      <div class="class-modules">
-        <span class="module-pill">Portfolio</span>
-        <span class="module-pill">Pitcher les marques</span>
-        <span class="module-pill">Tournage mobile</span>
-        <span class="module-pill">Montage</span>
-        <span class="module-pill">Tarification</span>
-      </div>
-    </div>
-
-    <div class="class-card reveal" style="transition-delay:.2s;opacity:0.75;" onmouseenter="this.style.borderColor='rgba(0,255,136,0.4)';this.style.boxShadow='0 20px 40px rgba(0,255,136,0.1)'" onmouseleave="this.style.borderColor='var(--border)';this.style.boxShadow='none'">
-      <div class="class-top">
-        <div class="class-icon" style="background:rgba(0,255,136,0.15);border:1.5px solid rgba(0,255,136,0.3);">🚀</div>
-        <div>
-          <div class="class-name">MARKETING DIGITAL</div>
-          <div class="class-tag" style="background:rgba(0,255,136,0.15);color:var(--green);border:1px solid rgba(0,255,136,0.3);">BUSINESS</div>
-        </div>
-        <div style="margin-left:auto;font-family:'Orbitron',sans-serif;font-size:8px;color:rgba(255,215,0,0.8);letter-spacing:1px;background:rgba(255,215,0,0.08);border:1px solid rgba(255,215,0,0.25);border-radius:6px;padding:4px 8px;white-space:nowrap;">⏳ BIENTÔT</div>
-      </div>
-      <div class="class-desc">Scale ton business en ligne. Meta Ads, tunnels de vente, copywriting. Transforme chaque euro investi en revenus multipliés.</div>
-      <div class="class-modules">
-        <span class="module-pill">Meta Ads</span>
-        <span class="module-pill">Copywriting</span>
-        <span class="module-pill">Tunnels de vente</span>
-        <span class="module-pill">Email marketing</span>
-        <span class="module-pill">Analytics</span>
-      </div>
-    </div>
-
-    <div class="class-card reveal" style="transition-delay:.3s;opacity:0.75;" onmouseenter="this.style.borderColor='rgba(255,140,0,0.4)';this.style.boxShadow='0 20px 40px rgba(255,140,0,0.1)'" onmouseleave="this.style.borderColor='var(--border)';this.style.boxShadow='none'">
-      <div class="class-top">
-        <div class="class-icon" style="background:rgba(255,140,0,0.15);border:1.5px solid rgba(255,140,0,0.3);">🛒</div>
-        <div>
-          <div class="class-name">E-COMMERCE</div>
-          <div class="class-tag" style="background:rgba(255,140,0,0.15);color:var(--orange);border:1px solid rgba(255,140,0,0.3);">VENTES</div>
-        </div>
-        <div style="margin-left:auto;font-family:'Orbitron',sans-serif;font-size:8px;color:rgba(255,215,0,0.8);letter-spacing:1px;background:rgba(255,215,0,0.08);border:1px solid rgba(255,215,0,0.25);border-radius:6px;padding:4px 8px;white-space:nowrap;">⏳ BIENTÔT</div>
-      </div>
-      <div class="class-desc">Crée une boutique qui génère pendant que tu dors. Shopify, produits gagnants, publicités et scaling. Le business passif réel.</div>
-      <div class="class-modules">
-        <span class="module-pill">Produit gagnant</span>
-        <span class="module-pill">Shopify</span>
-        <span class="module-pill">Fournisseurs</span>
-        <span class="module-pill">Publicités</span>
-        <span class="module-pill">Scaling</span>
-      </div>
-    </div>
-
-    <!-- Mindset special -->
-    <div class="class-card reveal" style="transition-delay:.4s;grid-column:1/-1;border-color:rgba(157,78,221,0.3);background:linear-gradient(135deg,rgba(157,78,221,0.08),var(--card))">
+    <div class="class-card reveal" style="transition-delay:.1s">
       <div class="class-top">
         <div class="class-icon" style="background:rgba(157,78,221,0.2);border:1.5px solid rgba(157,78,221,0.4);font-size:28px;">🧠</div>
-        <div style="flex:1">
-          <div class="class-name">MODULE MINDSET — INCLUS POUR TOUS</div>
-          <div class="class-tag" style="background:rgba(157,78,221,0.2);color:var(--purple);border:1px solid rgba(157,78,221,0.4);">OBLIGATOIRE · FONDATION</div>
-        </div>
-        <div style="font-family:'Orbitron',sans-serif;font-size:10px;color:var(--purple);letter-spacing:2px;text-align:right">DÉBLOQUE<br/>TOUT LE RESTE</div>
+        <div><div class="class-name">MINDSET</div><div class="class-tag" style="background:rgba(157,78,221,0.2);color:var(--purple);border:1px solid rgba(157,78,221,0.4);">INCLUS · FONDATION</div></div>
       </div>
-      <div class="class-desc" style="margin-bottom:0">Sans mindset solide, aucun business ne dure. Ce module est accessible à tous les membres peu importe leur classe. Discipline, vision, peak performance. La base avant tout.</div>
+      <div class="class-desc">Sans mindset solide, aucune discipline ne tient. Ce module est inclus pour tous les membres — discipline, gestion émotionnelle, régularité. La base avant tout.</div>
+      <div class="class-modules">
+        <span class="module-pill">Discipline</span>
+        <span class="module-pill">Gestion du risque</span>
+        <span class="module-pill">Régularité</span>
+      </div>
     </div>
   </div>
 </section>
@@ -594,84 +554,43 @@
   <div class="gamif-inner">
     <div>
       <div class="section-label reveal" style="text-align:left">GAME SYSTEM</div>
-      <div class="section-title reveal" style="text-align:left;font-size:clamp(24px,4vw,42px)">L'APPRENTISSAGE<br/>COMME UN JEU</div>
-      <p style="font-size:14px;color:var(--dim);line-height:1.9;margin-bottom:32px;max-width:480px" class="reveal">Chaque action sur la plateforme te rapporte des points d'expérience. Tu montes en level, tu débloques des contenus, tu obtiens des rangs. L'apprentissage devient une progression constante et motivante.</p>
+      <div class="section-title reveal" style="text-align:left;font-size:clamp(22px,3.5vw,36px)">L'apprentissage comme une progression</div>
+      <p style="font-size:15px;color:var(--dim);line-height:1.8;margin-bottom:32px;max-width:480px" class="reveal">Chaque action sur la plateforme te rapporte des points d'expérience. Tu montes en niveau, tu débloques du contenu. L'apprentissage devient une progression constante plutôt qu'une longue liste de vidéos.</p>
       <div style="display:flex;flex-direction:column;gap:14px" class="reveal">
         <div style="display:flex;align-items:center;gap:14px;padding:14px 18px;border-radius:12px;background:var(--card);border:1px solid var(--border)">
           <div style="width:40px;height:40px;border-radius:10px;background:rgba(0,212,255,0.15);border:1.5px solid rgba(0,212,255,0.3);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">🎯</div>
-          <div>
-            <div style="font-family:'Orbitron',sans-serif;font-size:11px;font-weight:700;color:var(--white)">VIDÉO REGARDÉE</div>
-            <div style="font-family:'Orbitron',sans-serif;font-size:9px;color:var(--cyan);letter-spacing:1px;margin-top:3px">+25 XP</div>
-          </div>
+          <div><div style="font-family:'Chakra Petch',sans-serif;font-size:13px;font-weight:600;color:var(--white)">MODULE COMPLÉTÉ</div><div style="font-family:'Rajdhani',sans-serif;font-size:12px;font-weight:600;color:var(--cyan);margin-top:3px">+25 XP</div></div>
         </div>
         <div style="display:flex;align-items:center;gap:14px;padding:14px 18px;border-radius:12px;background:var(--card);border:1px solid var(--border)">
-          <div style="width:40px;height:40px;border-radius:10px;background:rgba(255,215,0,0.15);border:1.5px solid rgba(255,215,0,0.3);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">👥</div>
-          <div>
-            <div style="font-family:'Orbitron',sans-serif;font-size:11px;font-weight:700;color:var(--white)">AMI PARRAINÉ</div>
-            <div style="font-family:'Orbitron',sans-serif;font-size:9px;color:var(--gold);letter-spacing:1px;margin-top:3px">+150 XP</div>
-          </div>
-        </div>
-        <div style="display:flex;align-items:center;gap:14px;padding:14px 18px;border-radius:12px;background:var(--card);border:1px solid var(--border)">
-          <div style="width:40px;height:40px;border-radius:10px;background:rgba(255,68,102,0.15);border:1.5px solid rgba(255,68,102,0.3);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">☠️</div>
-          <div>
-            <div style="font-family:'Orbitron',sans-serif;font-size:11px;font-weight:700;color:var(--white)">BOSS VIDEO COMPLÉTÉE</div>
-            <div style="font-family:'Orbitron',sans-serif;font-size:9px;color:var(--red);letter-spacing:1px;margin-top:3px">+200 XP</div>
-          </div>
+          <div style="width:40px;height:40px;border-radius:10px;background:rgba(255,68,102,0.15);border:1.5px solid rgba(255,68,102,0.3);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">📓</div>
+          <div><div style="font-family:'Chakra Petch',sans-serif;font-size:13px;font-weight:600;color:var(--white)">JOURNAL DE TRADE TENU</div><div style="font-family:'Rajdhani',sans-serif;font-size:12px;font-weight:600;color:var(--red);margin-top:3px">+50 XP</div></div>
         </div>
         <div style="display:flex;align-items:center;gap:14px;padding:14px 18px;border-radius:12px;background:var(--card);border:1px solid var(--border)">
           <div style="width:40px;height:40px;border-radius:10px;background:rgba(0,255,136,0.15);border:1.5px solid rgba(0,255,136,0.3);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">🔥</div>
-          <div>
-            <div style="font-family:'Orbitron',sans-serif;font-size:11px;font-weight:700;color:var(--white)">CONNEXION QUOTIDIENNE</div>
-            <div style="font-family:'Orbitron',sans-serif;font-size:9px;color:var(--green);letter-spacing:1px;margin-top:3px">+10 XP / JOUR</div>
-          </div>
+          <div><div style="font-family:'Chakra Petch',sans-serif;font-size:13px;font-weight:600;color:var(--white)">CONNEXION QUOTIDIENNE</div><div style="font-family:'Rajdhani',sans-serif;font-size:12px;font-weight:600;color:var(--green);margin-top:3px">+10 XP / JOUR</div></div>
         </div>
       </div>
     </div>
-
-    <!-- Player card visual -->
     <div class="gamif-visual reveal" style="transition-delay:.2s">
       <div class="floating-badge">
         <div style="font-size:24px">👑</div>
-        <div style="font-family:'Orbitron',sans-serif;font-size:10px;color:var(--gold);font-weight:900;letter-spacing:1px;margin-top:4px">RANK UP!</div>
-        <div style="font-family:'Orbitron',sans-serif;font-size:8px;color:rgba(255,215,0,0.6);letter-spacing:1px">ELITE</div>
+        <div style="font-family:'Chakra Petch',sans-serif;font-size:11px;color:var(--gold);font-weight:700;margin-top:4px">RANK UP!</div>
       </div>
       <div class="player-card" style="animation:glow 4s ease-in-out infinite">
         <div class="player-header">
           <div class="player-avatar">JM</div>
-          <div class="player-info">
-            <div class="player-name">JORDAN M.</div>
-            <div class="player-rank">⚡ PRO HUSTLER</div>
-          </div>
+          <div class="player-info"><div class="player-name">JORDAN M.</div><div class="player-rank">TRADER NIVEAU 8</div></div>
           <div class="player-level">LV8</div>
         </div>
         <div class="xp-bar-wrap">
-          <div class="xp-label"><span>XP VERS LEVEL 9</span><span style="color:var(--cyan)">72%</span></div>
+          <div class="xp-label"><span>XP VERS NIVEAU 9</span><span style="color:var(--cyan)">72%</span></div>
           <div class="xp-bar"><div class="xp-fill"></div></div>
-          <div style="font-family:'Orbitron',sans-serif;font-size:8px;color:var(--dimmer);margin-top:6px;letter-spacing:1px">3 600 / 5 000 XP TOTAL</div>
         </div>
         <div class="badges-row">
-          <div class="badge-item" style="background:rgba(255,68,102,0.15);border-color:rgba(255,68,102,0.3)" title="First Blood">🔥</div>
-          <div class="badge-item" style="background:rgba(0,212,255,0.15);border-color:rgba(0,212,255,0.3)" title="Speed Runner">⚡</div>
-          <div class="badge-item" style="background:rgba(255,215,0,0.15);border-color:rgba(255,215,0,0.3)" title="Recruiter">👥</div>
-          <div class="badge-item" style="background:rgba(255,255,255,0.04);border-color:var(--border);filter:grayscale(1);opacity:.4" title="Locked">💎</div>
-        </div>
-        <div class="quests">
-          <div style="font-family:'Orbitron',sans-serif;font-size:8px;color:var(--dim);letter-spacing:2px;margin-bottom:4px">⚔️ QUÊTES DU JOUR</div>
-          <div class="quest-item">
-            <div class="quest-check" style="background:rgba(0,255,136,0.15);border:1px solid rgba(0,255,136,0.4);color:var(--green)">✓</div>
-            <div class="quest-text" style="text-decoration:line-through;color:var(--dimmer)">Connexion quotidienne</div>
-            <div class="quest-xp" style="color:var(--green)">+10 XP</div>
-          </div>
-          <div class="quest-item">
-            <div class="quest-check" style="background:rgba(0,212,255,0.15);border:1px solid rgba(0,212,255,0.4);color:var(--cyan)">✓</div>
-            <div class="quest-text" style="text-decoration:line-through;color:var(--dimmer)">Regarder 1 vidéo</div>
-            <div class="quest-xp" style="color:var(--cyan)">+25 XP</div>
-          </div>
-          <div class="quest-item">
-            <div class="quest-check" style="background:rgba(255,255,255,0.04);border:1px solid var(--border)"></div>
-            <div class="quest-text">Parrainer 1 ami</div>
-            <div class="quest-xp" style="color:var(--gold)">+150 XP</div>
-          </div>
+          <div class="badge-item" style="background:rgba(255,68,102,0.15);border-color:rgba(255,68,102,0.3)">🔥</div>
+          <div class="badge-item" style="background:rgba(0,212,255,0.15);border-color:rgba(0,212,255,0.3)">⚡</div>
+          <div class="badge-item" style="background:rgba(255,215,0,0.15);border-color:rgba(255,215,0,0.3)">📓</div>
+          <div class="badge-item" style="background:rgba(255,255,255,0.04);border-color:var(--border);filter:grayscale(1);opacity:.4">💎</div>
         </div>
       </div>
     </div>
@@ -679,90 +598,40 @@
 </section>
 
 <!-- ECOSYSTEM -->
-<section class="ecosystem" id="ecosystem">
-  <div class="section-label reveal">L'ÉCOSYSTÈME</div>
-  <div class="section-title reveal">UNE SAFE PLACE<br/>POUR HUSTLERS</div>
-  <p class="section-desc reveal">La DHA c'est pas juste une plateforme en ligne. C'est un vrai écosystème physique et digital qui grandit avec ses membres.</p>
+<section class="ecosystem" id="affiliation">
+  <div class="section-label reveal">LA COMMUNAUTÉ</div>
+  <div class="section-title reveal">Une vraie famille de hustlers</div>
+  <p class="section-desc reveal">Tu ne rejoins pas juste une formation. Tu entres dans un groupe qui avance avec toi — appels de groupe, rencontres, une communauté qui te tire vers le haut.</p>
   <div class="eco-grid">
-    <div class="eco-card reveal" onmouseenter="this.style.borderColor='rgba(0,212,255,0.3)'" onmouseleave="this.style.borderColor='var(--border)'">
-      <div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(0,212,255,0.05),transparent);border-radius:16px;"></div>
-      <span class="eco-icon">🏢</span>
-      <div class="eco-title">LOCAUX PAR RÉGION</div>
-      <div class="eco-text">Un espace physique dans chaque ville pour que les membres se retrouvent, networkent et travaillent ensemble dans un environnement d'excellence.</div>
+    <div class="eco-card reveal">
+      <span class="eco-icon">📞</span>
+      <div class="eco-title">APPELS 2X PAR SEMAINE</div>
+      <div class="eco-text">Deux rendez-vous fixes chaque semaine pour poser tes questions, débloquer tes difficultés et avancer collectivement.</div>
     </div>
-    <div class="eco-card reveal" style="transition-delay:.1s" onmouseenter="this.style.borderColor='rgba(255,215,0,0.3)'" onmouseleave="this.style.borderColor='var(--border)'">
-      <span class="eco-icon">🎪</span>
-      <div class="eco-title">SÉMINAIRES & EVENTS</div>
-      <div class="eco-text">Des événements réguliers dans chaque région. Conférences avec des experts, workshops intensifs, networking de haut niveau.</div>
+    <div class="eco-card reveal" style="transition-delay:.1s">
+      <span class="eco-icon">🤝</span>
+      <div class="eco-title">RENCONTRES EN PRÉSENTIEL</div>
+      <div class="eco-text">Des meetups organisés pour se retrouver, networker et travailler ensemble en dehors des écrans.</div>
     </div>
-    <div class="eco-card reveal" style="transition-delay:.2s" onmouseenter="this.style.borderColor='rgba(0,255,136,0.3)'" onmouseleave="this.style.borderColor='var(--border)'">
-      <span class="eco-icon">✈️</span>
-      <div class="eco-title">VOYAGES RÉCOMPENSES</div>
-      <div class="eco-text">Les top performers sont récompensés par des voyages tous frais payés. Dubai, Bali, New York. La réussite mérite d'être célébrée.</div>
+    <div class="eco-card reveal" style="transition-delay:.2s">
+      <span class="eco-icon">👨‍👩‍👧‍👦</span>
+      <div class="eco-title">UNE COMMUNAUTÉ, PAS UN PRODUIT</div>
+      <div class="eco-text">Tu échanges avec des membres qui traversent les mêmes doutes que toi. Personne n'avance seul dans son coin.</div>
     </div>
-    <div class="eco-card reveal" style="transition-delay:.1s" onmouseenter="this.style.borderColor='rgba(157,78,221,0.3)'" onmouseleave="this.style.borderColor='var(--border)'">
+    <div class="eco-card reveal" style="transition-delay:.1s">
       <span class="eco-icon">📺</span>
       <div class="eco-title">LIVES & REPLAYS</div>
-      <div class="eco-text">Des sessions live hebdomadaires avec les experts. Trading en direct, analyses de campagnes, UGC live. Accès aux replays selon ton niveau XP.</div>
+      <div class="eco-text">Sessions de trading en direct chaque semaine, avec replays disponibles pour revoir à ton rythme.</div>
     </div>
-    <div class="eco-card reveal" style="transition-delay:.2s" onmouseenter="this.style.borderColor='rgba(255,68,102,0.3)'" onmouseleave="this.style.borderColor='var(--border)'">
-      <span class="eco-icon">🌍</span>
-      <div class="eco-title">CONVENTIONS INTERNATIONALES</div>
-      <div class="eco-text">La grande vision. Des conventions mondiales qui rassemblent des milliers de membres. L'écosystème le plus puissant jamais créé.</div>
-    </div>
-    <div class="eco-card reveal" style="transition-delay:.3s" onmouseenter="this.style.borderColor='rgba(255,140,0,0.3)'" onmouseleave="this.style.borderColor='var(--border)'">
+    <div class="eco-card reveal" style="transition-delay:.2s">
       <span class="eco-icon">📅</span>
-      <div class="eco-title">APPELS MENTOR 1:1</div>
-      <div class="eco-text">Réserve un appel stratégique directement avec le fondateur. Un vrai échange pour débloquer ta progression et définir ta roadmap.</div>
+      <div class="eco-title">SUIVI PERSONNALISÉ</div>
+      <div class="eco-text">Selon ton offre, un accompagnement stratégique individuel pour construire ton plan et corriger tes erreurs.</div>
     </div>
-  </div>
-</section>
-
-<!-- AFFILIATION -->
-<section class="affil" id="affiliation">
-  <div class="section-label reveal">AFFILIATION GAME</div>
-  <div class="section-title reveal">GAGNE EN<br/>APPRENANT</div>
-  <p class="section-desc reveal">Choisis ton statut. Membre simple ou Affilié. Des commissions automatiques sur chaque vente que tu génères.</p>
-  <div class="affil-inner">
-    <div class="paliers">
-
-      <!-- MEMBRE SIMPLE -->
-      <div class="palier-card reveal" style="border-color:rgba(30,100,255,0.3)">
-        <div class="palier-icon">🎮</div>
-        <div class="palier-name" style="color:var(--blue)">MEMBRE SIMPLE</div>
-        <div class="palier-desc">Tu viens apprendre et progresser. Accès complet à ta formation, ton Squad, le système XP et tous les événements. Parraine 3 amis et gagne 1 mois offert.</div>
-        <div class="palier-pct" style="color:var(--blue)">🎁</div>
-        <div class="palier-sub">3 RECOMMANDATIONS = 1 MOIS OFFERT</div>
-        <div style="margin-top:12px;font-family:'Orbitron',sans-serif;font-size:8px;color:rgba(30,100,255,0.6);letter-spacing:1px;">CHOIX À L'INSCRIPTION</div>
-      </div>
-
-      <!-- MEMBRE AFFILIÉ -->
-      <div class="palier-card reveal" style="transition-delay:.1s;border-color:rgba(0,212,255,0.3)">
-        <div class="palier-icon">⚡</div>
-        <div class="palier-name" style="color:var(--cyan)">MEMBRE AFFILIÉ</div>
-        <div class="palier-desc">Tu apprends ET tu génères des revenus. Lien d'affiliation personnel + accès au Dashboard Vendeur + badge ⚡ exclusif.</div>
-        <div class="palier-pct" style="color:var(--cyan)">20<span style="font-size:20px">%</span></div>
-        <div class="palier-sub">PAR VENTE DIRECTE</div>
-        <div style="margin-top:12px;font-family:'Orbitron',sans-serif;font-size:8px;color:rgba(0,212,255,0.6);letter-spacing:1px;">CHOIX À L'INSCRIPTION</div>
-      </div>
-
-    </div>
-
-    <!-- Calcul exemple -->
-    <div class="affil-calc reveal">
-      <div>
-        <div style="font-family:'Orbitron',sans-serif;font-size:9px;color:rgba(0,212,255,0.6);letter-spacing:3px;margin-bottom:8px">SIMULATION AFFILIÉ — 180€/MOIS</div>
-        <div style="font-size:13px;color:var(--dim);line-height:1.8">
-          5 ventes × 180€ × 20% = <strong style="color:var(--cyan)">180€</strong><br/>
-          10 ventes × 180€ × 20% = <strong style="color:var(--cyan)">360€</strong><br/>
-          20 ventes × 180€ × 20% = <strong style="color:var(--cyan)">720€</strong>
-        </div>
-      </div>
-      <div style="text-align:center">
-        <div style="font-family:'Orbitron',sans-serif;font-size:9px;color:rgba(0,212,255,0.6);letter-spacing:3px;margin-bottom:4px">REVENU / 20 VENTES</div>
-        <div style="font-family:'Orbitron',sans-serif;font-size:52px;font-weight:900;color:var(--cyan);line-height:1;text-shadow:0 0 30px rgba(0,212,255,0.5)">720€</div>
-        <div style="font-family:'Orbitron',sans-serif;font-size:8px;color:rgba(0,212,255,0.4);letter-spacing:2px;margin-top:4px">PASSIF & AUTOMATIQUE</div>
-      </div>
+    <div class="eco-card reveal" style="transition-delay:.3s">
+      <span class="eco-icon">🌍</span>
+      <div class="eco-title">UNE VISION QUI GRANDIT</div>
+      <div class="eco-text">L'objectif : bâtir la plus grande communauté de traders indépendants et disciplinés en France.</div>
     </div>
   </div>
 </section>
@@ -770,225 +639,114 @@
 <!-- EVENTS -->
 <section class="events" id="events">
   <div class="section-label reveal">ÉVÉNEMENTS</div>
-  <div class="section-title reveal">VIS L'EXPÉRIENCE<br/>EN VRAI</div>
-  <p class="section-desc reveal">La DHA existe au-delà du digital. Des events physiques réguliers pour se retrouver, apprendre ensemble et célébrer les victoires.</p>
+  <div class="section-title reveal">Vis l'expérience en vrai</div>
+  <p class="section-desc reveal">La DHA existe au-delà des écrans. Des rendez-vous réguliers pour se retrouver et avancer ensemble.</p>
   <div class="events-grid">
-    <div class="event-card reveal" onmouseenter="this.style.borderColor='rgba(255,215,0,0.4)';this.style.boxShadow='0 20px 40px rgba(255,215,0,0.08)'" onmouseleave="this.style.borderColor='var(--border)';this.style.boxShadow='none'">
-      <div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,215,0,0.04),transparent);border-radius:16px;"></div>
-      <span class="event-icon">🏙️</span>
-      <div class="event-type" style="background:rgba(255,215,0,0.15);color:var(--gold);border:1px solid rgba(255,215,0,0.3)">PHYSIQUE</div>
-      <div class="event-title">HUSTLER SUMMIT</div>
-      <div class="event-info">Le grand rassemblement semestriel. Conférences, networking, célébration des top performers. Une journée qui change tout.</div>
-    </div>
-    <div class="event-card reveal" style="transition-delay:.1s" onmouseenter="this.style.borderColor='rgba(0,212,255,0.4)';this.style.boxShadow='0 20px 40px rgba(0,212,255,0.08)'" onmouseleave="this.style.borderColor='var(--border)';this.style.boxShadow='none'">
+    <div class="event-card reveal">
       <span class="event-icon">📊</span>
-      <div class="event-type" style="background:rgba(0,212,255,0.15);color:var(--cyan);border:1px solid rgba(0,212,255,0.3)">LIVE EN LIGNE</div>
-      <div class="event-title">LIVE HEBDOMADAIRE</div>
-      <div class="event-info">Chaque semaine, un expert partage en live. Trading en direct, analyses de campagnes, sessions UGC. Interactif et concret.</div>
+      <div class="event-type" style="background:rgba(0,212,255,0.15);color:var(--cyan);border:1px solid rgba(0,212,255,0.3)">EN LIGNE</div>
+      <div class="event-title">APPELS DE GROUPE</div>
+      <div class="event-info">2 fois par semaine, en direct, pour débloquer tes questions et avancer avec le groupe.</div>
     </div>
-    <div class="event-card reveal" style="transition-delay:.2s" onmouseenter="this.style.borderColor='rgba(0,255,136,0.4)';this.style.boxShadow='0 20px 40px rgba(0,255,136,0.08)'" onmouseleave="this.style.borderColor='var(--border)';this.style.boxShadow='none'">
-      <span class="event-icon">✈️</span>
-      <div class="event-type" style="background:rgba(0,255,136,0.15);color:var(--green);border:1px solid rgba(0,255,136,0.3)">RÉCOMPENSE</div>
-      <div class="event-title">VOYAGES TOP MEMBERS</div>
-      <div class="event-info">Les meilleurs membres sont récompensés par des voyages tous frais payés. La réussite se vit aussi en dehors des écrans.</div>
-    </div>
-    <div class="event-card reveal" style="transition-delay:.3s" onmouseenter="this.style.borderColor='rgba(157,78,221,0.4)';this.style.boxShadow='0 20px 40px rgba(157,78,221,0.08)'" onmouseleave="this.style.borderColor='var(--border)';this.style.boxShadow='none'">
+    <div class="event-card reveal" style="transition-delay:.1s">
       <span class="event-icon">🎤</span>
-      <div class="event-type" style="background:rgba(157,78,221,0.15);color:var(--purple);border:1px solid rgba(157,78,221,0.3)">PHYSIQUE</div>
-      <div class="event-title">WORKSHOPS RÉGIONAUX</div>
-      <div class="event-info">Des workshops pratiques dans chaque région. 1 journée intensive avec des experts locaux sur ton domaine.</div>
+      <div class="event-type" style="background:rgba(255,215,0,0.15);color:var(--gold);border:1px solid rgba(255,215,0,0.3)">PRÉSENTIEL</div>
+      <div class="event-title">RENCONTRES HUSTLERS</div>
+      <div class="event-info">Des meetups organisés pour se retrouver, échanger et créer de vrais liens dans la communauté.</div>
     </div>
-    <div class="event-card reveal" style="transition-delay:.4s" onmouseenter="this.style.borderColor='rgba(255,68,102,0.4)';this.style.boxShadow='0 20px 40px rgba(255,68,102,0.08)'" onmouseleave="this.style.borderColor='var(--border)';this.style.boxShadow='none'">
-      <span class="event-icon">🌍</span>
-      <div class="event-type" style="background:rgba(255,68,102,0.15);color:var(--red);border:1px solid rgba(255,68,102,0.3)">INTERNATIONAL</div>
-      <div class="event-title">CONVENTION MONDIALE</div>
-      <div class="event-info">La grande vision. Une convention annuelle internationale qui rassemble des milliers de membres du monde entier.</div>
-    </div>
-    <div class="event-card reveal" style="transition-delay:.5s" onmouseenter="this.style.borderColor='rgba(255,140,0,0.4)';this.style.boxShadow='0 20px 40px rgba(255,140,0,0.08)'" onmouseleave="this.style.borderColor='var(--border)';this.style.boxShadow='none'">
-      <span class="event-icon">🏢</span>
-      <div class="event-type" style="background:rgba(255,140,0,0.15);color:var(--orange);border:1px solid rgba(255,140,0,0.3)">COWORKING</div>
-      <div class="event-title">LOCAUX DHA</div>
-      <div class="event-info">Des espaces physiques dans chaque ville. Travaille, rencontre et grandis avec les membres de ta région.</div>
+    <div class="event-card reveal" style="transition-delay:.2s">
+      <span class="event-icon">📅</span>
+      <div class="event-type" style="background:rgba(157,78,221,0.15);color:var(--purple);border:1px solid rgba(157,78,221,0.3)">1:1</div>
+      <div class="event-title">SUIVI STRATÉGIQUE</div>
+      <div class="event-info">Un accompagnement individuel pour construire et ajuster ton plan de trading selon ton offre.</div>
     </div>
   </div>
 </section>
-
-
-<!-- TRAVEL & EVENTS PHOTOS -->
-<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;max-width:1100px;margin:50px auto 0;padding:0 40px;">
-  <div style="position:relative;overflow:hidden;border-radius:14px;aspect-ratio:3/4;">
-    <img src="https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=400&q=80" 
-         alt="Dubai" style="width:100%;height:100%;object-fit:cover;filter:brightness(0.75) saturate(1.3);"/>
-    <div style="position:absolute;inset:0;background:linear-gradient(0deg,rgba(5,9,20,0.8) 0%,transparent 50%);"></div>
-    <div style="position:absolute;bottom:14px;left:14px;">
-      <div style="font-family:Orbitron,sans-serif;font-size:14px;font-weight:900;color:#FFD700;text-shadow:0 0 15px rgba(255,215,0,0.6);">DUBAI</div>
-      <div style="font-family:Orbitron,sans-serif;font-size:8px;color:rgba(255,255,255,0.6);letter-spacing:2px;">VOYAGE RÉCOMPENSE</div>
-    </div>
-  </div>
-  <div style="position:relative;overflow:hidden;border-radius:14px;aspect-ratio:3/4;">
-    <img src="https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=400&q=80" 
-         alt="Bali" style="width:100%;height:100%;object-fit:cover;filter:brightness(0.75) saturate(1.3);"/>
-    <div style="position:absolute;inset:0;background:linear-gradient(0deg,rgba(5,9,20,0.8) 0%,transparent 50%);"></div>
-    <div style="position:absolute;bottom:14px;left:14px;">
-      <div style="font-family:Orbitron,sans-serif;font-size:14px;font-weight:900;color:#00D4FF;text-shadow:0 0 15px rgba(0,212,255,0.6);">BALI</div>
-      <div style="font-family:Orbitron,sans-serif;font-size:8px;color:rgba(255,255,255,0.6);letter-spacing:2px;">RETRAITE HUSTLERS</div>
-    </div>
-  </div>
-  <div style="position:relative;overflow:hidden;border-radius:14px;aspect-ratio:3/4;">
-    <img src="https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?w=400&q=80" 
-         alt="New York" style="width:100%;height:100%;object-fit:cover;filter:brightness(0.75) saturate(1.3);"/>
-    <div style="position:absolute;inset:0;background:linear-gradient(0deg,rgba(5,9,20,0.8) 0%,transparent 50%);"></div>
-    <div style="position:absolute;bottom:14px;left:14px;">
-      <div style="font-family:Orbitron,sans-serif;font-size:14px;font-weight:900;color:#00FF88;text-shadow:0 0 15px rgba(0,255,136,0.6);">NEW YORK</div>
-      <div style="font-family:Orbitron,sans-serif;font-size:8px;color:rgba(255,255,255,0.6);letter-spacing:2px;">SUMMIT ANNUEL</div>
-    </div>
-  </div>
-  <div style="position:relative;overflow:hidden;border-radius:14px;aspect-ratio:3/4;">
-    <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&q=80" 
-         alt="Ibiza" style="width:100%;height:100%;object-fit:cover;filter:brightness(0.75) saturate(1.3);"/>
-    <div style="position:absolute;inset:0;background:linear-gradient(0deg,rgba(5,9,20,0.8) 0%,transparent 50%);"></div>
-    <div style="position:absolute;bottom:14px;left:14px;">
-      <div style="font-family:Orbitron,sans-serif;font-size:14px;font-weight:900;color:#9D4EDD;text-shadow:0 0 15px rgba(157,78,221,0.6);">IBIZA</div>
-      <div style="font-family:Orbitron,sans-serif;font-size:8px;color:rgba(255,255,255,0.6);letter-spacing:2px;">HUSTLE & CELEBRATE</div>
-    </div>
-  </div>
-</div>
-
-<!-- TESTIMONIALS -->
-<section class="testimonials">
-  <div class="section-label reveal">TÉMOIGNAGES</div>
-  <div class="section-title reveal">ILS ONT REJOINT<br/>LA DHA</div>
-  <p class="section-desc reveal">Des membres réels qui transforment leur vie grâce à l'écosystème.</p>
-  <div class="testi-grid">
-    <div class="testi-card reveal">
-      <div class="testi-stars">★★★★★</div>
-      <div class="testi-text">"En 3 mois j'ai appris à trader sérieusement et j'ai généré mes premières commissions d'affiliation. La plateforme est incroyable, rien de comparable sur le marché."</div>
-      <div class="testi-author">
-        <div class="testi-avatar" style="background:rgba(0,212,255,0.2);border:1.5px solid rgba(0,212,255,0.4);color:var(--cyan)">KB</div>
-        <div>
-          <div class="testi-name">Karim B.</div>
-          <div class="testi-rank" style="color:var(--gold)">⚡ AFFILIÉ — Trading</div>
-        </div>
-      </div>
-    </div>
-    <div class="testi-card reveal" style="transition-delay:.1s">
-      <div class="testi-stars">★★★★★</div>
-      <div class="testi-text">"J'avais essayé plusieurs formations UGC. Aucune comme DHA. Le système de progression m'a maintenu motivé et j'ai signé ma première collab en 6 semaines."</div>
-      <div class="testi-author">
-        <div class="testi-avatar" style="background:rgba(157,78,221,0.2);border:1.5px solid rgba(157,78,221,0.4);color:var(--purple)">LD</div>
-        <div>
-          <div class="testi-name">Léa D.</div>
-          <div class="testi-rank" style="color:var(--cyan)">🚀 PRO HUSTLER — UGC</div>
-        </div>
-      </div>
-    </div>
-    <div class="testi-card reveal" style="transition-delay:.2s">
-      <div class="testi-stars">★★★★★</div>
-      <div class="testi-text">"Le module Meta Ads a transformé mon business. ROAS multiplié par 4. Et le réseau de membres que j'ai rencontré aux events vaut à lui seul l'abonnement."</div>
-      <div class="testi-author">
-        <div class="testi-avatar" style="background:rgba(0,255,136,0.2);border:1.5px solid rgba(0,255,136,0.4);color:var(--green)">AT</div>
-        <div>
-          <div class="testi-name">Alex T.</div>
-          <div class="testi-rank" style="color:var(--cyan)">🚀 PRO HUSTLER — Marketing</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-
-<div style="max-width:1100px;margin:60px auto 0;padding:0 40px;display:grid;grid-template-columns:2fr 1fr 1fr;gap:16px;">
-  <div style="position:relative;overflow:hidden;border-radius:16px;aspect-ratio:16/9;">
-    <img src="https://images.unsplash.com/photo-1515187029135-18ee286d815b?w=800&q=80" 
-         alt="Événement DHA" style="width:100%;height:100%;object-fit:cover;filter:brightness(0.7) saturate(1.2);"/>
-    <div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(30,100,255,0.4),transparent 60%);"></div>
-    <div style="position:absolute;top:16px;left:16px;font-family:Orbitron,sans-serif;font-size:10px;letter-spacing:3px;color:var(--cyan);text-shadow:0 0 15px rgba(0,212,255,0.8);">🎤 HUSTLER SUMMIT</div>
-  </div>
-  <div style="position:relative;overflow:hidden;border-radius:16px;">
-    <img src="https://images.unsplash.com/photo-1511578314322-379afb476865?w=400&q=80" 
-         alt="Séminaire" style="width:100%;height:100%;object-fit:cover;filter:brightness(0.7) saturate(1.2);"/>
-    <div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(157,78,221,0.4),transparent);"></div>
-    <div style="position:absolute;bottom:12px;left:12px;font-family:Orbitron,sans-serif;font-size:9px;letter-spacing:2px;color:#fff;">SÉMINAIRES 🔥</div>
-  </div>
-  <div style="position:relative;overflow:hidden;border-radius:16px;">
-    <img src="https://images.unsplash.com/photo-1528605248644-14dd04022da1?w=400&q=80" 
-         alt="Communauté jeunes" style="width:100%;height:100%;object-fit:cover;filter:brightness(0.7) saturate(1.2);"/>
-    <div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(0,255,136,0.3),transparent);"></div>
-    <div style="position:absolute;bottom:12px;left:12px;font-family:Orbitron,sans-serif;font-size:9px;letter-spacing:2px;color:#fff;">TA SQUAD 👊</div>
-  </div>
-</div>
 
 <!-- PRICING -->
 <section class="pricing" id="pricing">
   <div class="section-label reveal">TARIFS</div>
-  <div class="section-title reveal">REJOINS<br/>L'ACADÉMIE</div>
-  <p class="section-desc reveal">Choisis ton accès. Même contenu, même communauté, même écosystème.</p>
+  <div class="section-title reveal">Choisis ton niveau d'accompagnement</div>
+  <p class="section-desc reveal">4 offres. Plus tu montes, plus l'accompagnement et les outils sont complets.<br/>L'accès n'est pas automatique : chaque candidature passe par un entretien pour vérifier que le programme te correspond et préserver le niveau du groupe.</p>
 
-  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:24px;max-width:860px;margin:0 auto;">
+  <div class="pricing-grid">
 
-    <!-- PLAN MENSUEL -->
-    <div class="pricing-card reveal" id="card-mensuel" style="position:relative;">
-      <div class="pricing-glow"></div>
-      <div class="pricing-badge">🚀 PACK MEDIUM</div>
-      <div style="font-family:'Orbitron',sans-serif;font-size:13px;letter-spacing:3px;color:var(--cyan);margin-bottom:16px;">MENSUEL</div>
-      <div class="pricing-price">180<span>€</span></div>
-      <div class="pricing-period">PUIS 99€/MOIS</div>
-      <div style="margin-bottom:28px;"></div>
-      <div class="pricing-features">
-        <div class="feature-item"><div class="feature-check">✓</div><span>Formation complète dans ton domaine</span></div>
-        <div class="feature-item"><div class="feature-check">✓</div><span>Module Mindset — fondation obligatoire</span></div>
-        <div class="feature-item"><div class="feature-check">✓</div><span>Système XP, niveaux et rangs gamifiés</span></div>
-        <div class="feature-item"><div class="feature-check">✓</div><span>Accès à ton Squad et au chat exclusif</span></div>
-        <div class="feature-item"><div class="feature-check">✓</div><span>Lives hebdomadaires et replays</span></div>
-        <div class="feature-item"><div class="feature-check">✓</div><span>Système d'affiliation et commissions</span></div>
-        <div class="feature-item"><div class="feature-check">✓</div><span>Accès aux événements et séminaires</span></div>
-        <div class="feature-item"><div class="feature-check">✓</div><span>Appel stratégique 1:1 avec le mentor</span></div>
+    <div class="tier-card reveal">
+      <div class="tier-name">BASIQUE</div>
+      <div class="tier-price">500<span>€</span></div>
+      <div class="tier-sub">Formation seule, pour démarrer par toi-même</div>
+      <div class="tier-features">
+        <div class="tier-feature"><span class="tier-check">✓</span>Formations vidéo complètes</div>
+        <div class="tier-feature"><span class="tier-check">✓</span>Module Mindset inclus</div>
+        <div class="tier-feature"><span class="tier-check">✓</span>Canal copy trading</div>
+        <div class="tier-feature" style="color:var(--dimmer)"><span class="tier-check" style="color:var(--dimmer)">✗</span>Pas d'accompagnement stratégie</div>
       </div>
-      <a href="https://buy.stripe.com/28E9AU6SmaPkcdN0pC6g80c" target="_blank" class="pricing-btn" style="display:block;text-align:center;text-decoration:none;">▶ COMMENCER — 180€</a>
-      <div class="pricing-sub">SANS ENGAGEMENT · RÉSILIATION LIBRE</div>
-      <div style="margin-top:10px;font-family:'Orbitron',sans-serif;font-size:8px;color:rgba(0,212,255,0.7);letter-spacing:1px;text-align:center;">💳 PAIEMENT EN PLUSIEURS FOIS DISPONIBLE</div>
+      <!-- TODO Quincy : ajouter le lien Stripe pour l'offre 500€ -->
+      <a href="https://calendly.com/quincy-massol/appel-pour-huslter" target="_blank" class="tier-btn">RÉSERVER UN APPEL</a>
     </div>
 
-    <!-- PLAN LIFETIME -->
-    <div class="pricing-card reveal" id="card-lifetime" style="position:relative;border-color:rgba(255,215,0,0.3);background:linear-gradient(135deg,#080e1f,#0d1428);overflow:visible;margin-top:20px;">
-      <div style="position:absolute;top:-16px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#b8860b,var(--gold));color:#000;font-family:'Orbitron',sans-serif;font-size:9px;font-weight:900;letter-spacing:2px;padding:6px 20px;border-radius:99px;white-space:nowrap;box-shadow:0 4px 20px rgba(255,215,0,0.5);z-index:10;">⭐ RECOMMANDÉ</div>
-      <div class="pricing-glow" style="background:radial-gradient(ellipse at 50% 0%,rgba(255,215,0,0.15),transparent 70%);"></div>
-      <div class="pricing-badge" style="background:rgba(255,215,0,0.15);border-color:rgba(255,215,0,0.4);color:var(--gold);margin-top:16px;">👑 ACCÈS À VIE</div>
-      <div style="font-family:'Orbitron',sans-serif;font-size:13px;letter-spacing:3px;color:var(--gold);margin-bottom:16px;">LIFETIME</div>
-      <div class="pricing-price" style="color:var(--gold);text-shadow:0 0 30px rgba(255,215,0,0.5);">500<span>€</span></div>
-      <div class="pricing-period">PAIEMENT UNIQUE — PLUS JAMAIS RIEN</div>
-      <div style="font-size:10px;color:var(--gold);margin-top:6px;margin-bottom:28px;font-family:Orbitron,sans-serif;letter-spacing:1px;opacity:0.7;">💎 Accès complet · Toutes futures mises à jour incluses</div>
-      <div class="pricing-features">
-        <div class="feature-item"><div class="feature-check" style="background:rgba(255,215,0,0.15);border-color:rgba(255,215,0,0.4);color:var(--gold);">✓</div><span>Tout ce qui est inclus dans le plan mensuel</span></div>
-        <div class="feature-item"><div class="feature-check" style="background:rgba(255,215,0,0.15);border-color:rgba(255,215,0,0.4);color:var(--gold);">✓</div><span>Accès à <strong>tous</strong> les domaines de formation</span></div>
-        <div class="feature-item"><div class="feature-check" style="background:rgba(255,215,0,0.15);border-color:rgba(255,215,0,0.4);color:var(--gold);">✓</div><span>Badge exclusif 💎 LIFETIME MEMBER</span></div>
-        <div class="feature-item"><div class="feature-check" style="background:rgba(255,215,0,0.15);border-color:rgba(255,215,0,0.4);color:var(--gold);">✓</div><span>Priorité aux événements et séminaires</span></div>
-        <div class="feature-item"><div class="feature-check" style="background:rgba(255,215,0,0.15);border-color:rgba(255,215,0,0.4);color:var(--gold);">✓</div><span>Toutes les futures formations incluses</span></div>
-        <div class="feature-item"><div class="feature-check" style="background:rgba(255,215,0,0.15);border-color:rgba(255,215,0,0.4);color:var(--gold);">✓</div><span>Communauté & mises à jour à vie</span></div>
+    <div class="tier-card reveal" style="transition-delay:.1s">
+      <div class="tier-name">STANDARD</div>
+      <div class="tier-price">1000<span>€</span></div>
+      <div class="tier-sub">Formation + suivi stratégique individuel</div>
+      <div class="tier-features">
+        <div class="tier-feature"><span class="tier-check">✓</span>Tout le pack Basique</div>
+        <div class="tier-feature"><span class="tier-check">✓</span>Accompagnement stratégie</div>
+        <div class="tier-feature"><span class="tier-check">✓</span>Canal copy trading</div>
+        <div class="tier-feature"><span class="tier-check">✓</span>Appels de groupe 2x/sem</div>
       </div>
-      <a href="https://buy.stripe.com/fZu9AU7Wq6z4elV0pC6g80d" target="_blank" class="pricing-btn" style="background:linear-gradient(135deg,#b8860b,var(--gold));box-shadow:0 6px 30px rgba(255,215,0,0.3);display:block;text-align:center;text-decoration:none;">👑 ACCÈS LIFETIME — 500€</a>
-      <div class="pricing-sub">PAIEMENT SÉCURISÉ · UNE SEULE FOIS · POUR TOUJOURS</div>
-      <div style="margin-top:10px;font-family:'Orbitron',sans-serif;font-size:8px;color:rgba(255,215,0,0.7);letter-spacing:1px;text-align:center;">💳 PAIEMENT EN PLUSIEURS FOIS DISPONIBLE</div>
+      <!-- TODO Quincy : ajouter le lien Stripe pour l'offre 1000€ -->
+      <a href="https://calendly.com/quincy-massol/appel-pour-huslter" target="_blank" class="tier-btn">RÉSERVER UN APPEL</a>
+    </div>
+
+    <div class="tier-card reveal" style="transition-delay:.2s">
+      <div class="tier-name">STANDARD+</div>
+      <div class="tier-price">1500<span>€</span></div>
+      <div class="tier-sub">Stratégie + accès prop firm</div>
+      <div class="tier-features">
+        <div class="tier-feature"><span class="tier-check">✓</span>Tout le pack Basique</div>
+        <div class="tier-feature"><span class="tier-check">✓</span>Accompagnement stratégie</div>
+        <div class="tier-feature"><span class="tier-check">✓</span>Accès prop firm</div>
+        <div class="tier-feature"><span class="tier-check">✓</span>Appels de groupe 2x/sem</div>
+      </div>
+      <!-- TODO Quincy : ajouter le lien Stripe pour l'offre 1500€ -->
+      <a href="https://calendly.com/quincy-massol/appel-pour-huslter" target="_blank" class="tier-btn">RÉSERVER UN APPEL</a>
+    </div>
+
+    <div class="tier-card featured reveal" style="transition-delay:.3s">
+      <div class="tier-badge">MEILLEURE VALEUR</div>
+      <div class="tier-name">PREMIUM</div>
+      <div class="tier-price">2000<span>€</span></div>
+      <div class="tier-sub">2000€ de valeur pour 2000€ — tu paies le prix coûtant</div>
+      <div class="tier-features">
+        <div class="tier-feature"><span class="tier-check">✓</span>Accompagnement stratégie <em>(valeur 1000€)</em></div>
+        <div class="tier-feature"><span class="tier-check">✓</span>Canal copy trading <em>(dépôt 500€ inclus)</em></div>
+        <div class="tier-feature"><span class="tier-check">✓</span>Accès prop firm <em>(achat 500€ inclus)</em></div>
+        <div class="tier-feature"><span class="tier-check">✓</span>Priorité sur les événements</div>
+      </div>
+      <!-- TODO Quincy : ajouter le lien Stripe pour l'offre 2000€ -->
+      <a href="https://calendly.com/quincy-massol/appel-pour-huslter" target="_blank" class="tier-btn">RÉSERVER UN APPEL</a>
     </div>
 
   </div>
+  <p class="pricing-guarantee-note reveal">🛡️ Toutes les offres avec accompagnement stratégie sont couvertes par la garantie : aucun résultat après 2 mois d'application sérieuse de la méthode ? Ton investissement de départ t'est remboursé. Voir conditions complètes dans les CGV.<br/><br/>📞 En cliquant, tu arrives sur notre agenda de réservation. Sélectionne bien le créneau <strong style="color:var(--cyan)">"Appel de présentation (Découverte)"</strong> — c'est celui qui correspond à l'entretien de sélection.</p>
 </section>
 
 <!-- CTA FINAL -->
 <section class="cta-final">
   <div class="cta-glow"></div>
   <div class="section-label reveal">LA DÉCISION</div>
-  <div class="cta-title reveal">PRÊT À CHANGER<br/>DE <span>NIVEAU</span> ?</div>
-  <p class="cta-sub reveal">Des centaines de Hustlers ont déjà fait le choix de leur liberté financière.<br/>La seule question c'est : est-ce que tu rejoins maintenant ou tu continues à regarder les autres avancer ?</p>
+  <div class="cta-title reveal">Prêt à devenir <em>l'investisseur</em> que tu veux être ?</div>
+  <p class="cta-sub reveal">Une communauté, une méthode structurée, une garantie. La seule question : tu commences maintenant, ou tu regardes les autres avancer ?</p>
   <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap" class="reveal">
-    <a href="https://buy.stripe.com/28E9AU6SmaPkcdN0pC6g80c" target="_blank" class="btn-primary">▶ START GAME — 180€ PUIS 99€/MOIS</a>
-    <a href="#formations" class="btn-secondary">VOIR LES FORMATIONS</a>
+    <a href="#pricing" class="btn-primary">▶ RÉSERVER UN APPEL</a>
+    <a href="#formations" class="btn-secondary">VOIR LA FORMATION</a>
   </div>
 </section>
 
 <!-- FOOTER -->
 <footer>
-  <div class="footer-logo"><img src="DHA_logo.png" alt="DHA" style="height:50px;width:auto;filter:drop-shadow(0 0 10px rgba(30,100,255,0.5));opacity:0.8;"/></div>
+  <div class="footer-logo">DHA</div>
   <div class="footer-links">
     <a href="#">CGV</a>
     <a href="#">CONFIDENTIALITÉ</a>
@@ -999,13 +757,11 @@
 </footer>
 
 <script>
-// SAUVEGARDE REF AFFILIATION
 (function(){
   const ref = new URLSearchParams(window.location.search).get('ref');
   if(ref) localStorage.setItem('dha_ref', ref);
 })();
 
-// STARS
 (function(){
   const container=document.getElementById('stars');
   for(let i=0;i<40;i++){
@@ -1013,19 +769,11 @@
     s.className='star';
     const size=Math.random()*2+1;
     const colors=['#00D4FF','#1E64FF','#ffffff','#FFD700'];
-    s.style.cssText=`
-      width:${size}px;height:${size}px;
-      background:${colors[Math.floor(Math.random()*colors.length)]};
-      left:${Math.random()*100}%;top:${Math.random()*100}%;
-      opacity:${Math.random()*.5+.05};
-      animation-duration:${Math.random()*8+4}s;
-      animation-delay:${Math.random()*6}s;
-    `;
+    s.style.cssText=`width:${size}px;height:${size}px;background:${colors[Math.floor(Math.random()*colors.length)]};left:${Math.random()*100}%;top:${Math.random()*100}%;opacity:${Math.random()*.5+.05};animation-duration:${Math.random()*8+4}s;animation-delay:${Math.random()*6}s;`;
     container.appendChild(s);
   }
 })();
 
-// SCROLL REVEAL
 (function(){
   const els=document.querySelectorAll('.reveal');
   const obs=new IntersectionObserver(entries=>{
@@ -1034,8 +782,6 @@
   els.forEach(el=>obs.observe(el));
 })();
 
-
-
 document.querySelectorAll('a[href^="#"]').forEach(a=>{
   a.addEventListener('click',e=>{
     const t=document.querySelector(a.getAttribute('href'));
@@ -1043,8 +789,6 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{
   });
 });
 </script>
-
-
 
 </body>
 </html>
