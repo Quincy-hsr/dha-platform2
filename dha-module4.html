@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>DHA — Module 4 : Les Tendances</title>
+<title>DHA — Module 3 : Les Tendances</title>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600;700&display=swap" rel="stylesheet"/>
 <style>
 :root{--bg:#050914;--card:#080e1f;--blue:#1E64FF;--cyan:#00D4FF;--gold:#FFD700;--green:#00FF88;--red:#FF4466;--purple:#9D4EDD;--white:#E8F4FF;--dim:rgba(232,244,255,0.5);--border:rgba(30,100,255,0.15);--sidebar-w:240px;}
@@ -134,13 +134,13 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
 
 <main class="main">
   <div class="topbar">
-    <div><div class="topbar-title">MODULE 4 — <span>TENDANCES</span></div><div style="font-size:12px;color:var(--dim);margin-top:2px;">Lire la direction du marché</div></div>
+    <div><div class="topbar-title">MODULE 3 — <span>TENDANCES</span></div><div style="font-size:12px;color:var(--dim);margin-top:2px;">Lire la direction du marché</div></div>
     <div class="xp-pill"><span>⚡</span><span class="xp-pill-val" id="topbar-xp">0 XP</span></div>
   </div>
 
   <div class="module-header">
     <div class="module-glow"></div>
-    <div class="module-tag">MODULE 04 · ANALYSE</div>
+    <div class="module-tag">MODULE 03 · ANALYSE</div>
     <div class="module-title">Les tendances —<br/>lire la direction du marché</div>
     <div class="module-desc">Avant de placer un trade tu dois savoir dans quelle direction le marché va. C'est la base de tout. Un trade dans le sens de la tendance a beaucoup plus de chances de réussir qu'un trade à contre-tendance.</div>
     <div class="module-meta">
@@ -315,7 +315,7 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
 
       <!-- QUIZ -->
       <div class="quiz-section">
-        <div class="quiz-header"><div style="font-size:24px;">🧠</div><div class="quiz-title">MINI QUIZ — Module 4</div><div class="quiz-xp">+50 XP MAX</div></div>
+        <div class="quiz-header"><div style="font-size:24px;">🧠</div><div class="quiz-title">MINI QUIZ — Module 3</div><div class="quiz-xp">+50 XP MAX</div></div>
 
         <div class="quiz-question" id="q1">
           <div class="quiz-q-num">QUESTION 1 / 10</div>
@@ -465,7 +465,7 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
         <div class="question-box-confirm" id="question-confirm">✅ Question envoyée ! On te répond très vite. 🔥</div>
       </div>
 
-      <button class="complete-btn" id="complete-btn" onclick="completeBloc()">▶ TERMINER LE MODULE 4 — CONTINUER</button>
+      <button class="complete-btn" id="complete-btn" onclick="completeBloc()">▶ TERMINER LE MODULE 3 — CONTINUER</button>
     </div>
   </div>
 </main><script>
@@ -579,29 +579,29 @@ function submitQuiz(){
   document.getElementById('quiz-score').textContent=score+'/10';
   document.getElementById('quiz-text').textContent=score===10?'Parfait ! Tu maîtrises les tendances ! 🔥':score>=6?'Bon travail ! Relis les points manqués.':'Continue à apprendre — relis le bloc.';
   document.getElementById('quiz-xp-text').textContent='+'+xpEarned+' XP gagnés !';
-  if(xpEarned>0)awardXP('quiz_m4',xpEarned,'🧠 Quiz Module 4 ('+score+'/5)');
+  if(xpEarned>0)awardXP('quiz_m4',xpEarned,'🧠 Quiz Module 3 ('+score+'/10)');
 }
 
 function validateExercice(){
   if(exerciceDone||completedActions.has('exercice_m4'))return;
   exerciceDone=true;
   document.getElementById('exercice-btn').disabled=true;document.getElementById('exercice-btn').textContent='✅ EXERCICE VALIDÉ !';
-  awardXP('exercice_m4',75,'💪 Exercice pratique Module 4');
+  awardXP('exercice_m4',75,'💪 Exercice pratique Module 3');
 }
 
 function sendQuestion(){
   const q=document.getElementById('question-input').value.trim();
   if(!q){alert('Écris ta question d\'abord !');return;}
-  fetch(FORMSPREE,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({sujet:'Question Module 4',question:q,membre:member?member.email:'inconnu'})});
+  fetch(FORMSPREE,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({sujet:'Question Module 3',question:q,membre:member?member.email:'inconnu'})});
   document.getElementById('question-input').value='';
   document.getElementById('question-confirm').classList.add('show');
 }
 
 async function completeBloc(){
   if(completedActions.has('bloc_m4')){alert('Tu as déjà terminé ce module ! 💪');return;}
-  document.getElementById('complete-btn').textContent='✅ MODULE 4 TERMINÉ !';
+  document.getElementById('complete-btn').textContent='✅ MODULE 3 TERMINÉ !';
   document.getElementById('complete-btn').disabled=true;
-  await awardXP('bloc_m4',25,'📚 Bloc terminé — Module 4');
+  await awardXP('bloc_m4',25,'📚 Bloc terminé — Module 3');
   await awardXP('quete_bloc_'+todayISO(),50,'📚 Finir un module (quête du jour)');
   setTimeout(()=>{window.location.href='dha-formation.html';},1500);
 }
