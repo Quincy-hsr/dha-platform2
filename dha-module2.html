@@ -151,9 +151,15 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
   <div class="bloc">
     <div class="bloc-header">
       <div class="bloc-num">BLOC 01</div>
-      <div class="bloc-title">Les bougies japonaises</div>
+      <div class="bloc-title">Vidéo de formation</div>
     </div>
     <div class="bloc-body">
+
+      <!-- VIDEO -->
+      <div style="position:relative;width:100%;padding-top:56.25%;border-radius:16px;overflow:hidden;border:1px solid rgba(30,100,255,0.25);margin-bottom:20px;background:#000;">
+        <iframe src="https://www.youtube.com/embed/VIDEO_ID_A_REMPLACER" title="Lire un graphique — les bougies japonaises" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%;"></iframe>
+      </div>
+      <div class="info-box cyan">🎥 Regarde la vidéo ci-dessus — elle résume tout ce que tu vas apprendre dans ce bloc. Le texte en dessous reprend les points clés.</div>
 
       <!-- SECTION 1 -->
       <div class="bloc-text">
@@ -292,22 +298,59 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
       </div>
 
       <div class="info-box cyan">💡 Ces bougies d'indécision sont des <strong>signaux d'alerte</strong> — pas des certitudes. Tu ne rentres jamais sur une bougie d'indécision seule. Tu attends une confirmation. On verra ça dans les prochains blocs.</div>
+
+      <!-- ZOOM DOJI -->
+      <div style="font-family:'Orbitron',sans-serif;font-size:10px;letter-spacing:2px;color:var(--gold);margin:28px 0 12px;">🔎 ZOOM SUR LES DOJI</div>
+      <div class="bloc-text">
+        Il existe plusieurs types de Doji — tous montrent une <strong>indécision</strong>, mais pas de la même façon. Apprends à les reconnaître.
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:16px 0;">
+        <div style="background:rgba(255,215,0,0.05);border:1px solid rgba(255,215,0,0.2);border-radius:14px;padding:18px;">
+          <div style="font-family:'Orbitron',sans-serif;font-size:11px;font-weight:900;color:var(--gold);letter-spacing:1px;margin-bottom:8px;">✚ DOJI CLASSIQUE</div>
+          <div style="font-size:13px;color:rgba(232,244,255,0.7);line-height:1.6;">Ouverture ≈ fermeture, mèches haute et basse à peu près égales. <strong>Indécision pure</strong> — personne n'a gagné le round.</div>
+        </div>
+        <div style="background:rgba(0,255,136,0.05);border:1px solid rgba(0,255,136,0.2);border-radius:14px;padding:18px;">
+          <div style="font-family:'Orbitron',sans-serif;font-size:11px;font-weight:900;color:var(--green);letter-spacing:1px;margin-bottom:8px;">⊥ DOJI DRAGONFLY</div>
+          <div style="font-size:13px;color:rgba(232,244,255,0.7);line-height:1.6;">Pas de mèche haute, longue mèche basse. Les vendeurs ont poussé bas mais les acheteurs ont repris la main. <strong>Souvent haussier</strong> en bas d'une baisse.</div>
+        </div>
+        <div style="background:rgba(255,68,102,0.05);border:1px solid rgba(255,68,102,0.2);border-radius:14px;padding:18px;">
+          <div style="font-family:'Orbitron',sans-serif;font-size:11px;font-weight:900;color:var(--red);letter-spacing:1px;margin-bottom:8px;">⊤ DOJI PIERRE TOMBALE</div>
+          <div style="font-size:13px;color:rgba(232,244,255,0.7);line-height:1.6;">Pas de mèche basse, longue mèche haute. Les acheteurs ont poussé haut mais les vendeurs ont repris le dessus. <strong>Souvent baissier</strong> en haut d'une hausse.</div>
+        </div>
+        <div style="background:rgba(157,78,221,0.05);border:1px solid rgba(157,78,221,0.2);border-radius:14px;padding:18px;">
+          <div style="font-family:'Orbitron',sans-serif;font-size:11px;font-weight:900;color:var(--purple);letter-spacing:1px;margin-bottom:8px;">✛ DOJI À LONGUES JAMBES</div>
+          <div style="font-size:13px;color:rgba(232,244,255,0.7);line-height:1.6;">Comme le Doji classique mais avec des mèches très longues des deux côtés. <strong>Indécision encore plus forte</strong> — grosse bataille acheteurs/vendeurs.</div>
+        </div>
+      </div>
+      <div class="info-box gold">💡 Retiens le principe, pas les noms par cœur : plus la mèche est longue d'un côté, plus ce camp (acheteurs ou vendeurs) a tenté quelque chose sans réussir à tenir.</div>
+
       <!-- QUIZ -->
       <div class="quiz-section">
         <div class="quiz-header"><div style="font-size:24px;">🧠</div><div class="quiz-title">MINI QUIZ — Bloc 1</div><div class="quiz-xp">+50 XP MAX</div></div>
 
-        <div class="quiz-question" id="q1"><div class="quiz-q-num">QUESTION 1 / 5</div><div class="quiz-q-text">Une bougie verte signifie :</div><div class="quiz-options"><div class="quiz-option" onclick="selectOption(this,'q1','A')"><div class="quiz-option-letter">A</div>Le prix a clôturé en dessous de son ouverture</div><div class="quiz-option" onclick="selectOption(this,'q1','B')"><div class="quiz-option-letter">B</div>Le marché est en pause, ni hausse ni baisse</div><div class="quiz-option" onclick="selectOption(this,'q1','C')"><div class="quiz-option-letter">C</div>Le prix a clôturé au-dessus de son ouverture</div></div><div class="quiz-feedback" id="fb-q1"></div></div>
+        <div class="quiz-question" id="q1"><div class="quiz-q-num">QUESTION 1 / 10</div><div class="quiz-q-text">Une bougie verte signifie :</div><div class="quiz-options"><div class="quiz-option" onclick="selectOption(this,'q1','A')"><div class="quiz-option-letter">A</div>Le prix a clôturé en dessous de son ouverture</div><div class="quiz-option" onclick="selectOption(this,'q1','B')"><div class="quiz-option-letter">B</div>Le marché est en pause, ni hausse ni baisse</div><div class="quiz-option" onclick="selectOption(this,'q1','C')"><div class="quiz-option-letter">C</div>Le prix a clôturé au-dessus de son ouverture</div></div><div class="quiz-feedback" id="fb-q1"></div></div>
 
-        <div class="quiz-question" id="q2"><div class="quiz-q-num">QUESTION 2 / 5</div><div class="quiz-q-text">Un Scalper utilise quelle unité de temps ?</div><div class="quiz-options"><div class="quiz-option" onclick="selectOption(this,'q2','A')"><div class="quiz-option-letter">A</div>H1 et H4</div><div class="quiz-option" onclick="selectOption(this,'q2','B')"><div class="quiz-option-letter">B</div>M1 et M5</div><div class="quiz-option" onclick="selectOption(this,'q2','C')"><div class="quiz-option-letter">C</div>Daily et Weekly</div></div><div class="quiz-feedback" id="fb-q2"></div></div>
+        <div class="quiz-question" id="q2"><div class="quiz-q-num">QUESTION 2 / 10</div><div class="quiz-q-text">Un Scalper utilise quelle unité de temps ?</div><div class="quiz-options"><div class="quiz-option" onclick="selectOption(this,'q2','A')"><div class="quiz-option-letter">A</div>H1 et H4</div><div class="quiz-option" onclick="selectOption(this,'q2','B')"><div class="quiz-option-letter">B</div>M1 et M5</div><div class="quiz-option" onclick="selectOption(this,'q2','C')"><div class="quiz-option-letter">C</div>Daily et Weekly</div></div><div class="quiz-feedback" id="fb-q2"></div></div>
 
-        <div class="quiz-question" id="q3"><div class="quiz-q-num">QUESTION 3 / 5</div><div class="quiz-q-text">À quoi sert la mèche haute d'une bougie ?</div><div class="quiz-options"><div class="quiz-option" onclick="selectOption(this,'q3','A')"><div class="quiz-option-letter">A</div>Elle indique le prix de clôture</div><div class="quiz-option" onclick="selectOption(this,'q3','B')"><div class="quiz-option-letter">B</div>Elle montre le niveau de volume échangé</div><div class="quiz-option" onclick="selectOption(this,'q3','C')"><div class="quiz-option-letter">C</div>Elle montre jusqu'où le prix est monté sans tenir</div></div><div class="quiz-feedback" id="fb-q3"></div></div>
+        <div class="quiz-question" id="q3"><div class="quiz-q-num">QUESTION 3 / 10</div><div class="quiz-q-text">À quoi sert la mèche haute d'une bougie ?</div><div class="quiz-options"><div class="quiz-option" onclick="selectOption(this,'q3','A')"><div class="quiz-option-letter">A</div>Elle indique le prix de clôture</div><div class="quiz-option" onclick="selectOption(this,'q3','B')"><div class="quiz-option-letter">B</div>Elle montre le niveau de volume échangé</div><div class="quiz-option" onclick="selectOption(this,'q3','C')"><div class="quiz-option-letter">C</div>Elle montre jusqu'où le prix est monté sans tenir</div></div><div class="quiz-feedback" id="fb-q3"></div></div>
 
-        <div class="quiz-question" id="q4"><div class="quiz-q-num">QUESTION 4 / 5</div><div class="quiz-q-text">Un Doji c'est :</div><div class="quiz-options"><div class="quiz-option" onclick="selectOption(this,'q4','A')"><div class="quiz-option-letter">A</div>Une bougie avec une grande mèche basse</div><div class="quiz-option" onclick="selectOption(this,'q4','B')"><div class="quiz-option-letter">B</div>Une bougie où ouverture et clôture sont au même niveau</div><div class="quiz-option" onclick="selectOption(this,'q4','C')"><div class="quiz-option-letter">C</div>Une bougie avec un grand corps rouge</div></div><div class="quiz-feedback" id="fb-q4"></div></div>
+        <div class="quiz-question" id="q4"><div class="quiz-q-num">QUESTION 4 / 10</div><div class="quiz-q-text">Un Doji c'est :</div><div class="quiz-options"><div class="quiz-option" onclick="selectOption(this,'q4','A')"><div class="quiz-option-letter">A</div>Une bougie avec une grande mèche basse</div><div class="quiz-option" onclick="selectOption(this,'q4','B')"><div class="quiz-option-letter">B</div>Une bougie où ouverture et clôture sont au même niveau</div><div class="quiz-option" onclick="selectOption(this,'q4','C')"><div class="quiz-option-letter">C</div>Une bougie avec un grand corps rouge</div></div><div class="quiz-feedback" id="fb-q4"></div></div>
 
-        <div class="quiz-question" id="q5"><div class="quiz-q-num">QUESTION 5 / 5</div><div class="quiz-q-text">En Day Trading tu utilises :</div><div class="quiz-options"><div class="quiz-option" onclick="selectOption(this,'q5','A')"><div class="quiz-option-letter">A</div>M1 et M5 comme un scalper</div><div class="quiz-option" onclick="selectOption(this,'q5','B')"><div class="quiz-option-letter">B</div>M30 et H1</div><div class="quiz-option" onclick="selectOption(this,'q5','C')"><div class="quiz-option-letter">C</div>Daily et Weekly comme un swing trader</div></div><div class="quiz-feedback" id="fb-q5"></div></div>
+        <div class="quiz-question" id="q5"><div class="quiz-q-num">QUESTION 5 / 10</div><div class="quiz-q-text">En Day Trading tu utilises :</div><div class="quiz-options"><div class="quiz-option" onclick="selectOption(this,'q5','A')"><div class="quiz-option-letter">A</div>M1 et M5 comme un scalper</div><div class="quiz-option" onclick="selectOption(this,'q5','B')"><div class="quiz-option-letter">B</div>M30 et H1</div><div class="quiz-option" onclick="selectOption(this,'q5','C')"><div class="quiz-option-letter">C</div>Daily et Weekly comme un swing trader</div></div><div class="quiz-feedback" id="fb-q5"></div></div>
+
+        <div class="quiz-question" id="q6"><div class="quiz-q-num">QUESTION 6 / 10</div><div class="quiz-q-text">Une bougie "Marteau" signale généralement :</div><div class="quiz-options"><div class="quiz-option" onclick="selectOption(this,'q6','A')"><div class="quiz-option-letter">A</div>Une confirmation baissière</div><div class="quiz-option" onclick="selectOption(this,'q6','B')"><div class="quiz-option-letter">B</div>Un signal haussier, souvent après une baisse</div><div class="quiz-option" onclick="selectOption(this,'q6','C')"><div class="quiz-option-letter">C</div>Une pause sans signification</div></div><div class="quiz-feedback" id="fb-q6"></div></div>
+
+        <div class="quiz-question" id="q7"><div class="quiz-q-num">QUESTION 7 / 10</div><div class="quiz-q-text">Une "Étoile filante" signale généralement :</div><div class="quiz-options"><div class="quiz-option" onclick="selectOption(this,'q7','A')"><div class="quiz-option-letter">A</div>Un signal haussier après une hausse</div><div class="quiz-option" onclick="selectOption(this,'q7','B')"><div class="quiz-option-letter">B</div>Une continuation neutre</div><div class="quiz-option" onclick="selectOption(this,'q7','C')"><div class="quiz-option-letter">C</div>Un signal baissier, souvent après une hausse</div></div><div class="quiz-feedback" id="fb-q7"></div></div>
+
+        <div class="quiz-question" id="q8"><div class="quiz-q-num">QUESTION 8 / 10</div><div class="quiz-q-text">Un Doji Dragonfly qui apparaît en bas d'une baisse est plutôt un signal :</div><div class="quiz-options"><div class="quiz-option" onclick="selectOption(this,'q8','A')"><div class="quiz-option-letter">A</div>Baissier</div><div class="quiz-option" onclick="selectOption(this,'q8','B')"><div class="quiz-option-letter">B</div>Haussier — les acheteurs reprennent la main</div><div class="quiz-option" onclick="selectOption(this,'q8','C')"><div class="quiz-option-letter">C</div>Neutre, ça n'a pas d'importance</div></div><div class="quiz-feedback" id="fb-q8"></div></div>
+
+        <div class="quiz-question" id="q9"><div class="quiz-q-num">QUESTION 9 / 10</div><div class="quiz-q-text">Un Swing Trader utilise plutôt quelles unités de temps ?</div><div class="quiz-options"><div class="quiz-option" onclick="selectOption(this,'q9','A')"><div class="quiz-option-letter">A</div>M1 et M5</div><div class="quiz-option" onclick="selectOption(this,'q9','B')"><div class="quiz-option-letter">B</div>M30 et H1</div><div class="quiz-option" onclick="selectOption(this,'q9','C')"><div class="quiz-option-letter">C</div>H4, Daily et Weekly</div></div><div class="quiz-feedback" id="fb-q9"></div></div>
+
+        <div class="quiz-question" id="q10"><div class="quiz-q-num">QUESTION 10 / 10</div><div class="quiz-q-text">Pourquoi ne faut-il jamais rentrer en trade sur une seule bougie d'indécision ?</div><div class="quiz-options"><div class="quiz-option" onclick="selectOption(this,'q10','A')"><div class="quiz-option-letter">A</div>Parce que c'est interdit par les brokers</div><div class="quiz-option" onclick="selectOption(this,'q10','B')"><div class="quiz-option-letter">B</div>Parce qu'elle montre une hésitation, pas une confirmation</div><div class="quiz-option" onclick="selectOption(this,'q10','C')"><div class="quiz-option-letter">C</div>Parce qu'elle annule automatiquement le trade précédent</div></div><div class="quiz-feedback" id="fb-q10"></div></div>
 
         <button class="quiz-submit" id="quiz-btn" onclick="submitQuiz()">✓ VALIDER MES RÉPONSES</button>
-        <div class="quiz-result" id="quiz-result"><div class="quiz-result-score" id="quiz-score">0/5</div><div style="font-size:14px;color:var(--dim);margin-top:8px;" id="quiz-text"></div><div class="quiz-result-xp" id="quiz-xp-text"></div></div>
+        <div class="quiz-result" id="quiz-result"><div class="quiz-result-score" id="quiz-score">0/10</div><div style="font-size:14px;color:var(--dim);margin-top:8px;" id="quiz-text"></div><div class="quiz-result-xp" id="quiz-xp-text"></div></div>
       </div>
 
       <!-- EXERCICE -->
@@ -315,10 +358,10 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
         <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;"><div style="font-size:22px;">💪</div><div class="exercice-title">EXERCICE PRATIQUE — +75 XP</div></div>
         <div style="font-size:14px;color:rgba(232,244,255,0.75);line-height:1.8;margin-bottom:16px;">Ouvre TradingView et entraîne-toi à identifier les bougies.</div>
         <div class="exercice-step"><div class="exercice-step-num">1</div><div class="exercice-step-text">Ouvre <strong>TradingView.com</strong> sur le graphique EUR/USD</div></div>
-        <div class="exercice-step"><div class="exercice-step-num">2</div><div class="exercice-step-text">Passe en timeframe <strong>H1</strong></div></div>
-        <div class="exercice-step"><div class="exercice-step-num">3</div><div class="exercice-step-text">Identifie <strong>3 bougies vertes</strong> et note ce que tu observes</div></div>
-        <div class="exercice-step"><div class="exercice-step-num">4</div><div class="exercice-step-text">Identifie <strong>3 bougies rouges</strong> et note ce que tu observes</div></div>
-        <div class="exercice-step"><div class="exercice-step-num">5</div><div class="exercice-step-text">Cherche un <strong>Doji</strong> — une bougie avec presque pas de corps</div></div>
+        <div class="exercice-step"><div class="exercice-step-num">2</div><div class="exercice-step-text">Choisis <strong>n'importe quel timeframe</strong> — celui que tu veux</div></div>
+        <div class="exercice-step"><div class="exercice-step-num">3</div><div class="exercice-step-text">Identifie <strong>10 bougies vertes</strong> et note ce que tu observes</div></div>
+        <div class="exercice-step"><div class="exercice-step-num">4</div><div class="exercice-step-text">Identifie <strong>10 bougies rouges</strong> et note ce que tu observes</div></div>
+        <div class="exercice-step"><div class="exercice-step-num">5</div><div class="exercice-step-text">Repère <strong>10 Doji</strong> — des bougies avec presque pas de corps</div></div>
         <a href="https://www.tradingview.com" target="_blank" style="
           display:flex;align-items:center;justify-content:center;gap:10px;
           width:100%;padding:13px;border-radius:12px;margin-bottom:10px;
@@ -412,16 +455,21 @@ function showSaveError(){
   document.body.appendChild(banner);
 }
 let member=null;
-let quizAnswers={q1:null,q2:null,q3:null,q4:null,q5:null};
+let quizAnswers={q1:null,q2:null,q3:null,q4:null,q5:null,q6:null,q7:null,q8:null,q9:null,q10:null};
 let quizDone=false;
 let exerciceDone=false;
-const correctAnswers={q1:'C',q2:'B',q3:'C',q4:'B',q5:'B'};
+const correctAnswers={q1:'C',q2:'B',q3:'C',q4:'B',q5:'B',q6:'B',q7:'C',q8:'B',q9:'C',q10:'B'};
 const feedbacks={
   q1:{C:'✅ Exactement ! Bougie verte = le prix a clôturé au-dessus de son ouverture. Les acheteurs ont gagné ce round.',wrong:'❌ Une bougie verte signifie que le prix a clôturé au-dessus de son ouverture — les acheteurs ont la main.'},
   q2:{B:'✅ Parfait ! Le scalper trade sur des unités de temps très courtes — M1, M5, M15.',wrong:'❌ Le scalper utilise M1, M5 et M15 — des unités de temps très courtes pour des trades rapides.'},
   q3:{C:'✅ Exact ! La mèche haute montre jusqu\'où le prix est monté sans réussir à tenir.',wrong:'❌ La mèche haute montre jusqu\'où le prix est allé sans tenir — pas le volume ni la clôture.'},
   q4:{B:'✅ Parfait ! Le Doji = ouverture et fermeture au même prix. Indécision totale entre acheteurs et vendeurs.',wrong:'❌ Un Doji c\'est quand le prix ouvre et ferme au même endroit — signe d\'indécision.'},
-  q5:{B:'✅ Exact ! Le Day Trader utilise M30 et H1 pour trader dans la journée.',wrong:'❌ Le Day Trader utilise M30 et H1 — pas M1/M5 comme un scalper, ni Daily/Weekly comme un swing trader.'}
+  q5:{B:'✅ Exact ! Le Day Trader utilise M30 et H1 pour trader dans la journée.',wrong:'❌ Le Day Trader utilise M30 et H1 — pas M1/M5 comme un scalper, ni Daily/Weekly comme un swing trader.'},
+  q6:{B:'✅ Exact ! Le Marteau montre que les vendeurs ont poussé bas mais les acheteurs ont repris la main — souvent haussier après une baisse.',wrong:'❌ Le Marteau signale généralement un retournement haussier, surtout quand il apparaît après une baisse.'},
+  q7:{C:'✅ Parfait ! L\'Étoile filante montre que les acheteurs ont poussé haut mais les vendeurs ont repris le dessus — souvent baissier après une hausse.',wrong:'❌ L\'Étoile filante signale généralement un retournement baissier, surtout après une hausse.'},
+  q8:{B:'✅ Exact ! Pas de mèche haute, longue mèche basse — les acheteurs reprennent la main. C\'est un signal plutôt haussier en bas d\'une baisse.',wrong:'❌ Un Doji Dragonfly en bas d\'une baisse est plutôt un signal haussier — les acheteurs reprennent la main.'},
+  q9:{C:'✅ Parfait ! Le Swing Trader utilise H4, Daily et Weekly pour trader sur plusieurs jours.',wrong:'❌ Le Swing Trader utilise H4, Daily et Weekly — pas M1/M5 (scalper) ni M30/H1 (day trader).'},
+  q10:{B:'✅ Exact ! Une bougie d\'indécision montre une hésitation, pas une confirmation. Tu attends toujours une confirmation avant de rentrer.',wrong:'❌ Une bougie d\'indécision montre juste une hésitation — jamais une confirmation suffisante pour rentrer seul.'}
 };
 
 function selectOption(el,qId,letter){
@@ -445,11 +493,11 @@ function submitQuiz(){
     if(ans===correct){score++;fb.textContent=feedbacks[qId][correct];fb.className='quiz-feedback show correct';}
     else{fb.textContent=feedbacks[qId].wrong;fb.className='quiz-feedback show wrong';}
   });
-  const xpEarned=score*10;
+  const xpEarned=score*5;
   document.getElementById('quiz-btn').disabled=true;document.getElementById('quiz-btn').textContent='✅ QUIZ VALIDÉ';
   const result=document.getElementById('quiz-result');result.classList.add('show');
-  document.getElementById('quiz-score').textContent=score+'/5';
-  document.getElementById('quiz-text').textContent=score===5?'Parfait ! Tu as tout compris ! 🔥':score>=3?'Bon travail ! Relis les points manqués.':'Continue à apprendre — relis le bloc.';
+  document.getElementById('quiz-score').textContent=score+'/10';
+  document.getElementById('quiz-text').textContent=score===10?'Parfait ! Tu as tout compris ! 🔥':score>=6?'Bon travail ! Relis les points manqués.':'Continue à apprendre — relis le bloc.';
   document.getElementById('quiz-xp-text').textContent='+'+xpEarned+' XP gagnés !';
   if(xpEarned>0)awardXP('quiz_m2_b1',xpEarned,'🧠 Quiz Module 2 ('+score+'/5)');
 }
