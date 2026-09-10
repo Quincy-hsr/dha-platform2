@@ -138,7 +138,7 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
     <div class="module-meta">
       <div class="module-meta-item">📚 1 Bloc</div>
       <div class="module-meta-item">⚡ Jusqu'à 150 XP</div>
-      <div class="module-meta-item">⏱️ 15 min</div>
+      <div class="module-meta-item">⏱️ 20 min</div>
     </div>
   </div>
 
@@ -149,10 +149,23 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
     </div>
     <div class="bloc-body">
 
+      <!-- VIDEO -->
+      <div style="position:relative;width:100%;padding-top:56.25%;border-radius:16px;overflow:hidden;border:1px solid rgba(30,100,255,0.25);margin-bottom:20px;background:#000;">
+        <iframe src="https://www.youtube.com/embed/cfC2g2TFOOI" title="Introduction au trading" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%;"></iframe>
+      </div>
+      <div class="info-box cyan">🎥 Regarde la vidéo ci-dessus — elle résume tout ce que tu vas apprendre dans ce bloc. Le texte en dessous reprend les points clés.</div>
+
+      <div class="bloc-text">
+        <strong>C'est quoi le trading ?</strong><br/>
+        Le trading c'est acheter et vendre des actifs sur les marchés financiers — une devise, une action, une crypto... Le principe reste le même à chaque fois.
+      </div>
+
       <div class="bloc-text">
         Le trading c'est simple dans son principe — tu <strong>achètes quelque chose</strong> à un prix et tu le <strong>revends plus cher</strong>. La différence c'est ton profit.<br/><br/>
         Mais on peut aussi faire l'inverse — <strong>vendre d'abord</strong> et racheter plus bas. C'est ce qu'on appelle le <strong>short</strong> ou la vente à découvert.
       </div>
+
+      <div class="info-box cyan">💡 Pour gagner de l'argent, tu dois <strong>anticiper le prochain mouvement du marché</strong> — haussier ou baissier. Si t'as raison, tu encaisses.</div>
 
       <div class="info-box cyan">💡 Le trading c'est pas de la magie. C'est une compétence qui s'apprend. Comme conduire une voiture — au début ça semble complexe mais avec la pratique ça devient naturel.</div>
 
@@ -308,70 +321,153 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
       </div>
       <div class="info-box red">⚠️ Tu as acheté à <strong>1.0780</strong> mais le prix est descendu. Grâce au <strong>Stop Loss</strong> ta perte s'est arrêtée à <strong>-30€</strong>. Le stop loss c'est ta protection.</div>
 
-      <div class="bloc-text" style="margin-top:24px;"><strong>Le trading c'est pas un jeu de hasard.</strong> Pour savoir quand acheter et quand vendre tu dois maîtriser une stratégie. C'est exactement ce que tu vas apprendre dans les prochaines leçons.</div>
+      <div class="info-box gold">💰 <strong>D'où vient l'argent que tu gagnes ?</strong><br/>On va t'aider à créer un compte avec un capital de départ. Sur chaque trade, tu prends une part de ce capital — celle que t'es prêt à miser — pour la faire fructifier. Tes gains viennent des pertes des autres traders en face de toi sur le marché.</div>
+
+      <div class="bloc-text" style="margin-top:24px;"><strong>Le trading c'est pas un jeu de hasard, c'est pas du casino.</strong> Pour savoir quand acheter et quand vendre tu dois maîtriser une stratégie. C'est exactement ce que tu vas apprendre dans les prochaines leçons.</div>
+
+      <!-- 2 ANALYSES -->
+      <div class="bloc-text" style="margin-top:24px;"><strong>Pour construire cette stratégie, tu as 2 types d'analyse à ta disposition :</strong></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:16px 0;">
+        <div style="background:rgba(0,212,255,0.05);border:1px solid rgba(0,212,255,0.2);border-radius:14px;padding:18px;">
+          <div style="font-size:26px;margin-bottom:8px;">📊</div>
+          <div style="font-family:'Orbitron',sans-serif;font-size:11px;font-weight:900;color:var(--cyan);letter-spacing:1px;margin-bottom:8px;">ANALYSE TECHNIQUE</div>
+          <div style="font-size:13px;color:rgba(232,244,255,0.7);line-height:1.6;">Tu étudies les graphiques, les figures et les mouvements de prix passés pour anticiper la suite.</div>
+        </div>
+        <div style="background:rgba(157,78,221,0.05);border:1px solid rgba(157,78,221,0.2);border-radius:14px;padding:18px;">
+          <div style="font-size:26px;margin-bottom:8px;">📰</div>
+          <div style="font-family:'Orbitron',sans-serif;font-size:11px;font-weight:900;color:var(--purple);letter-spacing:1px;margin-bottom:8px;">ANALYSE FONDAMENTALE</div>
+          <div style="font-size:13px;color:rgba(232,244,255,0.7);line-height:1.6;">Tu suis l'actualité économique et les données clés qui influencent un marché.</div>
+        </div>
+      </div>
+      <div class="info-box cyan">💡 Dans DHA on se concentre surtout sur l'analyse technique (Smart Money Concepts) — c'est ce qu'on va approfondir dès le module suivant.</div>
 
       <!-- QUIZ -->
       <div class="quiz-section">
         <div class="quiz-header"><div style="font-size:24px;">🧠</div><div class="quiz-title">MINI QUIZ — Bloc 1</div><div class="quiz-xp">+50 XP MAX</div></div>
 
         <div class="quiz-question" id="q1">
-          <div class="quiz-q-num">QUESTION 1 / 5</div>
-          <div class="quiz-q-text">Comment gagner de l'argent en trading ?</div>
+          <div class="quiz-q-num">QUESTION 1 / 10</div>
+          <div class="quiz-q-text">Qu'est-ce que le trading ?</div>
           <div class="quiz-options">
-            <div class="quiz-option" onclick="selectOption(this,'q1','A')"><div class="quiz-option-letter">A</div>En achetant bas et revendant plus haut, ou l'inverse</div>
-            <div class="quiz-option" onclick="selectOption(this,'q1','B')"><div class="quiz-option-letter">B</div>En suivant les signaux des autres traders</div>
-            <div class="quiz-option" onclick="selectOption(this,'q1','C')"><div class="quiz-option-letter">C</div>En restant positionné longtemps sur un actif</div>
+            <div class="quiz-option" onclick="selectOption(this,'q1','A')"><div class="quiz-option-letter">A</div>Investir dans une entreprise sur le long terme</div>
+            <div class="quiz-option" onclick="selectOption(this,'q1','B')"><div class="quiz-option-letter">B</div>Acheter et vendre des actifs sur les marchés financiers</div>
+            <div class="quiz-option" onclick="selectOption(this,'q1','C')"><div class="quiz-option-letter">C</div>Placer son argent à la banque pour qu'il rapporte des intérêts</div>
+            <div class="quiz-option" onclick="selectOption(this,'q1','D')"><div class="quiz-option-letter">D</div>Miser de l'argent sur un jeu de hasard en ligne</div>
           </div>
           <div class="quiz-feedback" id="fb-q1"></div>
         </div>
 
         <div class="quiz-question" id="q2">
-          <div class="quiz-q-num">QUESTION 2 / 5</div>
-          <div class="quiz-q-text">C'est quoi un short ?</div>
+          <div class="quiz-q-num">QUESTION 2 / 10</div>
+          <div class="quiz-q-text">Pour gagner de l'argent en trading, tu dois...</div>
           <div class="quiz-options">
-            <div class="quiz-option" onclick="selectOption(this,'q2','A')"><div class="quiz-option-letter">A</div>Acheter un actif pour le revendre rapidement</div>
-            <div class="quiz-option" onclick="selectOption(this,'q2','B')"><div class="quiz-option-letter">B</div>Vendre d'abord puis racheter plus bas</div>
-            <div class="quiz-option" onclick="selectOption(this,'q2','C')"><div class="quiz-option-letter">C</div>Prendre position dans le sens de la tendance</div>
+            <div class="quiz-option" onclick="selectOption(this,'q2','A')"><div class="quiz-option-letter">A</div>Attendre que le marché monte tout seul sans rien faire</div>
+            <div class="quiz-option" onclick="selectOption(this,'q2','B')"><div class="quiz-option-letter">B</div>Anticiper si le marché va monter ou descendre</div>
+            <div class="quiz-option" onclick="selectOption(this,'q2','C')"><div class="quiz-option-letter">C</div>Investir un maximum d'argent d'un coup pour maximiser les gains</div>
+            <div class="quiz-option" onclick="selectOption(this,'q2','D')"><div class="quiz-option-letter">D</div>Suivre les conseils d'un influenceur qui trade en live</div>
           </div>
           <div class="quiz-feedback" id="fb-q2"></div>
         </div>
 
         <div class="quiz-question" id="q3">
-          <div class="quiz-q-num">QUESTION 3 / 5</div>
-          <div class="quiz-q-text">À quoi sert le Stop Loss ?</div>
+          <div class="quiz-q-num">QUESTION 3 / 10</div>
+          <div class="quiz-q-text">D'où viennent tes gains quand tu trades ?</div>
           <div class="quiz-options">
-            <div class="quiz-option" onclick="selectOption(this,'q3','A')"><div class="quiz-option-letter">A</div>À sortir automatiquement en profit</div>
-            <div class="quiz-option" onclick="selectOption(this,'q3','B')"><div class="quiz-option-letter">B</div>À maximiser le gain sur un trade gagnant</div>
-            <div class="quiz-option" onclick="selectOption(this,'q3','C')"><div class="quiz-option-letter">C</div>À couper la perte si le marché va contre toi</div>
+            <div class="quiz-option" onclick="selectOption(this,'q3','A')"><div class="quiz-option-letter">A</div>D'un fond garanti par les banques centrales</div>
+            <div class="quiz-option" onclick="selectOption(this,'q3','B')"><div class="quiz-option-letter">B</div>D'une commission versée par la plateforme de trading</div>
+            <div class="quiz-option" onclick="selectOption(this,'q3','C')"><div class="quiz-option-letter">C</div>Des pertes d'autres traders en face de toi sur le marché</div>
+            <div class="quiz-option" onclick="selectOption(this,'q3','D')"><div class="quiz-option-letter">D</div>D'un pourcentage fixe reversé chaque mois automatiquement</div>
           </div>
           <div class="quiz-feedback" id="fb-q3"></div>
         </div>
 
         <div class="quiz-question" id="q4">
-          <div class="quiz-q-num">QUESTION 4 / 5</div>
-          <div class="quiz-q-text">Est-ce que les meilleurs traders perdent des trades ?</div>
+          <div class="quiz-q-num">QUESTION 4 / 10</div>
+          <div class="quiz-q-text">Sur chaque trade, tu...</div>
           <div class="quiz-options">
-            <div class="quiz-option" onclick="selectOption(this,'q4','A')"><div class="quiz-option-letter">A</div>Non, ils optimisent pour ne jamais perdre</div>
-            <div class="quiz-option" onclick="selectOption(this,'q4','B')"><div class="quiz-option-letter">B</div>Oui mais seulement sur les petits timeframes</div>
-            <div class="quiz-option" onclick="selectOption(this,'q4','C')"><div class="quiz-option-letter">C</div>Oui, mais ils gèrent leurs pertes intelligemment</div>
+            <div class="quiz-option" onclick="selectOption(this,'q4','A')"><div class="quiz-option-letter">A</div>Mises une part du capital que t'es prêt à risquer</div>
+            <div class="quiz-option" onclick="selectOption(this,'q4','B')"><div class="quiz-option-letter">B</div>Mises tout ton capital pour aller plus vite</div>
+            <div class="quiz-option" onclick="selectOption(this,'q4','C')"><div class="quiz-option-letter">C</div>Empruntes de l'argent à la plateforme pour trader</div>
+            <div class="quiz-option" onclick="selectOption(this,'q4','D')"><div class="quiz-option-letter">D</div>Attends un signal d'un expert avant d'agir</div>
           </div>
           <div class="quiz-feedback" id="fb-q4"></div>
         </div>
 
         <div class="quiz-question" id="q5">
-          <div class="quiz-q-num">QUESTION 5 / 5</div>
-          <div class="quiz-q-text">Le trading c'est :</div>
+          <div class="quiz-q-num">QUESTION 5 / 10</div>
+          <div class="quiz-q-text">Le trading est basé sur le hasard, comme au casino ?</div>
           <div class="quiz-options">
-            <div class="quiz-option" onclick="selectOption(this,'q5','A')"><div class="quiz-option-letter">A</div>Un jeu basé sur la chance et l'intuition</div>
-            <div class="quiz-option" onclick="selectOption(this,'q5','B')"><div class="quiz-option-letter">B</div>Une compétence qui s'apprend avec la pratique</div>
-            <div class="quiz-option" onclick="selectOption(this,'q5','C')"><div class="quiz-option-letter">C</div>Réservé aux gens avec un gros capital</div>
+            <div class="quiz-option" onclick="selectOption(this,'q5','A')"><div class="quiz-option-letter">A</div>Oui, personne ne peut prédire un marché</div>
+            <div class="quiz-option" onclick="selectOption(this,'q5','B')"><div class="quiz-option-letter">B</div>Oui, mais avec de la chance tu peux gagner gros</div>
+            <div class="quiz-option" onclick="selectOption(this,'q5','C')"><div class="quiz-option-letter">C</div>Non, mais la stratégie compte peu au final</div>
+            <div class="quiz-option" onclick="selectOption(this,'q5','D')"><div class="quiz-option-letter">D</div>Non, ça demande de maîtriser une vraie stratégie</div>
           </div>
           <div class="quiz-feedback" id="fb-q5"></div>
         </div>
 
+        <div class="quiz-question" id="q6">
+          <div class="quiz-q-num">QUESTION 6 / 10</div>
+          <div class="quiz-q-text">Qu'est-ce que l'analyse technique ?</div>
+          <div class="quiz-options">
+            <div class="quiz-option" onclick="selectOption(this,'q6','A')"><div class="quiz-option-letter">A</div>Étudier les graphiques et les mouvements de prix passés</div>
+            <div class="quiz-option" onclick="selectOption(this,'q6','B')"><div class="quiz-option-letter">B</div>Étudier les résultats financiers des entreprises</div>
+            <div class="quiz-option" onclick="selectOption(this,'q6','C')"><div class="quiz-option-letter">C</div>Suivre l'actualité économique et les taux d'intérêt</div>
+            <div class="quiz-option" onclick="selectOption(this,'q6','D')"><div class="quiz-option-letter">D</div>Analyser les avis des autres traders sur les réseaux</div>
+          </div>
+          <div class="quiz-feedback" id="fb-q6"></div>
+        </div>
+
+        <div class="quiz-question" id="q7">
+          <div class="quiz-q-num">QUESTION 7 / 10</div>
+          <div class="quiz-q-text">Qu'est-ce que l'analyse fondamentale ?</div>
+          <div class="quiz-options">
+            <div class="quiz-option" onclick="selectOption(this,'q7','A')"><div class="quiz-option-letter">A</div>Étudier uniquement les bougies japonaises sur un graphique</div>
+            <div class="quiz-option" onclick="selectOption(this,'q7','B')"><div class="quiz-option-letter">B</div>Repérer des figures géométriques sur un graphique</div>
+            <div class="quiz-option" onclick="selectOption(this,'q7','C')"><div class="quiz-option-letter">C</div>Étudier l'actualité économique et les données clés d'un marché</div>
+            <div class="quiz-option" onclick="selectOption(this,'q7','D')"><div class="quiz-option-letter">D</div>Calculer la moyenne des prix des 7 derniers jours</div>
+          </div>
+          <div class="quiz-feedback" id="fb-q7"></div>
+        </div>
+
+        <div class="quiz-question" id="q8">
+          <div class="quiz-q-num">QUESTION 8 / 10</div>
+          <div class="quiz-q-text">Un marché "haussier" signifie que...</div>
+          <div class="quiz-options">
+            <div class="quiz-option" onclick="selectOption(this,'q8','A')"><div class="quiz-option-letter">A</div>Le prix stagne sans bouger sur une longue période</div>
+            <div class="quiz-option" onclick="selectOption(this,'q8','B')"><div class="quiz-option-letter">B</div>Le prix d'un actif est en train de monter</div>
+            <div class="quiz-option" onclick="selectOption(this,'q8','C')"><div class="quiz-option-letter">C</div>Le marché est fermé temporairement</div>
+            <div class="quiz-option" onclick="selectOption(this,'q8','D')"><div class="quiz-option-letter">D</div>Le prix d'un actif est en train de descendre</div>
+          </div>
+          <div class="quiz-feedback" id="fb-q8"></div>
+        </div>
+
+        <div class="quiz-question" id="q9">
+          <div class="quiz-q-num">QUESTION 9 / 10</div>
+          <div class="quiz-q-text">Pourquoi faut-il apprendre une stratégie avant de trader ?</div>
+          <div class="quiz-options">
+            <div class="quiz-option" onclick="selectOption(this,'q9','A')"><div class="quiz-option-letter">A</div>Parce que c'est obligatoire légalement pour ouvrir un compte</div>
+            <div class="quiz-option" onclick="selectOption(this,'q9','B')"><div class="quiz-option-letter">B</div>Parce que trader sans stratégie revient à jouer au hasard</div>
+            <div class="quiz-option" onclick="selectOption(this,'q9','C')"><div class="quiz-option-letter">C</div>Parce que les plateformes l'exigent avant de valider un dépôt</div>
+            <div class="quiz-option" onclick="selectOption(this,'q9','D')"><div class="quiz-option-letter">D</div>Parce que ça permet d'éviter de payer des frais de trading</div>
+          </div>
+          <div class="quiz-feedback" id="fb-q9"></div>
+        </div>
+
+        <div class="quiz-question" id="q10">
+          <div class="quiz-q-num">QUESTION 10 / 10</div>
+          <div class="quiz-q-text">Que vas-tu apprendre dans les prochains modules ?</div>
+          <div class="quiz-options">
+            <div class="quiz-option" onclick="selectOption(this,'q10','A')"><div class="quiz-option-letter">A</div>À lire les graphiques et repérer des zones clés du marché</div>
+            <div class="quiz-option" onclick="selectOption(this,'q10','B')"><div class="quiz-option-letter">B</div>À gérer une entreprise de trading rentable</div>
+            <div class="quiz-option" onclick="selectOption(this,'q10','C')"><div class="quiz-option-letter">C</div>À créer ton propre broker en ligne</div>
+            <div class="quiz-option" onclick="selectOption(this,'q10','D')"><div class="quiz-option-letter">D</div>À devenir trader professionnel en une semaine</div>
+          </div>
+          <div class="quiz-feedback" id="fb-q10"></div>
+        </div>
+
         <button class="quiz-submit" id="quiz-btn" onclick="submitQuiz()">✓ VALIDER MES RÉPONSES</button>
         <div class="quiz-result" id="quiz-result">
-          <div class="quiz-result-score" id="quiz-score">0/5</div>
+          <div class="quiz-result-score" id="quiz-score">0/10</div>
           <div style="font-size:14px;color:var(--dim);margin-top:8px;" id="quiz-text"></div>
           <div class="quiz-result-xp" id="quiz-xp-text"></div>
         </div>
@@ -477,16 +573,21 @@ function showSaveError(){
   document.body.appendChild(banner);
 }
 let member=null;
-let quizAnswers={q1:null,q2:null,q3:null,q4:null,q5:null};
+let quizAnswers={q1:null,q2:null,q3:null,q4:null,q5:null,q6:null,q7:null,q8:null,q9:null,q10:null};
 let quizDone=false;
 let exerciceDone=false;
-const correctAnswers={q1:'A',q2:'B',q3:'C',q4:'C',q5:'B'};
+const correctAnswers={q1:'B',q2:'B',q3:'C',q4:'A',q5:'D',q6:'A',q7:'C',q8:'B',q9:'B',q10:'A'};
 const feedbacks={
-  q1:{B:'✅ Exact ! Tu achètes bas et tu revends plus haut — ou tu vends haut et tu rachètes plus bas.',wrong:'❌ En trading on gagne en achetant bas et revendant plus haut ou en vendant haut et rachetant plus bas.'},
-  q2:{B:'✅ Parfait ! Un short c\'est vendre d\'abord et racheter plus bas pour encaisser la différence.',wrong:'❌ Un short c\'est vendre d\'abord et racheter plus bas. La différence entre les deux prix c\'est ton profit.'},
-  q3:{B:'✅ Exact ! Le stop loss limite automatiquement tes pertes — c\'est ta protection indispensable.',wrong:'❌ Le stop loss sert à limiter tes pertes automatiquement. Sans stop loss tu peux perdre beaucoup plus.'},
-  q4:{B:'✅ Parfait ! Même les meilleurs perdent des trades. Ce qui les différencie c\'est la gestion des pertes.',wrong:'❌ Tous les traders perdent des trades — même les meilleurs. La différence c\'est comment ils gèrent ces pertes.'},
-  q5:{B:'✅ Exact ! Le trading c\'est une compétence qui s\'apprend. Avec la pratique et la méthode ça devient naturel.',wrong:'❌ Le trading c\'est une compétence qui s\'apprend — pas du hasard, pas réservé aux experts.'}
+  q1:{B:'✅ Exact ! Le trading c\'est acheter et vendre des actifs sur les marchés financiers.',wrong:'❌ Le trading c\'est acheter et vendre des actifs sur les marchés financiers.'},
+  q2:{B:'✅ Parfait ! Tu dois anticiper si le marché va monter ou descendre.',wrong:'❌ Pour gagner en trading tu dois anticiper le prochain mouvement — haussier ou baissier.'},
+  q3:{C:'✅ Exact ! Tes gains viennent des pertes des autres traders en face de toi.',wrong:'❌ Tes gains viennent des pertes des autres traders en face de toi sur le marché.'},
+  q4:{A:'✅ Parfait ! Tu mises seulement une part du capital que t\'es prêt à risquer.',wrong:'❌ Sur chaque trade tu mises une part du capital que t\'es prêt à risquer — jamais tout.'},
+  q5:{D:'✅ Exact ! Le trading demande de maîtriser une vraie stratégie, c\'est pas du hasard.',wrong:'❌ Le trading c\'est pas du hasard — ça demande de maîtriser une vraie stratégie.'},
+  q6:{A:'✅ Parfait ! L\'analyse technique c\'est étudier les graphiques et les mouvements de prix passés.',wrong:'❌ L\'analyse technique c\'est étudier les graphiques et les mouvements de prix passés.'},
+  q7:{C:'✅ Exact ! L\'analyse fondamentale c\'est suivre l\'actualité économique et les données clés.',wrong:'❌ L\'analyse fondamentale c\'est étudier l\'actualité économique et les données clés d\'un marché.'},
+  q8:{B:'✅ Parfait ! Un marché haussier c\'est un prix qui monte.',wrong:'❌ Un marché "haussier" veut dire que le prix d\'un actif est en train de monter.'},
+  q9:{B:'✅ Exact ! Trader sans stratégie revient à jouer au hasard.',wrong:'❌ Trader sans stratégie revient à jouer au hasard — c\'est pour ça qu\'on l\'apprend.'},
+  q10:{A:'✅ Parfait ! Tu vas apprendre à lire les graphiques et repérer des zones clés du marché.',wrong:'❌ Dans les prochains modules tu vas apprendre à lire les graphiques et repérer des zones clés du marché.'}
 };
 
 function selectOption(el,qId,letter){
@@ -510,12 +611,12 @@ function submitQuiz(){
     if(ans===correct){score++;fb.textContent=feedbacks[qId][correct];fb.className='quiz-feedback show correct';}
     else{fb.textContent=feedbacks[qId].wrong;fb.className='quiz-feedback show wrong';}
   });
-  const xpEarned=score*10;
+  const xpEarned=score*5;
   document.getElementById('quiz-btn').disabled=true;
   document.getElementById('quiz-btn').textContent='✅ QUIZ VALIDÉ';
   const result=document.getElementById('quiz-result');result.classList.add('show');
-  document.getElementById('quiz-score').textContent=score+'/5';
-  document.getElementById('quiz-text').textContent=score===5?'Parfait ! Tu as tout compris ! 🔥':score>=3?'Bon travail ! Relis les points manqués.':'Continue à apprendre — relis le bloc.';
+  document.getElementById('quiz-score').textContent=score+'/10';
+  document.getElementById('quiz-text').textContent=score===10?'Parfait ! Tu as tout compris ! 🔥':score>=6?'Bon travail ! Relis les points manqués.':'Continue à apprendre — relis le bloc.';
   document.getElementById('quiz-xp-text').textContent='+'+xpEarned+' XP gagnés !';
   if(xpEarned>0)awardXP('quiz_m1',xpEarned,'🧠 Quiz Module 1 ('+score+'/5)');
 }
