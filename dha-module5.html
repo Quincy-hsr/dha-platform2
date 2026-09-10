@@ -148,9 +148,15 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
   <div class="bloc">
     <div class="bloc-header">
       <div class="bloc-num">BLOC 01</div>
-      <div class="bloc-title">BOS & CHOCH — Break of Structure & Change of Character</div>
+      <div class="bloc-title">Vidéo de formation</div>
     </div>
     <div class="bloc-body">
+
+      <!-- VIDEO -->
+      <div style="position:relative;width:100%;padding-top:56.25%;border-radius:16px;overflow:hidden;border:1px solid rgba(30,100,255,0.25);margin-bottom:20px;background:#000;">
+        <iframe src="https://www.youtube.com/embed/2vm4RTR4U_Q" title="BOS & CHOCH" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%;"></iframe>
+      </div>
+      <div class="info-box cyan">🎥 Regarde la vidéo ci-dessus — elle résume tout ce que tu vas apprendre dans ce bloc. Le texte en dessous reprend les points clés.</div>
 
       <!-- RAPPEL -->
       <div class="info-box cyan">💡 <strong>Rappel module 4 :</strong> Le prix avance en créant des Highs (points hauts) et des Lows (points bas). En tendance haussière les Highs et Lows sont de plus en plus hauts. En tendance baissière ils sont de plus en plus bas.</div>
@@ -220,17 +226,17 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
         <!-- Lows -->
         <circle cx="80" cy="62" r="6" fill="#FF4466"/>
         <text x="80" y="78" fill="#FF4466" font-size="11" font-family="Orbitron" text-anchor="middle">L1</text>
-        <circle cx="180" cy="75" r="6" fill="#FF4466"/>
-        <text x="180" y="91" fill="#FF4466" font-size="11" font-family="Orbitron" text-anchor="middle">L2</text>
+        <circle cx="220" cy="125" r="6" fill="#FF4466"/>
+        <text x="220" y="141" fill="#FF4466" font-size="11" font-family="Orbitron" text-anchor="middle">L2</text>
         <circle cx="295" cy="158" r="6" fill="#FF4466"/>
         <text x="295" y="174" fill="#FF4466" font-size="11" font-family="Orbitron" text-anchor="middle">L3</text>
         <!-- Ligne du dernier Low cassé -->
-        <line x1="180" y1="75" x2="640" y2="75" stroke="rgba(255,68,102,0.4)" stroke-width="1.5" stroke-dasharray="8,5"/>
+        <line x1="220" y1="125" x2="640" y2="125" stroke="rgba(255,68,102,0.4)" stroke-width="1.5" stroke-dasharray="8,5"/>
      <!-- BOS marker sur le Low cassé -->
-<line x1="180" y1="75" x2="295" y2="75" stroke="#FF4466" stroke-width="2"/>
+<line x1="220" y1="125" x2="295" y2="125" stroke="#FF4466" stroke-width="2"/>
 <circle cx="295" cy="158" r="4" fill="#FF4466"/>
-<rect x="298" y="148" width="80" height="22" rx="4" fill="rgba(255,68,102,0.25)" stroke="rgba(255,68,102,0.6)" stroke-width="1"/>
-<text x="338" y="162" fill="#FF4466" font-size="10" font-family="Orbitron" font-weight="bold" text-anchor="middle">BOS ✅</text>
+<rect x="298" y="140" width="80" height="22" rx="4" fill="rgba(255,68,102,0.25)" stroke="rgba(255,68,102,0.6)" stroke-width="1"/>
+<text x="338" y="154" fill="#FF4466" font-size="10" font-family="Orbitron" font-weight="bold" text-anchor="middle">BOS ✅</text>
         <!-- Légende -->
         <rect x="420" y="30" width="230" height="55" rx="8" fill="rgba(255,68,102,0.06)" stroke="rgba(255,68,102,0.2)" stroke-width="0.5"/>
         <text x="535" y="50" fill="#FF4466" font-size="11" font-family="Orbitron" text-anchor="middle">Le prix casse sous L2</text>
@@ -323,7 +329,7 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
         <div class="quiz-header"><div style="font-size:24px;">🧠</div><div class="quiz-title">MINI QUIZ — Module 5</div><div class="quiz-xp">+50 XP MAX</div></div>
 
         <div class="quiz-question" id="q1">
-          <div class="quiz-q-num">QUESTION 1 / 5</div>
+          <div class="quiz-q-num">QUESTION 1 / 10</div>
           <div class="quiz-q-text">Un BOS en tendance haussière c'est quand :</div>
           <div class="quiz-options">
             <div class="quiz-option" onclick="selectOption(this,'q1','A')"><div class="quiz-option-letter">A</div>Le prix dépasse le dernier High</div>
@@ -334,7 +340,7 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
         </div>
 
         <div class="quiz-question" id="q2">
-          <div class="quiz-q-num">QUESTION 2 / 5</div>
+          <div class="quiz-q-num">QUESTION 2 / 10</div>
           <div class="quiz-q-text">Un CHOCH signifie :</div>
           <div class="quiz-options">
             <div class="quiz-option" onclick="selectOption(this,'q2','A')"><div class="quiz-option-letter">A</div>Une accélération dans le sens de la tendance</div>
@@ -345,7 +351,7 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
         </div>
 
         <div class="quiz-question" id="q3">
-          <div class="quiz-q-num">QUESTION 3 / 5</div>
+          <div class="quiz-q-num">QUESTION 3 / 10</div>
           <div class="quiz-q-text">Lequel est le plus significatif ?</div>
           <div class="quiz-options">
             <div class="quiz-option" onclick="selectOption(this,'q3','A')"><div class="quiz-option-letter">A</div>Le BOS car il confirme la tendance</div>
@@ -356,7 +362,7 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
         </div>
 
         <div class="quiz-question" id="q4">
-          <div class="quiz-q-num">QUESTION 4 / 5</div>
+          <div class="quiz-q-num">QUESTION 4 / 10</div>
           <div class="quiz-q-text">En tendance baissière un BOS c'est quand :</div>
           <div class="quiz-options">
             <div class="quiz-option" onclick="selectOption(this,'q4','A')"><div class="quiz-option-letter">A</div>Le prix teste l'ancien Low sans le casser</div>
@@ -367,7 +373,7 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
         </div>
 
         <div class="quiz-question" id="q5">
-          <div class="quiz-q-num">QUESTION 5 / 5</div>
+          <div class="quiz-q-num">QUESTION 5 / 10</div>
           <div class="quiz-q-text">Sur quel timeframe le BOS/CHOCH est le plus fort ?</div>
           <div class="quiz-options">
             <div class="quiz-option" onclick="selectOption(this,'q5','A')"><div class="quiz-option-letter">A</div>M15 car il donne plus de signaux</div>
@@ -377,9 +383,64 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
           <div class="quiz-feedback" id="fb-q5"></div>
         </div>
 
+        <div class="quiz-question" id="q6">
+          <div class="quiz-q-num">QUESTION 6 / 10</div>
+          <div class="quiz-q-text">Un CHOCH en tendance haussière c'est quand :</div>
+          <div class="quiz-options">
+            <div class="quiz-option" onclick="selectOption(this,'q6','A')"><div class="quiz-option-letter">A</div>Le prix dépasse le dernier High</div>
+            <div class="quiz-option" onclick="selectOption(this,'q6','B')"><div class="quiz-option-letter">B</div>Le prix casse sous le dernier Low</div>
+            <div class="quiz-option" onclick="selectOption(this,'q6','C')"><div class="quiz-option-letter">C</div>Le prix reste bloqué en range</div>
+          </div>
+          <div class="quiz-feedback" id="fb-q6"></div>
+        </div>
+
+        <div class="quiz-question" id="q7">
+          <div class="quiz-q-num">QUESTION 7 / 10</div>
+          <div class="quiz-q-text">Un CHOCH en tendance baissière c'est quand :</div>
+          <div class="quiz-options">
+            <div class="quiz-option" onclick="selectOption(this,'q7','A')"><div class="quiz-option-letter">A</div>Le prix casse sous le dernier Low</div>
+            <div class="quiz-option" onclick="selectOption(this,'q7','B')"><div class="quiz-option-letter">B</div>Le prix dépasse le dernier High</div>
+            <div class="quiz-option" onclick="selectOption(this,'q7','C')"><div class="quiz-option-letter">C</div>Le prix ne bouge plus</div>
+          </div>
+          <div class="quiz-feedback" id="fb-q7"></div>
+        </div>
+
+        <div class="quiz-question" id="q8">
+          <div class="quiz-q-num">QUESTION 8 / 10</div>
+          <div class="quiz-q-text">Le BOS est un signal de :</div>
+          <div class="quiz-options">
+            <div class="quiz-option" onclick="selectOption(this,'q8','A')"><div class="quiz-option-letter">A</div>Retournement de tendance</div>
+            <div class="quiz-option" onclick="selectOption(this,'q8','B')"><div class="quiz-option-letter">B</div>Continuation de tendance</div>
+            <div class="quiz-option" onclick="selectOption(this,'q8','C')"><div class="quiz-option-letter">C</div>Fin de session de trading</div>
+          </div>
+          <div class="quiz-feedback" id="fb-q8"></div>
+        </div>
+
+        <div class="quiz-question" id="q9">
+          <div class="quiz-q-num">QUESTION 9 / 10</div>
+          <div class="quiz-q-text">Le BOS et le CHOCH sont-ils des signaux d'entrée directs ?</div>
+          <div class="quiz-options">
+            <div class="quiz-option" onclick="selectOption(this,'q9','A')"><div class="quiz-option-letter">A</div>Oui, on rentre en trade dès qu'on les voit</div>
+            <div class="quiz-option" onclick="selectOption(this,'q9','B')"><div class="quiz-option-letter">B</div>Non, il faut toujours une confirmation supplémentaire</div>
+            <div class="quiz-option" onclick="selectOption(this,'q9','C')"><div class="quiz-option-letter">C</div>Seulement le CHOCH est un signal d'entrée direct</div>
+          </div>
+          <div class="quiz-feedback" id="fb-q9"></div>
+        </div>
+
+        <div class="quiz-question" id="q10">
+          <div class="quiz-q-num">QUESTION 10 / 10</div>
+          <div class="quiz-q-text">En tendance haussière, le prix crée normalement :</div>
+          <div class="quiz-options">
+            <div class="quiz-option" onclick="selectOption(this,'q10','A')"><div class="quiz-option-letter">A</div>Des Highs et Lows de plus en plus hauts</div>
+            <div class="quiz-option" onclick="selectOption(this,'q10','B')"><div class="quiz-option-letter">B</div>Des Highs et Lows de plus en plus bas</div>
+            <div class="quiz-option" onclick="selectOption(this,'q10','C')"><div class="quiz-option-letter">C</div>Des Highs et Lows toujours au même niveau</div>
+          </div>
+          <div class="quiz-feedback" id="fb-q10"></div>
+        </div>
+
         <button class="quiz-submit" id="quiz-btn" onclick="submitQuiz()">✓ VALIDER MES RÉPONSES</button>
         <div class="quiz-result" id="quiz-result">
-          <div class="quiz-result-score" id="quiz-score">0/5</div>
+          <div class="quiz-result-score" id="quiz-score">0/10</div>
           <div style="font-size:14px;color:var(--dim);margin-top:8px;" id="quiz-text"></div>
           <div class="quiz-result-xp" id="quiz-xp-text"></div>
         </div>
@@ -393,7 +454,6 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
         <div class="exercice-step"><div class="exercice-step-num">2</div><div class="exercice-step-text">Identifie la tendance actuelle — haussière ou baissière ?</div></div>
         <div class="exercice-step"><div class="exercice-step-num">3</div><div class="exercice-step-text">Trouve le dernier <strong>BOS</strong> — le prix a-t-il dépassé le dernier High ou cassé le dernier Low ?</div></div>
         <div class="exercice-step"><div class="exercice-step-num">4</div><div class="exercice-step-text">Cherche un <strong>CHOCH</strong> récent — y a-t-il eu un changement de tendance visible ?</div></div>
-        <div class="exercice-step"><div class="exercice-step-num">5</div><div class="exercice-step-text">Passe en <strong>H4</strong> et vérifie si tu vois la même structure</div></div>
         <a href="https://www.tradingview.com" target="_blank" style="
           display:flex;align-items:center;justify-content:center;gap:10px;
           width:100%;padding:13px;border-radius:12px;margin-bottom:10px;
@@ -461,16 +521,21 @@ async function awardXP(actionKey,amount,raison){
   return true;
 }
 let member=null;
-let quizAnswers={q1:null,q2:null,q3:null,q4:null,q5:null};
+let quizAnswers={q1:null,q2:null,q3:null,q4:null,q5:null,q6:null,q7:null,q8:null,q9:null,q10:null};
 let quizDone=false;
 let exerciceDone=false;
-const correctAnswers={q1:'A',q2:'B',q3:'B',q4:'B',q5:'C'};
+const correctAnswers={q1:'A',q2:'B',q3:'B',q4:'B',q5:'C',q6:'B',q7:'B',q8:'B',q9:'B',q10:'A'};
 const feedbacks={
   q1:{A:'✅ Exact ! En tendance haussière le BOS c\'est quand le prix dépasse le dernier High — la structure continue.',wrong:'❌ En tendance haussière le BOS c\'est quand le prix dépasse le dernier High. Si il casse le Low c\'est un CHOCH.'},
   q2:{B:'✅ Parfait ! Le CHOCH c\'est un changement de tendance — le marché repart dans l\'autre direction.',wrong:'❌ Le CHOCH signifie un changement de tendance — le marché change de direction.'},
   q3:{B:'✅ Exact ! Le CHOCH est plus significatif car il annonce un nouveau cycle — les institutionnels changent de direction.',wrong:'❌ Le CHOCH est plus significatif car il annonce un retournement complet de tendance.'},
   q4:{B:'✅ Parfait ! En tendance baissière le BOS c\'est quand le prix casse sous le dernier Low — la structure continue.',wrong:'❌ En tendance baissière le BOS c\'est quand le prix casse sous le dernier Low.'},
-  q5:{C:'✅ Exact ! Plus le timeframe est grand plus le BOS/CHOCH est significatif. Un D1 est beaucoup plus fort qu\'un H1.',wrong:'❌ Le D1 est le timeframe le plus fort. Plus c\'est grand — plus c\'est significatif.'}
+  q5:{C:'✅ Exact ! Plus le timeframe est grand plus le BOS/CHOCH est significatif. Un D1 est beaucoup plus fort qu\'un H1.',wrong:'❌ Le D1 est le timeframe le plus fort. Plus c\'est grand — plus c\'est significatif.'},
+  q6:{B:'✅ Exact ! Un CHOCH en tendance haussière c\'est le prix qui casse sous le dernier Low — signal de retournement.',wrong:'❌ Un CHOCH en tendance haussière c\'est quand le prix casse sous le dernier Low, pas quand il dépasse le High.'},
+  q7:{B:'✅ Parfait ! Un CHOCH en tendance baissière c\'est le prix qui dépasse le dernier High — signal de retournement.',wrong:'❌ Un CHOCH en tendance baissière c\'est quand le prix dépasse le dernier High, pas quand il casse le Low.'},
+  q8:{B:'✅ Exact ! Le BOS confirme que la tendance continue dans le même sens.',wrong:'❌ Le BOS est un signal de continuation — c\'est le CHOCH qui signale un retournement.'},
+  q9:{B:'✅ Parfait ! BOS et CHOCH ne suffisent jamais seuls — il faut toujours une confirmation supplémentaire avant d\'entrer.',wrong:'❌ Ni le BOS ni le CHOCH ne sont des signaux d\'entrée directs — on attend toujours une confirmation.'},
+  q10:{A:'✅ Exact ! En tendance haussière, Highs et Lows sont de plus en plus hauts.',wrong:'❌ En tendance haussière, Highs et Lows sont de plus en plus hauts — pas de plus en plus bas.'}
 };
 
 function selectOption(el,qId,letter){
@@ -494,11 +559,11 @@ function submitQuiz(){
     if(ans===correct){score++;fb.textContent=feedbacks[qId][correct];fb.className='quiz-feedback show correct';}
     else{fb.textContent=feedbacks[qId].wrong;fb.className='quiz-feedback show wrong';}
   });
-  const xpEarned=score*10;
+  const xpEarned=score*5;
   document.getElementById('quiz-btn').disabled=true;document.getElementById('quiz-btn').textContent='✅ QUIZ VALIDÉ';
   const result=document.getElementById('quiz-result');result.classList.add('show');
-  document.getElementById('quiz-score').textContent=score+'/5';
-  document.getElementById('quiz-text').textContent=score===5?'Parfait ! Tu maîtrises le BOS & CHOCH ! 🔥':score>=3?'Bon travail ! Relis les points manqués.':'Continue à apprendre — relis le bloc.';
+  document.getElementById('quiz-score').textContent=score+'/10';
+  document.getElementById('quiz-text').textContent=score===10?'Parfait ! Tu maîtrises le BOS & CHOCH ! 🔥':score>=6?'Bon travail ! Relis les points manqués.':'Continue à apprendre — relis le bloc.';
   document.getElementById('quiz-xp-text').textContent='+'+xpEarned+' XP gagnés !';
   if(xpEarned>0)awardXP('quiz_m5',xpEarned,'🧠 Quiz Module 5 ('+score+'/5)');
 }
