@@ -153,9 +153,15 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
   <div class="bloc">
     <div class="bloc-header">
       <div class="bloc-num">BLOC 01</div>
-      <div class="bloc-title">Les 3 directions du prix</div>
+      <div class="bloc-title">Vidéo de formation</div>
     </div>
     <div class="bloc-body">
+
+      <!-- VIDEO -->
+      <div style="position:relative;width:100%;padding-top:56.25%;border-radius:16px;overflow:hidden;border:1px solid rgba(30,100,255,0.25);margin-bottom:20px;background:#000;">
+        <iframe src="https://www.youtube.com/embed/lpMSt-rSs0s" title="Les tendances — lire la direction du marché" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%;"></iframe>
+      </div>
+      <div class="info-box cyan">🎥 Regarde la vidéo ci-dessus — elle résume tout ce que tu vas apprendre dans ce bloc. Le texte en dessous reprend les points clés.</div>
 
       <!-- SECTION 1 — HIGH ET LOW -->
       <div class="bloc-text">
@@ -312,7 +318,7 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
         <div class="quiz-header"><div style="font-size:24px;">🧠</div><div class="quiz-title">MINI QUIZ — Module 4</div><div class="quiz-xp">+50 XP MAX</div></div>
 
         <div class="quiz-question" id="q1">
-          <div class="quiz-q-num">QUESTION 1 / 5</div>
+          <div class="quiz-q-num">QUESTION 1 / 10</div>
           <div class="quiz-q-text">Qu'est-ce qu'un HIGH ?</div>
           <div class="quiz-options">
             <div class="quiz-option" onclick="selectOption(this,'q1','A')"><div class="quiz-option-letter">A</div>Le prix de clôture d'une bougie haussière</div>
@@ -323,7 +329,7 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
         </div>
 
         <div class="quiz-question" id="q2">
-          <div class="quiz-q-num">QUESTION 2 / 5</div>
+          <div class="quiz-q-num">QUESTION 2 / 10</div>
           <div class="quiz-q-text">En tendance haussière tu cherches :</div>
           <div class="quiz-options">
             <div class="quiz-option" onclick="selectOption(this,'q2','A')"><div class="quiz-option-letter">A</div>Des shorts sur les résistances</div>
@@ -334,7 +340,7 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
         </div>
 
         <div class="quiz-question" id="q3">
-          <div class="quiz-q-num">QUESTION 3 / 5</div>
+          <div class="quiz-q-num">QUESTION 3 / 10</div>
           <div class="quiz-q-text">Pourquoi éviter de trader en range ?</div>
           <div class="quiz-options">
             <div class="quiz-option" onclick="selectOption(this,'q3','A')"><div class="quiz-option-letter">A</div>Parce que le volume est trop élevé</div>
@@ -345,7 +351,7 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
         </div>
 
         <div class="quiz-question" id="q4">
-          <div class="quiz-q-num">QUESTION 4 / 5</div>
+          <div class="quiz-q-num">QUESTION 4 / 10</div>
           <div class="quiz-q-text">En day trading on analyse les timeframes dans quel ordre ?</div>
           <div class="quiz-options">
             <div class="quiz-option" onclick="selectOption(this,'q4','A')"><div class="quiz-option-letter">A</div>H1 → H4 → D1</div>
@@ -356,7 +362,7 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
         </div>
 
         <div class="quiz-question" id="q5">
-          <div class="quiz-q-num">QUESTION 5 / 5</div>
+          <div class="quiz-q-num">QUESTION 5 / 10</div>
           <div class="quiz-q-text">En tendance baissière les Highs sont :</div>
           <div class="quiz-options">
             <div class="quiz-option" onclick="selectOption(this,'q5','A')"><div class="quiz-option-letter">A</div>Stables, ils restent au même niveau</div>
@@ -366,9 +372,64 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
           <div class="quiz-feedback" id="fb-q5"></div>
         </div>
 
+        <div class="quiz-question" id="q6">
+          <div class="quiz-q-num">QUESTION 6 / 10</div>
+          <div class="quiz-q-text">Qu'est-ce qu'un LOW ?</div>
+          <div class="quiz-options">
+            <div class="quiz-option" onclick="selectOption(this,'q6','A')"><div class="quiz-option-letter">A</div>Le point bas que le prix atteint avant de remonter</div>
+            <div class="quiz-option" onclick="selectOption(this,'q6','B')"><div class="quiz-option-letter">B</div>Le prix d'ouverture d'une bougie baissière</div>
+            <div class="quiz-option" onclick="selectOption(this,'q6','C')"><div class="quiz-option-letter">C</div>La moyenne des prix sur la journée</div>
+          </div>
+          <div class="quiz-feedback" id="fb-q6"></div>
+        </div>
+
+        <div class="quiz-question" id="q7">
+          <div class="quiz-q-num">QUESTION 7 / 10</div>
+          <div class="quiz-q-text">En range, les Highs et Lows sont :</div>
+          <div class="quiz-options">
+            <div class="quiz-option" onclick="selectOption(this,'q7','A')"><div class="quiz-option-letter">A</div>De plus en plus hauts</div>
+            <div class="quiz-option" onclick="selectOption(this,'q7','B')"><div class="quiz-option-letter">B</div>Similaires, sans direction claire</div>
+            <div class="quiz-option" onclick="selectOption(this,'q7','C')"><div class="quiz-option-letter">C</div>De plus en plus bas</div>
+          </div>
+          <div class="quiz-feedback" id="fb-q7"></div>
+        </div>
+
+        <div class="quiz-question" id="q8">
+          <div class="quiz-q-num">QUESTION 8 / 10</div>
+          <div class="quiz-q-text">Une tendance haussière en Daily peut être :</div>
+          <div class="quiz-options">
+            <div class="quiz-option" onclick="selectOption(this,'q8','A')"><div class="quiz-option-letter">A</div>Forcément haussière aussi sur tous les timeframes</div>
+            <div class="quiz-option" onclick="selectOption(this,'q8','B')"><div class="quiz-option-letter">B</div>Différente sur un timeframe plus petit, comme M5</div>
+            <div class="quiz-option" onclick="selectOption(this,'q8','C')"><div class="quiz-option-letter">C</div>Impossible à voir sur d'autres timeframes</div>
+          </div>
+          <div class="quiz-feedback" id="fb-q8"></div>
+        </div>
+
+        <div class="quiz-question" id="q9">
+          <div class="quiz-q-num">QUESTION 9 / 10</div>
+          <div class="quiz-q-text">Si D1 est haussier et H4 est haussier, sur H1 tu cherches :</div>
+          <div class="quiz-options">
+            <div class="quiz-option" onclick="selectOption(this,'q9','A')"><div class="quiz-option-letter">A</div>Des achats, dans le sens de la tendance</div>
+            <div class="quiz-option" onclick="selectOption(this,'q9','B')"><div class="quiz-option-letter">B</div>Des ventes, pour diversifier</div>
+            <div class="quiz-option" onclick="selectOption(this,'q9','C')"><div class="quiz-option-letter">C</div>Rien, il faut attendre un autre jour</div>
+          </div>
+          <div class="quiz-feedback" id="fb-q9"></div>
+        </div>
+
+        <div class="quiz-question" id="q10">
+          <div class="quiz-q-num">QUESTION 10 / 10</div>
+          <div class="quiz-q-text">En tendance baissière tu cherches :</div>
+          <div class="quiz-options">
+            <div class="quiz-option" onclick="selectOption(this,'q10','A')"><div class="quiz-option-letter">A</div>Des positions à l'achat</div>
+            <div class="quiz-option" onclick="selectOption(this,'q10','B')"><div class="quiz-option-letter">B</div>Des positions à la vente</div>
+            <div class="quiz-option" onclick="selectOption(this,'q10','C')"><div class="quiz-option-letter">C</div>Aucune position, on attend toujours</div>
+          </div>
+          <div class="quiz-feedback" id="fb-q10"></div>
+        </div>
+
         <button class="quiz-submit" id="quiz-btn" onclick="submitQuiz()">✓ VALIDER MES RÉPONSES</button>
         <div class="quiz-result" id="quiz-result">
-          <div class="quiz-result-score" id="quiz-score">0/5</div>
+          <div class="quiz-result-score" id="quiz-score">0/10</div>
           <div style="font-size:14px;color:var(--dim);margin-top:8px;" id="quiz-text"></div>
           <div class="quiz-result-xp" id="quiz-xp-text"></div>
         </div>
@@ -474,16 +535,21 @@ function showSaveError(){
   document.body.appendChild(banner);
 }
 let member=null;
-let quizAnswers={q1:null,q2:null,q3:null,q4:null,q5:null};
+let quizAnswers={q1:null,q2:null,q3:null,q4:null,q5:null,q6:null,q7:null,q8:null,q9:null,q10:null};
 let quizDone=false;
 let exerciceDone=false;
-const correctAnswers={q1:'B',q2:'B',q3:'B',q4:'B',q5:'C'};
+const correctAnswers={q1:'B',q2:'B',q3:'B',q4:'B',q5:'C',q6:'A',q7:'B',q8:'B',q9:'A',q10:'B'};
 const feedbacks={
   q1:{B:'✅ Exact ! Le High c\'est le point haut — le sommet que le prix atteint avant de redescendre.',wrong:'❌ Le High c\'est le point haut. Le Low c\'est le point bas.'},
   q2:{B:'✅ Parfait ! En tendance haussière on cherche uniquement des achats — on suit le mouvement.',wrong:'❌ En tendance haussière on cherche des achats. On ne trade jamais à contre-tendance.'},
   q3:{B:'✅ Exact ! En range le prix n\'a pas de direction claire — trop risqué de trader.',wrong:'❌ On évite le range car le prix n\'a pas de direction. Le risque de se faire piéger est trop élevé.'},
   q4:{B:'✅ Parfait ! Du plus grand au plus petit — D1 donne la direction, H4 confirme, H1 pour l\'entrée.',wrong:'❌ On analyse toujours du plus grand au plus petit timeframe — D1 → H4 → H1.'},
-  q5:{C:'✅ Exact ! En tendance baissière les Highs sont de plus en plus bas — le marché descend.',wrong:'❌ En tendance baissière les Highs sont de plus en plus bas et les Lows aussi.'}
+  q5:{C:'✅ Exact ! En tendance baissière les Highs sont de plus en plus bas — le marché descend.',wrong:'❌ En tendance baissière les Highs sont de plus en plus bas et les Lows aussi.'},
+  q6:{A:'✅ Exact ! Le Low c\'est le point bas — le creux que le prix atteint avant de remonter.',wrong:'❌ Le Low c\'est le point bas atteint par le prix avant de remonter.'},
+  q7:{B:'✅ Parfait ! En range les Highs et Lows restent similaires, sans direction claire.',wrong:'❌ En range les Highs et Lows sont similaires — c\'est pour ça qu\'il n\'y a pas de direction claire.'},
+  q8:{B:'✅ Exact ! La tendance dépend du timeframe — elle peut être différente sur un timeframe plus petit.',wrong:'❌ La tendance n\'est pas la même sur tous les timeframes — c\'est pour ça qu\'on analyse D1 → H4 → H1.'},
+  q9:{A:'✅ Parfait ! Quand tous les timeframes sont alignés à la hausse, tu cherches des achats sur H1.',wrong:'❌ Si D1 et H4 sont haussiers, tu cherches des achats sur H1 — jamais à contre-tendance.'},
+  q10:{B:'✅ Exact ! En tendance baissière tu cherches uniquement des positions à la vente.',wrong:'❌ En tendance baissière tu cherches des positions à la vente, jamais à l\'achat.'}
 };
 
 function selectOption(el,qId,letter){
@@ -507,11 +573,11 @@ function submitQuiz(){
     if(ans===correct){score++;fb.textContent=feedbacks[qId][correct];fb.className='quiz-feedback show correct';}
     else{fb.textContent=feedbacks[qId].wrong;fb.className='quiz-feedback show wrong';}
   });
-  const xpEarned=score*10;
+  const xpEarned=score*5;
   document.getElementById('quiz-btn').disabled=true;document.getElementById('quiz-btn').textContent='✅ QUIZ VALIDÉ';
   const result=document.getElementById('quiz-result');result.classList.add('show');
-  document.getElementById('quiz-score').textContent=score+'/5';
-  document.getElementById('quiz-text').textContent=score===5?'Parfait ! Tu maîtrises les tendances ! 🔥':score>=3?'Bon travail ! Relis les points manqués.':'Continue à apprendre — relis le bloc.';
+  document.getElementById('quiz-score').textContent=score+'/10';
+  document.getElementById('quiz-text').textContent=score===10?'Parfait ! Tu maîtrises les tendances ! 🔥':score>=6?'Bon travail ! Relis les points manqués.':'Continue à apprendre — relis le bloc.';
   document.getElementById('quiz-xp-text').textContent='+'+xpEarned+' XP gagnés !';
   if(xpEarned>0)awardXP('quiz_m4',xpEarned,'🧠 Quiz Module 4 ('+score+'/5)');
 }
