@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>DHA — Module 8 : Imbalance / FVG</title>
+<title>DHA — Module 7 : Imbalance / FVG</title>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600;700&display=swap" rel="stylesheet"/>
 <style>
 :root{--bg:#050914;--card:#080e1f;--blue:#1E64FF;--cyan:#00D4FF;--gold:#FFD700;--green:#00FF88;--red:#FF4466;--purple:#9D4EDD;--white:#E8F4FF;--dim:rgba(232,244,255,0.5);--border:rgba(30,100,255,0.15);--sidebar-w:240px;}
@@ -120,13 +120,13 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
 
 <main class="main">
   <div class="topbar">
-    <div><div class="topbar-title">MODULE 8 — <span>IMBALANCE / FVG</span></div><div style="font-size:12px;color:var(--dim);margin-top:2px;">Repère les déséquilibres que le marché laisse derrière lui</div></div>
+    <div><div class="topbar-title">MODULE 7 — <span>IMBALANCE / FVG</span></div><div style="font-size:12px;color:var(--dim);margin-top:2px;">Repère les déséquilibres que le marché laisse derrière lui</div></div>
     <div class="xp-pill"><span>⚡</span><span class="xp-pill-val" id="topbar-xp">0 XP</span></div>
   </div>
 
   <div class="module-header">
     <div class="module-glow"></div>
-    <div class="module-tag">MODULE 08 · TRADING</div>
+    <div class="module-tag">MODULE 07 · TRADING</div>
     <div class="module-title">Le Fair Value Gap (FVG)<br/>repérer les déséquilibres du marché</div>
     <div class="module-desc">Quand le prix bouge trop vite, il laisse un trou derrière lui — une zone où personne n'a eu le temps d'acheter ou de vendre. Ce trou, c'est le Fair Value Gap. Apprends à le repérer sur un graphique.</div>
     <div class="module-meta">
@@ -139,9 +139,15 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
   <div class="bloc">
     <div class="bloc-header">
       <div class="bloc-num">BLOC 01</div>
-      <div class="bloc-title">Le Fair Value Gap (FVG)</div>
+      <div class="bloc-title">Vidéo de formation</div>
     </div>
     <div class="bloc-body">
+
+      <!-- VIDEO -->
+      <div style="position:relative;width:100%;padding-top:56.25%;border-radius:16px;overflow:hidden;border:1px solid rgba(30,100,255,0.25);margin-bottom:20px;background:#000;">
+        <iframe src="https://www.youtube.com/embed/XNgG3ZfKPzc" title="Le Fair Value Gap (FVG)" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%;"></iframe>
+      </div>
+      <div class="info-box cyan">🎥 Regarde la vidéo ci-dessus — elle résume tout ce que tu vas apprendre dans ce bloc. Le texte en dessous reprend les points clés.</div>
 
       <!-- SECTION 1 : DEFINITION -->
       <div class="bloc-text">
@@ -245,43 +251,78 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
       <div class="quiz-section">
         <div class="quiz-header"><div style="font-size:22px;">🧠</div><div class="quiz-title">QUIZ — TESTE TES CONNAISSANCES</div><div class="quiz-xp">+10 XP / bonne réponse</div></div>
 
-        <div class="quiz-question" id="q1"><div class="quiz-q-num">QUESTION 1 / 5</div><div class="quiz-q-text">Qu'est-ce qu'un FVG (Fair Value Gap) ?</div><div class="quiz-options">
+        <div class="quiz-question" id="q1"><div class="quiz-q-num">QUESTION 1 / 10</div><div class="quiz-q-text">Qu'est-ce qu'un FVG (Fair Value Gap) ?</div><div class="quiz-options">
           <div class="quiz-option" onclick="selectOption(this,'q1','A')"><div class="quiz-option-letter">A</div>Une zone où deux bougies se chevauchent parfaitement</div>
           <div class="quiz-option" onclick="selectOption(this,'q1','B')"><div class="quiz-option-letter">B</div>Un espace laissé par un mouvement de prix trop rapide</div>
           <div class="quiz-option" onclick="selectOption(this,'q1','C')"><div class="quiz-option-letter">C</div>Une moyenne mobile qui casse le prix</div>
           <div class="quiz-option" onclick="selectOption(this,'q1','D')"><div class="quiz-option-letter">D</div>Un indicateur de volume sur le graphique</div>
         </div><div class="quiz-feedback" id="fb-q1"></div></div>
 
-        <div class="quiz-question" id="q2"><div class="quiz-q-num">QUESTION 2 / 5</div><div class="quiz-q-text">Sur combien de bougies repère-t-on un FVG ?</div><div class="quiz-options">
+        <div class="quiz-question" id="q2"><div class="quiz-q-num">QUESTION 2 / 10</div><div class="quiz-q-text">Sur combien de bougies repère-t-on un FVG ?</div><div class="quiz-options">
           <div class="quiz-option" onclick="selectOption(this,'q2','A')"><div class="quiz-option-letter">A</div>2 bougies</div>
           <div class="quiz-option" onclick="selectOption(this,'q2','B')"><div class="quiz-option-letter">B</div>5 bougies</div>
           <div class="quiz-option" onclick="selectOption(this,'q2','C')"><div class="quiz-option-letter">C</div>3 bougies</div>
           <div class="quiz-option" onclick="selectOption(this,'q2','D')"><div class="quiz-option-letter">D</div>1 seule bougie</div>
         </div><div class="quiz-feedback" id="fb-q2"></div></div>
 
-        <div class="quiz-question" id="q3"><div class="quiz-q-num">QUESTION 3 / 5</div><div class="quiz-q-text">Où se situe précisément le FVG dans ce pattern à 3 bougies ?</div><div class="quiz-options">
+        <div class="quiz-question" id="q3"><div class="quiz-q-num">QUESTION 3 / 10</div><div class="quiz-q-text">Où se situe précisément le FVG dans ce pattern à 3 bougies ?</div><div class="quiz-options">
           <div class="quiz-option" onclick="selectOption(this,'q3','A')"><div class="quiz-option-letter">A</div>Entre le corps de la bougie 1 et le corps de la bougie 2</div>
           <div class="quiz-option" onclick="selectOption(this,'q3','B')"><div class="quiz-option-letter">B</div>Entre la mèche de la bougie 1 et la mèche de la bougie 3</div>
           <div class="quiz-option" onclick="selectOption(this,'q3','C')"><div class="quiz-option-letter">C</div>Entre la mèche de la bougie 2 et la mèche de la bougie 3</div>
           <div class="quiz-option" onclick="selectOption(this,'q3','D')"><div class="quiz-option-letter">D</div>Sur le corps de la bougie du milieu uniquement</div>
         </div><div class="quiz-feedback" id="fb-q3"></div></div>
 
-        <div class="quiz-question" id="q4"><div class="quiz-q-num">QUESTION 4 / 5</div><div class="quiz-q-text">Un FVG bullish se forme dans quel contexte ?</div><div class="quiz-options">
+        <div class="quiz-question" id="q4"><div class="quiz-q-num">QUESTION 4 / 10</div><div class="quiz-q-text">Un FVG bullish se forme dans quel contexte ?</div><div class="quiz-options">
           <div class="quiz-option" onclick="selectOption(this,'q4','A')"><div class="quiz-option-letter">A</div>Pendant une consolidation sans direction</div>
           <div class="quiz-option" onclick="selectOption(this,'q4','B')"><div class="quiz-option-letter">B</div>Après un mouvement rapide vers le bas</div>
           <div class="quiz-option" onclick="selectOption(this,'q4','C')"><div class="quiz-option-letter">C</div>Après un mouvement rapide vers le haut</div>
           <div class="quiz-option" onclick="selectOption(this,'q4','D')"><div class="quiz-option-letter">D</div>Uniquement en fin de journée de trading</div>
         </div><div class="quiz-feedback" id="fb-q4"></div></div>
 
-        <div class="quiz-question" id="q5"><div class="quiz-q-num">QUESTION 5 / 5</div><div class="quiz-q-text">Un FVG bearish se forme dans quel contexte ?</div><div class="quiz-options">
+        <div class="quiz-question" id="q5"><div class="quiz-q-num">QUESTION 5 / 10</div><div class="quiz-q-text">Un FVG bearish se forme dans quel contexte ?</div><div class="quiz-options">
           <div class="quiz-option" onclick="selectOption(this,'q5','A')"><div class="quiz-option-letter">A</div>Après un mouvement rapide vers le haut</div>
           <div class="quiz-option" onclick="selectOption(this,'q5','B')"><div class="quiz-option-letter">B</div>Pendant une phase de range serré</div>
           <div class="quiz-option" onclick="selectOption(this,'q5','C')"><div class="quiz-option-letter">C</div>Après un mouvement rapide vers le bas</div>
           <div class="quiz-option" onclick="selectOption(this,'q5','D')"><div class="quiz-option-letter">D</div>Uniquement sur les gros volumes</div>
         </div><div class="quiz-feedback" id="fb-q5"></div></div>
 
+        <div class="quiz-question" id="q6"><div class="quiz-q-num">QUESTION 6 / 10</div><div class="quiz-q-text">Pourquoi un FVG se forme-t-il ?</div><div class="quiz-options">
+          <div class="quiz-option" onclick="selectOption(this,'q6','A')"><div class="quiz-option-letter">A</div>Parce que le marché n'a pas eu le temps de trader tous les niveaux traversés</div>
+          <div class="quiz-option" onclick="selectOption(this,'q6','B')"><div class="quiz-option-letter">B</div>Parce qu'un indicateur technique le calcule automatiquement</div>
+          <div class="quiz-option" onclick="selectOption(this,'q6','C')"><div class="quiz-option-letter">C</div>Parce que le marché est fermé ce jour-là</div>
+          <div class="quiz-option" onclick="selectOption(this,'q6','D')"><div class="quiz-option-letter">D</div>Parce que la bougie du milieu est toujours une bougie neutre</div>
+        </div><div class="quiz-feedback" id="fb-q6"></div></div>
+
+        <div class="quiz-question" id="q7"><div class="quiz-q-num">QUESTION 7 / 10</div><div class="quiz-q-text">Qu'est-ce qui rend un FVG valide ?</div><div class="quiz-options">
+          <div class="quiz-option" onclick="selectOption(this,'q7','A')"><div class="quiz-option-letter">A</div>Les 3 bougies doivent être de la même couleur</div>
+          <div class="quiz-option" onclick="selectOption(this,'q7','B')"><div class="quiz-option-letter">B</div>Les mèches de la bougie 1 et de la bougie 3 ne doivent pas se toucher</div>
+          <div class="quiz-option" onclick="selectOption(this,'q7','C')"><div class="quiz-option-letter">C</div>La bougie 2 doit être plus petite que les deux autres</div>
+          <div class="quiz-option" onclick="selectOption(this,'q7','D')"><div class="quiz-option-letter">D</div>Il doit se former uniquement sur le timeframe D1</div>
+        </div><div class="quiz-feedback" id="fb-q7"></div></div>
+
+        <div class="quiz-question" id="q8"><div class="quiz-q-num">QUESTION 8 / 10</div><div class="quiz-q-text">C'est quelle bougie qui crée l'écart dans le pattern à 3 bougies ?</div><div class="quiz-options">
+          <div class="quiz-option" onclick="selectOption(this,'q8','A')"><div class="quiz-option-letter">A</div>La bougie 1</div>
+          <div class="quiz-option" onclick="selectOption(this,'q8','B')"><div class="quiz-option-letter">B</div>La bougie 2, celle du milieu</div>
+          <div class="quiz-option" onclick="selectOption(this,'q8','C')"><div class="quiz-option-letter">C</div>La bougie 3</div>
+          <div class="quiz-option" onclick="selectOption(this,'q8','D')"><div class="quiz-option-letter">D</div>Aucune bougie en particulier</div>
+        </div><div class="quiz-feedback" id="fb-q8"></div></div>
+
+        <div class="quiz-question" id="q9"><div class="quiz-q-num">QUESTION 9 / 10</div><div class="quiz-q-text">Plus la bougie du milieu est grosse et rapide :</div><div class="quiz-options">
+          <div class="quiz-option" onclick="selectOption(this,'q9','A')"><div class="quiz-option-letter">A</div>Plus le FVG sera large et visible</div>
+          <div class="quiz-option" onclick="selectOption(this,'q9','B')"><div class="quiz-option-letter">B</div>Plus le FVG sera invalide</div>
+          <div class="quiz-option" onclick="selectOption(this,'q9','C')"><div class="quiz-option-letter">C</div>Moins il y a de chances qu'un FVG se forme</div>
+          <div class="quiz-option" onclick="selectOption(this,'q9','D')"><div class="quiz-option-letter">D</div>Ça n'a aucun effet sur la taille du FVG</div>
+        </div><div class="quiz-feedback" id="fb-q9"></div></div>
+
+        <div class="quiz-question" id="q10"><div class="quiz-q-num">QUESTION 10 / 10</div><div class="quiz-q-text">Un autre nom utilisé pour désigner le FVG est :</div><div class="quiz-options">
+          <div class="quiz-option" onclick="selectOption(this,'q10','A')"><div class="quiz-option-letter">A</div>Order Block</div>
+          <div class="quiz-option" onclick="selectOption(this,'q10','B')"><div class="quiz-option-letter">B</div>Imbalance</div>
+          <div class="quiz-option" onclick="selectOption(this,'q10','C')"><div class="quiz-option-letter">C</div>Liquidité</div>
+          <div class="quiz-option" onclick="selectOption(this,'q10','D')"><div class="quiz-option-letter">D</div>CHOCH</div>
+        </div><div class="quiz-feedback" id="fb-q10"></div></div>
+
         <button class="quiz-submit" id="quiz-btn" onclick="submitQuiz()">✓ VALIDER MES RÉPONSES</button>
-        <div class="quiz-result" id="quiz-result"><div class="quiz-result-score" id="quiz-score">0/5</div><div style="font-size:14px;color:var(--dim);margin-top:8px;" id="quiz-text"></div><div class="quiz-result-xp" id="quiz-xp-text"></div></div>
+        <div class="quiz-result" id="quiz-result"><div class="quiz-result-score" id="quiz-score">0/10</div><div style="font-size:14px;color:var(--dim);margin-top:8px;" id="quiz-text"></div><div class="quiz-result-xp" id="quiz-xp-text"></div></div>
       </div>
 
       <!-- EXERCICE -->
@@ -373,16 +414,21 @@ function showSaveError(){
   document.body.appendChild(banner);
 }
 let member=null;
-let quizAnswers={q1:null,q2:null,q3:null,q4:null,q5:null};
+let quizAnswers={q1:null,q2:null,q3:null,q4:null,q5:null,q6:null,q7:null,q8:null,q9:null,q10:null};
 let quizDone=false;
 
-const correctAnswers={q1:'B',q2:'C',q3:'B',q4:'C',q5:'C'};
+const correctAnswers={q1:'B',q2:'C',q3:'B',q4:'C',q5:'C',q6:'A',q7:'B',q8:'B',q9:'A',q10:'B'};
 const feedbacks={
   q1:{B:'✅ Exact ! Le FVG, c\'est l\'espace laissé par un mouvement de prix trop rapide.',wrong:'❌ Un FVG, c\'est l\'espace laissé par un mouvement de prix trop rapide.'},
   q2:{C:'✅ Parfait ! Le FVG se repère toujours sur un pattern de 3 bougies.',wrong:'❌ Le FVG se repère sur 3 bougies consécutives.'},
   q3:{B:'✅ Exact ! Le trou se trouve entre la mèche de la bougie 1 et celle de la bougie 3.',wrong:'❌ Le FVG se situe entre la mèche de la bougie 1 et celle de la bougie 3.'},
   q4:{C:'✅ Parfait ! Un FVG bullish apparaît après un mouvement rapide vers le haut.',wrong:'❌ Le FVG bullish se forme après un mouvement rapide vers le haut.'},
-  q5:{C:'✅ Exact ! Un FVG bearish apparaît après un mouvement rapide vers le bas.',wrong:'❌ Le FVG bearish se forme après un mouvement rapide vers le bas.'}
+  q5:{C:'✅ Exact ! Un FVG bearish apparaît après un mouvement rapide vers le bas.',wrong:'❌ Le FVG bearish se forme après un mouvement rapide vers le bas.'},
+  q6:{A:'✅ Exact ! Le marché n\'a pas eu le temps de trader tous les niveaux traversés lors du mouvement rapide.',wrong:'❌ Un FVG se forme parce que le marché n\'a pas eu le temps de trader tous les niveaux traversés.'},
+  q7:{B:'✅ Parfait ! Si les mèches de la bougie 1 et de la bougie 3 se touchent, il n\'y a pas de FVG.',wrong:'❌ Un FVG valide demande que les mèches de la bougie 1 et de la bougie 3 ne se touchent pas.'},
+  q8:{B:'✅ Exact ! C\'est la bougie 2, celle du milieu, qui crée l\'écart par son mouvement rapide.',wrong:'❌ C\'est la bougie 2 (celle du milieu) qui crée l\'écart entre la bougie 1 et la bougie 3.'},
+  q9:{A:'✅ Parfait ! Plus le mouvement est fort et rapide, plus le FVG sera large et visible.',wrong:'❌ Plus la bougie du milieu est grosse et rapide, plus le FVG sera large et visible.'},
+  q10:{B:'✅ Exact ! FVG et Imbalance désignent la même chose.',wrong:'❌ Le FVG est aussi appelé "Imbalance" — les deux termes désignent le même déséquilibre.'}
 };
 
 function selectOption(el,qId,letter){
@@ -405,13 +451,13 @@ function submitQuiz(){
     if(ans===correct){score++;fb.textContent=feedbacks[qId][correct];fb.className='quiz-feedback show correct';}
     else{fb.textContent=feedbacks[qId].wrong;fb.className='quiz-feedback show wrong';}
   });
-  const xpEarned=score*10;
+  const xpEarned=score*5;
   document.getElementById('quiz-btn').disabled=true;document.getElementById('quiz-btn').textContent='✅ QUIZ VALIDÉ';
   const result=document.getElementById('quiz-result');result.classList.add('show');
-  document.getElementById('quiz-score').textContent=score+'/5';
-  document.getElementById('quiz-text').textContent=score===5?'Parfait ! Tu as tout compris ! 🔥':score>=3?'Bon travail ! Relis les points manqués.':'Continue à apprendre — relis le bloc.';
+  document.getElementById('quiz-score').textContent=score+'/10';
+  document.getElementById('quiz-text').textContent=score===10?'Parfait ! Tu as tout compris ! 🔥':score>=6?'Bon travail ! Relis les points manqués.':'Continue à apprendre — relis le bloc.';
   document.getElementById('quiz-xp-text').textContent='+'+xpEarned+' XP gagnés !';
-  if(xpEarned>0)awardXP('quiz_m8_b1',xpEarned,'🧠 Quiz Module 8 ('+score+'/5)');
+  if(xpEarned>0)awardXP('quiz_m8_b1',xpEarned,'🧠 Quiz Module 7 ('+score+'/10)');
 }
 
 let exerciceDone=false;
@@ -419,13 +465,13 @@ function validateExercice(){
   if(exerciceDone||completedActions.has('exercice_m8_b1'))return;
   exerciceDone=true;
   document.getElementById('exercice-btn').disabled=true;document.getElementById('exercice-btn').textContent='✅ EXERCICE VALIDÉ !';
-  awardXP('exercice_m8_b1',75,'💪 Exercice pratique Module 8');
+  awardXP('exercice_m8_b1',75,'💪 Exercice pratique Module 7');
 }
 
 function sendQuestion(){
   const q=document.getElementById('question-input').value.trim();
   if(!q){alert('Écris ta question d\'abord !');return;}
-  fetch(FORMSPREE,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({sujet:'Question Module 8 Bloc 1',question:q,membre:member?member.email:'inconnu'})});
+  fetch(FORMSPREE,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({sujet:'Question Module 7 Bloc 1',question:q,membre:member?member.email:'inconnu'})});
   document.getElementById('question-input').value='';
   document.getElementById('question-confirm').classList.add('show');
 }
@@ -434,7 +480,7 @@ async function completeBloc(){
   if(completedActions.has('bloc_m8_b1')){alert('Tu as déjà terminé ce module ! 💪');return;}
   document.getElementById('complete-btn').textContent='✅ BLOC 1 TERMINÉ !';
   document.getElementById('complete-btn').disabled=true;
-  await awardXP('bloc_m8_b1',25,'📚 Bloc terminé — Module 8');
+  await awardXP('bloc_m8_b1',25,'📚 Bloc terminé — Module 7');
   await awardXP('quete_bloc_'+todayISO(),50,'📚 Finir un module (quête du jour)');
   setTimeout(()=>{window.location.href='dha-formation.html';},1500);
 }
