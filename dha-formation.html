@@ -331,18 +331,18 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
     <div class="cat-header"><div class="cat-header-icon">⚡</div><div class="cat-header-title">EXÉCUTION</div></div>
     <div class="modules-grid">
 
-      <div class="module-card locked" onclick="showLockedModule(9)">
+      <a href="dha-module17.html" class="module-card" style="text-decoration:none;">
         <div class="module-card-inner">
-          <div class="module-num locked" id="num-m9">09</div>
+          <div class="module-num active" id="num-m9">09</div>
           <div class="module-content">
             <div class="module-tag">MODULE 09 · PRATIQUE</div>
             <div class="module-title">Ouvrir un compte démo et prendre des positions</div>
             <div class="module-desc">Créer ton compte démo et passer tes premières positions.</div>
-            <div class="module-meta"><div class="module-meta-item">📚 1 Bloc</div></div>
+            <div class="module-meta"><div class="module-meta-item">📚 1 Bloc</div><div class="module-meta-item">⚡ 150 XP</div><div class="module-meta-item">⏱️ 20 min</div></div>
           </div>
-          <div class="module-right"><div class="module-badge locked" id="badge-m9">🔒 BIENTÔT</div></div>
+          <div class="module-right"><div class="module-badge available" id="badge-m9">▶ COMMENCER</div></div>
         </div>
-      </div>
+      </a>
 
       <a href="dha-module11.html" class="module-card" style="text-decoration:none;">
         <div class="module-card-inner">
@@ -500,7 +500,7 @@ function showLockedModule(n){
 const moduleKeys={
   m1:'bloc_m1', m2:'bloc_m2_b1', m3:'bloc_m4', m4:'bloc_m16',
   m5:'bloc_m5', m6:'bloc_m7_b1', m7:'bloc_m8_b1', m8:'bloc_m9_b1',
-  m9:null, m10:'bloc_m11_b1', m11:'bloc_m12_b1', m12:'bloc_m13_b1', m13:'bloc_m14_b1', m14:'bloc_m15_b1',
+  m9:'bloc_m17', m10:'bloc_m11_b1', m11:'bloc_m12_b1', m12:'bloc_m13_b1', m13:'bloc_m14_b1', m14:'bloc_m15_b1',
   m15:'bloc_m10_b1',
   m16:null, m17:'bloc_m6'
 };
