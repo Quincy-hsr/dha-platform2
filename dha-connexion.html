@@ -68,9 +68,8 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;min-height:100vh;displa
     </div>
     <button class="btn-submit" id="btn-login" onclick="login()">▶ SE CONNECTER</button>
     <div class="divider"></div>
-    <div style="text-align:center;">
-      <div style="font-family:'Orbitron',sans-serif;font-size:8px;letter-spacing:2px;color:var(--dim);margin-bottom:12px;">PAS ENCORE MEMBRE ?</div>
-      <a href="dha-inscription.html" style="display:inline-block;padding:12px 28px;border-radius:12px;border:1px solid rgba(0,212,255,0.3);background:rgba(0,212,255,0.06);font-family:'Orbitron',sans-serif;font-size:10px;font-weight:900;color:var(--cyan);text-decoration:none;letter-spacing:2px;">CRÉER MON COMPTE →</a>
+    <div style="text-align:center;font-size:12px;color:var(--dim);line-height:1.6;">
+      L'inscription se fait uniquement après ton paiement.<br/>Pas encore membre ? <a href="index.html" style="color:var(--cyan);text-decoration:none;">Découvre nos offres →</a>
     </div>
   </div>
   <div style="text-align:center;margin-top:20px;font-size:13px;color:var(--dim);">
@@ -95,6 +94,7 @@ async function login(){
     const data=await res.json();
     if(!data||data.length===0){bar.style.width='0%';btn.textContent='▶ SE CONNECTER';btn.disabled=false;showError('Aucun compte trouvé avec cet email.');return;}
     const member=data[0];
+    if(member.password!==password){bar.style.width='0%';btn.textContent='▶ SE CONNECTER';btn.disabled=false;showError('Email ou mot de passe incorrect.');return;}
     bar.style.width='100%';
     localStorage.setItem('dha_member',JSON.stringify({...member,password}));
     document.getElementById('success-name').textContent=member.prenom||'Hustler';
