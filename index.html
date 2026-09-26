@@ -178,6 +178,15 @@
   /* ECOSYSTEM */
   .ecosystem{padding:90px 40px;background:linear-gradient(180deg,transparent,rgba(30,100,255,0.03),transparent);}
   .eco-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;max-width:1100px;margin:0 auto;}
+  .community-gallery-label{font-family:'Chakra Petch',sans-serif;font-size:13px;font-weight:600;letter-spacing:1px;color:var(--cyan);text-align:center;margin:50px 0 18px;}
+  .community-gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:1000px;margin:0 auto;}
+  .community-item{border-radius:14px;overflow:hidden;border:1px solid var(--border);background:var(--card);transition:transform .3s, border-color .3s;}
+  .community-item:hover{transform:translateY(-4px);border-color:rgba(0,212,255,0.3);}
+  .community-item img{width:100%;height:100%;object-fit:cover;display:block;aspect-ratio:3/4;}
+  .cg-5{grid-template-columns:repeat(5,1fr);}
+  .cg-4{grid-template-columns:repeat(4,1fr);}
+  @media(max-width:900px){.cg-5,.cg-4{grid-template-columns:repeat(3,1fr);}}
+  @media(max-width:600px){.cg-5,.cg-4{grid-template-columns:1fr 1fr;}}
   .eco-card{padding:28px 24px;border-radius:16px;background:var(--card);border:1px solid var(--border);text-align:center;transition:all .3s;position:relative;overflow:hidden;}
   .eco-card:hover{transform:translateY(-4px);}
   .eco-icon{font-size:36px;margin-bottom:16px;display:block;}
@@ -187,6 +196,11 @@
   /* EVENTS */
   .events{padding:90px 40px;}
   .events-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;max-width:1100px;margin:0 auto;}
+  .avis-gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:1000px;margin:44px auto 0;}
+  .avis-item{border-radius:14px;overflow:hidden;border:1px solid var(--border);background:var(--card);transition:transform .3s, border-color .3s;}
+  .avis-item:hover{transform:translateY(-4px);border-color:rgba(0,212,255,0.3);}
+  .avis-item img{width:100%;height:100%;object-fit:cover;display:block;aspect-ratio:9/16;}
+  .avis-caption{text-align:center;font-size:12px;color:var(--dimmer);margin-top:20px;font-family:'Rajdhani',sans-serif;letter-spacing:0.3px;}
   .event-card{padding:24px;border-radius:16px;background:var(--card);border:1px solid var(--border);transition:all .3s;position:relative;overflow:hidden;}
   .event-card:hover{transform:translateY(-4px);}
   .event-type{display:inline-block;padding:3px 10px;border-radius:4px;font-family:'Chakra Petch',sans-serif;font-size:10px;letter-spacing:1px;font-weight:600;margin-bottom:12px;}
@@ -211,6 +225,12 @@
   .pricing-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;max-width:1200px;margin:0 auto;align-items:stretch;}
   .tier-card{padding:26px 22px;border-radius:18px;background:var(--card2);border:1px solid var(--border);display:flex;flex-direction:column;position:relative;}
   .tier-card.featured{border-color:rgba(255,215,0,0.4);background:linear-gradient(135deg,#0a1228,#0d1428);box-shadow:0 0 40px rgba(255,215,0,0.08);}
+  .tier-card.featured-red{border-color:rgba(255,140,0,0.4);background:linear-gradient(135deg,#0a1228,#0d1428);box-shadow:0 0 40px rgba(255,68,102,0.1);}
+  .tier-card.featured-red .tier-name{color:var(--orange);}
+  .tier-card.featured-red .tier-price{color:var(--orange);text-shadow:0 0 20px rgba(255,140,0,0.4);}
+  .tier-card.featured-red .tier-check{color:var(--orange);}
+  .tier-card.featured-red .tier-btn{background:linear-gradient(135deg,var(--red),var(--orange));}
+  .tier-badge.badge-red{background:linear-gradient(135deg,var(--red),var(--orange));color:#fff;}
   .tier-badge{position:absolute;top:-13px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#b8860b,var(--gold));color:#000;font-family:'Chakra Petch',sans-serif;font-size:10px;font-weight:700;letter-spacing:0.5px;padding:5px 14px;border-radius:99px;white-space:nowrap;}
   .tier-name{font-family:'Chakra Petch',sans-serif;font-size:13px;font-weight:600;letter-spacing:1px;color:var(--dim);margin-bottom:10px;margin-top:6px;}
   .tier-card.featured .tier-name{color:var(--gold);}
@@ -253,7 +273,7 @@
   .reveal.visible{opacity:1;transform:translateY(0);}
 
   @media(max-width:900px){
-    .dim-grid,.why-grid,.classes-grid,.eco-grid,.events-grid,.testi-grid{grid-template-columns:1fr;}
+    .dim-grid,.why-grid,.classes-grid,.eco-grid,.events-grid,.testi-grid,.avis-gallery,.community-gallery{grid-template-columns:1fr;}
     .gamif-inner{grid-template-columns:1fr;}
     .pricing-grid{grid-template-columns:1fr 1fr;}
   }
@@ -493,6 +513,21 @@
 </section>
 
 
+<!-- AVIS & RÉSULTATS -->
+<section style="padding:90px 40px;background:linear-gradient(180deg,transparent,rgba(0,212,255,0.03),transparent);">
+  <div class="section-label reveal">PREUVES</div>
+  <div class="section-title reveal">Avis & résultats</div>
+  <p class="section-desc reveal">Des échanges réels avec des membres de la communauté DHA.</p>
+  <div class="avis-gallery">
+    <div class="avis-item reveal"><img src="avis-1.jpg" alt="Retour d'élève DHA"/></div>
+    <div class="avis-item reveal" style="transition-delay:.1s"><img src="avis-2.jpg" alt="Résultat de trading membre DHA"/></div>
+    <div class="avis-item reveal" style="transition-delay:.2s"><img src="avis-3.jpg" alt="Retours d'élèves DHA"/></div>
+    <div class="avis-item reveal"><img src="avis-4.jpg" alt="Certificat de financement prop firm membre DHA"/></div>
+    <div class="avis-item reveal" style="transition-delay:.1s"><img src="avis-5.jpg" alt="Retour d'élève DHA"/></div>
+    <div class="avis-item reveal" style="transition-delay:.2s"><img src="avis-6.jpg" alt="Retours d'élèves DHA"/></div>
+  </div>
+</section>
+
 <!-- WHY -->
 <section class="why">
   <div class="section-label reveal">POURQUOI DHA</div>
@@ -648,6 +683,41 @@
       <div class="eco-text">L'objectif : bâtir la plus grande communauté de traders indépendants et disciplinés en France.</div>
     </div>
   </div>
+
+  <div class="community-gallery-label">📞 EN APPEL</div>
+  <div class="community-gallery">
+    <div class="community-item reveal"><img src="call-1.jpg" alt="Live trading en appel de groupe"/></div>
+    <div class="community-item reveal" style="transition-delay:.1s"><img src="call-2.jpg" alt="Appel de groupe DHA"/></div>
+    <div class="community-item reveal" style="transition-delay:.2s"><img src="call-3.jpg" alt="Live en équipe Hustler"/></div>
+  </div>
+
+  <div class="community-gallery-label">🤝 EN PRÉSENTIEL</div>
+  <div class="community-gallery">
+    <div class="community-item reveal"><img src="meetup-1.jpg" alt="Rencontre Hustlers en présentiel"/></div>
+    <div class="community-item reveal" style="transition-delay:.1s"><img src="meetup-2.jpg" alt="Membres DHA réunis en présentiel"/></div>
+    <div class="community-item reveal" style="transition-delay:.2s"><img src="meetup-3.jpg" alt="Moment convivial entre membres DHA"/></div>
+  </div>
+
+  <div class="community-gallery-label">📅 SUIVI PERSONNALISÉ</div>
+  <div class="community-gallery cg-5" style="max-width:1100px;">
+    <div class="community-item reveal"><img src="suivi-1.jpg" alt="Accompagnement trading personnalisé DHA"/></div>
+    <div class="community-item reveal" style="transition-delay:.1s"><img src="suivi-2.jpg" alt="Appel de suivi individuel DHA"/></div>
+    <div class="community-item reveal" style="transition-delay:.2s"><img src="suivi-3.jpg" alt="Accompagnement trading en direct DHA"/></div>
+    <div class="community-item reveal" style="transition-delay:.1s"><img src="suivi-4.jpg" alt="Accompagnement et suivi de membre DHA"/></div>
+    <div class="community-item reveal" style="transition-delay:.2s"><img src="suivi-5.jpg" alt="Organisation d'appel de suivi DHA"/></div>
+  </div>
+
+  <div class="community-gallery-label">🏡 SÉMINAIRE EN VILLA (3 JOURS)</div>
+  <div class="community-gallery cg-4" style="max-width:1100px;">
+    <div class="community-item reveal"><img src="sem-1.jpg" alt="Salle de jeu de la villa séminaire DHA"/></div>
+    <div class="community-item reveal" style="transition-delay:.1s"><img src="sem-2.jpg" alt="Ping pong entre membres pendant le séminaire"/></div>
+    <div class="community-item reveal" style="transition-delay:.2s"><img src="sem-3.jpg" alt="Session trading pendant le séminaire en villa"/></div>
+    <div class="community-item reveal"><img src="sem-4.jpg" alt="Analyse de marché pendant le séminaire"/></div>
+    <div class="community-item reveal" style="transition-delay:.1s"><img src="sem-5.jpg" alt="Barbecue entre membres pendant le séminaire"/></div>
+    <div class="community-item reveal" style="transition-delay:.2s"><img src="sem-6.jpg" alt="Soirée entre membres pendant le séminaire villa"/></div>
+    <div class="community-item reveal"><img src="sem-7.jpg" alt="Trajet en van vers le séminaire villa"/></div>
+    <div class="community-item reveal" style="transition-delay:.1s"><img src="sem-8.jpg" alt="Sortie en ville pendant le séminaire DHA"/></div>
+  </div>
 </section>
 
 <!-- EVENTS -->
@@ -716,8 +786,9 @@
       <a href="https://buy.stripe.com/fZu9AU7Wq6z4elV0pC6g80d" target="_blank" class="tier-btn">PAYER — 500€</a>
     </div>
 
-    <div class="tier-card reveal" style="transition-delay:.2s">
-      <div class="tier-name">COPY TRADING</div>
+    <div class="tier-card featured-red reveal" style="transition-delay:.2s">
+      <div class="tier-badge badge-red">LE PLUS COMPLET</div>
+      <div class="tier-name" style="margin-top:6px;">COPY TRADING</div>
       <div class="tier-price">800<span>€</span></div>
       <div class="tier-sub">Le complément idéal de l'Accompagnement Complet</div>
       <div class="tier-features">
