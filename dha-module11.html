@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>DHA — Module 10 : Risk Management</title>
+<title>DHA — Module 9 : Risk Management</title>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600;700&display=swap" rel="stylesheet"/>
 <style>
 :root{--bg:#050914;--card:#080e1f;--blue:#1E64FF;--cyan:#00D4FF;--gold:#FFD700;--green:#00FF88;--red:#FF4466;--purple:#9D4EDD;--white:#E8F4FF;--dim:rgba(232,244,255,0.5);--border:rgba(30,100,255,0.15);--sidebar-w:240px;}
@@ -129,13 +129,13 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
 
 <main class="main">
   <div class="topbar">
-    <div><div class="topbar-title">MODULE 10 — <span>RISK MANAGEMENT</span></div><div style="font-size:12px;color:var(--dim);margin-top:2px;">La compétence qui décide si tu restes dans le jeu ou pas</div></div>
+    <div><div class="topbar-title">MODULE 9 — <span>RISK MANAGEMENT</span></div><div style="font-size:12px;color:var(--dim);margin-top:2px;">La compétence qui décide si tu restes dans le jeu ou pas</div></div>
     <div class="xp-pill"><span>⚡</span><span class="xp-pill-val" id="topbar-xp">0 XP</span></div>
   </div>
 
   <div class="module-header">
     <div class="module-glow"></div>
-    <div class="module-tag">MODULE 10 · RISK</div>
+    <div class="module-tag">MODULE 09 · RISK</div>
     <div class="module-title">Risk Management<br/>ne jamais exploser ton compte</div>
     <div class="module-desc">Même la meilleure stratégie du monde ne sert à rien si tu risques trop sur chaque trade. Ici tu vas apprendre à calculer combien risquer, quel ratio viser, et quelle taille de position prendre — pour rester dans le jeu sur le long terme.</div>
     <div class="module-meta">
@@ -533,7 +533,7 @@ function submitQuiz(){
   document.getElementById('quiz-score').textContent=score+'/10';
   document.getElementById('quiz-text').textContent=score===10?'Parfait ! Tu as tout compris ! 🔥':score>=6?'Bon travail ! Relis les points manqués.':'Continue à apprendre — relis le bloc.';
   document.getElementById('quiz-xp-text').textContent='+'+xpEarned+' XP gagnés !';
-  if(xpEarned>0)awardXP('quiz_m11_b1',xpEarned,'🧠 Quiz Module 10 ('+score+'/10)');
+  if(xpEarned>0)awardXP('quiz_m11_b1',xpEarned,'🧠 Quiz Module 9 ('+score+'/10)');
 }
 
 let exerciceDone=false;
@@ -541,7 +541,7 @@ function validateExercice(){
   if(exerciceDone||completedActions.has('exercice_m11_b1'))return;
   exerciceDone=true;
   document.getElementById('exercice-btn').disabled=true;document.getElementById('exercice-btn').textContent='✅ EXERCICE VALIDÉ !';
-  awardXP('exercice_m11_b1',75,'💪 Exercice pratique Module 10');
+  awardXP('exercice_m11_b1',75,'💪 Exercice pratique Module 9');
 }
 
 function calculerLot(){
@@ -559,7 +559,7 @@ function calculerLot(){
 function sendQuestion(){
   const q=document.getElementById('question-input').value.trim();
   if(!q){alert('Écris ta question d\'abord !');return;}
-  fetch(FORMSPREE,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({sujet:'Question Module 10 Bloc 1',question:q,membre:member?member.email:'inconnu'})});
+  fetch(FORMSPREE,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({sujet:'Question Module 9 Bloc 1',question:q,membre:member?member.email:'inconnu'})});
   document.getElementById('question-input').value='';
   document.getElementById('question-confirm').classList.add('show');
 }
@@ -568,7 +568,7 @@ async function completeBloc(){
   if(completedActions.has('bloc_m11_b1')){alert('Tu as déjà terminé ce module ! 💪');return;}
   document.getElementById('complete-btn').textContent='✅ BLOC 1 TERMINÉ !';
   document.getElementById('complete-btn').disabled=true;
-  await awardXP('bloc_m11_b1',25,'📚 Bloc terminé — Module 10');
+  await awardXP('bloc_m11_b1',25,'📚 Bloc terminé — Module 9');
   await awardXP('quete_bloc_'+todayISO(),50,'📚 Finir un module (quête du jour)');
   setTimeout(()=>{window.location.href='dha-formation.html';},1500);
 }
