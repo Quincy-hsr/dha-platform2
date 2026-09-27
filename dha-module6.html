@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>DHA — Module 6 : Prop Firm</title>
+<title>DHA — Module 16 : Prop Firm</title>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600;700&display=swap" rel="stylesheet"/>
 <style>
 :root{--bg:#050914;--card:#080e1f;--blue:#1E64FF;--cyan:#00D4FF;--gold:#FFD700;--green:#00FF88;--red:#FF4466;--purple:#9D4EDD;--white:#E8F4FF;--dim:rgba(232,244,255,0.5);--border:rgba(30,100,255,0.15);--sidebar-w:240px;}
@@ -120,13 +120,13 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
 
 <main class="main">
   <div class="topbar">
-    <div><div class="topbar-title">MODULE 6 — <span>PROP FIRM</span></div><div style="font-size:12px;color:var(--dim);margin-top:2px;">Trader avec un gros capital sans risquer le tien</div></div>
+    <div><div class="topbar-title">MODULE 16 — <span>PROP FIRM</span></div><div style="font-size:12px;color:var(--dim);margin-top:2px;">Trader avec un gros capital sans risquer le tien</div></div>
     <div class="xp-pill"><span>⚡</span><span class="xp-pill-val" id="topbar-xp">0 XP</span></div>
   </div>
 
   <div class="module-header">
     <div class="module-glow"></div>
-    <div class="module-tag">MODULE 06 · PROP FIRM</div>
+    <div class="module-tag">MODULE 16 · PROP FIRM</div>
     <div class="module-title">Prop Firm</div>
     <div class="module-desc">Avec un petit compte, même un bon trader gagne peu. Dans ce module tu vas comprendre pourquoi la taille de ton capital change tout, et comment une prop firm comme FTMO te permet de trader avec un gros capital sans risquer ton propre argent.</div>
     <div class="module-meta">
@@ -246,7 +246,7 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
       <div class="info-box green">
         • Ne jamais risquer plus de <strong>1-2%</strong> de ton compte sur un seul trade<br/>
         • Rester calme après une perte, ne pas vouloir "se refaire" direct<br/>
-        • Suivre ton plan de trading (Module 14)<br/>
+        • Suivre ton plan de trading (Module 11)<br/>
         • Prendre son temps — pas besoin de tout réussir en 3 jours
       </div>
 
@@ -449,22 +449,22 @@ function submitQuiz(){
   document.getElementById('quiz-score').textContent=score+'/5';
   document.getElementById('quiz-text').textContent=score===5?'Parfait ! Tu as tout compris ! 🔥':score>=3?'Bon travail ! Relis les points manqués.':'Continue à apprendre — relis le bloc.';
   document.getElementById('quiz-xp-text').textContent='+'+xpEarned+' XP gagnés !';
-  if(xpEarned>0)awardXP('quiz_m6',xpEarned,'🧠 Quiz Module 6 ('+score+'/5)');
+  if(xpEarned>0)awardXP('quiz_m6',xpEarned,'🧠 Quiz Module 16 ('+score+'/5)');
 }
 
 function sendQuestion(){
   const q=document.getElementById('question-input').value.trim();
   if(!q){alert('Écris ta question d\'abord !');return;}
-  fetch(FORMSPREE,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({sujet:'Question Module 6',question:q,membre:member?member.email:'inconnu'})});
+  fetch(FORMSPREE,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({sujet:'Question Module 16',question:q,membre:member?member.email:'inconnu'})});
   document.getElementById('question-input').value='';
   document.getElementById('question-confirm').classList.add('show');
 }
 
 async function completeBloc(){
   if(completedActions.has('bloc_m6')){alert('Tu as déjà terminé ce module ! 💪');return;}
-  document.getElementById('complete-btn').textContent='✅ MODULE 6 TERMINÉ !';
+  document.getElementById('complete-btn').textContent='✅ MODULE 16 TERMINÉ !';
   document.getElementById('complete-btn').disabled=true;
-  await awardXP('bloc_m6',25,'📚 Bloc terminé — Module 6');
+  await awardXP('bloc_m6',25,'📚 Bloc terminé — Module 16');
   await awardXP('quete_bloc_'+todayISO(),50,'📚 Finir un module (quête du jour)');
   setTimeout(()=>{window.location.href='dha-formation.html';},1500);
 }
