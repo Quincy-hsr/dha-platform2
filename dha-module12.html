@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>DHA — Module 12 : Gestion d'un trade</title>
+<title>DHA — Module 10 : Gestion d'un trade</title>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600;700&display=swap" rel="stylesheet"/>
 <style>
 :root{--bg:#050914;--card:#080e1f;--blue:#1E64FF;--cyan:#00D4FF;--gold:#FFD700;--green:#00FF88;--red:#FF4466;--purple:#9D4EDD;--white:#E8F4FF;--dim:rgba(232,244,255,0.5);--border:rgba(30,100,255,0.15);--sidebar-w:240px;}
@@ -129,13 +129,13 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
 
 <main class="main">
   <div class="topbar">
-    <div><div class="topbar-title">MODULE 12 — <span>GESTION D'UN TRADE</span></div><div style="font-size:12px;color:var(--dim);margin-top:2px;">Entrée, gestion en cours, sortie — le cycle complet</div></div>
+    <div><div class="topbar-title">MODULE 10 — <span>GESTION D'UN TRADE</span></div><div style="font-size:12px;color:var(--dim);margin-top:2px;">Entrée, gestion en cours, sortie — le cycle complet</div></div>
     <div class="xp-pill"><span>⚡</span><span class="xp-pill-val" id="topbar-xp">0 XP</span></div>
   </div>
 
   <div class="module-header">
     <div class="module-glow"></div>
-    <div class="module-tag">MODULE 12 · GESTION</div>
+    <div class="module-tag">MODULE 10 · GESTION</div>
     <div class="module-title">Gestion d'un trade<br/>le cycle complet</div>
     <div class="module-desc">Prendre une position, c'est facile. Bien la gérer jusqu'à la sortie, c'est ce qui sépare les traders qui durent des traders qui rendent leurs gains. Ici tu vas apprendre à sécuriser tes profits en cours de route et à sortir proprement, à chaque fois.</div>
     <div class="module-meta">
@@ -226,7 +226,7 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
 
       <!-- SECTION 5 : RAPPEL TAILLE DE POSITION -->
       <div class="bloc-text" style="margin-top:24px;">
-        Petit rappel avant de passer à l'exercice : tout ce qui précède ne fonctionne que si ta <strong>taille de position</strong> est correcte dès le départ. Si tu risques trop sur un trade, même la meilleure gestion en cours ne te sauvera pas. Le calcul complet (capital, % de risque, distance du stop) a été vu en détail dans le <strong>Module 11 — Risk Management</strong> : vas-y faire un tour si besoin avant l'exercice ci-dessous.
+        Petit rappel avant de passer à l'exercice : tout ce qui précède ne fonctionne que si ta <strong>taille de position</strong> est correcte dès le départ. Si tu risques trop sur un trade, même la meilleure gestion en cours ne te sauvera pas. Le calcul complet (capital, % de risque, distance du stop) a été vu en détail dans le <strong>Module 9 — Risk Management</strong> : vas-y faire un tour si besoin avant l'exercice ci-dessous.
       </div>
 
       <!-- QUIZ -->
@@ -390,7 +390,7 @@ function submitQuiz(){
   document.getElementById('quiz-score').textContent=score+'/5';
   document.getElementById('quiz-text').textContent=score===5?'Parfait ! Tu as tout compris ! 🔥':score>=3?'Bon travail ! Relis les points manqués.':'Continue à apprendre — relis le bloc.';
   document.getElementById('quiz-xp-text').textContent='+'+xpEarned+' XP gagnés !';
-  if(xpEarned>0)awardXP('quiz_m12_b1',xpEarned,'🧠 Quiz Module 12 ('+score+'/5)');
+  if(xpEarned>0)awardXP('quiz_m12_b1',xpEarned,'🧠 Quiz Module 10 ('+score+'/5)');
 }
 
 let exerciceDone=false;
@@ -398,13 +398,13 @@ function validateExercice(){
   if(exerciceDone||completedActions.has('exercice_m12_b1'))return;
   exerciceDone=true;
   document.getElementById('exercice-btn').disabled=true;document.getElementById('exercice-btn').textContent='✅ EXERCICE VALIDÉ !';
-  awardXP('exercice_m12_b1',75,'💪 Exercice pratique Module 12');
+  awardXP('exercice_m12_b1',75,'💪 Exercice pratique Module 10');
 }
 
 function sendQuestion(){
   const q=document.getElementById('question-input').value.trim();
   if(!q){alert('Écris ta question d\'abord !');return;}
-  fetch(FORMSPREE,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({sujet:'Question Module 12 Bloc 1',question:q,membre:member?member.email:'inconnu'})});
+  fetch(FORMSPREE,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({sujet:'Question Module 10 Bloc 1',question:q,membre:member?member.email:'inconnu'})});
   document.getElementById('question-input').value='';
   document.getElementById('question-confirm').classList.add('show');
 }
@@ -413,7 +413,7 @@ async function completeBloc(){
   if(completedActions.has('bloc_m12_b1')){alert('Tu as déjà terminé ce module ! 💪');return;}
   document.getElementById('complete-btn').textContent='✅ BLOC 1 TERMINÉ !';
   document.getElementById('complete-btn').disabled=true;
-  await awardXP('bloc_m12_b1',25,'📚 Bloc terminé — Module 12');
+  await awardXP('bloc_m12_b1',25,'📚 Bloc terminé — Module 10');
   await awardXP('quete_bloc_'+todayISO(),50,'📚 Finir un module (quête du jour)');
   setTimeout(()=>{window.location.href='dha-formation.html';},1500);
 }
