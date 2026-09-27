@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>DHA — Module 14 : Sessions de trading</title>
+<title>DHA — Module 13 : Sessions de trading</title>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600;700&display=swap" rel="stylesheet"/>
 <style>
 :root{--bg:#050914;--card:#080e1f;--blue:#1E64FF;--cyan:#00D4FF;--gold:#FFD700;--green:#00FF88;--red:#FF4466;--purple:#9D4EDD;--white:#E8F4FF;--dim:rgba(232,244,255,0.5);--border:rgba(30,100,255,0.15);--sidebar-w:240px;}
@@ -134,13 +134,13 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
 
 <main class="main">
   <div class="topbar">
-    <div><div class="topbar-title">MODULE 14 — <span>SESSIONS DE TRADING</span></div><div style="font-size:12px;color:var(--dim);margin-top:2px;">Savoir quand trader, pas juste comment</div></div>
+    <div><div class="topbar-title">MODULE 13 — <span>SESSIONS DE TRADING</span></div><div style="font-size:12px;color:var(--dim);margin-top:2px;">Savoir quand trader, pas juste comment</div></div>
     <div class="xp-pill"><span>⚡</span><span class="xp-pill-val" id="topbar-xp">0 XP</span></div>
   </div>
 
   <div class="module-header">
     <div class="module-glow"></div>
-    <div class="module-tag">MODULE 14 · MACRO</div>
+    <div class="module-tag">MODULE 13 · MACRO</div>
     <div class="module-title">Sessions de trading<br/>Asie, Londres, New York</div>
     <div class="module-desc">Tu sais lire un graphique. Mais le marché ne se comporte pas pareil à toute heure — ici tu apprends quand il bouge vraiment, et pourquoi.</div>
     <div class="module-meta">
@@ -164,7 +164,7 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
       <div class="info-box cyan">🎥 Regarde la vidéo ci-dessus — elle résume tout ce que tu vas apprendre dans ce bloc. Le texte en dessous reprend les points clés.</div>
 
       <div class="bloc-text">
-        Tu sais déjà lire techniquement un graphique : tendance (M3), BOS/CHOCH (M5), Order Blocks (M6), FVG (M7), liquidité (M8). Mais il manque une info : <strong>quand</strong> trader. Le forex est ouvert 24h/24, mais il se découpe en <strong>3 grandes sessions</strong> selon les zones du monde qui sont actives.
+        Tu sais déjà lire techniquement un graphique : tendance (M3), BOS/CHOCH (M5), Order Blocks (M6) et FVG (M7). Mais il manque une info : <strong>quand</strong> trader. Le forex est ouvert 24h/24, mais il se découpe en <strong>3 grandes sessions</strong> selon les zones du monde qui sont actives.
       </div>
 
       <div style="font-family:'Orbitron',sans-serif;font-size:10px;letter-spacing:2px;color:var(--cyan);margin:28px 0 16px;">🌍 LES 3 SESSIONS</div>
@@ -232,7 +232,7 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
 
       <!-- QUIZ -->
       <div class="quiz-section">
-        <div class="quiz-header"><div style="font-size:24px;">🧠</div><div class="quiz-title">MINI QUIZ — Module 14</div><div class="quiz-xp">+50 XP MAX</div></div>
+        <div class="quiz-header"><div style="font-size:24px;">🧠</div><div class="quiz-title">MINI QUIZ — Module 13</div><div class="quiz-xp">+50 XP MAX</div></div>
 
         <div class="quiz-question" id="q1">
           <div class="quiz-q-num">QUESTION 1 / 10</div>
@@ -324,7 +324,7 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
         <div class="question-box-confirm" id="question-confirm">✅ Question envoyée ! On te répond très vite. 🔥</div>
       </div>
 
-      <button class="complete-btn" id="complete-btn" onclick="completeBloc()">▶ TERMINER LE MODULE 14 — CONTINUER</button>
+      <button class="complete-btn" id="complete-btn" onclick="completeBloc()">▶ TERMINER LE MODULE 13 — CONTINUER</button>
     </div>
   </div>
 </main><script>
@@ -438,7 +438,7 @@ function submitQuiz(){
   document.getElementById('quiz-score').textContent=score+'/10';
   document.getElementById('quiz-text').textContent=score===10?'Parfait ! Tu maîtrises les sessions ! 🔥':score>=6?'Bon travail ! Relis les points manqués.':'Continue à apprendre — relis le bloc.';
   document.getElementById('quiz-xp-text').textContent='+'+xpEarned+' XP gagnés !';
-  if(xpEarned>0)awardXP('quiz_m18',xpEarned,'🧠 Quiz Module 14 ('+score+'/10)');
+  if(xpEarned>0)awardXP('quiz_m18',xpEarned,'🧠 Quiz Module 13 ('+score+'/10)');
 }
 
 function validateExercice(){
@@ -446,24 +446,24 @@ function validateExercice(){
   const txt=document.getElementById('exercice-input').value.trim();
   if(txt.length<20){alert('Décris ce que tu as observé (2-3 phrases) avant de valider !');return;}
   exerciceDone=true;
-  fetch(FORMSPREE,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({sujet:'Exercice Module 14 — BOS Asie / retour OB',analyse:txt,membre:member?member.email:'inconnu'})});
+  fetch(FORMSPREE,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({sujet:'Exercice Module 13 — BOS Asie / retour OB',analyse:txt,membre:member?member.email:'inconnu'})});
   document.getElementById('exercice-btn').disabled=true;document.getElementById('exercice-btn').textContent='✅ EXERCICE VALIDÉ !';
-  awardXP('exercice_m18',75,'💪 Exercice pratique Module 14');
+  awardXP('exercice_m18',75,'💪 Exercice pratique Module 13');
 }
 
 function sendQuestion(){
   const q=document.getElementById('question-input').value.trim();
   if(!q){alert('Écris ta question d\'abord !');return;}
-  fetch(FORMSPREE,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({sujet:'Question Module 14',question:q,membre:member?member.email:'inconnu'})});
+  fetch(FORMSPREE,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({sujet:'Question Module 13',question:q,membre:member?member.email:'inconnu'})});
   document.getElementById('question-input').value='';
   document.getElementById('question-confirm').classList.add('show');
 }
 
 async function completeBloc(){
   if(completedActions.has('bloc_m18')){alert('Tu as déjà terminé ce module ! 💪');return;}
-  document.getElementById('complete-btn').textContent='✅ MODULE 14 TERMINÉ !';
+  document.getElementById('complete-btn').textContent='✅ MODULE 13 TERMINÉ !';
   document.getElementById('complete-btn').disabled=true;
-  await awardXP('bloc_m18',25,'📚 Bloc terminé — Module 14');
+  await awardXP('bloc_m18',25,'📚 Bloc terminé — Module 13');
   await awardXP('quete_bloc_'+todayISO(),50,'📚 Finir un module (quête du jour)');
   setTimeout(()=>{window.location.href='dha-formation.html';},1500);
 }
