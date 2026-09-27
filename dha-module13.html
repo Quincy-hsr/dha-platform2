@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>DHA — Module 12 : Plan de trading</title>
+<title>DHA — Module 11 : Plan de trading</title>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600;700&display=swap" rel="stylesheet"/>
 <style>
 :root{--bg:#050914;--card:#080e1f;--blue:#1E64FF;--cyan:#00D4FF;--gold:#FFD700;--green:#00FF88;--red:#FF4466;--purple:#9D4EDD;--white:#E8F4FF;--dim:rgba(232,244,255,0.5);--border:rgba(30,100,255,0.15);--sidebar-w:240px;}
@@ -120,13 +120,13 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
 
 <main class="main">
   <div class="topbar">
-    <div><div class="topbar-title">MODULE 12 — <span>PLAN DE TRADING</span></div><div style="font-size:12px;color:var(--dim);margin-top:2px;">Construis et suis un plan de trading solide</div></div>
+    <div><div class="topbar-title">MODULE 11 — <span>PLAN DE TRADING</span></div><div style="font-size:12px;color:var(--dim);margin-top:2px;">Construis et suis un plan de trading solide</div></div>
     <div class="xp-pill"><span>⚡</span><span class="xp-pill-val" id="topbar-xp">0 XP</span></div>
   </div>
 
   <div class="module-header">
     <div class="module-glow"></div>
-    <div class="module-tag">MODULE 12 · STRATÉGIE</div>
+    <div class="module-tag">MODULE 11 · STRATÉGIE</div>
     <div class="module-title">Le plan de trading<br/>ta feuille de route pour trader sans improviser</div>
     <div class="module-desc">Trader sans plan, c'est décider en direct, sous le stress, avec de l'argent en jeu. Un plan de trading écrit à l'avance t'évite ça : il fixe tes règles d'entrée, de sortie, ton risque et tes horaires — avant même d'ouvrir un graphique.</div>
     <div class="module-meta">
@@ -212,14 +212,14 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
         <strong>1. Les règles d'entrée.</strong> C'est la liste précise des confirmations que tu attends avant de cliquer sur "acheter" ou "vendre" : la tendance du moment, un order block, une prise de liquidité, un FVG... Tu as vu tous ces concepts dans les modules précédents — ici tu choisis lesquels tu utilises, et tu les écris noir sur blanc. Si toutes tes confirmations ne sont pas réunies, tu ne trades pas — même si "ça a l'air bien parti".
       </div>
 
-      <!-- SECTION 4 : SORTIE (rappel M12) -->
+      <!-- SECTION 4 : SORTIE (rappel M10) -->
       <div class="bloc-text" style="margin-top:24px;">
-        <strong>2. Les règles de sortie.</strong> Où se place ton stop-loss, où se place ton take-profit, quel <strong>ratio risque/récompense (RR)</strong> tu vises sur chaque trade, et comment tu gères le trade une fois en cours — breakeven, TP partiels, trailing stop. Tu as déjà vu tout ça en détail dans le <strong>Module 12</strong> ; ici, tu couches juste tes règles sur papier.
+        <strong>2. Les règles de sortie.</strong> Où se place ton stop-loss, où se place ton take-profit, quel <strong>ratio risque/récompense (RR)</strong> tu vises sur chaque trade, et comment tu gères le trade une fois en cours — breakeven, TP partiels, trailing stop. Tu as déjà vu tout ça en détail dans le <strong>Module 10</strong> ; ici, tu couches juste tes règles sur papier.
       </div>
 
-      <!-- SECTION 5 : RISK (rappel M11) -->
+      <!-- SECTION 5 : RISK (rappel M9) -->
       <div class="bloc-text" style="margin-top:24px;">
-        <strong>3. Le risk.</strong> Combien de % de ton capital tu acceptes de perdre sur un seul trade. C'est le cœur du <strong>Module 11 (Risk Management)</strong> — un plan sans règle de risk clairement écrite n'est pas un vrai plan.
+        <strong>3. Le risk.</strong> Combien de % de ton capital tu acceptes de perdre sur un seul trade. C'est le cœur du <strong>Module 9 (Risk Management)</strong> — un plan sans règle de risk clairement écrite n'est pas un vrai plan.
       </div>
 
       <div class="bloc-text">
@@ -311,7 +311,7 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
           <div class="quiz-option" onclick="selectOption(this,'q3','D')"><div class="quiz-option-letter">D</div>Le nom du broker qu'il est obligatoire d'utiliser</div>
         </div><div class="quiz-feedback" id="fb-q3"></div></div>
 
-        <div class="quiz-question" id="q4"><div class="quiz-q-num">QUESTION 4 / 10</div><div class="quiz-q-text">Quel élément du plan rappelle directement le Risk Management (Module 11) ?</div><div class="quiz-options">
+        <div class="quiz-question" id="q4"><div class="quiz-q-num">QUESTION 4 / 10</div><div class="quiz-q-text">Quel élément du plan rappelle directement le Risk Management (Module 9) ?</div><div class="quiz-options">
           <div class="quiz-option" onclick="selectOption(this,'q4','A')"><div class="quiz-option-letter">A</div>Le pourcentage de capital risqué sur chaque trade</div>
           <div class="quiz-option" onclick="selectOption(this,'q4','B')"><div class="quiz-option-letter">B</div>La couleur des bougies affichées sur le graphique</div>
           <div class="quiz-option" onclick="selectOption(this,'q4','C')"><div class="quiz-option-letter">C</div>Le nombre total d'indicateurs affichés à l'écran</div>
@@ -452,7 +452,7 @@ const feedbacks={
   q1:{B:'✅ Exact ! Un plan de trading, c\'est un ensemble de règles écrites qui définissent comment on trade.',wrong:'❌ Un plan de trading, c\'est un ensemble de règles écrites qui définissent comment on trade.'},
   q2:{A:'✅ Parfait ! Les règles d\'entrée évitent de prendre des trades au hasard, sans setup clair.',wrong:'❌ Les règles d\'entrée évitent surtout de prendre des trades au hasard, sans setup clair.'},
   q3:{C:'✅ Exact ! La partie sortie précise comment et quand on prend ses profits ou coupe ses pertes.',wrong:'❌ La partie sortie précise comment et quand on prend ses profits ou coupe ses pertes.'},
-  q4:{A:'✅ Parfait ! Le % de capital risqué par trade, c\'est le cœur du Risk Management (Module 11).',wrong:'❌ Le pourcentage de capital risqué par trade rappelle directement le Module 11.'},
+  q4:{A:'✅ Parfait ! Le % de capital risqué par trade, c\'est le cœur du Risk Management (Module 9).',wrong:'❌ Le pourcentage de capital risqué par trade rappelle directement le Module 9.'},
   q5:{B:'✅ Exact ! Préciser ses sessions/paires permet de se concentrer sur ses moments les plus efficaces.',wrong:'❌ Préciser ses sessions/paires permet de se concentrer sur ses moments les plus efficaces.'},
   q6:{A:'✅ Exact ! Une limite de trades par jour évite le surtrading.',wrong:'❌ Fixer un nombre de trades max par jour sert à éviter le surtrading.'},
   q7:{A:'✅ Parfait ! Ça évite l\'engrenage émotionnel après plusieurs pertes d\'affilée.',wrong:'❌ Une limite de pertes par jour évite l\'engrenage émotionnel après plusieurs pertes.'},
@@ -487,7 +487,7 @@ function submitQuiz(){
   document.getElementById('quiz-score').textContent=score+'/10';
   document.getElementById('quiz-text').textContent=score===10?'Parfait ! Tu as tout compris ! 🔥':score>=6?'Bon travail ! Relis les points manqués.':'Continue à apprendre — relis le bloc.';
   document.getElementById('quiz-xp-text').textContent='+'+xpEarned+' XP gagnés !';
-  if(xpEarned>0)awardXP('quiz_m13_b1',xpEarned,'🧠 Quiz Module 12 ('+score+'/10)');
+  if(xpEarned>0)awardXP('quiz_m13_b1',xpEarned,'🧠 Quiz Module 11 ('+score+'/10)');
 }
 
 let exerciceDone=false;
@@ -495,13 +495,13 @@ function validateExercice(){
   if(exerciceDone||completedActions.has('exercice_m13_b1'))return;
   exerciceDone=true;
   document.getElementById('exercice-btn').disabled=true;document.getElementById('exercice-btn').textContent='✅ EXERCICE VALIDÉ !';
-  awardXP('exercice_m13_b1',75,'💪 Plan de trading créé — Module 12');
+  awardXP('exercice_m13_b1',75,'💪 Plan de trading créé — Module 11');
 }
 
 function sendQuestion(){
   const q=document.getElementById('question-input').value.trim();
   if(!q){alert('Écris ta question d\'abord !');return;}
-  fetch(FORMSPREE,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({sujet:'Question Module 12 Bloc 1',question:q,membre:member?member.email:'inconnu'})});
+  fetch(FORMSPREE,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({sujet:'Question Module 11 Bloc 1',question:q,membre:member?member.email:'inconnu'})});
   document.getElementById('question-input').value='';
   document.getElementById('question-confirm').classList.add('show');
 }
@@ -510,7 +510,7 @@ async function completeBloc(){
   if(completedActions.has('bloc_m13_b1')){alert('Tu as déjà terminé ce module ! 💪');return;}
   document.getElementById('complete-btn').textContent='✅ BLOC 1 TERMINÉ !';
   document.getElementById('complete-btn').disabled=true;
-  await awardXP('bloc_m13_b1',25,'📚 Bloc terminé — Module 12');
+  await awardXP('bloc_m13_b1',25,'📚 Bloc terminé — Module 11');
   await awardXP('quete_bloc_'+todayISO(),50,'📚 Finir un module (quête du jour)');
   setTimeout(()=>{window.location.href='dha-formation.html';},1500);
 }
