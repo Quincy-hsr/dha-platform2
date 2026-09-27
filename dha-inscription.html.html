@@ -886,15 +886,11 @@ async function goStep3() {
         const dataPar = await resPar.json();
         if(dataPar && dataPar.length > 0) {
           const parrain = dataPar[0];
-          const statutParrain = (parrain.statut_affiliation || 'membre_simple').toLowerCase();
-
-          // 2. Calculer le montant selon le pack et le rang du parrain
+          // 2. Recommandation : 20% pour tout le monde, un seul niveau
           const prixPack = (classeChoisie === 'premium') ? 500 : 180;
-          let pctN1 = 0;
-          if(statutParrain.indexOf('ambass') > -1)   pctN1 = 25;
-          else if(statutParrain.indexOf('affil') > -1) pctN1 = 20;
+          const pctN1 = 20;
 
-          if(pctN1 > 0) {
+          {
             const commN1 = Math.round(prixPack * pctN1 / 100);
             const nouvelEncours = (parrain.commissions_encours || 0) + commN1;
             const nouveauTotal  = (parrain.commissions_total  || 0) + commN1;
@@ -914,41 +910,6 @@ async function goStep3() {
                 nb_affilies:         nouveauNbAff
               })
             });
-
-            // 4. Si ambassadeur → chercher le parrain du parrain (N2 = 5%)
-            if(statutParrain.indexOf('ambass') > -1) {
-              const resN2 = await fetch(SUPABASE_URL + '/rest/v1/membres?pseudo=eq.' + encodeURIComponent(refParam) + '&select=parraine_par', {
-                headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY }
-              });
-              const dataN2 = await resN2.json();
-              if(dataN2 && dataN2.length > 0 && dataN2[0].parraine_par) {
-                const pseudoN2 = dataN2[0].parraine_par;
-                const resGrand = await fetch(SUPABASE_URL + '/rest/v1/membres?pseudo=eq.' + encodeURIComponent(pseudoN2) + '&select=id,statut_affiliation,commissions_encours,commissions_total', {
-                  headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY }
-                });
-                const dataGrand = await resGrand.json();
-                if(dataGrand && dataGrand.length > 0) {
-                  const grand = dataGrand[0];
-                  const statutGrand = (grand.statut_affiliation || '').toLowerCase();
-                  // N2 uniquement si le grand-parrain est aussi ambassadeur
-                  if(statutGrand.indexOf('ambass') > -1) {
-                    const commN2 = Math.round(prixPack * 5 / 100);
-                    await fetch(SUPABASE_URL + '/rest/v1/membres?id=eq.' + grand.id, {
-                      method: 'PATCH',
-                      headers: {
-                        'apikey': SUPABASE_KEY,
-                        'Authorization': 'Bearer ' + SUPABASE_KEY,
-                        'Content-Type': 'application/json'
-                      },
-                      body: JSON.stringify({
-                        commissions_encours: (grand.commissions_encours || 0) + commN2,
-                        commissions_total:   (grand.commissions_total   || 0) + commN2
-                      })
-                    });
-                  }
-                }
-              }
-            }
           }
         }
       } catch(e) {
@@ -1163,11 +1124,11 @@ document.addEventListener('DOMContentLoaded', () => {
       </div>
 
       <div class="reglement-section">
-        <div class="reglement-section-title">04 — AFFILIATION</div>
+        <div class="reglement-section-title">04 — RECOMMANDATION</div>
         <ul>
-          <li>Les commissions d'affiliation sont versées sur les ventes <strong>confirmées et non remboursées</strong>.</li>
+          <li>Les commissions de recommandation sont versées sur les ventes <strong>confirmées et non remboursées</strong>.</li>
           <li>Il est interdit d'utiliser des publicités payantes avec les termes "DHA" ou "Digital Hustler Academy" sans autorisation écrite.</li>
-          <li>Tout abus du programme d'affiliation entraîne la suspension immédiate des commissions.</li>
+          <li>Tout abus du programme de recommandation entraîne la suspension immédiate des commissions.</li>
         </ul>
       </div>
 

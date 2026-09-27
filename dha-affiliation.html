@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>DHA — Affiliation</title>
+<title>DHA — Recommandation</title>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600;700&display=swap" rel="stylesheet"/>
 <style>
 :root{--bg:#050914;--card:#080e1f;--blue:#1E64FF;--cyan:#00D4FF;--gold:#FFD700;--green:#00FF88;--red:#FF4466;--purple:#9D4EDD;--white:#E8F4FF;--dim:rgba(232,244,255,0.45);--border:rgba(30,100,255,0.15);--sidebar-w:240px;}
@@ -180,7 +180,7 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
   <a class="nav-item" href="dha-squad.html"><span class="nav-icon">👥</span> Mon Squad</a>
   <a class="nav-item" href="dha-leaderboard.html"><span class="nav-icon">🏆</span> Leaderboard</a>
   <div class="sidebar-section">EARN</div>
-  <a class="nav-item active" href="dha-affiliation.html"><span class="nav-icon">💰</span> Affiliation</a>
+  <a class="nav-item active" href="dha-affiliation.html"><span class="nav-icon">💰</span> Recommandation</a>
   <div class="sidebar-section">TOOLS</div>
   <a class="nav-item" href="dha-mentor.html"><span class="nav-icon">📞</span> Appel Mentor</a>
   <div class="sidebar-bottom">
@@ -193,31 +193,27 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
 
 <main class="main">
   <div class="topbar">
-    <div><div class="topbar-title">AFFILI<span>ATION</span></div><div style="font-size:12px;color:var(--dim);margin-top:2px;">Partage ton lien et gagne des commissions</div></div>
+    <div><div class="topbar-title">RECOMMAN<span>DATION</span></div><div style="font-size:12px;color:var(--dim);margin-top:2px;">Partage ton lien et gagne des commissions</div></div>
     <div class="xp-pill"><span>⚡</span><span class="xp-pill-val" id="topbar-xp">0 XP</span></div>
   </div>
 
   <!-- HERO -->
   <div class="hero">
     <div class="hero-glow"></div>
-    <div class="hero-tag">💰 PROGRAMME D'AFFILIATION · APPORTEUR D'AFFAIRES</div>
+    <div class="hero-tag">💰 PROGRAMME DE RECOMMANDATION · APPORTEUR D'AFFAIRES</div>
     <div class="hero-title">Transforme ton réseau<br/><span>en revenus réels.</span></div>
-    <div class="hero-desc">Recommande la DHA à ton entourage et touche des commissions sur chaque inscription. Complément de revenu ou activité principale — c'est toi qui choisis.</div>
+    <div class="hero-desc">Recommande la DHA à ton entourage et touche <strong style="color:var(--cyan);">20%</strong> sur chaque inscription faite avec ton lien. Même taux pour tout le monde, dès le premier filleul. Complément de revenu ou activité principale — c'est toi qui choisis.</div>
     <div class="hero-stats">
-      <div class="hero-stat"><div class="hero-stat-val" id="hero-affilies">0</div><div class="hero-stat-label">AFFILIÉS</div></div>
+      <div class="hero-stat"><div class="hero-stat-val" id="hero-affilies">0</div><div class="hero-stat-label">FILLEULS</div></div>
       <div class="hero-stat"><div class="hero-stat-val" id="hero-commissions">0€</div><div class="hero-stat-label">COMMISSIONS</div></div>
-      <div class="hero-stat"><div class="hero-stat-val" id="hero-statut" style="font-size:14px;color:var(--cyan);">—</div><div class="hero-stat-label">TON STATUT</div></div>
+      <div class="hero-stat"><div class="hero-stat-val" style="color:var(--cyan);">20%</div><div class="hero-stat-label">TA COMMISSION</div></div>
     </div>
   </div>
-
-  <!-- STATUT ACTUEL -->
-  <div class="sec-label">TON STATUT ACTUEL</div>
-  <div id="statut-wrap"></div>
 
   <!-- LIEN + STATS -->
   <div class="grid2">
     <div class="card">
-      <div class="card-label">🔗 TON LIEN D'AFFILIATION</div>
+      <div class="card-label">🔗 TON LIEN DE RECOMMANDATION</div>
       <div class="lien-box">
         <div class="lien-text" id="affili-link">Chargement...</div>
         <button class="copy-btn" onclick="copyLink()">📋 COPIER</button>
@@ -236,7 +232,7 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
     </div>
     <div class="card">
       <div class="card-label">📊 TES STATISTIQUES</div>
-      <div class="stat-row"><div class="stat-lbl">Affiliés recrutés</div><div class="stat-val" id="stat-affilies">0</div></div>
+      <div class="stat-row"><div class="stat-lbl">Filleuls</div><div class="stat-val" id="stat-affilies">0</div></div>
       <div class="stat-row"><div class="stat-lbl">Commissions totales</div><div class="stat-val" id="stat-commissions">0€</div></div>
       <div class="stat-row"><div class="stat-lbl">En cours de versement</div><div class="stat-val" id="stat-encours" style="color:var(--gold);">0€</div></div>
       <div class="stat-row"><div class="stat-lbl">Déjà versé</div><div class="stat-val" id="stat-verse" style="color:var(--cyan);">0€</div></div>
@@ -245,36 +241,33 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
 
   <!-- MES AFFILIÉS -->
   <div class="affilies-card">
-    <div class="card-label">👥 MES AFFILIÉS RECRUTÉS</div>
-    <div id="affilies-list"><div class="no-affili">Chargement de tes affiliés... ⏳</div></div>
+    <div class="card-label">👥 MES FILLEULS</div>
+    <div id="affilies-list"><div class="no-affili">Chargement de tes filleuls... ⏳</div></div>
   </div>
 
-  <!-- PALIERS -->
+  <!-- COMMENT ÇA MARCHE -->
   <div class="paliers-card">
-    <div class="card-label">🏆 LES 3 PALIERS D'AFFILIATION</div>
+    <div class="card-label">🤝 COMMENT ÇA MARCHE</div>
     <div class="palier-row">
-      <div class="p-icon">🥉</div>
+      <div class="p-icon">🔗</div>
       <div class="p-info">
-        <div class="p-name">MEMBRE SIMPLE</div>
-        <div class="p-desc">Recrute <strong style="color:var(--white);">3 membres</strong> via ton lien → reçois <strong style="color:var(--green);">1 mois gratuit</strong> offert par l'équipe DHA. Aucune démarche administrative requise.</div>
+        <div class="p-name">1. PARTAGE TON LIEN</div>
+        <div class="p-desc">Chaque personne qui s'inscrit via ton lien est automatiquement rattachée à ton pseudo.</div>
       </div>
-      <div class="p-status" id="pal-1-status">—</div>
     </div>
     <div class="palier-row">
-      <div class="p-icon">🥈</div>
+      <div class="p-icon">💰</div>
       <div class="p-info">
-        <div class="p-name">AFFILIÉ</div>
-        <div class="p-desc">Active le mode affilié et gagne <strong style="color:var(--cyan);">20% de commission</strong> sur chaque vente directe générée via ton lien. Nécessite un statut auto-entrepreneur.</div>
+        <div class="p-name">2. TU TOUCHES 20%</div>
+        <div class="p-desc"><strong style="color:var(--cyan);">20% de commission</strong> sur chaque vente générée via ton lien — soit <strong style="color:var(--white);">36€</strong> sur la formation à 180€ et <strong style="color:var(--white);">100€</strong> sur l'offre à 500€.</div>
       </div>
-      <div class="p-status" id="pal-2-status">—</div>
     </div>
     <div class="palier-row">
-      <div class="p-icon">🥇</div>
+      <div class="p-icon">📄</div>
       <div class="p-info">
-        <div class="p-name">AMBASSADEUR</div>
-        <div class="p-desc">Débloqué après <strong style="color:var(--gold);">10 affiliés</strong>. Commission sur 2 niveaux : <strong style="color:var(--gold);">25%</strong> niveau 1 · <strong style="color:var(--cyan);">5%</strong> niveau 2</div>
+        <div class="p-name">3. SIGNE LE CONTRAT POUR ÊTRE PAYÉ</div>
+        <div class="p-desc">Tes commissions sont comptées dès le départ. Pour les recevoir, signe le contrat ci-dessous et déclare-toi en auto-entrepreneur.</div>
       </div>
-      <div class="p-status" id="pal-3-status">—</div>
     </div>
   </div>
 
@@ -320,11 +313,11 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
       <span style="font-size:24px;">📄</span>
       <div class="contrat-title">CONTRAT PRESTATAIRE DE SERVICES</div>
     </div>
-    <div class="contrat-intro">Avant de percevoir des commissions en tant qu'affilié, tu dois signer le contrat d'apporteur d'affaires DHA. Ce contrat est <strong style="color:var(--white);">obligatoire</strong> pour que notre collaboration soit légale et que tu puisses être rémunéré.</div>
+    <div class="contrat-intro">Avant de percevoir tes commissions de recommandation, tu dois signer le contrat d'apporteur d'affaires DHA. Ce contrat est <strong style="color:var(--white);">obligatoire</strong> pour que notre collaboration soit légale et que tu puisses être rémunéré.</div>
     <div class="contrat-points">
       <div class="contrat-point">Tu t'engages à te déclarer en <strong style="color:var(--white);">auto-entrepreneur</strong> pour exercer cette activité d'apporteur d'affaires</div>
       <div class="contrat-point">Tu agis en tant que <strong style="color:var(--white);">prestataire de services indépendant</strong> — tu n'es pas salarié de la DHA</div>
-      <div class="contrat-point">Les commissions varient selon ton statut : <strong style="color:var(--cyan);">Affilié 20%</strong> · <strong style="color:var(--gold);">Ambassadeur 25% niveau 1 / 5% niveau 2</strong></div>
+      <div class="contrat-point">Commission unique de <strong style="color:var(--cyan);">20%</strong> sur chaque vente générée via ton lien</div>
       <div class="contrat-point">Les paiements sont effectués <strong style="color:var(--white);">mensuellement</strong> sur présentation de facture et après vérification des commissions dues</div>
       <div class="contrat-point">Tu es <strong style="color:var(--white);">seul responsable</strong> de tes déclarations fiscales et sociales liées à ces revenus</div>
       <div class="contrat-point">La DHA se réserve le droit de <strong style="color:var(--white);">suspendre l'accès</strong> au programme en cas de non-respect des conditions</div>
@@ -366,8 +359,8 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
       <div class="modal-section-title">ARTICLE 4 — RÉMUNÉRATION</div>
       <div class="modal-text">
         Les commissions sont calculées comme suit :<br/><br/>
-        • <strong>Palier Affilié :</strong> 20% sur chaque vente directe (niveau 1)<br/>
-        • <strong>Palier Ambassadeur (10+ affiliés) :</strong> 25% niveau 1 · 5% niveau 2<br/><br/>
+        • <strong>20%</strong> du prix de chaque vente générée directement via le lien de recommandation de l'Apporteur d'Affaires.<br/>
+        • Ce taux est identique pour tous les membres. Aucune commission n'est versée sur les ventes réalisées par les filleuls eux-mêmes.<br/><br/>
         Les paiements sont effectués mensuellement, sur présentation d'une <strong>facture auto-entrepreneur</strong> adressée à la DHA, après validation des commissions dues.
       </div>
     </div>
@@ -437,7 +430,7 @@ async function signContrat(){
   localStorage.setItem('dha_member',JSON.stringify(member));
   hideContratModal();
   showSignedState(dateStr);
-  alert('Contrat signé ! 🎉 Bienvenue dans le programme DHA.');
+  alert('Contrat signé ! 🎉 Tes commissions de recommandation pourront t\'être versées.');
 }
 
 function showSignedState(dateStr){
@@ -446,124 +439,27 @@ function showSignedState(dateStr){
   document.getElementById('signed-date').textContent='Signé le '+dateStr;
 }
 
-function renderStatutPaliers(statut,nb){
-  const s1=document.getElementById('pal-1-status');
-  const s2=document.getElementById('pal-2-status');
-  const s3=document.getElementById('pal-3-status');
-
-  if(statut==='membre_simple'){
-    s1.textContent='✅ ACTIF';s1.style.cssText='background:rgba(0,255,136,0.1);color:var(--green);border:1px solid rgba(0,255,136,0.25);';
-    s2.textContent='INACTIF';s2.style.cssText='background:rgba(255,255,255,0.05);color:var(--dim);border:1px solid rgba(255,255,255,0.1);';
-    s3.textContent='🔒 10 AFFILIÉS';s3.style.cssText='background:rgba(255,255,255,0.05);color:var(--dim);border:1px solid rgba(255,255,255,0.1);';
-  } else if(statut==='affilie'){
-    s1.textContent='DÉPASSÉ';s1.style.cssText='background:rgba(255,255,255,0.04);color:rgba(232,244,255,0.3);border:1px solid rgba(255,255,255,0.07);';
-    s2.textContent='✅ ACTIF';s2.style.cssText='background:rgba(0,212,255,0.1);color:var(--cyan);border:1px solid rgba(0,212,255,0.25);';
-    s3.textContent='🔒 '+(10-nb)+' AFFILIÉS';s3.style.cssText='background:rgba(255,255,255,0.05);color:var(--dim);border:1px solid rgba(255,255,255,0.1);';
-  } else if(statut==='ambassadeur'){
-    s1.textContent='DÉPASSÉ';s1.style.cssText='background:rgba(255,255,255,0.04);color:rgba(232,244,255,0.3);border:1px solid rgba(255,255,255,0.07);';
-    s2.textContent='DÉPASSÉ';s2.style.cssText='background:rgba(255,255,255,0.04);color:rgba(232,244,255,0.3);border:1px solid rgba(255,255,255,0.07);';
-    s3.textContent='✅ ACTIF';s3.style.cssText='background:rgba(255,215,0,0.1);color:var(--gold);border:1px solid rgba(255,215,0,0.25);';
-  }
-}
-
-function renderStatut(statut,nb){
-  const wrap=document.getElementById('statut-wrap');
+function renderStatut(nb){
   document.getElementById('hero-affilies').textContent=nb;
-  document.getElementById('hero-statut').textContent=statut==='ambassadeur'?'🥇 AMBASSADEUR':statut==='affilie'?'🥈 AFFILIÉ':'🥉 MEMBRE SIMPLE';
   document.getElementById('stat-affilies').textContent=nb;
-
-  if(statut==='membre_simple'){
-    const pct=Math.min((nb/3)*100,100);
-    wrap.innerHTML=`
-      <div class="statut-card membre">
-        <div class="statut-header">
-          <div class="statut-icon">🥉</div>
-          <div style="flex:1;"><div class="statut-name">MEMBRE SIMPLE</div><div class="statut-sub">Recrute 3 membres pour recevoir 1 mois gratuit</div></div>
-          <div class="statut-badge b-actif">✅ ACTIF</div>
-        </div>
-        <div class="pb-wrap">
-          <div class="pb-lbl"><span>PROGRESSION VERS 1 MOIS GRATUIT</span><span>${nb}/3 affiliés</span></div>
-          <div class="pb"><div class="pb-fill fill-membre" style="width:${pct}%"></div></div>
-        </div>
-        ${nb>=3?`<div style="padding:14px;border-radius:12px;background:rgba(0,255,136,0.08);border:1px solid rgba(0,255,136,0.2);text-align:center;font-size:14px;color:var(--green);margin-top:10px;">🎉 Félicitations ! Tu as 3 affiliés. L'équipe DHA va t'offrir 1 mois gratuit sous 48h.</div>
-        <button class="activate-btn" onclick="activateAffilie()">⚡ PASSER EN MODE AFFILIÉ (20% COMMISSION)</button>
-        <div style="font-size:11px;color:var(--dim);text-align:center;margin-top:8px;">Tu dois avoir signé le contrat et avoir un statut auto-entrepreneur.</div>`:
-        `<button class="activate-btn" onclick="activateAffilie()">⚡ ACTIVER LE MODE AFFILIÉ (20% COMMISSION)</button>
-        <div style="font-size:11px;color:var(--dim);text-align:center;margin-top:8px;">⚠️ Si tu actives avant 3 affiliés tu perds le mois gratuit.</div>`}
-      </div>`;
-  } else if(statut==='affilie'){
-    const pct=Math.min((nb/10)*100,100);
-    wrap.innerHTML=`
-      <div class="statut-card affilie">
-        <div class="statut-header">
-          <div class="statut-icon">🥈</div>
-          <div style="flex:1;"><div class="statut-name">AFFILIÉ</div><div class="statut-sub">Tu gagnes 20% sur chaque vente directe générée</div></div>
-          <div class="statut-badge b-actif">✅ ACTIF</div>
-        </div>
-        <div class="pb-wrap">
-          <div class="pb-lbl"><span>PROGRESSION VERS AMBASSADEUR</span><span>${nb}/10 affiliés</span></div>
-          <div class="pb"><div class="pb-fill fill-affilie" style="width:${pct}%"></div></div>
-        </div>
-        <div class="comm-grid" style="grid-template-columns:1fr 1fr;">
-          <div class="cc" style="background:rgba(255,215,0,0.08);border:1px solid rgba(255,215,0,0.2);"><div class="pct" style="color:var(--gold);">20%</div><div class="lbl">NIVEAU 1</div></div>
-          <div class="cc" style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);opacity:0.3;"><div class="pct" style="color:var(--cyan);">—</div><div class="lbl">NIVEAU 2</div></div>
-        </div>
-      </div>`;
-  } else if(statut==='ambassadeur'){
-    wrap.innerHTML=`
-      <div class="statut-card ambassadeur">
-        <div class="statut-header">
-          <div class="statut-icon">🥇</div>
-          <div style="flex:1;"><div class="statut-name">AMBASSADEUR</div><div class="statut-sub">Tu touches sur tout ton réseau jusqu'au niveau 2</div></div>
-          <div class="statut-badge b-actif">✅ ACTIF</div>
-        </div>
-        <div class="comm-grid" style="grid-template-columns:1fr 1fr;">
-          <div class="cc" style="background:rgba(255,215,0,0.08);border:1px solid rgba(255,215,0,0.2);"><div class="pct" style="color:var(--gold);">25%</div><div class="lbl">NIVEAU 1</div></div>
-          <div class="cc" style="background:rgba(0,212,255,0.06);border:1px solid rgba(0,212,255,0.15);"><div class="pct" style="color:var(--cyan);">5%</div><div class="lbl">NIVEAU 2</div></div>
-        </div>
-      </div>`;
-  }
-  renderStatutPaliers(statut,nb);
-}
-
-async function activateAffilie(){
-  if(!document.getElementById('contrat-signed')||document.getElementById('contrat-signed').style.display==='none'){
-    alert('⚠️ Tu dois d\'abord signer le contrat prestataire avant d\'activer le mode affilié.');
-    document.getElementById('contrat-card')?.scrollIntoView({behavior:'smooth'});
-    return;
-  }
-  if(!confirm('Activer le mode Affilié ? Tu gagneras 20% sur chaque vente.'))return;
-  try{
-    await fetch(SUPABASE_URL+'/rest/v1/membres?email=eq.'+encodeURIComponent(member.email).replace(/\./g,'%2E'),{
-      method:'PATCH',
-      headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY},
-      body:JSON.stringify({statut_affiliation:'affilie'})
-    });
-    member.statut_affiliation='affilie';
-    localStorage.setItem('dha_member',JSON.stringify(member));
-    renderStatut('affilie',member.nb_affilies||0);
-    alert('Mode Affilié activé ! 🔥 Commence à partager ton lien.');
-  }catch(e){alert('Erreur. Réessaie.');}
 }
 
 async function loadAffilie(){
   try{
-    const res=await fetch(SUPABASE_URL+'/rest/v1/membres?parraine_par=eq.'+encodeURIComponent(member.pseudo||'')+'&select=pseudo,date_inscription,pack',{
+    const res=await fetch(SUPABASE_URL+'/rest/v1/membres?parraine_par=eq.'+encodeURIComponent(member.pseudo||'')+'&select=pseudo,date_inscription,classe',{
       headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY}
     });
     const data=await res.json();
     const list=document.getElementById('affilies-list');
     if(!data||data.length===0){
-      list.innerHTML='<div class="no-affili">Tu n\'as pas encore d\'affiliés. Partage ton lien ! 🔥</div>';
+      list.innerHTML='<div class="no-affili">Tu n\'as pas encore de filleuls. Partage ton lien ! 🔥</div>';
       return;
     }
-    const statut=member.statut_affiliation||'membre_simple';
-    const pct=statut==='ambassadeur'?25:statut==='affilie'?20:0;
-    const packPrix={medium:150,pro:500};
     list.innerHTML='';
     data.forEach(m=>{
-      const prix=packPrix[m.pack||'medium']||150;
-      const comm=statut!=='membre_simple'?Math.round(prix*pct/100):0;
+      const premium=(m.classe||'').toLowerCase()==='premium';
+      const prix=premium?500:180;
+      const comm=Math.round(prix*20/100);
       const date=m.date_inscription?new Date(m.date_inscription).toLocaleDateString('fr-FR'):'—';
       const icons=['⚡','🔥','🎮','🚀','💎','👑'];
       const icon=icons[Math.floor(Math.random()*icons.length)];
@@ -572,13 +468,13 @@ async function loadAffilie(){
           <div class="affi-avatar">${icon}</div>
           <div class="affi-info">
             <div class="affi-pseudo">@${m.pseudo}</div>
-            <div class="affi-meta">Inscrit le ${date} · Pack ${(m.pack||'medium').toUpperCase()}</div>
+            <div class="affi-meta">Inscrit le ${date} · ${premium?'FORMATION + ACCOMPAGNEMENT':'FORMATION'}</div>
           </div>
           <div class="affi-comm">${comm>0?'+'+comm+'€':'—'}</div>
         </div>`;
     });
   }catch(e){
-    document.getElementById('affilies-list').innerHTML='<div class="no-affili">Impossible de charger tes affiliés pour le moment.</div>';
+    document.getElementById('affilies-list').innerHTML='<div class="no-affili">Impossible de charger tes filleuls pour le moment.</div>';
   }
 }
 
@@ -662,25 +558,11 @@ async function init(){
   }catch(e){}
 
   const nb=member.nb_affilies||0;
-  const statut=member.statut_affiliation||'membre_simple';
   const total=member.commissions_total||0;
   const encours=member.commissions_encours||0;
   const verse=member.commissions_versees||0;
 
-  // Upgrade auto ambassadeur
-  if(statut==='affilie'&&nb>=10){
-    member.statut_affiliation='ambassadeur';
-    try{
-      await fetch(SUPABASE_URL+'/rest/v1/membres?email=eq.'+encodeURIComponent(member.email).replace(/\./g,'%2E'),{
-        method:'PATCH',
-        headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY},
-        body:JSON.stringify({statut_affiliation:'ambassadeur'})
-      });
-    }catch(e){}
-    localStorage.setItem('dha_member',JSON.stringify(member));
-  }
-
-  renderStatut(member.statut_affiliation,nb);
+  renderStatut(nb);
   document.getElementById('hero-commissions').textContent=total+'€';
   document.getElementById('stat-commissions').textContent=total+'€';
   document.getElementById('stat-encours').textContent=encours+'€';

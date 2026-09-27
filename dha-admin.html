@@ -231,13 +231,10 @@ var ACTIONS=[
   {k:'ev',i:'🎉',l:'Venir à un événement',x:300}
 ];
 
-var RANGS={'membre simple':{n1:0,n2:0},'affilié':{n1:20,n2:0},'ambassadeur':{n1:25,n2:5}};
+var RANGS={'recommandation':{n1:20,n2:0}};
 
 function getRang(m){
-  var s=(m.statut_affiliation||'').toLowerCase();
-  if(s.indexOf('ambass')>-1)return 'ambassadeur';
-  if(s.indexOf('affil')>-1)return 'affilié';
-  return 'membre simple';
+  return 'recommandation';
 }
 function getAction(k){for(var i=0;i<ACTIONS.length;i++)if(ACTIONS[i].k===k)return ACTIONS[i];return null;}
 function getMember(id){for(var i=0;i<members.length;i++)if(members[i].id===id)return members[i];return null;}
@@ -298,9 +295,7 @@ function filter(){
 
 function rangBadge(m){
   var r=getRang(m);
-  if(r==='ambassadeur')return '<span class="bx bra">👑 Ambassadeur</span>';
-  if(r==='affilié')return '<span class="bx br">⚡ Affilié</span>';
-  return '<span class="bx br" style="opacity:.5">Membre Simple</span>';
+  return '<span class="bx br">🤝 Recommandation 20%</span>';
 }
 
 function render(data){
@@ -313,8 +308,7 @@ function render(data){
     var rang=getRang(m);var t=RANGS[rang];
     var ribH=m.rib&&m.rib.length>2?'<div class="ribv">'+m.rib+'</div>':'<div class="ribe">Aucun RIB enregistré</div>';
     var barH='';
-    if(rang==='membre simple'){barH='<div style="font-size:13px;color:var(--mu)">Pas de commission</div>';}
-    else{
+    {
       barH+='<div class="calcrow"><span class="cdim">Taux N1</span><span class="cpos">'+t.n1+'%</span></div>';
       if(t.n2)barH+='<div class="calcrow"><span class="cdim">Taux N2</span><span class="cpos">'+t.n2+'%</span></div>';
       barH+='<div class="calcrow"><span class="cdim">Medium 180€</span><span class="cpos">'+Math.round(180*t.n1/100)+'€</span></div>';

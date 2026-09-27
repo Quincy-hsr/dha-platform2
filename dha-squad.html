@@ -37,11 +37,23 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
 .discord-feature-icon{font-size:20px;margin-bottom:6px;}
 .discord-feature-title{font-family:'Orbitron',sans-serif;font-size:9px;font-weight:900;color:var(--white);letter-spacing:1px;margin-bottom:4px;}
 .discord-feature-desc{font-size:12px;color:var(--dim);line-height:1.5;}
-.dha-features{background:rgba(30,100,255,0.06);border:1px solid rgba(30,100,255,0.15);border-radius:14px;padding:16px;margin-bottom:28px;text-align:left;}
+.dha-features{background:rgba(30,100,255,0.06);border:1px solid rgba(30,100,255,0.15);border-radius:14px;padding:16px;margin-bottom:0;text-align:left;}
 .dha-features-title{font-family:'Orbitron',sans-serif;font-size:8px;letter-spacing:2px;color:var(--cyan);margin-bottom:10px;}
 .dha-feature-item{display:flex;align-items:center;gap:8px;font-size:13px;color:rgba(232,244,255,0.7);margin-bottom:6px;}
 .dha-feature-item::before{content:'✅';font-size:12px;}
 .discord-btn{display:inline-flex;align-items:center;gap:12px;padding:16px 36px;border-radius:14px;background:#5865F2;color:var(--white);font-family:'Orbitron',sans-serif;font-size:13px;font-weight:900;letter-spacing:2px;text-decoration:none;transition:all .2s;box-shadow:0 6px 24px rgba(88,101,242,0.4);}
+.wa-btn{display:inline-flex;align-items:center;gap:12px;padding:16px 36px;border-radius:14px;background:#25D366;color:#04210f;font-family:'Orbitron',sans-serif;font-size:13px;font-weight:900;letter-spacing:2px;text-decoration:none;transition:all .2s;box-shadow:0 6px 24px rgba(37,211,102,0.35);}
+.wa-btn:hover{transform:translateY(-2px);box-shadow:0 10px 35px rgba(37,211,102,0.5);background:#1ebe5a;}
+.squad-block{border-radius:16px;padding:18px;margin-bottom:18px;text-align:center;}
+.squad-block.discord{background:rgba(88,101,242,0.05);border:1px solid rgba(88,101,242,0.2);}
+.squad-block.wa{background:rgba(37,211,102,0.04);border:1px solid rgba(37,211,102,0.2);}
+.squad-block-head{font-family:'Orbitron',sans-serif;font-size:10px;font-weight:900;letter-spacing:2px;text-align:left;margin-bottom:12px;color:var(--white);}
+.squad-block.discord .squad-block-head{color:#8b94ff;}
+.squad-block.wa .squad-block-head{color:#25D366;}
+.squad-block .discord-features{margin-bottom:16px;}
+.wa-feature{background:rgba(37,211,102,0.07)!important;border-color:rgba(37,211,102,0.15)!important;}
+.squad-block .discord-btn,.squad-block .wa-btn{width:100%;justify-content:center;padding:14px 20px;font-size:12px;box-sizing:border-box;}
+.squad-btns{display:flex;flex-direction:column;align-items:center;gap:14px;}
 .discord-btn:hover{transform:translateY(-2px);box-shadow:0 10px 35px rgba(88,101,242,0.5);background:#4752C4;}
 @media(max-width:768px){.sidebar{display:none;}.main{margin-left:0;padding:16px;}.discord-features{grid-template-columns:1fr;}}
 
@@ -76,7 +88,7 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
   <a class="nav-item active" href="dha-squad.html"><span class="nav-icon">👥</span> Mon Squad</a>
   <a class="nav-item" href="dha-leaderboard.html"><span class="nav-icon">🏆</span> Leaderboard</a>
   <div class="sidebar-section">EARN</div>
-  <a class="nav-item" href="dha-affiliation.html"><span class="nav-icon">💰</span> Affiliation</a>
+  <a class="nav-item" href="dha-affiliation.html"><span class="nav-icon">💰</span> Recommandation</a>
   <div class="sidebar-section">TOOLS</div>
   <a class="nav-item" href="dha-mentor.html"><span class="nav-icon">📞</span> Appel Mentor</a>
   <div class="sidebar-bottom">
@@ -94,30 +106,47 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
     <div class="discord-title">MON <span>SQUAD</span></div>
     <div class="discord-desc">
       Tout ce qui se passe sur la plateforme DHA — ta formation, tes XP, tes rangs — c'est ici.<br/><br/>
-      Pour les échanges avec la communauté, les appels, les lives et les discussions en direct — c'est sur notre <strong style="color:#5865F2;">serveur Discord</strong>.
+      Pour le reste, la communauté vit sur <strong style="color:#5865F2;">Discord</strong> et <strong style="color:#25D366;">WhatsApp</strong>.
     </div>
 
-    <div class="discord-features">
-      <div class="discord-feature">
-        <div class="discord-feature-icon">💬</div>
-        <div class="discord-feature-title">CHAT EN DIRECT</div>
-        <div class="discord-feature-desc">Échange avec tous les membres de la DHA en temps réel</div>
+    <div class="squad-block discord">
+      <div class="squad-block-head"><span>🎮</span> DISCORD — APPELS & LIVES</div>
+      <div class="discord-features">
+        <div class="discord-feature">
+          <div class="discord-feature-icon">📞</div>
+          <div class="discord-feature-title">APPELS DE GROUPE</div>
+          <div class="discord-feature-desc">Les appels vocaux avec toute la squad</div>
+        </div>
+        <div class="discord-feature">
+          <div class="discord-feature-icon">📺</div>
+          <div class="discord-feature-title">LIVES TRADING</div>
+          <div class="discord-feature-desc">Sessions de trading en direct avec partage d'écran</div>
+        </div>
       </div>
-      <div class="discord-feature">
-        <div class="discord-feature-icon">🤝</div>
-        <div class="discord-feature-title">AJOUTER DES AMIS</div>
-        <div class="discord-feature-desc">Connecte-toi avec les autres hustlers</div>
+      <a class="discord-btn" href="https://discord.gg/hbUHxpqupH" target="_blank">
+        <span style="font-size:22px;">🎮</span>
+        REJOINDRE LE DISCORD
+      </a>
+    </div>
+
+    <div class="squad-block wa">
+      <div class="squad-block-head"><span>💬</span> WHATSAPP — ÉCHANGES & FICHIERS</div>
+      <div class="discord-features">
+        <div class="discord-feature wa-feature">
+          <div class="discord-feature-icon">💬</div>
+          <div class="discord-feature-title">PARLER AVEC LES MEMBRES</div>
+          <div class="discord-feature-desc">Questions, échanges et entraide au quotidien</div>
+        </div>
+        <div class="discord-feature wa-feature">
+          <div class="discord-feature-icon">📁</div>
+          <div class="discord-feature-title">PARTAGE DE FICHIERS</div>
+          <div class="discord-feature-desc">Images, graphiques, analyses — tout partager facilement</div>
+        </div>
       </div>
-      <div class="discord-feature">
-        <div class="discord-feature-icon">📞</div>
-        <div class="discord-feature-title">APPELS & LIVES</div>
-        <div class="discord-feature-desc">Sessions live, appels vocaux et partage d'écran</div>
-      </div>
-      <div class="discord-feature">
-        <div class="discord-feature-icon">📁</div>
-        <div class="discord-feature-title">PARTAGE DE FICHIERS</div>
-        <div class="discord-feature-desc">Images, graphiques, analyses — tout partager facilement</div>
-      </div>
+      <a class="wa-btn" href="https://chat.whatsapp.com/EK0NudNpfhYADF550JZmXe" target="_blank">
+        <span style="font-size:22px;">💬</span>
+        REJOINDRE LE WHATSAPP
+      </a>
     </div>
 
     <div class="dha-features">
@@ -125,14 +154,9 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
       <div class="dha-feature-item">Ta formation Trading complète</div>
       <div class="dha-feature-item">Ton système XP et tes rangs</div>
       <div class="dha-feature-item">Le leaderboard hebdomadaire</div>
-      <div class="dha-feature-item">Ton programme d'affiliation</div>
+      <div class="dha-feature-item">Ton programme de recommandation</div>
       <div class="dha-feature-item">Tes appels mentor via Calendly</div>
     </div>
-
-    <a class="discord-btn" href="https://discord.gg/hbUHxpqupH" target="_blank">
-      <span style="font-size:24px;">🎮</span>
-      REJOINDRE LE DISCORD DHA
-    </a>
   </div>
 </main>
 
