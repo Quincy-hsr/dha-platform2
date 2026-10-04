@@ -682,6 +682,7 @@ body {
         Ton compte a été créé avec succès.<br/>
         Prépare-toi — l'aventure commence maintenant.
       </div>
+      <button class="btn-submit" onclick="showOnboardingModal()">SUIVANT →</button>
     </div>
 
   </div>
@@ -929,15 +930,21 @@ async function goStep3() {
         pseudo: userData.pseudo,
         email: userData.email
       });
+      // Notif CEO
+      const packParam = new URLSearchParams(window.location.search).get('pack') || '';
+      const packLabels = { '180': 'Formation (180€)', '500': 'Accompagnement (500€)' };
+      const classeLabels = { trading:'Trading 📈', ugc:'UGC Creator 🎬', marketing:'Marketing Digital 🚀', ecommerce:'E-Commerce 🛒' };
       emailjs.send('service_4wng58y', 'template_5zg1ys4', {
         prenom: userData.prenom,
         nom: userData.nom,
         pseudo: userData.pseudo,
         email: userData.email,
-        telephone: userData.telephone || '',
-        pays: userData.pays || '',
+        telephone: userData.telephone || 'Non renseigné',
+        pays: userData.pays || 'Non renseigné',
         parrain: refParam || 'Aucun',
-        pack: 'Medium'
+        classe: classeLabels[selectedClasse] || selectedClasse || 'Non précisée',
+        pack: packLabels[packParam] || 'Non précisé',
+        date_inscription: new Date().toLocaleString('fr-FR', { timeZone: 'Europe/Paris', dateStyle: 'full', timeStyle: 'short' })
       });
     } catch(emailErr) {
       console.log('EmailJS error (non-bloquant):', emailErr);
@@ -960,7 +967,6 @@ async function goStep3() {
         'Classe choisie : <strong style="color:var(--gold)">' + classeNames[selectedClasse] + '</strong><br/>' +
         'Tu as gagné <strong style="color:var(--green)">+10 XP</strong> pour ta connexion. L\'aventure commence maintenant.';
 
-      setTimeout(() => { showOnboardingModal(); }, 1200);
     }, 400);
 
   } catch(err) {
@@ -1116,9 +1122,9 @@ document.addEventListener('DOMContentLoaded', () => {
       <div class="reglement-section">
         <div class="reglement-section-title">03 — PAIEMENTS & RÉSILIATION</div>
         <ul>
-          <li><strong>Pack Medium :</strong> Sans engagement. Tu peux résilier à tout moment avant le prochain prélèvement.</li>
-          <li><strong>Pack Lifetime :</strong> Paiement unique non remboursable après 14 jours d'accès.</li>
-          <li>Les remboursements sont traités au cas par cas dans les <strong>14 jours suivant l'achat</strong> si aucun contenu n'a été consommé.</li>
+          <li><strong>Pack Formation (180€) :</strong> Paiement unique. Aucun abonnement, aucun prélèvement récurrent.</li>
+          <li><strong>Pack Accompagnement (500€) :</strong> Remboursable uniquement <strong>au bout de 2 mois</strong>, à condition d'avoir réellement mis en place les actions et conseils donnés pendant l'accompagnement, sans obtenir de résultat concret.</li>
+          <li>Toute demande de remboursement est étudiée au cas par cas. La mise en application des actions et conseils doit pouvoir être démontrée.</li>
           <li>En cas de paiement en plusieurs fois, le plan d'échéances doit être respecté intégralement.</li>
         </ul>
       </div>
