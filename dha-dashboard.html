@@ -2,6 +2,7 @@
 <html lang="fr">
 <head>
 <script src="dha-guard.js"></script>
+<script src="dha-levelup.js"></script>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>DHA — Dashboard</title>
@@ -103,6 +104,27 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
 .fadeup-1{animation-delay:.1s;}
 .fadeup-2{animation-delay:.2s;}
 .fadeup-3{animation-delay:.3s;}
+.nav-lock{margin-left:auto;font-size:10px;opacity:.5;}
+.av-card{border-radius:16px;margin-bottom:16px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.08);overflow:hidden;position:relative;}
+.av-card.unlocked{border-color:rgba(255,215,0,0.35);background:rgba(255,215,0,0.03);}
+.av-gallery{display:flex;gap:8px;overflow-x:auto;padding:16px 16px 0;scrollbar-width:thin;}
+.av-gallery img{height:150px;width:auto;border-radius:10px;flex-shrink:0;object-fit:cover;border:1px solid rgba(255,255,255,0.08);}
+.av-body{padding:18px 20px 20px;}
+.av-tag{display:inline-block;padding:3px 10px;border-radius:99px;font-family:'Orbitron',sans-serif;font-size:7px;letter-spacing:1px;}
+.av-title{font-family:'Orbitron',sans-serif;font-size:14px;font-weight:900;color:var(--white);margin:10px 0 8px;letter-spacing:1px;}
+.av-desc{font-size:13px;color:var(--dim);line-height:1.6;}
+.av-list{list-style:none;margin:12px 0 0;padding:0;}
+.av-list li{font-size:12px;color:rgba(232,244,255,0.7);padding:4px 0;}
+.av-list li::before{content:'✓';color:var(--gold);margin-right:8px;}
+.av-lockbox{margin-top:16px;padding:14px;border-radius:12px;background:rgba(5,9,20,0.6);border:1px dashed rgba(30,100,255,0.35);}
+.av-lockbox-title{font-family:'Orbitron',sans-serif;font-size:10px;font-weight:900;color:var(--white);letter-spacing:1px;}
+.av-bar{height:6px;border-radius:99px;background:rgba(255,255,255,0.06);margin-top:10px;overflow:hidden;}
+.av-bar>div{height:100%;background:linear-gradient(90deg,var(--blue),var(--cyan));border-radius:99px;}
+.av-steps{margin-top:16px;padding:14px;border-radius:12px;background:rgba(255,215,0,0.04);border:1px solid rgba(255,215,0,0.2);}
+.av-steps-title{font-family:'Orbitron',sans-serif;font-size:8px;letter-spacing:2px;color:var(--gold);margin-bottom:8px;}
+.av-step{display:flex;align-items:flex-start;gap:10px;font-size:12px;color:rgba(232,244,255,0.8);padding:4px 0;line-height:1.5;}
+.av-step span{flex-shrink:0;width:18px;height:18px;border-radius:50%;background:rgba(255,215,0,0.15);color:var(--gold);font-family:'Orbitron',sans-serif;font-size:8px;font-weight:900;display:flex;align-items:center;justify-content:center;margin-top:1px;}
+.av-cta{display:block;text-align:center;margin-top:16px;padding:12px;border-radius:12px;background:rgba(255,215,0,0.12);border:1px solid rgba(255,215,0,0.4);color:var(--gold);font-family:'Orbitron',sans-serif;font-size:10px;font-weight:900;letter-spacing:2px;text-decoration:none;}
 @media(max-width:768px){.sidebar{transform:translateX(-100%);}.main{margin-left:0;padding:16px;}.grid-2,.grid-3,.grid-main{grid-template-columns:1fr;}}
 
 /* ── MOBILE MENU ── */
@@ -138,6 +160,8 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
   <a class="nav-item" href="dha-affiliation.html"><span class="nav-icon">💰</span> Recommandation</a>
   <div class="sidebar-section">TOOLS</div>
   <a class="nav-item" href="dha-mentor.html"><span class="nav-icon">📞</span> Appel Mentor</a>
+  <div class="sidebar-section">PERKS</div>
+  <a class="nav-item" href="#" onclick="showAvantages();return false;"><span class="nav-icon">🎁</span> Avantages <span class="nav-lock" id="nav-avantages-lock">🔒</span></a>
   <div class="sidebar-bottom">
     <div class="sidebar-member">
       <div class="sidebar-avatar" id="sb-avatar">🎮</div>
@@ -428,6 +452,8 @@ function renderMember(){
   const icon=classeIcons[classe]||'🎮';
   document.getElementById('sb-pseudo').textContent=('@'+(member.pseudo||'HUSTLER')).toUpperCase();
   document.getElementById('sb-rang').textContent=rang.icon+' '+rang.name;
+  updateAvantagesLock();
+  if(window.DHALevelUp)DHALevelUp.check({pseudo:member.pseudo,xp,level,rang,rangs,avantages:AVANTAGES});
   document.getElementById('topbar-xp').textContent=xp+' XP';
   document.getElementById('player-pseudo').textContent=('@'+(member.pseudo||'HUSTLER')).toUpperCase();
   document.getElementById('player-classe').textContent=icon+' '+(classeNames[classe]||'TRADING');
@@ -561,6 +587,76 @@ function showRangsModal(){
   });
 
   html+=`<div style="text-align:center;margin-top:8px;"><button onclick="this.closest('[style*=fixed]').remove()" style="padding:12px 28px;border-radius:12px;background:rgba(0,212,255,0.1);border:1px solid rgba(0,212,255,0.3);color:#00D4FF;font-family:'Orbitron',sans-serif;font-size:10px;font-weight:900;cursor:pointer;letter-spacing:2px;">FERMER</button></div>
+  </div></div>`;
+  document.body.insertAdjacentHTML('beforeend',html);
+}
+
+// ===== AVANTAGES MEMBRES =====
+// Pour ajouter un avantage : ajoute un objet dans ce tableau.
+// rangMin = nom du rang minimum (voir const rangs). cta.href = lien de contact.
+const AVANTAGES=[
+  {
+    icon:'✈️',
+    tag:'CONCIERGERIE DE VOYAGES',
+    titre:'Vols Business & First en promo',
+    desc:"Grâce à notre partenariat avec une conciergerie de voyages, accède à des vols en classe Business et First jusqu'à 70% moins chers.",
+    points:["Vols Business jusqu'à -70%","Vols First jusqu'à -70%","Service de conciergerie dédié"],
+    images:['avantage-vol-1.jpg','avantage-vol-2.jpg','avantage-vol-3.jpg','avantage-vol-4.jpg'],
+    rangMin:'HUSTLER',
+    etapes:["Ouvre l'Instagram de la conciergerie (bouton ci-dessous)","Clique sur le lien WhatsApp dans sa bio","Envoie-lui un message en précisant que tu es membre de la DHA"],
+    cta:{label:"J'EN PROFITE ✈️",href:'https://www.instagram.com/prestige_keyy/'}
+  }
+];
+
+function avIsUnlocked(av){
+  const req=rangs.find(r=>r.name===av.rangMin)||rangs[0];
+  return (member?member.xp||0:0)>=req.min;
+}
+
+function updateAvantagesLock(){
+  const el=document.getElementById('nav-avantages-lock');
+  if(!el)return;
+  el.style.display=AVANTAGES.some(avIsUnlocked)?'none':'';
+}
+
+function showAvantages(){
+  const xp=member?member.xp||0:0;
+  let html=`<div style="position:fixed;inset:0;z-index:9999;background:rgba(5,9,20,0.92);backdrop-filter:blur(12px);display:flex;align-items:center;justify-content:center;padding:20px;" onclick="this.remove()">
+  <div style="background:#080e1f;border:1px solid rgba(30,100,255,0.2);border-radius:20px;padding:32px;max-width:620px;width:100%;max-height:88vh;overflow-y:auto;position:relative;" onclick="event.stopPropagation()">
+  <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,#1E64FF,#00D4FF,#FFD700,#9D4EDD);border-radius:20px 20px 0 0;"></div>
+  <div style="font-family:'Orbitron',sans-serif;font-size:16px;font-weight:900;color:#E8F4FF;margin-bottom:6px;letter-spacing:2px;">🎁 AVANTAGES MEMBRES</div>
+  <div style="font-size:12px;color:rgba(232,244,255,0.4);margin-bottom:24px;">Des privilèges réservés aux membres DHA, débloqués selon ton rang.</div>`;
+
+  AVANTAGES.forEach(av=>{
+    const req=rangs.find(r=>r.name===av.rangMin)||rangs[0];
+    const ok=xp>=req.min;
+    const pct=Math.min(100,Math.round(xp/req.min*100))||0;
+    const reste=Math.max(0,req.min-xp).toLocaleString('fr-FR');
+    const imgs=(av.images||[]).map(src=>`<img src="${src}" alt="" loading="lazy" onerror="this.style.display='none'">`).join('');
+    html+=`<div class="av-card ${ok?'unlocked':'locked'}">
+      ${imgs?`<div class="av-gallery">${imgs}</div>`:''}
+      <div class="av-body">
+        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+          <span class="av-tag" style="background:rgba(255,215,0,0.1);border:1px solid rgba(255,215,0,0.3);color:#FFD700;">${av.icon} ${av.tag}</span>
+          <span class="av-tag" style="background:${ok?'rgba(0,255,136,0.1)':'rgba(255,255,255,0.04)'};border:1px solid ${ok?'rgba(0,255,136,0.3)':'rgba(255,255,255,0.12)'};color:${ok?'#00FF88':'rgba(232,244,255,0.5)'};">${ok?'✓ DÉBLOQUÉ':'🔒 VERROUILLÉ'}</span>
+        </div>
+        <div class="av-title">${av.titre}</div>
+        <div class="av-desc">${av.desc}</div>
+        <ul class="av-list">${av.points.map(p=>`<li>${p}</li>`).join('')}</ul>
+        ${ok
+          ?`${av.etapes?`<div class="av-steps"><div class="av-steps-title">COMMENT EN PROFITER</div>${av.etapes.map((e,i)=>`<div class="av-step"><span>${i+1}</span>${e}</div>`).join('')}</div>`:''}
+            <a class="av-cta" href="${av.cta.href}" target="_blank" rel="noopener">${av.cta.label}</a>`
+          :`<div class="av-lockbox">
+              <div class="av-lockbox-title">🔒 DISPONIBLE À PARTIR DU RANG <span style="color:${req.color};">${req.icon} ${req.name}</span></div>
+              <div style="font-size:11px;color:rgba(232,244,255,0.45);margin-top:6px;">Encore ${reste} XP pour débloquer cet avantage (${xp.toLocaleString('fr-FR')} / ${req.min.toLocaleString('fr-FR')} XP)</div>
+              <div class="av-bar"><div style="width:${pct}%;"></div></div>
+            </div>`}
+      </div>
+    </div>`;
+  });
+
+  html+=`<div style="text-align:center;font-size:11px;color:rgba(232,244,255,0.3);margin:4px 0 16px;">D'autres avantages arrivent bientôt 👀</div>
+  <div style="text-align:center;"><button onclick="this.closest('[style*=fixed]').remove()" style="padding:12px 28px;border-radius:12px;background:rgba(0,212,255,0.1);border:1px solid rgba(0,212,255,0.3);color:#00D4FF;font-family:'Orbitron',sans-serif;font-size:10px;font-weight:900;cursor:pointer;letter-spacing:2px;">FERMER</button></div>
   </div></div>`;
   document.body.insertAdjacentHTML('beforeend',html);
 }
