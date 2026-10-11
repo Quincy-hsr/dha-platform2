@@ -697,6 +697,16 @@ body {
 <script>
 let selectedClasse = '';
 let userData = {};
+// Mode démo : dha-inscription.html?demo=1 (compte gratuit, seul le Module 01 est débloqué)
+const IS_DEMO = new URLSearchParams(window.location.search).get('demo') === '1';
+if (IS_DEMO) {
+  document.addEventListener('DOMContentLoaded', function () {
+    var t = document.querySelector('#step1 .card-title');
+    var st = document.querySelector('#step1 .card-sub');
+    if (t) t.textContent = 'Essaie DHA gratuitement';
+    if (st) st.textContent = "Crée ton compte démo : tu découvres toute la plateforme et le Module 01 « Introduction au Trading » est débloqué.";
+  });
+}
 
 // PARTICLES
 const colors = ['#1E64FF','#00D4FF','#ffffff','#FFD700'];
@@ -873,12 +883,14 @@ async function goStep3() {
       statut: 'membre',
       parraine_par: refParam
     };
+    if (IS_DEMO) membre.plan = 'demo';
 
     await supabaseInsert('membres', membre);
     bar.style.width = '100%';
 
     // ── CALCUL AUTOMATIQUE DES COMMISSIONS DU PARRAIN ──────────
-    if(refParam) {
+    // En démo : pas de commission maintenant, elle est créditée quand tu passes le membre en payant (admin)
+    if(refParam && !IS_DEMO) {
       try {
         // 1. Récupérer le parrain
         const resPar = await fetch(SUPABASE_URL + '/rest/v1/membres?pseudo=eq.' + encodeURIComponent(refParam) + '&select=id,pseudo,statut_affiliation,commissions_encours,commissions_total,nb_affilies', {
@@ -943,7 +955,7 @@ async function goStep3() {
         pays: userData.pays || 'Non renseigné',
         parrain: refParam || 'Aucun',
         classe: classeLabels[selectedClasse] || selectedClasse || 'Non précisée',
-        pack: packLabels[packParam] || 'Non précisé',
+        pack: IS_DEMO ? 'DÉMO GRATUITE' : (packLabels[packParam] || 'Non précisé'),
         date_inscription: new Date().toLocaleString('fr-FR', { timeZone: 'Europe/Paris', dateStyle: 'full', timeStyle: 'short' })
       });
     } catch(emailErr) {
@@ -965,7 +977,8 @@ async function goStep3() {
       document.getElementById('success-sub').innerHTML =
         'Bienvenue <strong style="color:var(--cyan)">' + userData.prenom + '</strong> ! 🔥<br/>' +
         'Classe choisie : <strong style="color:var(--gold)">' + classeNames[selectedClasse] + '</strong><br/>' +
-        'Tu as gagné <strong style="color:var(--green)">+10 XP</strong> pour ta connexion. L\'aventure commence maintenant.';
+        'Tu as gagné <strong style="color:var(--green)">+10 XP</strong> pour ta connexion. L\'aventure commence maintenant.' +
+        (IS_DEMO ? '<br/><br/><strong style="color:var(--gold)">🎮 Version démo :</strong> le Module 01 est débloqué, le reste s\'ouvre avec la version payante.' : '');
 
     }, 400);
 
