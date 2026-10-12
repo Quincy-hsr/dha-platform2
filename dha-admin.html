@@ -199,6 +199,8 @@ body{background:var(--bg);color:var(--tx);font-family:'Inter',sans-serif;min-hei
     <div class="conftitle">⚡ CONFIRMER L'AJOUT XP</div>
     <div class="confinfo" id="cinfo"></div>
     <span class="confarr" id="carr"></span>
+    <label for="cnote" style="display:block;margin:14px 0 6px;font-size:11px;letter-spacing:1px;text-transform:uppercase;opacity:.7">💬 Message pour le membre (optionnel)</label>
+    <textarea id="cnote" rows="2" maxlength="280" placeholder="Ex : Super appel, ton plan de trading est clair. Continue comme ça 🔥" style="width:100%;box-sizing:border-box;margin-bottom:14px;padding:10px 12px;border-radius:10px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.12);color:inherit;font:inherit;font-size:13px;resize:vertical"></textarea>
     <div class="confbts">
       <button class="confno" id="cno">Annuler</button>
       <button class="confyes" id="cyes">✓ OUI VALIDER</button>
@@ -513,8 +515,10 @@ function confirmer(id){
   var m=getMember(id);var xa=m?m.xp||0:0;
   document.getElementById('cinfo').textContent='Membre : '+(m.pseudo||m.prenom||'?')+'\nXP actuel : '+xa+' XP\n\n'+lines.trim();
   document.getElementById('carr').textContent='→ '+(xa+total).toLocaleString()+' XP au total (+'+total+' XP)';
+  document.getElementById('cnote').value='';
   document.getElementById('conf').style.display='flex';
   confCb=function(){
+    var note=(document.getElementById('cnote').value||'').trim().replace(/\s*·\s*/g,' - ');
     var nv=xa+total;
     var pseudo=m.pseudo||m.prenom||'?';
     // Construire le détail des actions pour l'historique
@@ -526,7 +530,7 @@ function confirmer(id){
         for(var n=0;n<p[k];n++) lignes.push(a.i+' '+a.l+' (+'+a.x+' XP)');
       }
     }
-    var raison=lignes.join(' · ');
+    var raison=lignes.join(' · ')+(note?' · 📝 '+note:'');
     patch(id,{xp:nv},function(){
       var m2=getMember(id);if(m2)m2.xp=nv;
       document.getElementById('bxp-'+id).textContent=nv.toLocaleString()+' XP';
