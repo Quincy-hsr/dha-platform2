@@ -434,11 +434,14 @@ async function updateXP(amount){
   }
   requestAnimationFrame(animateBar);
   try{
-    await fetch(SUPABASE_URL+'/rest/v1/membres?email=eq.'+encodeURIComponent(member.email).replace(/\./g,'%2E'),{
+    const patchXP=body=>fetch(SUPABASE_URL+'/rest/v1/membres?email=eq.'+encodeURIComponent(member.email),{
       method:'PATCH',
       headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY},
-      body:JSON.stringify({xp:member.xp,level:member.level,rang:getRang(member.xp).name,xp_semaine:member.xp_semaine})
+      body:JSON.stringify(body)
     });
+    const base={xp:member.xp,level:member.level,rang:getRang(member.xp).name};
+    const r=await patchXP(Object.assign({xp_semaine:member.xp_semaine},base));
+    if(!r.ok){const r2=await patchXP(base);if(!r2.ok)console.error('XP non sauvegardé:',r2.status,await r2.text());} // colonne xp_semaine absente
   }catch(e){console.log('XP error:',e);}
 }
 

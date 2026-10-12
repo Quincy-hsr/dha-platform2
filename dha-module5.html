@@ -345,8 +345,8 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
           <div class="quiz-q-text">Un CHOCH signifie :</div>
           <div class="quiz-options">
             <div class="quiz-option" onclick="selectOption(this,'q2','A')"><div class="quiz-option-letter">A</div>Une accélération dans le sens de la tendance</div>
-            <div class="quiz-option" onclick="selectOption(this,'q2','B')"><div class="quiz-option-letter">B</div>Un changement de direction de la tendance</div>
-            <div class="quiz-option" onclick="selectOption(this,'q2','C')"><div class="quiz-option-letter">C</div>Une zone de liquidité non testée</div>
+            <div class="quiz-option" onclick="selectOption(this,'q2','B')"><div class="quiz-option-letter">B</div>Une zone de liquidité non testée</div>
+            <div class="quiz-option" onclick="selectOption(this,'q2','C')"><div class="quiz-option-letter">C</div>Un changement de direction de la tendance</div>
           </div>
           <div class="quiz-feedback" id="fb-q2"></div>
         </div>
@@ -366,8 +366,8 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
           <div class="quiz-q-num">QUESTION 4 / 10</div>
           <div class="quiz-q-text">En tendance baissière un BOS c'est quand :</div>
           <div class="quiz-options">
-            <div class="quiz-option" onclick="selectOption(this,'q4','A')"><div class="quiz-option-letter">A</div>Le prix teste l'ancien Low sans le casser</div>
-            <div class="quiz-option" onclick="selectOption(this,'q4','B')"><div class="quiz-option-letter">B</div>Le prix casse sous le dernier Low</div>
+            <div class="quiz-option" onclick="selectOption(this,'q4','A')"><div class="quiz-option-letter">A</div>Le prix casse sous le dernier Low</div>
+            <div class="quiz-option" onclick="selectOption(this,'q4','B')"><div class="quiz-option-letter">B</div>Le prix teste l'ancien Low sans le casser</div>
             <div class="quiz-option" onclick="selectOption(this,'q4','C')"><div class="quiz-option-letter">C</div>Le prix remonte sur le dernier High</div>
           </div>
           <div class="quiz-feedback" id="fb-q4"></div>
@@ -399,8 +399,8 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
           <div class="quiz-q-num">QUESTION 7 / 10</div>
           <div class="quiz-q-text">Un CHOCH en tendance baissière c'est quand :</div>
           <div class="quiz-options">
-            <div class="quiz-option" onclick="selectOption(this,'q7','A')"><div class="quiz-option-letter">A</div>Le prix casse sous le dernier Low</div>
-            <div class="quiz-option" onclick="selectOption(this,'q7','B')"><div class="quiz-option-letter">B</div>Le prix dépasse le dernier High</div>
+            <div class="quiz-option" onclick="selectOption(this,'q7','A')"><div class="quiz-option-letter">A</div>Le prix dépasse le dernier High</div>
+            <div class="quiz-option" onclick="selectOption(this,'q7','B')"><div class="quiz-option-letter">B</div>Le prix casse sous le dernier Low</div>
             <div class="quiz-option" onclick="selectOption(this,'q7','C')"><div class="quiz-option-letter">C</div>Le prix ne bouge plus</div>
           </div>
           <div class="quiz-feedback" id="fb-q7"></div>
@@ -411,8 +411,8 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
           <div class="quiz-q-text">Le BOS est un signal de :</div>
           <div class="quiz-options">
             <div class="quiz-option" onclick="selectOption(this,'q8','A')"><div class="quiz-option-letter">A</div>Retournement de tendance</div>
-            <div class="quiz-option" onclick="selectOption(this,'q8','B')"><div class="quiz-option-letter">B</div>Continuation de tendance</div>
-            <div class="quiz-option" onclick="selectOption(this,'q8','C')"><div class="quiz-option-letter">C</div>Fin de session de trading</div>
+            <div class="quiz-option" onclick="selectOption(this,'q8','B')"><div class="quiz-option-letter">B</div>Fin de session de trading</div>
+            <div class="quiz-option" onclick="selectOption(this,'q8','C')"><div class="quiz-option-letter">C</div>Continuation de tendance</div>
           </div>
           <div class="quiz-feedback" id="fb-q8"></div>
         </div>
@@ -508,33 +508,54 @@ async function awardXP(actionKey,amount,raison){
   flash.style.cssText='position:fixed;top:40%;left:60%;transform:translate(-50%,-50%);font-family:Orbitron,sans-serif;font-size:36px;font-weight:900;color:#FFD700;text-shadow:0 0 30px rgba(255,215,0,0.8);z-index:9999;pointer-events:none;animation:xp-pop .9s ease forwards;';
   document.body.appendChild(flash);setTimeout(()=>flash.remove(),900);
   try{
-    await fetch(SUPABASE_URL+'/rest/v1/membres?email=eq.'+encodeURIComponent(member.email),{
-      method:'PATCH',
-      headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY},
-      body:JSON.stringify({xp:member.xp,xp_semaine:member.xp_semaine})
-    });
-    await fetch(SUPABASE_URL+'/rest/v1/xp_historique',{
+    const H={'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY,'Prefer':'return=representation'};
+    const patcher=(filtre,body)=>fetch(SUPABASE_URL+'/rest/v1/membres?'+filtre,{method:'PATCH',headers:H,body:JSON.stringify(body)});
+    const parEmail='email=eq.'+encodeURIComponent(member.email);
+    let res=await patcher(parEmail,{xp:member.xp,xp_semaine:member.xp_semaine});
+    // Si la colonne xp_semaine n'existe pas en base, on sauvegarde au moins l'XP
+    if(!res.ok)res=await patcher(parEmail,{xp:member.xp});
+    let rows=res.ok?await res.json():null;
+    // Aucun membre trouvé par email : on réessaie avec l'identifiant du membre
+    if(res.ok&&(!rows||!rows.length)&&member.id){
+      res=await patcher('id=eq.'+encodeURIComponent(String(member.id)),{xp:member.xp});
+      rows=res.ok?await res.json():null;
+    }
+    if(!res.ok||!rows||!rows.length){
+      console.error('Echec sauvegarde XP:',res.status,res.ok?'aucune ligne mise a jour':await res.text());
+      showSaveError();
+    }
+    const postRes=await fetch(SUPABASE_URL+'/rest/v1/xp_historique',{
       method:'POST',
       headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY},
       body:JSON.stringify({membre_pseudo:member.pseudo||'guest',xp_gagne:amount,raison:raison,action_key:actionKey})
     });
-  }catch(e){}
+    if(!postRes.ok)console.error('Echec POST xp_historique:',postRes.status,await postRes.text());
+  }catch(e){console.error('Erreur reseau awardXP:',e);showSaveError();}
   return true;
+}
+
+function showSaveError(){
+  if(document.getElementById('xp-save-error'))return;
+  const banner=document.createElement('div');
+  banner.id='xp-save-error';
+  banner.textContent='⚠️ Ton XP n\'a pas pu être sauvegardé. Recharge la page et réessaie — si ça continue, préviens le support.';
+  banner.style.cssText='position:fixed;top:0;left:0;right:0;background:#FF4466;color:#fff;text-align:center;padding:10px;font-family:Orbitron,sans-serif;font-size:11px;font-weight:900;z-index:99999;';
+  document.body.appendChild(banner);
 }
 let member=null;
 let quizAnswers={q1:null,q2:null,q3:null,q4:null,q5:null,q6:null,q7:null,q8:null,q9:null,q10:null};
 let quizDone=false;
 let exerciceDone=false;
-const correctAnswers={q1:'A',q2:'B',q3:'B',q4:'B',q5:'C',q6:'B',q7:'B',q8:'B',q9:'B',q10:'A'};
+const correctAnswers={q1:'A',q2:'C',q3:'B',q4:'A',q5:'C',q6:'B',q7:'A',q8:'C',q9:'B',q10:'A'};
 const feedbacks={
   q1:{A:'✅ Exact ! En tendance haussière le BOS c\'est quand le prix dépasse le dernier High — la structure continue.',wrong:'❌ En tendance haussière le BOS c\'est quand le prix dépasse le dernier High. Si il casse le Low c\'est un CHOCH.'},
-  q2:{B:'✅ Parfait ! Le CHOCH c\'est un changement de tendance — le marché repart dans l\'autre direction.',wrong:'❌ Le CHOCH signifie un changement de tendance — le marché change de direction.'},
+  q2:{C:'✅ Parfait ! Le CHOCH c\'est un changement de tendance — le marché repart dans l\'autre direction.',wrong:'❌ Le CHOCH signifie un changement de tendance — le marché change de direction.'},
   q3:{B:'✅ Exact ! Le CHOCH est plus significatif car il annonce un nouveau cycle — les institutionnels changent de direction.',wrong:'❌ Le CHOCH est plus significatif car il annonce un retournement complet de tendance.'},
-  q4:{B:'✅ Parfait ! En tendance baissière le BOS c\'est quand le prix casse sous le dernier Low — la structure continue.',wrong:'❌ En tendance baissière le BOS c\'est quand le prix casse sous le dernier Low.'},
+  q4:{A:'✅ Parfait ! En tendance baissière le BOS c\'est quand le prix casse sous le dernier Low — la structure continue.',wrong:'❌ En tendance baissière le BOS c\'est quand le prix casse sous le dernier Low.'},
   q5:{C:'✅ Exact ! Plus le timeframe est grand plus le BOS/CHOCH est significatif. Un D1 est beaucoup plus fort qu\'un H1.',wrong:'❌ Le D1 est le timeframe le plus fort. Plus c\'est grand — plus c\'est significatif.'},
   q6:{B:'✅ Exact ! Un CHOCH en tendance haussière c\'est le prix qui casse sous le dernier Low — signal de retournement.',wrong:'❌ Un CHOCH en tendance haussière c\'est quand le prix casse sous le dernier Low, pas quand il dépasse le High.'},
-  q7:{B:'✅ Parfait ! Un CHOCH en tendance baissière c\'est le prix qui dépasse le dernier High — signal de retournement.',wrong:'❌ Un CHOCH en tendance baissière c\'est quand le prix dépasse le dernier High, pas quand il casse le Low.'},
-  q8:{B:'✅ Exact ! Le BOS confirme que la tendance continue dans le même sens.',wrong:'❌ Le BOS est un signal de continuation — c\'est le CHOCH qui signale un retournement.'},
+  q7:{A:'✅ Parfait ! Un CHOCH en tendance baissière c\'est le prix qui dépasse le dernier High — signal de retournement.',wrong:'❌ Un CHOCH en tendance baissière c\'est quand le prix dépasse le dernier High, pas quand il casse le Low.'},
+  q8:{C:'✅ Exact ! Le BOS confirme que la tendance continue dans le même sens.',wrong:'❌ Le BOS est un signal de continuation — c\'est le CHOCH qui signale un retournement.'},
   q9:{B:'✅ Parfait ! BOS et CHOCH ne suffisent jamais seuls — il faut toujours une confirmation supplémentaire avant d\'entrer.',wrong:'❌ Ni le BOS ni le CHOCH ne sont des signaux d\'entrée directs — on attend toujours une confirmation.'},
   q10:{A:'✅ Exact ! En tendance haussière, Highs et Lows sont de plus en plus hauts.',wrong:'❌ En tendance haussière, Highs et Lows sont de plus en plus hauts — pas de plus en plus bas.'}
 };
@@ -548,7 +569,7 @@ function selectOption(el,qId,letter){
 }
 
 function submitQuiz(){
-  if(quizDone||completedActions.has('quiz_m5'))return;
+  if(quizDone||(completedActions.has('quiz_m5')&&!window.dhaQuizRetake))return;
   if(Object.values(quizAnswers).filter(v=>v===null).length>0){alert('Réponds à toutes les questions !');return;}
   quizDone=true;
   let score=0;
@@ -566,7 +587,7 @@ function submitQuiz(){
   document.getElementById('quiz-score').textContent=score+'/10';
   document.getElementById('quiz-text').textContent=score===10?'Parfait ! Tu maîtrises le BOS & CHOCH ! 🔥':score>=6?'Bon travail ! Relis les points manqués.':'Continue à apprendre — relis le bloc.';
   document.getElementById('quiz-xp-text').textContent='+'+xpEarned+' XP gagnés !';
-  if(xpEarned>0)awardXP('quiz_m5',xpEarned,'🧠 Quiz Module 5 ('+score+'/5)');
+  if(window.dhaQuizRetake){dhaQuizRetakeReward('quiz_m5');}else if(xpEarned>0)awardXP('quiz_m5',xpEarned,'🧠 Quiz Module 5 ('+score+'/5)');
 }
 
 function validateExercice(){
@@ -601,7 +622,7 @@ async function init(){
   document.getElementById('topbar-xp').textContent=(member.xp||0)+' XP';
   if(member.avatar){document.getElementById('sb-avatar').innerHTML='<img src="'+member.avatar+'" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"/>';}
   try{
-    const res=await fetch(SUPABASE_URL+'/rest/v1/membres?email=eq.'+encodeURIComponent(member.email)+'&select=xp,xp_semaine',{
+    const res=await fetch(SUPABASE_URL+'/rest/v1/membres?email=eq.'+encodeURIComponent(member.email)+'&select=*',{
       headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY}
     });
     const data=await res.json();
@@ -620,5 +641,6 @@ async function init(){
 
 init();
 </script>
+<script src="dha-module-extras.js"></script>
 </body>
 </html>
