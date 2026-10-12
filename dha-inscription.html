@@ -955,7 +955,8 @@ async function goStep3() {
         prenom: userData.prenom,
         nom: userData.nom,
         pseudo: userData.pseudo,
-        email: userData.email
+        email: userData.email,
+        guide_url: 'https://digitalhustleracademy.digital/dha-bienvenue.html'
       });
       // Notif CEO — une seule fois par inscription
       const cleNotif = 'dha_notif_ceo_' + (userData.email || '').toLowerCase();
