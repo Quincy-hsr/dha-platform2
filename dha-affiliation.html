@@ -253,14 +253,14 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
       <div class="p-icon">🔗</div>
       <div class="p-info">
         <div class="p-name">1. PARTAGE TON LIEN</div>
-        <div class="p-desc">Chaque personne qui s'inscrit via ton lien est automatiquement rattachée à ton pseudo.</div>
+        <div class="p-desc">Chaque personne qui s'inscrit via ton lien est automatiquement rattachée à ton pseudo. Si elle s'inscrit sans le lien, elle peut écrire ton pseudo dans « Qui t'a invité ? ».</div>
       </div>
     </div>
     <div class="palier-row">
       <div class="p-icon">💰</div>
       <div class="p-info">
         <div class="p-name">2. TU TOUCHES 20%</div>
-        <div class="p-desc"><strong style="color:var(--cyan);">20% de commission</strong> sur chaque vente générée via ton lien — soit <strong style="color:var(--white);">36€</strong> sur la formation à 180€ et <strong style="color:var(--white);">100€</strong> sur l'offre à 500€.</div>
+        <div class="p-desc"><strong style="color:var(--cyan);">20% de commission</strong> sur chaque vente générée via ton lien — soit <strong style="color:var(--white);">36€</strong> sur l'offre à 180€, <strong style="color:var(--white);">100€</strong> sur l'offre à 500€ et <strong style="color:var(--white);">150€</strong> sur l'offre à 750€. Ta commission est validée à chaque paiement reçu : en une fois pour 180€, en 3 fois pour 500€ et 750€ (un tiers à chaque mensualité).</div>
       </div>
     </div>
     <div class="palier-row">
@@ -446,34 +446,43 @@ function renderStatut(nb){
 }
 
 async function loadAffilie(){
+  const COMM={'180':[36],'500':[33,33,34],'750':[50,50,50]};
+  const NOMS={'180':'ESSENTIEL 180€','500':'GROUPE 500€','750':'1:1 750€'};
   try{
-    const res=await fetch(SUPABASE_URL+'/rest/v1/membres?parraine_par=eq.'+encodeURIComponent(member.pseudo||'')+'&select=pseudo,date_inscription,classe',{
+    const res=await fetch(SUPABASE_URL+'/rest/v1/membres?parraine_par=eq.'+encodeURIComponent(member.pseudo||'')+'&or=(plan.is.null,plan.neq.demo)&select=*&order=date_inscription.desc',{
       headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY}
     });
     const data=await res.json();
     const list=document.getElementById('affilies-list');
-    if(!data||data.length===0){
+    if(!Array.isArray(data)||data.length===0){
       list.innerHTML='<div class="no-affili">Tu n\'as pas encore de filleuls. Partage ton lien ! 🔥</div>';
       return;
     }
-    list.innerHTML='';
-    data.forEach(m=>{
-      const premium=(m.classe||'').toLowerCase()==='premium';
-      const prix=premium?500:180;
-      const comm=Math.round(prix*20/100);
+    const esc=t=>String(t||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    list.innerHTML=data.map(m=>{
       const date=m.date_inscription?new Date(m.date_inscription).toLocaleDateString('fr-FR'):'—';
-      const icons=['⚡','🔥','🎮','🚀','💎','👑'];
-      const icon=icons[Math.floor(Math.random()*icons.length)];
-      list.innerHTML+=`
-        <div class="affi-row">
-          <div class="affi-avatar">${icon}</div>
+      const parts=COMM[String(m.pack||'')];
+      let meta, droite;
+      if(parts){
+        const n=Math.min(m.commission_valides||0,parts.length);
+        const total=parts.reduce((a,b)=>a+b,0);
+        const fait=parts.slice(0,n).reduce((a,b)=>a+b,0);
+        const statut=n>=parts.length?'✅ commission validée':(n===0?'⏳ en attente de validation':n+'/3 mensualités validées');
+        meta='Inscrit le '+date+' · '+NOMS[m.pack]+' · '+statut;
+        droite='<div class="affi-comm">+'+fait+'€</div><div style="font-size:10px;color:var(--dim);text-align:right;margin-top:2px;">sur '+total+'€</div>';
+      } else {
+        meta='Inscrit le '+date;
+        droite='<div class="affi-comm">✓</div>';
+      }
+      return `<div class="affi-row">
+          <div class="affi-avatar">⚡</div>
           <div class="affi-info">
-            <div class="affi-pseudo">@${m.pseudo}</div>
-            <div class="affi-meta">Inscrit le ${date} · ${premium?'FORMATION + ACCOMPAGNEMENT':'FORMATION'}</div>
+            <div class="affi-pseudo">@${esc(m.pseudo)}</div>
+            <div class="affi-meta">${meta}</div>
           </div>
-          <div class="affi-comm">${comm>0?'+'+comm+'€':'—'}</div>
+          <div>${droite}</div>
         </div>`;
-    });
+    }).join('');
   }catch(e){
     document.getElementById('affilies-list').innerHTML='<div class="no-affili">Impossible de charger tes filleuls pour le moment.</div>';
   }
@@ -541,7 +550,7 @@ async function init(){
   document.getElementById('affili-link').textContent=affiliLink;
 
   try{
-    const res=await fetch(SUPABASE_URL+'/rest/v1/membres?email=eq.'+encodeURIComponent(member.email).replace(/\./g,'%2E')+'&select=nb_affilies,statut_affiliation,commissions_total,commissions_encours,commissions_versees,rib,contrat_signe,contrat_date',{
+    const res=await fetch(SUPABASE_URL+'/rest/v1/membres?email=eq.'+encodeURIComponent(member.email).replace(/\./g,'%2E')+'&select=*',{
       headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY}
     });
     const data=await res.json();
@@ -550,7 +559,7 @@ async function init(){
       member.statut_affiliation=data[0].statut_affiliation||'membre_simple';
       member.commissions_total=data[0].commissions_total||0;
       member.commissions_encours=data[0].commissions_encours||0;
-      member.commissions_versees=data[0].commissions_versees||0;
+      member.commissions_versees=data[0].commissions_verses||data[0].commissions_versees||0;
       member.rib=data[0].rib||null;
       member.contrat_signe=data[0].contrat_signe||false;
       member.contrat_date=data[0].contrat_date||null;

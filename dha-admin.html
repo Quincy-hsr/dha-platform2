@@ -188,7 +188,7 @@ body{background:var(--bg);color:var(--tx);font-family:'Inter',sans-serif;min-hei
       <div class="sc"><div class="slbl">En cours</div><div class="sval or" id="se">—</div></div>
       <div class="sc"><div class="slbl">Versé</div><div class="sval gr" id="sv">—</div></div>
     </div>
-    <div class="sr"><input class="si" id="search" placeholder="Rechercher pseudo, prénom, email..."></div>
+    <div class="sr" style="display:flex;gap:8px;flex-wrap:wrap"><input class="si" id="search" placeholder="Rechercher pseudo, prénom, email..." style="flex:1;min-width:200px"><button class="tbtn" id="fcom" type="button" style="white-space:nowrap">🤝 Parrainages à valider (0)</button></div>
     <div class="mlist" id="mlist"><div class="loader">Chargement...</div></div>
   </div>
 </div>
@@ -234,6 +234,19 @@ var ACTIONS=[
 ];
 
 var RANGS={'recommandation':{n1:20,n2:0}};
+// Commission de recommandation : 20% du pack, versée paiement par paiement (validée par Quincy)
+var COMM={'180':[36],'500':[33,33,34],'750':[50,50,50]};
+var filtreCom=false;
+function comInfo(m){
+  if(!m.parraine_par||m.plan==='demo')return null;
+  var parts=COMM[String(m.pack||'')];
+  if(!parts)return {ancien:true};
+  var n=Math.min(m.commission_valides||0,parts.length);
+  var total=parts.reduce(function(a,b){return a+b;},0);
+  var fait=parts.slice(0,n).reduce(function(a,b){return a+b;},0);
+  return {parts:parts,n:n,total:total,fait:fait,enAttente:n<parts.length};
+}
+function trouverParrain(ps){ps=(ps||'').toLowerCase();for(var i=0;i<members.length;i++)if((members[i].pseudo||'').toLowerCase()===ps)return members[i];return null;}
 
 function getRang(m){
   return 'recommandation';
@@ -276,7 +289,7 @@ function load(){
       if(!Array.isArray(d))throw 0;
       members=d;
       stats(d);
-      render(d);
+      filter();
     })
     .catch(function(){document.getElementById('mlist').innerHTML='<div class="empty">Erreur Supabase.</div>';});
 }
@@ -290,7 +303,11 @@ function stats(d){
 
 function filter(){
   var q=document.getElementById('search').value.toLowerCase();
+  var nb=members.filter(function(m){var c=comInfo(m);return c&&c.enAttente;}).length;
+  var fb=document.getElementById('fcom');
+  if(fb){fb.textContent=(filtreCom?'✕ ':'🤝 ')+'Parrainages à valider ('+nb+')';fb.style.borderColor=nb?'rgba(255,215,0,0.6)':'';fb.style.color=nb?'#FFD700':'';}
   render(members.filter(function(m){
+    if(filtreCom){var c=comInfo(m);if(!c||!c.enAttente)return false;}
     return (m.pseudo||'').toLowerCase().indexOf(q)>-1||(m.email||'').toLowerCase().indexOf(q)>-1||(m.prenom||'').toLowerCase().indexOf(q)>-1;
   }));
 }
@@ -337,7 +354,8 @@ function render(data){
     h+='<div class="mi"><div class="mn">'+(m.pseudo||m.prenom||'Membre')+'</div>';
     var estDemoMail=/@demo\.dha$/.test(m.email||'');
     h+='<div class="me">'+(estDemoMail?'📞 '+(m.telephone||'contact non renseigné'):(m.email||''))+(m.prenom?' · '+m.prenom+' '+(m.nom||''):'')+'</div></div>';
-    h+='<div class="mbd">'+(m.plan==='demo'?'<span class="bx" style="background:rgba(255,215,0,0.12);color:#FFD700;border:0.5px solid rgba(255,215,0,0.4)">🎮 DÉMO</span>':'')+rangBadge(m)+'<span class="bx bxp" id="bxp-'+id+'">'+(m.xp||0).toLocaleString()+' XP</span>';
+    var ci=comInfo(m);
+    h+='<div class="mbd">'+(ci&&ci.enAttente?'<span class="bx" style="background:rgba(255,215,0,0.12);color:#FFD700;border:0.5px solid rgba(255,215,0,0.5)">🤝 À VALIDER</span>':'')+(m.plan==='demo'?'<span class="bx" style="background:rgba(255,215,0,0.12);color:#FFD700;border:0.5px solid rgba(255,215,0,0.4)">🎮 DÉMO</span>':'')+rangBadge(m)+'<span class="bx bxp" id="bxp-'+id+'">'+(m.xp||0).toLocaleString()+' XP</span>';
     if(enc>0)h+='<span class="bx" style="background:rgba(255,152,0,0.1);color:var(--or);border:0.5px solid rgba(255,152,0,0.3)">'+enc+'€</span>';
     h+='</div><span class="ch" id="ch-'+id+'">▾</span></div>';
 
@@ -346,6 +364,21 @@ function render(data){
     if(m.plan==='demo'){
       h+='<div class="stitle">Compte démo</div>';
       h+='<div style="font-size:12px;opacity:.7;margin-bottom:14px">Inscrit via la démo pour voir la plateforme (seul le Module 01 est débloqué). Contact : '+(m.telephone||'non renseigné')+'. S\'il paie, il se réinscrit normalement.</div>';
+    }
+    // Parrainage : ce membre a été invité par quelqu'un
+    if(ci){
+      h+='<div class="stitle">Parrainage</div>';
+      if(ci.ancien){
+        h+='<div style="font-size:12px;opacity:.7;margin-bottom:14px">Invité par <b>@'+m.parraine_par+'</b> · inscrit avant le nouveau système (commission déjà comptée à l\'inscription).</div>';
+      } else {
+        var enFois=ci.parts.length>1;
+        h+='<div style="font-size:13px;margin-bottom:8px">Invité par <b>@'+m.parraine_par+'</b> · pack <b>'+m.pack+'€</b> · commission <b>'+ci.total+'€</b>'+(enFois?' en 3 fois ('+ci.parts.join(' + ')+'€)':'')+'</div>';
+        h+='<div style="font-size:12px;opacity:.75;margin-bottom:8px">'+(enFois?ci.n+'/3 mensualités validées':'Paiement '+(ci.n?'validé':'pas encore validé'))+' · '+ci.fait+'€ crédités sur '+ci.total+'€</div>';
+        if(ci.enAttente){
+          var lib=enFois?'✓ Valider la mensualité '+(ci.n+1)+'/3':'✓ Valider le paiement';
+          h+='<button class="bg bgg" data-valcom="'+id+'" style="margin-bottom:14px">'+lib+' → +'+ci.parts[ci.n]+'€ pour @'+m.parraine_par+'</button>';
+        } else h+='<div style="font-size:12px;color:#00FF88;margin-bottom:14px">✅ Commission entièrement validée</div>';
+      }
     }
     // XP section
     h+='<div class="stitle">Actions XP</div>';
@@ -388,6 +421,30 @@ function render(data){
 
 // DÉLÉGATION UNIQUE
 document.addEventListener('click',function(e){
+  if(e.target.closest&&e.target.closest('#fcom')){filtreCom=!filtreCom;filter();return;}
+  var vc=e.target.closest&&e.target.closest('[data-valcom]');
+  if(vc){
+    var fid=vc.getAttribute('data-valcom');var f=getMember(fid);if(!f)return;
+    var c=comInfo(f);if(!c||c.ancien||!c.enAttente)return;
+    var par=trouverParrain(f.parraine_par);
+    if(!par){toast('Parrain @'+f.parraine_par+' introuvable','err');return;}
+    var montant=c.parts[c.n];
+    var etape=c.parts.length>1?'la mensualité '+(c.n+1)+'/3':'le paiement';
+    if(!confirm('Tu as bien reçu '+etape+' de @'+(f.pseudo||'')+' ('+f.pack+'€) ?\n\n→ +'+montant+'€ de commission pour @'+par.pseudo))return;
+    vc.disabled=true;
+    patch(fid,{commission_valides:c.n+1},function(){
+      f.commission_valides=c.n+1;
+      var body={commissions_encours:(par.commissions_encours||0)+montant,commissions_total:(par.commissions_total||0)+montant};
+      if(c.n===0)body.nb_affilies=(par.nb_affilies||0)+1;
+      patch(par.id,body,function(){
+        par.commissions_encours=body.commissions_encours;par.commissions_total=body.commissions_total;if(body.nb_affilies!=null)par.nb_affilies=body.nb_affilies;
+        stats(members);filter();
+        var o=document.getElementById('md-'+fid);if(o)o.style.display='block';
+        toast('✓ +'+montant+'€ pour @'+par.pseudo,'ok');
+      });
+    });
+    return;
+  }
   var t=e.target;
 
   // Toggle membre
