@@ -2,6 +2,7 @@
 <html lang="fr">
 <head>
 <script src="dha-demo.js"></script>
+<script src="dha-levelup.js"></script>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>DHA — Module 1 : Introduction au Trading</title>
@@ -608,13 +609,49 @@ function sendQuestion(){
   document.getElementById('question-confirm').classList.add('show');
 }
 
+// ── Niveaux + cinématique de level up (mêmes règles que le dashboard) ──
+const LU_RANGS=[
+  {min:0,    max:4999,  name:'NEW HUSTLER',icon:'🎮',color:'rgba(200,200,200,0.6)'},
+  {min:5000, max:14999, name:'HUSTLER',    icon:'⚡',color:'#1E64FF'},
+  {min:15000,max:21999, name:'PRO HUSTLER',icon:'🚀',color:'#00D4FF'},
+  {min:22000,max:29999, name:'AMBASSADEUR',icon:'👑',color:'#FFD700'},
+  {min:30000,max:999999,name:'LEGEND',     icon:'💎',color:'#9D4EDD'}
+];
+function luXPForLevel(l){if(l<=1)return 0;if(l<=10)return (l-1)*500;if(l<=25)return 5000+(l-10)*667;if(l<=50)return 15000+(l-25)*280;return 22000+(l-50)*160;}
+function luLevel(xp){for(let l=100;l>=1;l--){if(xp>=luXPForLevel(l))return l;}return 1;}
+function luCheck(){
+  if(!window.DHALevelUp||!member)return;
+  const xp=member.xp||0;
+  const rang=LU_RANGS.find(r=>xp>=r.min&&xp<=r.max)||LU_RANGS[0];
+  DHALevelUp.check({pseudo:member.pseudo,xp,level:luLevel(xp),rang,rangs:LU_RANGS});
+}
+// Attend la fin de la cinématique (le membre clique sur CONTINUER) avant d'enchaîner
+function apresCinematique(cb){
+  setTimeout(function attendre(){document.querySelector('.lu-ov')?setTimeout(attendre,300):cb();},700);
+}
+
 async function completeBloc(){
   if(completedActions.has('bloc_m1')){alert('Tu as déjà terminé ce module ! 💪');return;}
+  // Le quiz doit être validé avant de terminer le module
+  if(!completedActions.has('quiz_m1')){
+    alert('Valide d\'abord le quiz du module pour passer niveau 2 ! 🧠');
+    document.getElementById('quiz-btn').scrollIntoView({behavior:'smooth',block:'center'});
+    return;
+  }
   document.getElementById('complete-btn').textContent='✅ MODULE 1 TERMINÉ !';
   document.getElementById('complete-btn').disabled=true;
   await awardXP('bloc_m1',100,'📚 Bloc terminé — Module 1');
   await awardXP('quete_bloc_'+todayISO(),50,'📚 Finir un module (quête du jour)');
-  setTimeout(()=>{window.location.href='dha-formation.html';},1500);
+  // Module 1 terminé = passage direct au niveau 2 (500 XP), pour tout le monde
+  const manque=luXPForLevel(2)-(member.xp||0);
+  if(manque>0){
+    await new Promise(r=>setTimeout(r,900));
+    await awardXP('bonus_m1_niveau2',manque,'🚀 Bonus Module 1 — passage niveau 2');
+  }
+  setTimeout(()=>{
+    luCheck();
+    apresCinematique(()=>{window.location.href='dha-formation.html';});
+  },1000);
 }
 
 async function init(){
@@ -636,9 +673,10 @@ async function init(){
       document.getElementById('topbar-xp').textContent=member.xp+' XP';
     }
   }catch(e){}
-  await loadCompletedActions(member.pseudo||'guest',['bloc_m1','quiz_m1']);
+  await loadCompletedActions(member.pseudo||'guest',['bloc_m1','quiz_m1','bonus_m1_niveau2']);
   if(completedActions.has('bloc_m1')){document.getElementById('complete-btn').textContent='✅ DÉJÀ TERMINÉ';document.getElementById('complete-btn').disabled=true;}
   if(completedActions.has('quiz_m1')){document.getElementById('quiz-btn').textContent='✅ QUIZ DÉJÀ FAIT';document.getElementById('quiz-btn').disabled=true;quizDone=true;}
+  luCheck(); // mémorise le niveau actuel (sans animation) pour détecter le passage de niveau
 }
 
 init();
