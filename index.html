@@ -42,6 +42,7 @@
     --border:rgba(30,100,255,0.18);
   }
   html{scroll-behavior:smooth;}
+  section[id]{scroll-margin-top:72px;}
   body{background:var(--bg);color:var(--white);font-family:'Rajdhani',sans-serif;font-size:16px;overflow-x:hidden;}
   h1,h2,h3,.font-display{font-family:'Chakra Petch',sans-serif;}
 
@@ -340,7 +341,7 @@
   <div class="hero-btns">
     <a href="https://calendly.com/quincy-massol/appel-pour-huslter" target="_blank" class="btn-primary">▶ RÉSERVER UN APPEL</a>
     <a href="https://youtu.be/-ImeIkSBfJA" target="_blank" class="btn-secondary">▶ VOIR LA PLATEFORME →</a>
-    <a href="dha-inscription.html?demo=1" class="btn-secondary" style="border-color:rgba(255,215,0,0.45);color:#FFD700;">🎮 ESSAYER LA DÉMO GRATUITE</a>
+    <a href="dha-inscription-demo.html" class="btn-secondary" style="border-color:rgba(255,215,0,0.45);color:#FFD700;">🎮 ESSAYER LA DÉMO GRATUITE</a>
   </div>
   <p style="font-size:13px;color:var(--dimmer);margin-top:14px;max-width:480px;line-height:1.6" class="reveal">On ne prend pas tout le monde. Un entretien de sélection est nécessaire pour rejoindre la communauté et garantir le niveau d'engagement du groupe.</p>
   <div class="hero-stats">
@@ -851,7 +852,7 @@
 
   </div>
   <p class="pricing-guarantee-note reveal">🛡️ <strong style="color:var(--green)">Garantie de l'offre Accompagnement 1:1 :</strong> si au bout de 2 mois tu n'es pas satisfait, et que malgré ton travail et le respect de nos conseils tu n'as obtenu aucun résultat, tu es remboursé. Voir conditions complètes dans les CGV.<br/><br/>💳 En cliquant, tu es redirigé vers un paiement sécurisé Stripe. Une fois le paiement confirmé, tu recevras tes accès et les prochaines étapes par email.</p>
-  <p class="reveal" style="text-align:center;margin-top:22px;font-size:14px;color:var(--dim, rgba(232,244,255,0.55));">Pas encore sûr ? <a href="dha-inscription.html?demo=1" style="color:#FFD700;font-weight:700;text-decoration:none;">🎮 Teste la plateforme gratuitement avec la version démo →</a></p>
+  <p class="reveal" style="text-align:center;margin-top:22px;font-size:14px;color:var(--dim, rgba(232,244,255,0.55));">Pas encore sûr ? <a href="dha-inscription-demo.html" style="color:#FFD700;font-weight:700;text-decoration:none;">🎮 Teste la plateforme gratuitement avec la version démo →</a></p>
 </section>
 
 <!-- CTA FINAL -->
@@ -914,12 +915,37 @@
   els.forEach(el=>obs.observe(el));
 })();
 
+// Aller à une section (ex. #pricing) et y rester même si des images se chargent au-dessus
+function allerA(id,smooth){
+  const t=document.getElementById(id);if(!t)return;
+  const hauteurNav=(document.querySelector('nav')||{offsetHeight:0}).offsetHeight||0;
+  const viser=()=>{const y=t.getBoundingClientRect().top+window.scrollY-hauteurNav-8;return Math.max(0,y);};
+  // charge tout de suite les images situées avant la section, pour figer la mise en page
+  document.querySelectorAll('img[loading="lazy"]').forEach(img=>{if(img.compareDocumentPosition(t)&Node.DOCUMENT_POSITION_FOLLOWING)img.loading='eager';});
+  window.scrollTo({top:viser(),behavior:smooth?'smooth':'auto'});
+  let stop=false;const fin=Date.now()+4000;
+  const arreter=()=>{stop=true;};
+  ['wheel','touchstart','keydown'].forEach(ev=>window.addEventListener(ev,arreter,{once:true,passive:true}));
+  (function corriger(){
+    if(stop||Date.now()>fin)return;
+    const ecart=Math.abs(t.getBoundingClientRect().top-hauteurNav-8);
+    if(ecart>6)window.scrollTo({top:viser(),behavior:'auto'});
+    setTimeout(corriger,smooth?250:120);
+  })();
+}
 document.querySelectorAll('a[href^="#"]').forEach(a=>{
   a.addEventListener('click',e=>{
-    const t=document.querySelector(a.getAttribute('href'));
-    if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth'});}
+    const id=a.getAttribute('href').slice(1);
+    if(id&&document.getElementById(id)){e.preventDefault();history.replaceState(null,'','#'+id);allerA(id,true);}
   });
 });
+// Arrivée depuis un autre lien (ex. bouton « Passer à la version payante » de la démo)
+if(location.hash.length>1){
+  const id=decodeURIComponent(location.hash.slice(1));
+  if('scrollRestoration' in history)history.scrollRestoration='manual';
+  window.addEventListener('load',()=>allerA(id,false));
+  setTimeout(()=>allerA(id,false),50);
+}
 </script>
 
 </body>

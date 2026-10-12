@@ -153,7 +153,7 @@ function getScore(m){
 
 async function loadLeaderboard(){
   try{
-const res=await fetch(SUPABASE_URL+'/rest/v1/membres?select=pseudo,xp',{
+const res=await fetch(SUPABASE_URL+'/rest/v1/membres?select=pseudo,xp&or=(plan.is.null,plan.neq.demo)',{
   headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY}
 });     const data=await res.json();
     if(!data||!Array.isArray(data)){

@@ -333,21 +333,17 @@ function render(data){
     h+='<div class="mh" data-toggle="'+id+'">';
     h+='<div class="av">'+ini(m)+'</div>';
     h+='<div class="mi"><div class="mn">'+(m.pseudo||m.prenom||'Membre')+'</div>';
-    h+='<div class="me">'+(m.email||'')+(m.prenom?' · '+m.prenom+' '+(m.nom||''):'')+'</div></div>';
+    var estDemoMail=/@demo\.dha$/.test(m.email||'');
+    h+='<div class="me">'+(estDemoMail?'📞 '+(m.telephone||'contact non renseigné'):(m.email||''))+(m.prenom?' · '+m.prenom+' '+(m.nom||''):'')+'</div></div>';
     h+='<div class="mbd">'+(m.plan==='demo'?'<span class="bx" style="background:rgba(255,215,0,0.12);color:#FFD700;border:0.5px solid rgba(255,215,0,0.4)">🎮 DÉMO</span>':'')+rangBadge(m)+'<span class="bx bxp" id="bxp-'+id+'">'+(m.xp||0).toLocaleString()+' XP</span>';
     if(enc>0)h+='<span class="bx" style="background:rgba(255,152,0,0.1);color:var(--or);border:0.5px solid rgba(255,152,0,0.3)">'+enc+'€</span>';
     h+='</div><span class="ch" id="ch-'+id+'">▾</span></div>';
 
     h+='<div class="md" id="md-'+id+'" style="display:none">';
-    // Accès plateforme (démo / payant)
-    h+='<div class="stitle">Accès plateforme</div>';
+    // Compte démo : simple info (s'il paie, il se réinscrit normalement)
     if(m.plan==='demo'){
-      h+='<div style="font-size:12px;opacity:.7;margin-bottom:8px">Compte démo : seul le Module 01 est débloqué. Après paiement, choisis son offre :</div>';
-      h+='<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px">';
-      ['180','500','750'].forEach(function(p){h+='<button class="bg bgg" data-upg="'+id+'" data-plan="'+p+'">🔓 Débloquer '+p+'€</button>';});
-      h+='</div>';
-    } else {
-      h+='<div style="font-size:12px;opacity:.7;margin-bottom:14px">Accès complet'+(m.plan?' · offre '+m.plan+'€':'')+'</div>';
+      h+='<div class="stitle">Compte démo</div>';
+      h+='<div style="font-size:12px;opacity:.7;margin-bottom:14px">Inscrit via la démo pour voir la plateforme (seul le Module 01 est débloqué). Contact : '+(m.telephone||'non renseigné')+'. S\'il paie, il se réinscrit normalement.</div>';
     }
     // XP section
     h+='<div class="stitle">Actions XP</div>';
@@ -390,23 +386,6 @@ function render(data){
 
 // DÉLÉGATION UNIQUE
 document.addEventListener('click',function(e){
-  var upg=e.target.closest&&e.target.closest('[data-upg]');
-  if(upg){
-    var uid=upg.getAttribute('data-upg'),plan=upg.getAttribute('data-plan');
-    var um=getMember(uid);if(!um)return;
-    if(!confirm('Débloquer l\'accès complet ('+plan+'€) pour '+(um.pseudo||um.email)+' ?'))return;
-    patch(uid,{plan:plan},function(){
-      um.plan=plan;
-      // Commission de recommandation (20%), créditée seulement maintenant qu'il a payé
-      var par=um.parraine_par?members.filter(function(x){return x.pseudo===um.parraine_par;})[0]:null;
-      if(par){
-        var com=Math.round(parseInt(plan,10)*20/100);
-        var body={commissions_encours:(par.commissions_encours||0)+com,commissions_total:(par.commissions_total||0)+com,nb_affilies:(par.nb_affilies||0)+1};
-        patch(par.id,body,function(){par.commissions_encours=body.commissions_encours;par.commissions_total=body.commissions_total;par.nb_affilies=body.nb_affilies;stats(members);render(members);toast('✓ Accès débloqué · +'+com+'€ pour @'+par.pseudo,'ok');});
-      } else {render(members);toast('✓ Accès complet débloqué','ok');}
-    });
-    return;
-  }
   var t=e.target;
 
   // Toggle membre

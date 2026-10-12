@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Digital Hustler Academy — Inscription démo</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600;700&display=swap" rel="stylesheet"/>
+  <style>
+:root {
+  --bg: #050914;
+  --card: #080e1f;
+  --blue: #1E64FF;
+  --cyan: #00D4FF;
+  --gold: #FFD700;
+  --green: #00FF88;
+  --purple: #9D4EDD;
+  --white: #E8F4FF;
+  --dim: rgba(232,244,255,0.4);
+  --border: rgba(30,100,255,0.15);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: var(--bg);
+  font-family: 'Exo 2', sans-serif;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* BG */
+.bg-grid {
+  position: fixed; inset: 0;
+  background-image:
+    linear-gradient(rgba(30,100,255,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(30,100,255,0.04) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+}
+.bg-glow-1 {
+  position: fixed; top: -200px; left: -200px;
+  width: 600px; height: 600px;
+  background: radial-gradient(ellipse, rgba(30,100,255,0.12) 0%, transparent 70%);
+  pointer-events: none;
+}
+.bg-glow-2 {
+  position: fixed; bottom: -200px; right: -200px;
+  width: 600px; height: 600px;
+  background: radial-gradient(ellipse, rgba(0,212,255,0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+.scanlines {
+  position: fixed; inset: 0;
+  background-image: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,0,0,0.02) 3px, rgba(0,0,0,0.02) 6px);
+  pointer-events: none; z-index: 0;
+}
+
+/* PARTICLES */
+.particle {
+  position: fixed; border-radius: 50%;
+  animation: float-up linear infinite; pointer-events: none;
+}
+@keyframes float-up {
+  0% { transform: translateY(100vh) scale(1); opacity: 0; }
+  10% { opacity: 0.6; }
+  90% { opacity: 0.3; }
+  100% { transform: translateY(-100px) scale(0.3); opacity: 0; }
+}
+
+/* MAIN CONTAINER */
+.container {
+  position: relative; z-index: 10;
+  width: 100%; max-width: 520px;
+  padding: 24px 20px;
+  display: flex; flex-direction: column; align-items: center;
+  gap: 0;
+}
+
+/* LOGO */
+.logo-wrap {
+  text-align: center; margin-bottom: 32px;
+  animation: fadeup .6s ease both;
+}
+.logo-dha {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 48px; font-weight: 900; letter-spacing: 8px;
+  color: var(--white);
+  text-shadow: 0 0 40px rgba(30,100,255,0.8), 0 0 80px rgba(30,100,255,0.3);
+  line-height: 1;
+}
+.logo-sub {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 8px; letter-spacing: 5px;
+  color: rgba(0,212,255,0.6); margin-top: 6px;
+  text-shadow: 0 0 10px rgba(0,212,255,0.4);
+}
+
+/* STEP INDICATOR */
+.steps {
+  display: flex; align-items: center; gap: 0;
+  margin-bottom: 28px; width: 100%; justify-content: center;
+  animation: fadeup .6s .1s ease both;
+}
+.step {
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
+}
+.step-circle {
+  width: 36px; height: 36px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Orbitron', sans-serif; font-size: 11px; font-weight: 900;
+  transition: all .3s;
+}
+.step-circle.active {
+  background: linear-gradient(135deg, var(--blue), var(--cyan));
+  color: #000; box-shadow: 0 0 20px rgba(0,212,255,0.4);
+}
+.step-circle.done {
+  background: rgba(0,255,136,0.15); border: 1px solid rgba(0,255,136,0.4);
+  color: var(--green);
+}
+.step-circle.inactive {
+  background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+  color: rgba(255,255,255,0.25);
+}
+.step-label {
+  font-family: 'Orbitron', sans-serif; font-size: 7px; letter-spacing: 1px;
+  color: rgba(255,255,255,0.3); text-align: center;
+}
+.step-label.active { color: var(--cyan); }
+.step-line {
+  width: 60px; height: 1px; margin-bottom: 18px;
+  background: linear-gradient(90deg, rgba(30,100,255,0.3), rgba(0,212,255,0.3));
+}
+
+/* CARD */
+.card {
+  width: 100%; background: var(--card);
+  border: 1px solid var(--border); border-radius: 24px;
+  padding: 36px 32px; position: relative; overflow: hidden;
+  animation: fadeup .6s .2s ease both;
+}
+.card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+}
+.corner { position: absolute; width: 20px; height: 20px; }
+.corner-tl { top: 12px; left: 12px; border-top: 1px solid rgba(0,212,255,0.3); border-left: 1px solid rgba(0,212,255,0.3); }
+.corner-tr { top: 12px; right: 12px; border-top: 1px solid rgba(0,212,255,0.3); border-right: 1px solid rgba(0,212,255,0.3); }
+.corner-bl { bottom: 12px; left: 12px; border-bottom: 1px solid rgba(0,212,255,0.3); border-left: 1px solid rgba(0,212,255,0.3); }
+.corner-br { bottom: 12px; right: 12px; border-bottom: 1px solid rgba(0,212,255,0.3); border-right: 1px solid rgba(0,212,255,0.3); }
+
+.card-title {
+  font-family: 'Orbitron', sans-serif; font-size: 18px; font-weight: 900;
+  color: var(--white); margin-bottom: 6px; letter-spacing: 1px;
+}
+.card-sub {
+  font-size: 13px; color: var(--dim); margin-bottom: 28px; line-height: 1.5;
+}
+
+/* FORM */
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+.form-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 12px; }
+.form-label {
+  font-family: 'Orbitron', sans-serif; font-size: 8px; letter-spacing: 2px;
+  color: var(--dim);
+}
+.form-input {
+  padding: 13px 16px; border-radius: 12px;
+  background: rgba(255,255,255,0.04); border: 1px solid var(--border);
+  color: var(--white); font-family: 'Exo 2', sans-serif; font-size: 14px;
+  outline: none; transition: all .2s; width: 100%;
+}
+.form-input::placeholder { color: rgba(255,255,255,0.2); }
+.form-input:focus { border-color: rgba(0,212,255,0.4); background: rgba(0,212,255,0.04); box-shadow: 0 0 0 3px rgba(0,212,255,0.06); }
+.form-input.error { border-color: rgba(255,68,102,0.5); }
+
+.form-select {
+  padding: 13px 16px; border-radius: 12px;
+  background: #080e1f; border: 1px solid var(--border);
+  color: var(--white); font-family: 'Exo 2', sans-serif; font-size: 14px;
+  outline: none; transition: all .2s; width: 100%; cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%2300D4FF' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 16px center;
+}
+.form-select:focus { border-color: rgba(0,212,255,0.4); }
+.form-select option { background: #080e1f; }
+
+/* CLASSE SELECTOR */
+.classe-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+.classe-card {
+  padding: 14px 12px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.03); cursor: pointer; transition: all .2s;
+  display: flex; flex-direction: column; align-items: center; gap: 8px; text-align: center;
+  position: relative;
+}
+.classe-card:hover { transform: translateY(-2px); }
+.classe-card.selected { border-color: currentColor; }
+.classe-card.trading { color: var(--cyan); }
+.classe-card.trading.selected { background: rgba(0,212,255,0.08); box-shadow: 0 0 20px rgba(0,212,255,0.1); }
+.classe-card.ugc { color: var(--purple); }
+.classe-card.ugc.selected { background: rgba(157,78,221,0.08); box-shadow: 0 0 20px rgba(157,78,221,0.1); }
+.classe-card.marketing { color: var(--green); }
+.classe-card.marketing.selected { background: rgba(0,255,136,0.08); box-shadow: 0 0 20px rgba(0,255,136,0.1); }
+.classe-card.ecommerce { color: #FF8C00; }
+.classe-card.ecommerce.selected { background: rgba(255,140,0,0.08); box-shadow: 0 0 20px rgba(255,140,0,0.1); }
+.classe-icon { font-size: 28px; }
+.classe-name { font-family: 'Orbitron', sans-serif; font-size: 9px; font-weight: 900; letter-spacing: 1px; }
+.classe-desc { font-size: 10px; color: rgba(255,255,255,0.35); line-height: 1.4; }
+.classe-check {
+  position: absolute; top: 8px; right: 8px;
+  width: 16px; height: 16px; border-radius: 50%;
+  background: currentColor; display: none;
+  align-items: center; justify-content: center; font-size: 9px; color: #000;
+}
+.classe-card.selected .classe-check { display: flex; }
+
+/* PASSWORD STRENGTH */
+.password-strength { margin-top: 6px; }
+.strength-bar { height: 3px; border-radius: 99px; background: rgba(255,255,255,0.08); overflow: hidden; margin-bottom: 4px; }
+.strength-fill { height: 100%; border-radius: 99px; transition: all .3s; width: 0%; }
+.strength-text { font-family: 'Orbitron', sans-serif; font-size: 8px; letter-spacing: 1px; color: var(--dim); }
+
+/* DIVIDER */
+.form-divider {
+  height: 1px; background: linear-gradient(90deg, transparent, var(--border), transparent);
+  margin: 20px 0;
+}
+.form-divider-label {
+  text-align: center; font-family: 'Orbitron', sans-serif;
+  font-size: 8px; letter-spacing: 3px; color: var(--dim); margin: -20px 0 0;
+  position: relative;
+}
+.form-divider-label span {
+  background: var(--card); padding: 0 12px; position: relative; top: -4px;
+}
+
+/* SUBMIT BTN */
+.btn-submit {
+  width: 100%; padding: 16px; border-radius: 14px;
+  background: linear-gradient(135deg, var(--blue), var(--cyan));
+  color: #000; font-family: 'Orbitron', sans-serif;
+  font-size: 12px; font-weight: 900; letter-spacing: 2px;
+  border: none; cursor: pointer; margin-top: 8px;
+  box-shadow: 0 6px 30px rgba(0,212,255,0.3);
+  transition: all .2s; position: relative; overflow: hidden;
+}
+.btn-submit:hover { transform: translateY(-2px); box-shadow: 0 10px 40px rgba(0,212,255,0.4); }
+.btn-submit:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+.btn-submit::after {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+  transform: translateX(-100%); transition: transform .5s;
+}
+.btn-submit:hover::after { transform: translateX(100%); }
+
+/* LOGIN LINK */
+.login-link {
+  text-align: center; margin-top: 20px;
+  font-size: 13px; color: var(--dim);
+  animation: fadeup .6s .3s ease both;
+}
+.login-link a { color: var(--cyan); text-decoration: none; font-weight: 600; }
+.login-link a:hover { text-shadow: 0 0 10px rgba(0,212,255,0.5); }
+
+/* ÉTAPE 2 — CLASSE */
+.step2 { display: none; }
+.step2.active { display: block; }
+.step1 { display: block; }
+.step1.hidden { display: none; }
+
+/* SUCCESS */
+.success-screen {
+  display: none; text-align: center; padding: 20px 0;
+}
+.success-screen.active { display: block; }
+.success-icon { font-size: 64px; margin-bottom: 20px; animation: bounce .6s ease; }
+@keyframes bounce { 0%,100%{transform:scale(1);}50%{transform:scale(1.2);} }
+.success-title {
+  font-family: 'Orbitron', sans-serif; font-size: 22px; font-weight: 900;
+  color: var(--white); margin-bottom: 10px;
+}
+.success-title span { color: var(--cyan); }
+.success-sub { font-size: 14px; color: var(--dim); line-height: 1.7; margin-bottom: 28px; }
+.btn-dashboard {
+  display: inline-block; padding: 14px 32px; border-radius: 12px;
+  background: linear-gradient(135deg, var(--blue), var(--cyan));
+  color: #000; font-family: 'Orbitron', sans-serif;
+  font-size: 11px; font-weight: 900; letter-spacing: 2px;
+  text-decoration: none; box-shadow: 0 6px 30px rgba(0,212,255,0.3);
+}
+
+/* LOADING BAR */
+.loading-bar {
+  position: fixed; top: 0; left: 0; height: 2px; width: 0%;
+  background: linear-gradient(90deg, var(--blue), var(--cyan));
+  z-index: 9999; transition: width .3s; box-shadow: 0 0 10px var(--cyan);
+}
+
+@keyframes fadeup {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* MOBILE */
+@media (max-width: 480px) {
+  .card { padding: 24px 20px; }
+  .form-grid { grid-template-columns: 1fr; }
+  .logo-dha { font-size: 36px; }
+  .step-line { width: 40px; }
+}
+
+/* MODALE RÈGLEMENT */
+.reglement-overlay {
+  position:fixed;inset:0;z-index:99999;
+  background:rgba(5,9,20,0.92);backdrop-filter:blur(8px);
+  display:none;align-items:center;justify-content:center;padding:20px;
+}
+.reglement-overlay.active { display:flex; }
+.reglement-box {
+  background:#080e1f;border:1px solid rgba(0,212,255,0.35);
+  border-radius:20px;width:100%;max-width:560px;
+  max-height:88vh;display:flex;flex-direction:column;
+  box-shadow:0 8px 60px rgba(0,212,255,0.15);
+  animation:fadeup .35s ease;
+}
+.reglement-header {
+  padding:22px 24px 16px;border-bottom:1px solid rgba(0,212,255,0.15);
+  display:flex;align-items:center;gap:14px;flex-shrink:0;
+}
+.reglement-header-icon {
+  width:44px;height:44px;border-radius:12px;
+  background:linear-gradient(135deg,rgba(30,100,255,0.25),rgba(0,212,255,0.15));
+  border:1px solid rgba(0,212,255,0.3);
+  display:flex;align-items:center;justify-content:center;font-size:20px;
+}
+.reglement-header-title {
+  font-family:'Orbitron',sans-serif;font-size:13px;font-weight:900;
+  color:#E8F4FF;letter-spacing:1px;
+}
+.reglement-header-sub {
+  font-family:'Orbitron',sans-serif;font-size:8px;
+  color:rgba(0,212,255,0.6);letter-spacing:2px;margin-top:3px;
+}
+.reglement-body {
+  flex:1;overflow-y:auto;padding:20px 24px;
+  scrollbar-width:thin;scrollbar-color:#1E64FF44 transparent;
+}
+.reglement-body::-webkit-scrollbar { width:4px; }
+.reglement-body::-webkit-scrollbar-thumb { background:#1E64FF44;border-radius:99px; }
+.reglement-section {
+  margin-bottom:22px;
+}
+.reglement-section-title {
+  font-family:'Orbitron',sans-serif;font-size:9px;font-weight:700;
+  letter-spacing:2px;color:var(--cyan);margin-bottom:10px;
+  display:flex;align-items:center;gap:8px;
+}
+.reglement-section-title::after {
+  content:'';flex:1;height:1px;background:rgba(0,212,255,0.15);
+}
+.reglement-section p, .reglement-section li {
+  font-size:13px;color:var(--dim);line-height:1.75;
+}
+.reglement-section ul { padding-left:18px; }
+.reglement-section li { margin-bottom:4px; }
+.reglement-section strong { color:#E8F4FF; }
+.reglement-footer {
+  padding:16px 24px 20px;border-top:1px solid rgba(0,212,255,0.15);flex-shrink:0;
+}
+.reglement-check-row {
+  display:flex;align-items:flex-start;gap:12px;margin-bottom:16px;cursor:pointer;
+}
+.reglement-check-box {
+  width:20px;height:20px;border-radius:6px;flex-shrink:0;margin-top:1px;
+  border:2px solid rgba(0,212,255,0.4);background:transparent;
+  display:flex;align-items:center;justify-content:center;transition:all .2s;
+}
+.reglement-check-box.checked {
+  background:rgba(0,212,255,0.2);border-color:var(--cyan);
+}
+.reglement-check-box.checked::after { content:'✓';color:var(--cyan);font-size:12px;font-weight:900; }
+.reglement-check-label {
+  font-size:13px;color:var(--dim);line-height:1.6;
+}
+.reglement-check-label strong { color:#E8F4FF; }
+.reglement-btn-validate {
+  width:100%;padding:15px;border-radius:12px;
+  background:linear-gradient(135deg,#1E64FF,#00D4FF);
+  color:#000;font-family:'Orbitron',sans-serif;font-size:12px;font-weight:900;
+  letter-spacing:2px;border:none;cursor:pointer;
+  box-shadow:0 6px 24px rgba(0,212,255,0.35);transition:all .2s;
+  opacity:0.4;pointer-events:none;
+}
+.reglement-btn-validate.enabled {
+  opacity:1;pointer-events:auto;
+}
+.reglement-btn-validate.enabled:hover {
+  transform:translateY(-2px);box-shadow:0 8px 32px rgba(0,212,255,0.5);
+}
+
+/* MODALE ONBOARDING */
+.onboarding-overlay {
+  position:fixed;inset:0;z-index:99999;
+  background:rgba(5,9,20,0.92);backdrop-filter:blur(8px);
+  display:none;align-items:center;justify-content:center;padding:20px;
+}
+.onboarding-overlay.active { display:flex; }
+.onboarding-box {
+  background:#080e1f;border:1px solid rgba(0,212,255,0.35);
+  border-radius:20px;width:100%;max-width:440px;
+  box-shadow:0 8px 60px rgba(0,212,255,0.15);
+  animation:fadeup .35s ease;overflow:hidden;
+}
+.onboarding-step { display:none; }
+.onboarding-step.active { display:block; }
+
+/* Step 1 — Réserver l'appel */
+.onboarding-step-1 {
+  padding:36px 28px;text-align:center;
+}
+.onboarding-icon {
+  width:60px;height:60px;border-radius:50%;margin:0 auto 20px;
+  background:linear-gradient(135deg,rgba(30,100,255,0.2),rgba(0,212,255,0.1));
+  border:1px solid rgba(0,212,255,0.3);
+  display:flex;align-items:center;justify-content:center;font-size:26px;
+}
+.onboarding-title {
+  font-family:'Orbitron',sans-serif;font-size:15px;font-weight:900;
+  color:#E8F4FF;letter-spacing:1px;margin-bottom:8px;
+}
+.onboarding-sub {
+  font-size:13px;color:rgba(232,244,255,0.5);line-height:1.7;margin-bottom:6px;
+}
+.onboarding-warning {
+  font-size:13px;color:var(--cyan);font-weight:600;margin-bottom:24px;
+}
+.onboarding-btn-primary {
+  display:block;width:100%;padding:15px;border-radius:12px;
+  background:linear-gradient(135deg,var(--blue),var(--cyan));
+  color:#000;font-family:'Orbitron',sans-serif;font-size:11px;
+  font-weight:900;letter-spacing:2px;border:none;cursor:pointer;
+  box-shadow:0 6px 24px rgba(0,212,255,0.35);transition:all .2s;
+  text-decoration:none;text-align:center;margin-bottom:12px;
+}
+.onboarding-btn-primary:hover { transform:translateY(-2px); }
+.onboarding-btn-skip {
+  background:none;border:none;font-size:11px;
+  color:rgba(232,244,255,0.2);cursor:pointer;
+  font-family:'Exo 2',sans-serif;
+}
+.onboarding-btn-skip:hover { color:rgba(232,244,255,0.4); }
+
+/* Step 2 — Choix après réservation */
+.onboarding-step-2 { padding:28px; }
+.onboarding-step-2 .onboarding-title { text-align:center;margin-bottom:6px; }
+.onboarding-step-2 .onboarding-sub { text-align:center;margin-bottom:20px; }
+
+.onboarding-card-recommended {
+  border-radius:14px;padding:18px;margin-bottom:12px;
+  background:rgba(0,212,255,0.06);
+  border:1.5px solid rgba(0,212,255,0.4);
+}
+.onboarding-card-badge {
+  display:inline-flex;align-items:center;gap:6px;
+  font-family:'Orbitron',sans-serif;font-size:8px;font-weight:900;
+  letter-spacing:1px;color:var(--cyan);margin-bottom:10px;
+}
+.onboarding-card-badge::before { content:'★';font-size:10px; }
+.onboarding-card-text {
+  font-size:12px;color:rgba(232,244,255,0.5);line-height:1.65;margin-bottom:14px;
+}
+.onboarding-card-text strong { color:#E8F4FF; }
+
+.onboarding-card-secondary {
+  border-radius:14px;padding:18px;
+  border:1px solid rgba(255,255,255,0.08);
+  background:rgba(255,255,255,0.02);
+}
+.onboarding-card-secondary .onboarding-card-text { margin-bottom:12px; }
+
+.onboarding-btn-secondary {
+  display:block;width:100%;padding:12px;border-radius:10px;
+  background:transparent;border:1px solid rgba(255,255,255,0.12);
+  color:rgba(232,244,255,0.4);font-family:'Orbitron',sans-serif;
+  font-size:10px;font-weight:900;letter-spacing:1px;cursor:pointer;
+  transition:all .2s;text-decoration:none;text-align:center;
+}
+.onboarding-btn-secondary:hover { border-color:rgba(255,255,255,0.25);color:rgba(232,244,255,0.6); }
+
+</style>
+<style>
+.demo-badge{display:inline-flex;align-items:center;gap:8px;padding:6px 14px;border-radius:99px;background:rgba(255,215,0,0.1);border:1px solid rgba(255,215,0,0.4);font-family:'Orbitron',sans-serif;font-size:9px;font-weight:900;letter-spacing:2px;color:var(--gold);margin-bottom:14px;}
+.demo-perks{display:grid;gap:8px;margin:4px 0 18px;padding:14px 16px;border-radius:12px;background:rgba(0,212,255,0.05);border:1px solid rgba(0,212,255,0.15);font-size:13px;color:rgba(232,244,255,0.75);line-height:1.5;}
+.demo-perks div{display:flex;gap:10px;align-items:flex-start;}
+.form-hint{font-size:11px;color:var(--dim);margin-top:6px;}
+.demo-error{display:none;margin-bottom:14px;padding:12px 14px;border-radius:10px;background:rgba(255,68,102,0.1);border:1px solid rgba(255,68,102,0.35);color:#FF8FA3;font-size:13px;line-height:1.5;}
+.demo-error.show{display:block;}
+.btn-demo{background:linear-gradient(90deg,#FFD700,#FFB800)!important;color:#050914!important;box-shadow:0 6px 30px rgba(255,215,0,0.25)!important;}
+</style>
+</head>
+<body>
+
+<div class="bg-grid"></div>
+<div class="bg-glow-1"></div>
+<div class="bg-glow-2"></div>
+<div class="scanlines"></div>
+<div class="loading-bar" id="loading-bar"></div>
+
+<div class="container">
+
+  <div class="logo-wrap">
+    <div class="logo-dha">DHA</div>
+    <div class="logo-sub">DIGITAL HUSTLER ACADEMY</div>
+  </div>
+
+  <div class="card">
+    <div class="corner corner-tl"></div>
+    <div class="corner corner-tr"></div>
+    <div class="corner corner-bl"></div>
+    <div class="corner corner-br"></div>
+
+    <form id="demo-form" novalidate>
+      <div class="demo-badge">🎮 VERSION DÉMO GRATUITE</div>
+      <div class="card-title">Inscription démo</div>
+      <div class="card-sub">30 secondes et tu es dans la plateforme. Pas d'email, pas de mot de passe.</div>
+
+      <div class="demo-perks">
+        <div><span>👀</span><span>Tu découvres <strong>toute la plateforme</strong> : dashboard, formation, XP, rangs.</span></div>
+        <div><span>▶️</span><span>Le <strong>Module 01 « Introduction au Trading »</strong> est débloqué en entier.</span></div>
+        <div><span>🚀</span><span>Termine-le et tu passes <strong>niveau 2</strong>.</span></div>
+      </div>
+
+      <div id="parrain-banner" style="display:none;padding:12px 16px;border-radius:12px;background:rgba(0,255,136,0.08);border:1px solid rgba(0,255,136,0.2);margin-bottom:16px;text-align:center;">
+        <div style="font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:2px;color:var(--green);margin-bottom:4px;">🤝 TU AS ÉTÉ INVITÉ PAR</div>
+        <div style="font-family:'Orbitron',sans-serif;font-size:16px;font-weight:900;color:var(--white);" id="parrain-pseudo">---</div>
+      </div>
+
+      <div class="demo-error" id="demo-error"></div>
+
+      <div class="form-grid">
+        <div class="form-group" style="margin-bottom:0">
+          <label class="form-label" for="prenom">PRÉNOM</label>
+          <input class="form-input" id="prenom" type="text" placeholder="Ton prénom" autocomplete="given-name"/>
+        </div>
+        <div class="form-group" style="margin-bottom:0">
+          <label class="form-label" for="nom">NOM</label>
+          <input class="form-input" id="nom" type="text" placeholder="Ton nom" autocomplete="family-name"/>
+        </div>
+      </div>
+
+      <div class="form-group" style="margin-top:12px">
+        <label class="form-label" for="pseudo">PSEUDO</label>
+        <input class="form-input" id="pseudo" type="text" placeholder="@tonpseudo" autocomplete="nickname"/>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="contact">TÉLÉPHONE OU INSTAGRAM</label>
+        <input class="form-input" id="contact" type="text" placeholder="06 12 34 56 78 ou @ton_insta"/>
+        <div class="form-hint">Pour qu'on puisse te contacter et répondre à tes questions.</div>
+      </div>
+
+      <button class="btn-submit btn-demo" type="submit" id="btn-demo">🎮 ACCÉDER À LA DÉMO →</button>
+    </form>
+  </div>
+
+  <div class="login-link">
+    Déjà membre ? <a href="dha-connexion.html">Connecte-toi →</a>
+  </div>
+</div>
+
+<script>
+const SUPABASE_URL='https://kdetwppxsfoagyndrlzr.supabase.co';
+const SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtkZXR3cHB4c2ZvYWd5bmRybHpyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzcyMzM3NjQsImV4cCI6MjA5MjgwOTc2NH0.OodaFQKEHcncDYdO6uM121NAUbyxD4UxpptSjzzZOi0';
+const H={'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY};
+
+// Parrainage : ?ref=pseudo (gardé pour créditer la commission quand il passe payant)
+const refParam=new URLSearchParams(location.search).get('ref')||localStorage.getItem('dha_ref')||'';
+if(refParam){
+  try{localStorage.setItem('dha_ref',refParam);}catch(e){}
+  document.getElementById('parrain-banner').style.display='block';
+  document.getElementById('parrain-pseudo').textContent='@'+refParam;
+}
+
+function erreur(msg){const e=document.getElementById('demo-error');e.textContent=msg;e.classList.add('show');e.scrollIntoView({behavior:'smooth',block:'center'});}
+function code(n){const c='abcdefghjkmnpqrstuvwxyz23456789';let s='';const r=crypto.getRandomValues(new Uint32Array(n));for(let i=0;i<n;i++)s+=c[r[i]%c.length];return s;}
+function normContact(c){return c.toLowerCase().replace(/[\s.\-()]/g,'');}
+
+function entrer(membre){
+  try{localStorage.setItem('dha_member',JSON.stringify(membre));}catch(e){}
+  document.getElementById('loading-bar').style.width='100%';
+  setTimeout(()=>{location.href='dha-dashboard.html';},400);
+}
+
+document.getElementById('demo-form').addEventListener('submit',async function(ev){
+  ev.preventDefault();
+  document.getElementById('demo-error').classList.remove('show');
+  const prenom=document.getElementById('prenom').value.trim();
+  const nom=document.getElementById('nom').value.trim();
+  const pseudo=document.getElementById('pseudo').value.trim().replace(/^@/,'');
+  const contact=document.getElementById('contact').value.trim();
+  if(!prenom||!nom||!pseudo||!contact){erreur('Remplis les 4 champs pour accéder à la démo.');return;}
+  if(!/^[A-Za-z0-9_.\-]{3,20}$/.test(pseudo)){erreur('Ton pseudo doit faire entre 3 et 20 caractères : lettres, chiffres, point, tiret ou underscore.');return;}
+  const chiffres=contact.replace(/\D/g,'');
+  if(!(contact.startsWith('@')||chiffres.length>=9)){erreur('Indique un numéro de téléphone (au moins 9 chiffres) ou ton Instagram en commençant par @.');return;}
+
+  const btn=document.getElementById('btn-demo');
+  btn.disabled=true;btn.textContent='CHARGEMENT...';
+  document.getElementById('loading-bar').style.width='60%';
+  try{
+    // Pseudo déjà pris ? Si c'est sa propre démo (même contact), on le reconnecte
+    const r=await fetch(SUPABASE_URL+'/rest/v1/membres?pseudo=eq.'+encodeURIComponent(pseudo)+'&select=*',{headers:H});
+    const exist=r.ok?await r.json():[];
+    if(Array.isArray(exist)&&exist.length){
+      const m=exist[0];
+      if(m.plan==='demo'&&normContact(m.telephone||'')===normContact(contact)&&m.actif!==false){entrer(m);return;}
+      throw new Error('pseudo');
+    }
+    const membre={
+      prenom,nom,pseudo,
+      email:'demo-'+code(10)+'@demo.dha',   // identifiant interne, l'inscrit ne le voit jamais
+      password:code(16),                    // pas utilisé : la démo se fait sans mot de passe
+      telephone:contact,
+      pays:'',ville:'',
+      classe:'trading',
+      xp:10,level:1,rang:'NEW HUSTLER',
+      statut:'membre',
+      plan:'demo',
+      parraine_par:refParam
+    };
+    const ins=await fetch(SUPABASE_URL+'/rest/v1/membres',{method:'POST',headers:Object.assign({'Prefer':'return=representation'},H),body:JSON.stringify(membre)});
+    const data=await ins.json().catch(()=>null);
+    if(!ins.ok){const msg=(data&&(data.message||data.details))||'';throw new Error(/pseudo/i.test(msg)?'pseudo':msg||('Erreur '+ins.status));}
+    entrer(Array.isArray(data)&&data[0]?data[0]:membre);
+  }catch(err){
+    btn.disabled=false;btn.textContent='🎮 ACCÉDER À LA DÉMO →';
+    document.getElementById('loading-bar').style.width='0%';
+    if(err.message==='pseudo')erreur('Ce pseudo est déjà pris. Choisis-en un autre.');
+    else erreur('Impossible de créer ta démo pour le moment. Réessaie dans un instant.');
+    console.error('Inscription démo:',err);
+  }
+});
+</script>
+</body>
+</html>
