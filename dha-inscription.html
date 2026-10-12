@@ -843,8 +843,11 @@ function goStep1() {
 }
 
 // STEP 3 — CRÉATION COMPTE
+let inscriptionEnCours = false;
 async function goStep3() {
   if(!selectedClasse) { alert('Choisis ta classe pour continuer.'); return; }
+  if(inscriptionEnCours) return; // évite une double inscription (double clic / double tap)
+  inscriptionEnCours = true;
 
   const btn = document.getElementById('btn-step3');
   btn.textContent = 'CRÉATION EN COURS...';
@@ -945,11 +948,14 @@ async function goStep3() {
         pseudo: userData.pseudo,
         email: userData.email
       });
-      // Notif CEO
+      // Notif CEO — une seule fois par inscription
+      const cleNotif = 'dha_notif_ceo_' + (userData.email || '').toLowerCase();
+      let dejaNotifie = false;
+      try { dejaNotifie = !!localStorage.getItem(cleNotif); localStorage.setItem(cleNotif, '1'); } catch(e) {}
       const packParam = new URLSearchParams(window.location.search).get('pack') || '';
       const packLabels = { '180': 'Formation (180€)', '500': 'Accompagnement (500€)' };
       const classeLabels = { trading:'Trading 📈', ugc:'UGC Creator 🎬', marketing:'Marketing Digital 🚀', ecommerce:'E-Commerce 🛒' };
-      emailjs.send('service_4wng58y', 'template_5zg1ys4', {
+      if(!dejaNotifie) emailjs.send('service_4wng58y', 'template_5zg1ys4', {
         prenom: userData.prenom,
         nom: userData.nom,
         pseudo: userData.pseudo,
@@ -985,6 +991,7 @@ async function goStep3() {
     }, 400);
 
   } catch(err) {
+    inscriptionEnCours = false;
     bar.style.width = '0%';
     btn.textContent = 'CRÉER MON COMPTE →';
     btn.disabled = false;
