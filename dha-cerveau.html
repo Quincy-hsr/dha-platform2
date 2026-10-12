@@ -46,7 +46,11 @@ p{margin:0}
 .brand-mark{font-size:22px;line-height:1}
 .brand-name{font:700 22px var(--f-display);letter-spacing:-.02em}
 .nav{display:flex;flex-direction:column;gap:4px}
-.nav button{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:10px 12px;border:0;border-radius:8px;background:transparent;color:var(--muted);font-weight:500;cursor:pointer;text-align:left}
+.nav button{display:flex;align-items:center;gap:10px;padding:10px 12px;border:0;border-radius:8px;background:transparent;color:var(--muted);font-weight:500;cursor:pointer;text-align:left}
+.nav .ni{font-size:16px;line-height:1;width:20px;text-align:center}
+.nav .nl{flex:1}
+.nav .ns{display:none}
+.nav .count{margin-left:auto}
 .nav button:hover{background:var(--soft);color:var(--ink)}
 .nav button[aria-current="page"]{background:var(--ink);color:var(--on-ink)}
 .count{font-size:12px;font-weight:600;padding:1px 8px;border-radius:999px;background:var(--soft);color:var(--ink)}
@@ -121,6 +125,18 @@ textarea{resize:vertical;min-height:84px}
 .chip{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:6px 13px;font-size:13px;font-weight:600;color:var(--muted);cursor:pointer}
 .chip[aria-pressed="true"]{background:var(--ink);color:var(--on-ink);border-color:var(--ink)}
 .chip small{font-weight:600;margin-left:5px;opacity:.75}
+.filters{display:grid;gap:10px;margin:4px 0 16px;padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:var(--bg)}
+.frow{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.fbody{display:grid;gap:10px}
+[hidden]{display:none!important}
+.ftoggle{all:unset;cursor:pointer;display:flex;justify-content:space-between;align-items:center;font-weight:600;font-size:14px;color:var(--ink)}
+.ftoggle:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+.fon{display:inline-block;margin-left:6px;font-size:12px;padding:1px 8px;border-radius:999px;background:var(--ink);color:var(--on-ink)}
+.frow .flbl{font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;min-width:74px}
+.frow .chip{padding:5px 11px}
+.fbar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px}
+.fbar select{width:auto;font-size:14px;padding:6px 10px}
+.fcount{font-size:14px;font-weight:600}
 .toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;margin-bottom:12px}
 .toolbar input[type=search]{max-width:280px}
 .plist{display:grid;gap:0}
@@ -253,8 +269,11 @@ input[type=range]{padding:0;border:0;accent-color:var(--gain)}
   .rail{position:fixed;left:0;right:0;bottom:0;top:auto;z-index:20;padding:6px 6px calc(6px + env(safe-area-inset-bottom,0px));background:var(--surface);border-top:1px solid var(--line)}
   .brand{display:none}
   .nav{flex-direction:row;gap:2px}
-  .nav button{flex:1;flex-direction:column;justify-content:center;gap:2px;padding:7px 1px;font-size:11px;text-align:center;min-width:0}
-  .count{display:none}
+  .nav button{flex:1;flex-direction:column;justify-content:center;gap:3px;padding:6px 0;font-size:9.5px;text-align:center;min-width:0;position:relative}
+  .nav .ni{font-size:18px;width:auto}
+  .nav .nl{display:none}
+  .nav .ns{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+  .nav .count{position:absolute;top:2px;right:calc(50% - 20px);font-size:9px;padding:0 5px;background:var(--leak);color:var(--on-leak)}
   main{padding:16px 14px calc(96px + env(safe-area-inset-bottom,0px))}
   .hero{grid-template-columns:1fr}
   .prow{grid-template-columns:1fr;gap:8px}
@@ -363,6 +382,7 @@ var S = {
   prospects:[], content:[], clients:[], dmlogs:[],
   targets:Object.assign({}, DEFAULT_TARGETS), goals:Object.assign({}, DEFAULT_GOALS), weekOffset:0,
   filter:'all', q:'', limit:60, expandedSteps:{},
+  pf:{act:[], stage:[], rev:[], src:[]}, sort:'recent', funnelView:null, pfOpen:(window.innerWidth>860),
   qa:{platform:'Instagram', source:'Like ou abonné de la niche', variant:'Script A'},
   ai:{loading:false, text:'', error:'', note:''},
   error:''
@@ -372,6 +392,8 @@ var local = {prospects:{}, content:{}, clients:{}, dmlogs:{}, settings:{}};
 var LS = 'cerveau-v1', LSQ = 'cerveau-qa';
 
 try{ var q0 = JSON.parse(localStorage.getItem(LSQ)||'null'); if(q0) S.qa = Object.assign(S.qa, q0); }catch(e){}
+try{ var pf0 = JSON.parse(localStorage.getItem('cerveau-pf')||'null'); if(pf0){ S.pf = Object.assign(S.pf, pf0.pf||{}); S.sort = pf0.sort||'recent'; } }catch(e){}
+function savePf(){ try{ localStorage.setItem('cerveau-pf', JSON.stringify({pf:S.pf, sort:S.sort})); }catch(e){} }
 
 /* ---------- stockage ---------- */
 function toList(map){ return Object.keys(map).map(function(id){ return Object.assign({}, map[id], {id:id}); }); }
@@ -440,6 +462,7 @@ function loadPlatform(){
     .then(function(r){ return r.ok ? r.json() : []; })
     .then(function(ms){
       PLAT.members = Array.isArray(ms) ? ms : [];
+      if(S.tab==='clients') schedule();
       var dl = document.getElementById('dhaMembers');
       if(dl) dl.innerHTML = PLAT.members.map(function(m){ return '<option value="'+esc(m.pseudo)+'">'+esc([m.prenom,m.nom].filter(Boolean).join(' '))+'</option>'; }).join('');
       var linked = S.clients.map(function(c){ return c.pseudo; }).filter(Boolean);
@@ -480,7 +503,47 @@ function syncModules(){
   });
 }
 var syncT = 0;
-function queueSync(){ clearTimeout(syncT); syncT = setTimeout(syncModules, 400); }
+function queueSync(){ clearTimeout(syncT); syncT = setTimeout(function(){ migrateOffers(); syncModules(); }, 400); }
+// Anciennes formules Basic / Premium → nouvelles formules (une seule fois)
+var migrating = {};
+function migrateOffers(){
+  if(!dbh) return;
+  S.clients.forEach(function(c){
+    if(migrating[c.id]) return;
+    var o = c.offer, n = null;
+    if(o==='Basic') n = 'Essentiel 180€';
+    else if(o==='Premium') n = (Number(c.price)||0)>=750 ? '1:1 750€' : 'Groupe 500€';
+    if(!n) return;
+    migrating[c.id] = 1;
+    put('clients', Object.assign({}, c, {offer:n})).then(function(){ delete migrating[c.id]; }, function(){ delete migrating[c.id]; });
+  });
+}
+function normName(t){ return String(t||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/^@+/,'').replace(/[\s._\-]+/g,''); }
+// Trouve le compte de la plateforme qui correspond à une fiche client (pseudo, prénom ou prénom + nom)
+function guessMember(c){
+  var k = normName(c.name); if(!k) return [];
+  return PLAT.members.filter(function(m){
+    return normName(m.pseudo)===k || normName(m.prenom)===k || normName((m.prenom||'')+(m.nom||''))===k;
+  });
+}
+function autoLinkClients(){
+  var used = {}; S.clients.forEach(function(c){ if(c.pseudo) used[normPseudo(c.pseudo)] = 1; });
+  var linked = [], manual = [];
+  var chain = Promise.resolve();
+  S.clients.filter(function(c){ return !c.pseudo; }).forEach(function(c){
+    var g = guessMember(c).filter(function(m){ return !used[normPseudo(m.pseudo)]; });
+    if(g.length===1){ used[normPseudo(g[0].pseudo)] = 1; linked.push(c.name+' → @'+g[0].pseudo); chain = chain.then(function(){ return put('clients', Object.assign({}, c, {pseudo:g[0].pseudo})); }); }
+    else manual.push(c.name);
+  });
+  chain.then(function(){
+    loadPlatform();
+    openDlg('<div class="dlg-body"><h2 id="dlgTitle">Liaison des clients</h2>'
+      +(linked.length ? '<p><b>'+linked.length+' client'+(linked.length>1?'s':'')+' relié'+(linked.length>1?'s':'')+' :</b></p><div class="tl">'+linked.map(function(t){ return '<div>'+esc(t)+'</div>'; }).join('')+'</div>' : '<p>Aucun client n\'a pu être relié automatiquement.</p>')
+      +(manual.length ? '<p class="sub">À relier à la main (ouvre leur fiche et choisis leur pseudo) : <b>'+manual.map(esc).join(', ')+'</b>. Leur nom ne correspond à aucun compte, ou à plusieurs.</p>' : '')
+      +'<p class="note">Vérifie les liaisons : si une est fausse, corrige le pseudo dans la fiche du client.</p></div>'
+      +'<div class="dlg-foot"><span></span><div class="r"><button type="button" class="btn primary" data-act="close">OK</button></div></div>');
+  }).catch(function(e){ toast(errCopy(e)); });
+}
 
 function connectCloud(db){
   S.mode = 'cloud'; dbh = db;
@@ -488,7 +551,7 @@ function connectCloud(db){
     db.collection(name).onSnapshot(function(snap){
       S[name] = snap.docs.map(function(d){ return Object.assign({}, d.data(), {id:d.id}); });
       S.error = ''; schedule();
-      if(name==='clients'){ if(!PLAT.loaded) loadPlatform(); else queueSync(); }
+      if(name==='clients'){ migrateOffers(); if(!PLAT.loaded) loadPlatform(); else queueSync(); }
     }, function(err){ S.error = 'Lecture impossible ('+(err&&err.code||'erreur')+')'; schedule(); });
   });
   db.doc('settings/targets').onSnapshot(function(snap){
@@ -628,10 +691,13 @@ var TABS = {
   funnel:'Entonnoir', content:'Contenu', prospects:'Prospects', launches:'Lancements programmés', clients:'Clients', objectifs:'Objectifs', brain:'Analyse IA'
 };
 
-var NAV_TABS = ['funnel','objectifs','brain'];
+var NAV_TABS = ['objectifs','funnel','prospects','clients','content','launches','brain'];
+var NAV_ICON = {objectifs:'🎯', funnel:'📉', prospects:'💬', clients:'🎓', content:'🎬', launches:'🚀', brain:'🤖'};
+var NAV_SHORT = {objectifs:'Objectifs', funnel:'Entonnoir', prospects:'Prospects', clients:'Clients', content:'Contenu', launches:'Lancements', brain:'IA'};
 function paintNav(){
   $('#nav').innerHTML = NAV_TABS.map(function(k){
-    return '<button type="button" data-act="tab" data-tab="'+k+'"'+(S.tab===k?' aria-current="page"':'')+'><span>'+TABS[k]+'</span></button>';
+    var n = k==='prospects' ? S.prospects.filter(function(p){ return needsFollowUp(p) || prospectDue(p); }).length : 0;
+    return '<button type="button" data-act="tab" data-tab="'+k+'"'+(S.tab===k?' aria-current="page"':'')+'><span class="ni" aria-hidden="true">'+NAV_ICON[k]+'</span><span class="nl">'+(k==='launches'?'Lancements':TABS[k])+'</span><span class="ns">'+NAV_SHORT[k]+'</span>'+(n?'<span class="count" title="À contacter ou à relancer">'+n+'</span>':'')+'</button>';
   }).join('');
 }
 
@@ -878,7 +944,7 @@ function opts(list, sel){ return list.map(function(o){ return '<option'+(o===sel
 function skelProspects(){
   return '<div class="stack"><section class="card"><div class="toolbar" style="margin:0"><input type="search" id="pq" placeholder="Rechercher un pseudo ou une note" aria-label="Rechercher un prospect">'
     +'<span style="display:flex;gap:10px;flex-wrap:wrap;align-items:center"><button type="button" class="btn" data-act="open-dmlog">Ajouter des DM à froid</button><button type="button" class="btn primary" data-act="open-reply">Ajouter un prospect</button><span id="pexp"></span></span></div>'
-    +'<div id="pbanner"></div><div class="chips" id="pchips"></div><div class="plist" id="plist"></div></section></div>';
+    +'<div id="pbanner"></div><div class="filters" id="pchips"></div><div class="plist" id="plist"></div></section></div>';
 }
 function initProspectsForm(){
   var pq = $('#pq'); if(pq) pq.value = S.q;
@@ -895,13 +961,17 @@ function openDmLogDialog(){
   $('#dlCount').focus();
 }
 function openReplyDialog(){
-  openDlg('<div class="dlg-body"><h2 id="dlgTitle">Ajouter un prospect</h2><p class="sub">Un pseudo par ligne.</p>'
-    +'<div><label for="qaHandles" class="sr">Pseudos</label><textarea id="qaHandles" rows="4" placeholder="@pseudo1&#10;@pseudo2"></textarea></div>'
-    +'<div><label for="qaPlat">Plateforme</label><select id="qaPlat">'+opts(PLATFORMS,S.qa.platform)+'</select></div>'
-    +'<div><label for="qaSrc">Source</label><select id="qaSrc">'+opts(SOURCES,S.qa.source)+'</select></div>'
+  var vs = {}; S.prospects.concat(S.dmlogs).forEach(function(p){ if(p.variant && p.variant!=='Sans script' && p.variant!=='Envoi ebook') vs[p.variant]=1; });
+  openDlg('<div class="dlg-body"><h2 id="dlgTitle">Ajouter un prospect</h2>'
+    +'<div><label for="qaHandles">Pseudo</label><textarea id="qaHandles" rows="2" placeholder="@pseudo (un par ligne si tu en ajoutes plusieurs)"></textarea></div>'
+    +'<div class="two"><div><label for="qaPlat">Plateforme</label><select id="qaPlat">'+opts(PLATFORMS,S.qa.platform)+'</select></div><div><label for="qaSrc">Source</label><select id="qaSrc">'+opts(SOURCES,S.qa.source)+'</select></div></div>'
+    +'<div class="two"><div><label for="qaVar">Script utilisé</label><input id="qaVar" list="qaVars" value="'+esc(S.qa.variant&&S.qa.variant!=='Sans script'?S.qa.variant:'')+'" placeholder="Ex. Script question"><datalist id="qaVars">'+Object.keys(vs).map(function(v){ return '<option value="'+esc(v)+'">'; }).join('')+'</datalist></div>'
+    +'<div><label for="qaRev">Source de revenus</label><select id="qaRev"><option value="">Non renseignée</option><option value="sdr">SDR</option><option value="sr">SR</option></select></div></div>'
     +'<div><label for="qaDate">Date du DM</label><input type="date" id="qaDate"></div>'
+    +'<div><label for="qaObj">Objectif</label><input id="qaObj" placeholder="Ex. Générer un complément de revenu en 6 mois"></div>'
+    +'<div><label for="qaNotes">Situation (objections, contexte, prochaine étape)</label><textarea id="qaNotes" rows="3" placeholder="Ex. CDI, 25 ans, déjà testé le trading seul"></textarea></div>'
     +'<p class="note" id="qaHint" style="margin:0"></p></div>'
-    +'<div class="dlg-foot"><span></span><div class="r"><button type="button" class="btn" data-act="close">Fermer</button><button type="button" class="btn primary" data-act="submit-reply">Ajouter les réponses</button></div></div>');
+    +'<div class="dlg-foot"><span></span><div class="r"><button type="button" class="btn" data-act="close">Annuler</button><button type="button" class="btn primary" data-act="submit-reply">Ajouter le prospect</button></div></div>');
   $('#qaDate').value = ymd(Date.now());
   $('#qaHandles').addEventListener('keydown', function(ev){ if((ev.ctrlKey||ev.metaKey) && ev.key==='Enter'){ ev.preventDefault(); submitReplies(); } });
   $('#qaHandles').focus();
@@ -928,14 +998,15 @@ function parseHandles(txt){
 function submitReplies(){
   var handles = parseHandles($('#qaHandles').value);
   if(!handles.length){ $('#qaHint').textContent = 'Colle au moins un pseudo.'; $('#qaHandles').focus(); return; }
-  var platform = $('#qaPlat').value, source = $('#qaSrc').value, variant = 'Sans script';
+  var platform = $('#qaPlat').value, source = $('#qaSrc').value, variant = ($('#qaVar').value||'').trim() || 'Sans script';
+  var revenu = $('#qaRev').value || null, objectif = ($('#qaObj').value||'').trim(), notesIn = $('#qaNotes').value || '';
   var at = fromYmd($('#qaDate').value), now = Date.now();
   rememberQa({platform:platform, source:source, variant:variant});
   var exist = {}; S.prospects.forEach(function(p){ exist[(p.platform||'')+'|'+String(p.handle).toLowerCase()] = 1; });
   var fresh = handles.filter(function(h){ return !exist[platform+'|'+h.toLowerCase()]; });
   var skipped = handles.length - fresh.length;
   var items = fresh.map(function(h){
-    return {id:uid(), handle:h, platform:platform, source:source, variant:variant, status:'reponse', dmAt:at, repliedAt:now, callAt:null, wonAt:null, lostAt:null, lostStage:null, lostReason:'', notes:'', clientId:null, revenu:null};
+    return {id:uid(), handle:h, platform:platform, source:source, variant:variant, status:'reponse', dmAt:at, repliedAt:now, callAt:null, wonAt:null, lostAt:null, lostStage:null, lostReason:'', notes:notesIn, objectif:objectif, clientId:null, revenu:revenu};
   });
   $('#qaHandles').value = ''; $('#qaHint').textContent = '';
   var btn = $('[data-act="submit-reply"]'); if(btn) btn.disabled = true;
@@ -945,8 +1016,8 @@ function submitReplies(){
   }
   chain.then(function(){
     if(btn) btn.disabled = false;
-    toast(items.length+' réponse'+(items.length>1?'s':'')+' ajoutée'+(items.length>1?'s':'')+(skipped?' ('+skipped+' déjà dans la liste)':''));
-    var ta = $('#qaHandles'); if(ta) ta.focus();
+    toast(items.length===1 ? '@'+items[0].handle+' ajouté' : items.length+' prospects ajoutés'+(skipped?' ('+skipped+' déjà dans la liste)':''));
+    closeDlg();
   }).catch(function(e){ if(btn) btn.disabled = false; toast(errCopy(e)); });
 }
 function paintDmLogs(){
@@ -966,28 +1037,49 @@ function paintProspects(){
   if(dl){ var vs = {}; S.prospects.concat(S.dmlogs).forEach(function(p){ if(p.variant) vs[p.variant]=1; }); dl.innerHTML = Object.keys(vs).map(function(v){ return '<option value="'+esc(v)+'">'; }).join(''); }
   var pe = $('#pexp'); if(pe) pe.innerHTML = dlNs ? '<button type="button" class="btn small" data-act="export" data-kind="prospects">Exporter en CSV</button>' : '';
   var openProspects = S.prospects.filter(function(p){ return p.status!=='close'; });
-  var cnt = {all:openProspects.length, relance:0, contact:0, reponse:0, call:0, held:0, perdu:0, sdr:0};
-  openProspects.forEach(function(p){ cnt[p.status] = (cnt[p.status]||0)+1; if(needsFollowUp(p)) cnt.relance++; if(prospectDue(p)) cnt.contact++; if(p.revenu==='sdr') cnt.sdr++; });
-  var STAGE_VIEW_LABEL = {replied:'Réponses obtenues', call:'Calls bookés', held:'Calls réalisés'};
-  var chips = [['all','Tous'],['sdr','SDR'],['contact','À contacter'],['relance','À relancer'],['reponse','Répondu'],['call','Call booké'],['held','Call fait'],['perdu','Perdu']];
-  $('#pchips').innerHTML = chips.map(function(c){ return '<button type="button" class="chip" data-act="filter" data-f="'+c[0]+'" aria-pressed="'+(S.filter===c[0])+'">'+c[1]+'<small>'+(cnt[c[0]]||0)+'</small></button>'; }).join('');
-  var pb = $('#pbanner');
-  if(pb) pb.innerHTML = S.filter.indexOf('stage-')===0 ? '<div class="note" style="margin-bottom:10px">Vue depuis l\'entonnoir : <b>'+esc(STAGE_VIEW_LABEL[S.filter.slice(6)]||'')+'</b>. <button type="button" class="iconbtn" data-act="filter" data-f="all">Revenir à tous les prospects</button></div>' : '';
+  // Filtres : plusieurs choix possibles. Dans un même groupe = OU, entre les groupes = ET.
+  var GROUPS = [
+    ['act','À faire',[['contact','À contacter'],['relance','À relancer']]],
+    ['stage','Étape',[['reponse','Répondu'],['call','Call booké'],['held','Call fait'],['perdu','Perdu']]],
+    ['rev','Revenus',[['sdr','SDR'],['sr','SR'],['none','Non renseigné']]],
+    ['src','Source',SOURCES.map(function(x){ return [x, x===EBOOK?'Ebook':x.replace('Like ou abonné de ','Like/abo ')]; })]
+  ];
+  var test = {
+    act:function(p,v){ return v==='contact' ? prospectDue(p) : needsFollowUp(p); },
+    stage:function(p,v){ return p.status===v; },
+    rev:function(p,v){ return v==='none' ? !p.revenu : p.revenu===v; },
+    src:function(p,v){ return p.source===v; }
+  };
   var q = S.q.trim().toLowerCase();
-  var list = openProspects.filter(function(p){
-    if(S.filter==='relance') { if(!needsFollowUp(p)) return false; }
-    else if(S.filter==='contact') { if(!prospectDue(p)) return false; }
-    else if(S.filter==='sdr') { if(p.revenu!=='sdr') return false; }
-    else if(S.filter.indexOf('stage-')===0){ var fld = {replied:'repliedAt',call:'callAt',held:'heldAt',won:'wonAt'}[S.filter.slice(6)]; if(!p[fld]) return false; }
-    else if(S.filter!=='all' && p.status!==S.filter) return false;
-    if(q && (String(p.handle).toLowerCase().indexOf(q)<0 && String(p.notes||'').toLowerCase().indexOf(q)<0)) return false;
+  function matches(p, skip){
+    if(S.funnelView){ var fld = {replied:'repliedAt',call:'callAt',held:'heldAt',won:'wonAt'}[S.funnelView]; if(fld && !p[fld]) return false; }
+    for(var g in S.pf){ if(g===skip) continue; var vals = S.pf[g]||[]; if(vals.length && !vals.some(function(v){ return test[g](p,v); })) return false; }
+    if(q && (String(p.handle).toLowerCase().indexOf(q)<0 && String(p.notes||'').toLowerCase().indexOf(q)<0 && String(p.objectif||'').toLowerCase().indexOf(q)<0)) return false;
     return true;
-  }).sort(function(a,b){
-    var al = a.launchAt||0, bl = b.launchAt||0;
-    if(al && bl) return al-bl;
-    if(al && !bl) return -1;
-    if(bl && !al) return 1;
-    return (b.dmAt||0)-(a.dmAt||0);
+  }
+  var active = Object.keys(S.pf).reduce(function(t,g){ return t+(S.pf[g]||[]).length; },0);
+  var STAGE_VIEW_LABEL = {replied:'Réponses obtenues', call:'Calls bookés', held:'Calls réalisés'};
+  var h = '<button type="button" class="ftoggle" data-act="pf-toggle" aria-expanded="'+S.pfOpen+'"><span>⚙️ Filtres'+(active?' <b class="fon">'+active+' actif'+(active>1?'s':'')+'</b>':'')+'</span><span aria-hidden="true">'+(S.pfOpen?'▲':'▼')+'</span></button>';
+  h += '<div class="fbody"'+(S.pfOpen?'':' hidden')+'>'+GROUPS.map(function(G){
+    return '<div class="frow"><span class="flbl">'+G[1]+'</span>'+G[2].map(function(o){
+      var on = (S.pf[G[0]]||[]).indexOf(o[0])>=0;
+      var n = openProspects.filter(function(p){ return matches(p, G[0]) && test[G[0]](p, o[0]); }).length;
+      return '<button type="button" class="chip" data-act="pf" data-g="'+G[0]+'" data-v="'+esc(o[0])+'" aria-pressed="'+on+'">'+esc(o[1])+'<small>'+n+'</small></button>';
+    }).join('')+'</div>';
+  }).join('')+'</div>';
+  var list = openProspects.filter(function(p){ return matches(p, null); });
+  h += '<div class="fbar"><span class="fcount">'+list.length+' prospect'+(list.length>1?'s':'')+(active||S.funnelView?' avec ces filtres':'')+'</span><span style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">'
+    +(active?'<button type="button" class="iconbtn" data-act="pf-clear">Effacer les filtres</button>':'')
+    +'<label for="psort" class="sr">Trier</label><select id="psort">'+[['recent','Plus récents d\'abord'],['old','Plus anciens d\'abord'],['launch','Lancement le plus proche'],['touch','Sans contact depuis le plus longtemps']].map(function(o){ return '<option value="'+o[0]+'"'+(S.sort===o[0]?' selected':'')+'>'+o[1]+'</option>'; }).join('')+'</select></span></div>';
+  $('#pchips').innerHTML = h;
+  var pb = $('#pbanner');
+  if(pb) pb.innerHTML = S.funnelView ? '<div class="note" style="margin-bottom:10px">Vue depuis l\'entonnoir : <b>'+esc(STAGE_VIEW_LABEL[S.funnelView]||'')+'</b>. <button type="button" class="iconbtn" data-act="funnel-off">Revenir à tous les prospects</button></div>' : '';
+  var addedAt = function(p){ return p.repliedAt || p.dmAt || 0; };
+  list.sort(function(a,b){
+    if(S.sort==='old') return addedAt(a)-addedAt(b);
+    if(S.sort==='launch'){ var al = a.launchAt||Infinity, bl = b.launchAt||Infinity; if(al!==bl) return al-bl; return addedAt(b)-addedAt(a); }
+    if(S.sort==='touch') return prospectLastTouch(a)-prospectLastTouch(b);
+    return addedAt(b)-addedAt(a);
   });
   if(!list.length){
     $('#plist').innerHTML = '<div class="empty">'+(S.prospects.length ? 'Aucun prospect ne correspond à ce filtre.' : 'Aucun prospect pour le moment. Quand quelqu\'un répond à un DM, ajoute son pseudo ci-dessus.')+'</div>';
@@ -1139,12 +1231,15 @@ function paintContent(){
 
 /* ---------- vue : clients ---------- */
 function skelClients(){
-  return '<div class="stack"><div class="toolbar" style="margin:0"><p class="sub">Un prospect passé en « Client » crée sa fiche automatiquement.</p><span style="display:flex;gap:10px"><span id="clexp"></span><button type="button" class="btn primary" data-act="new-client">Nouveau membre</button></span></div><div class="grid" id="cg"></div></div>';
+  return '<div class="stack"><div id="linkBanner"></div><div class="toolbar" style="margin:0"><p class="sub">Un prospect passé en « Client » crée sa fiche automatiquement.</p><span style="display:flex;gap:10px"><span id="clexp"></span><button type="button" class="btn primary" data-act="new-client">Nouveau membre</button></span></div><div class="grid" id="cg"></div></div>';
 }
 function paintClients(){
   if(!$('#cg')) return;
   var ce = $('#clexp'); if(ce) ce.innerHTML = dlNs ? '<button type="button" class="btn" data-act="export" data-kind="clients">Exporter en CSV</button>' : '';
   var list = S.clients.slice().sort(function(a,b){ return (b.startAt||0)-(a.startAt||0); });
+  var unlinked = S.clients.filter(function(c){ return !c.pseudo && (c.status||'actif')!=='perdu'; }).length;
+  var lb = $('#linkBanner');
+  if(lb) lb.innerHTML = unlinked ? '<div class="callout" style="display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between"><span><strong>'+unlinked+' client'+(unlinked>1?'s':'')+' pas encore relié'+(unlinked>1?'s à leur compte':' à son compte')+'</strong><span class="sub" style="display:block">Relie-les pour que leurs modules « Fait » se cochent tout seuls.</span></span><button type="button" class="btn primary" data-act="auto-link"'+(PLAT.members.length?'':' disabled')+'>Relier automatiquement</button></div>' : '';
   if(!list.length){ $('#cg').innerHTML = '<div class="card empty" style="grid-column:1/-1">Aucun membre pour le moment. Passe un prospect en « Client » pour créer sa fiche.</div>'; return; }
   $('#cg').innerHTML = list.map(function(c){
     var st = c.status||'actif', active = st==='actif';
@@ -1163,7 +1258,7 @@ function paintClients(){
       +(phase?'<div style="font-weight:600;font-size:14px">'+esc(phase)+'</div>':'')
       +'<div class="goal">'+esc(c.goal||'Objectif non renseigné')+'</div>'
       +'<div class="prog"><span>'+done+'/'+STEP_TOTAL+'</span><div class="bar"><i style="width:'+Math.round(done/STEP_TOTAL*100)+'%"></i></div></div>'
-      +'<div class="p-when" style="margin-top:-4px">Modules faits : '+modsDoneCount(c)+'/'+MODULES+' · maîtrisés : '+modsMastered(c)+'/'+MODULES+(c.pseudo?' · relié à @'+esc(c.pseudo):'')+'</div>'
+      +'<div class="p-when" style="margin-top:-4px">Modules faits : '+modsDoneCount(c)+'/'+MODULES+' · maîtrisés : '+modsMastered(c)+'/'+MODULES+(c.pseudo?' · relié à @'+esc(c.pseudo):'<span class="badge">Pas relié</span>')+'</div>'
       +'<div class="p-when">'+((c.checkins||[]).length?'Dernière interaction '+ago(lastTouch(c)):'Aucune interaction')+', appels de groupe sur 30 j : '+group+badges+'</div></button>';
   }).join('');
 }
@@ -1346,7 +1441,7 @@ function openClient(c){
   var chk = function(id, label, on){ return '<label class="check"><input type="checkbox" id="'+id+'"'+(on?' checked':'')+'>'+label+'</label>'; };
   openDlg('<div class="dlg-body"><h2 id="dlgTitle">'+(c.name?esc(c.name):'Nouveau membre')+'</h2>'
     +'<div class="two"><div><label for="cdName">Nom ou pseudo</label><input id="cdName" value="'+esc(c.name||'')+'"></div><div><label for="cdStatus">Statut</label><select id="cdStatus">'+CLIENT_STATUS.map(function(s){return '<option value="'+s[0]+'"'+((c.status||'actif')===s[0]?' selected':'')+'>'+s[1]+'</option>';}).join('')+'</select></div></div>'
-    +'<div><label for="cdPseudo">Pseudo sur la plateforme DHA</label><input id="cdPseudo" list="dhaMembers" value="'+esc(c.pseudo||'')+'" placeholder="Choisis son pseudo de membre" autocomplete="off"><p class="note" style="margin-top:6px">Relie la fiche à son compte : la case « Fait » de chaque module se coche toute seule dès qu\'il valide le module sur la plateforme. « Maîtrisé » reste à cocher par toi.</p></div>'
+    +'<div><label for="cdPseudo">Pseudo sur la plateforme DHA</label><input id="cdPseudo" list="dhaMembers" value="'+esc(c.pseudo||'')+'" placeholder="'+esc((!c.pseudo && guessMember(c).length===1) ? 'Suggestion : '+guessMember(c)[0].pseudo : 'Choisis son pseudo de membre')+'" autocomplete="off"><p class="note" style="margin-top:6px">Relie la fiche à son compte : la case « Fait » de chaque module se coche toute seule dès qu\'il valide le module sur la plateforme. « Maîtrisé » reste à cocher par toi.</p></div>'
     +'<div class="two"><div><label for="cdOffer">Formule</label><select id="cdOffer">'+offerOpts(c.offer)+'</select></div><div><label for="cdPrice">Prix de la formule (€)</label><input id="cdPrice" type="number" min="0" inputmode="decimal" value="'+(Number(c.price)||0)+'"></div></div>'
     +chk('cdMulti','Paiement en plusieurs fois', c.payMulti)
     +'<div id="cdPay" class="paybox" style="display:none"><div class="two"><div><label for="cdN">Nombre d\'échéances prévues</label><input id="cdN" type="number" min="0" inputmode="numeric" value="'+(Number(c.payN)||'')+'" placeholder="Ex. 3"></div><div><label for="cdPayAmt">Montant du paiement reçu (€)</label><input id="cdPayAmt" type="number" min="0" inputmode="decimal" placeholder="Ex. 300"></div></div>'
@@ -1493,9 +1588,16 @@ document.addEventListener('click', function(ev){
     case 'submit-dmlog': submitDmLog(); break;
     case 'submit-reply': submitReplies(); break;
     case 'del-log': if(el.getAttribute('data-armed')){ safe(del('dmlogs', id)).catch(function(){}); } else { el.setAttribute('data-armed','1'); el.textContent = 'Confirmer'; clearTimeout(armT); armT = setTimeout(function(){ el.removeAttribute('data-armed'); el.textContent = 'Supprimer'; }, 4000); } break;
-    case 'goto-relance': S.tab = 'prospects'; S.filter = 'relance'; S.limit = 60; render(); break;
-    case 'goto-stage': S.tab = 'prospects'; S.filter = 'stage-'+el.getAttribute('data-stage'); S.limit = 60; render(); break;
-    case 'all-prospects': S.tab = 'prospects'; S.filter = 'all'; S.limit = 60; render(); break;
+    case 'goto-relance': S.tab = 'prospects'; S.pf = {act:['relance'], stage:[], rev:[], src:[]}; S.funnelView = null; savePf(); S.limit = 60; render(); break;
+    case 'goto-stage': S.tab = 'prospects'; S.funnelView = el.getAttribute('data-stage'); S.limit = 60; render(); break;
+    case 'all-prospects': S.tab = 'prospects'; S.funnelView = null; S.limit = 60; render(); break;
+    case 'pf':
+      var g = el.getAttribute('data-g'), v = el.getAttribute('data-v'), arr = (S.pf[g]||[]).slice(), i0 = arr.indexOf(v);
+      if(i0>=0) arr.splice(i0,1); else arr.push(v);
+      S.pf[g] = arr; S.limit = 60; savePf(); paintProspects(); break;
+    case 'pf-toggle': S.pfOpen = !S.pfOpen; paintProspects(); break;
+    case 'pf-clear': S.pf = {act:[], stage:[], rev:[], src:[]}; S.limit = 60; savePf(); paintProspects(); break;
+    case 'funnel-off': S.funnelView = null; paintProspects(); break;
     case 'debtors': openDebtors(); break;
     case 'open-client-from-debt': var dc = S.clients.filter(function(x){ return x.id===id; })[0]; if(dc) openClient(dc); break;
     case 'filter': S.filter = el.getAttribute('data-f'); S.limit = 60; paintProspects(); break;
@@ -1546,6 +1648,7 @@ document.addEventListener('click', function(ev){
       $('#cdPayAmt').value = ''; paintPay(); break;
     case 'del-pay': (draft.payments||[]).splice(Number(el.getAttribute('data-i')),1); paintPay(); break;
     case 'save-c': saveClient(); break;
+    case 'auto-link': autoLinkClients(); break;
     case 'week-prev': S.weekOffset--; paintGoals(); break;
     case 'week-next': if(S.weekOffset<0){ S.weekOffset++; paintGoals(); } break;
     case 'goals': openGoals(); break;
@@ -1565,6 +1668,7 @@ document.addEventListener('click', function(ev){
 });
 document.addEventListener('change', function(ev){
   var el = ev.target;
+  if(el && el.id==='psort'){ S.sort = el.value; S.limit = 60; savePf(); paintProspects(); return; }
   if(el.getAttribute && el.getAttribute('data-act')==='num'){
     var c = S.content.filter(function(x){ return x.id===el.getAttribute('data-id'); })[0]; if(!c) return;
     var o = Object.assign({}, c), path = el.getAttribute('data-field'), val = Math.max(0, Number(el.value)||0);
