@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+<title>Candidature — Digital Hustler Academy</title>
+<meta name="description" content="Candidate pour rejoindre la Digital Hustler Academy. 2 minutes, 11 questions."/>
+<meta property="og:title" content="Candidature — Digital Hustler Academy"/>
+<meta property="og:description" content="Tu veux rejoindre la DHA ? Réponds à 11 questions, je regarde ta candidature et je te recontacte personnellement."/>
+<meta property="og:url" content="https://digitalhustleracademy.digital/dha-candidature.html"/>
+<meta property="og:type" content="website"/>
+<meta property="og:image" content="https://digitalhustleracademy.digital/DHA_logo.png"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#050914;--card:#080e1f;--card2:#0a1228;
+  --blue:#1E64FF;--cyan:#00D4FF;--white:#E8F4FF;
+  --dim:rgba(232,244,255,0.55);--faint:rgba(232,244,255,0.28);
+  --gold:#FFD700;--green:#00FF88;--red:#FF4466;
+  --border:rgba(30,100,255,0.22);
+}
+html,body{height:100%}
+body{background:var(--bg);color:var(--white);font-family:'Rajdhani',sans-serif;font-size:17px;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+.bg-grid{position:fixed;inset:0;pointer-events:none;background-image:linear-gradient(rgba(30,100,255,0.035) 1px,transparent 1px),linear-gradient(90deg,rgba(30,100,255,0.035) 1px,transparent 1px);background-size:44px 44px}
+.bg-glow{position:fixed;inset:0;pointer-events:none;background:radial-gradient(ellipse 80% 45% at 50% 0%,rgba(30,100,255,0.13) 0%,transparent 70%)}
+
+.wrap{position:relative;min-height:100%;display:flex;flex-direction:column;max-width:620px;margin:0 auto;padding:18px 18px calc(24px + env(safe-area-inset-bottom))}
+header{display:flex;align-items:center;justify-content:space-between;gap:12px;height:44px}
+.logo{font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:20px;letter-spacing:4px;text-shadow:0 0 22px rgba(30,100,255,0.6)}
+.logo span{color:var(--cyan)}
+.count{font-family:'Chakra Petch',sans-serif;font-size:12px;letter-spacing:2px;color:var(--faint)}
+.bar{height:3px;background:rgba(255,255,255,0.06);border-radius:99px;overflow:hidden;margin:10px 0 0}
+.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--blue),var(--cyan));box-shadow:0 0 12px rgba(0,212,255,0.6);transition:width .4s ease}
+
+main{flex:1;display:flex;flex-direction:column;justify-content:center;padding:28px 0 12px}
+.step{display:none;animation:in .35s ease both}
+.step.on{display:block}
+@keyframes in{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.step.back-anim{animation:inb .3s ease both}
+@keyframes inb{from{opacity:0;transform:translateY(-14px)}to{opacity:1;transform:none}}
+
+.kicker{font-family:'Chakra Petch',sans-serif;font-size:12px;letter-spacing:3px;color:var(--cyan);margin-bottom:12px}
+h1{font-family:'Chakra Petch',sans-serif;font-size:clamp(26px,6.5vw,38px);line-height:1.15;font-weight:700;margin-bottom:14px}
+h1 em{font-style:normal;color:var(--cyan)}
+h2{font-family:'Chakra Petch',sans-serif;font-size:clamp(22px,5.4vw,29px);line-height:1.25;font-weight:600;margin-bottom:8px}
+.sub{color:var(--dim);font-size:17px;line-height:1.5;margin-bottom:22px}
+.lead{color:var(--dim);font-size:18px;line-height:1.55;margin-bottom:22px}
+.facts{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:28px}
+.facts span{font-family:'Chakra Petch',sans-serif;font-size:12px;letter-spacing:1px;padding:7px 12px;border-radius:99px;border:1px solid var(--border);background:rgba(30,100,255,0.07);color:var(--white)}
+
+.opts{display:flex;flex-direction:column;gap:10px}
+.opt{display:flex;align-items:center;gap:14px;width:100%;text-align:left;padding:15px 16px;border-radius:14px;border:1px solid var(--border);background:var(--card);color:var(--white);font-family:'Rajdhani',sans-serif;font-size:18px;font-weight:600;cursor:pointer;transition:border-color .15s,background .15s,transform .1s}
+.opt:hover{border-color:rgba(0,212,255,0.5);background:var(--card2)}
+.opt:active{transform:scale(.99)}
+.opt .k{flex-shrink:0;width:28px;height:28px;border-radius:8px;border:1px solid rgba(0,212,255,0.35);display:flex;align-items:center;justify-content:center;font-family:'Chakra Petch',sans-serif;font-size:12px;color:var(--cyan)}
+.opt.sel{border-color:var(--cyan);background:rgba(0,212,255,0.09);box-shadow:0 0 0 1px var(--cyan) inset}
+.opt.sel .k{background:var(--cyan);color:var(--bg);border-color:var(--cyan)}
+.multi .opt .k{border-radius:50%}
+.opt:focus-visible,.btn:focus-visible,.chip:focus-visible,input:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
+
+.field{width:100%;padding:16px 18px;border-radius:14px;border:1px solid var(--border);background:var(--card);color:var(--white);font-family:'Rajdhani',sans-serif;font-size:21px;font-weight:600;outline:none;transition:border-color .15s}
+.field:focus{border-color:var(--cyan);box-shadow:0 0 0 3px rgba(0,212,255,0.12)}
+.field::placeholder{color:var(--faint);font-weight:500}
+.hint{font-size:15px;color:var(--faint);margin-top:10px}
+.err{font-size:15px;color:var(--red);margin-top:10px;min-height:20px}
+
+.chips{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px}
+.chip{padding:12px 6px;border-radius:12px;border:1px solid var(--border);background:var(--card);color:var(--white);font-family:'Chakra Petch',sans-serif;font-size:13px;letter-spacing:.5px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px}
+.chip b{font-size:20px;font-weight:400;line-height:1}
+.chip.sel{border-color:var(--cyan);background:rgba(0,212,255,0.09);box-shadow:0 0 0 1px var(--cyan) inset}
+.extra{margin-top:12px;display:none}
+.extra.on{display:block}
+
+.nav{display:flex;align-items:center;gap:10px;margin-top:24px}
+.btn{flex:1;padding:16px 20px;border:none;border-radius:14px;background:linear-gradient(135deg,var(--blue),var(--cyan));color:#020610;font-family:'Chakra Petch',sans-serif;font-size:14px;font-weight:700;letter-spacing:2px;cursor:pointer;box-shadow:0 8px 30px rgba(0,212,255,0.25);transition:opacity .15s,transform .1s}
+.btn:active{transform:scale(.99)}
+.btn:disabled{opacity:.35;cursor:not-allowed;box-shadow:none}
+.back{flex-shrink:0;width:52px;height:52px;border-radius:14px;border:1px solid var(--border);background:transparent;color:var(--dim);font-size:20px;cursor:pointer}
+.back:hover{color:var(--white);border-color:rgba(0,212,255,0.5)}
+.enter{font-size:14px;color:var(--faint);text-align:center;margin-top:12px}
+
+.done{text-align:center}
+.done .ico{font-size:58px;margin-bottom:14px;filter:drop-shadow(0 0 20px rgba(255,140,0,0.5))}
+.recap{margin:22px 0 6px;padding:16px 18px;border-radius:14px;border:1px solid var(--border);background:var(--card);text-align:left;font-size:17px;line-height:1.6}
+.recap small{display:block;font-family:'Chakra Petch',sans-serif;font-size:11px;letter-spacing:2px;color:var(--cyan);margin-bottom:6px}
+footer{text-align:center;font-family:'Chakra Petch',sans-serif;font-size:11px;letter-spacing:2px;color:var(--faint);padding-top:10px}
+@media (max-width:420px){.chips{grid-template-columns:repeat(2,1fr)}.opt{font-size:17px;padding:14px}}
+@media (prefers-reduced-motion:reduce){.step,.step.back-anim{animation:none}.bar i{transition:none}}
+</style>
+</head>
+<body>
+<div class="bg-grid"></div><div class="bg-glow"></div>
+
+<div class="wrap">
+  <header>
+    <div class="logo">DH<span>A</span></div>
+    <div class="count" id="count"></div>
+  </header>
+  <div class="bar" aria-hidden="true"><i id="bar"></i></div>
+
+  <main id="main">
+
+    <!-- INTRO -->
+    <section class="step on" data-id="intro">
+      <div class="kicker">CANDIDATURE</div>
+      <h1>Tu veux rejoindre la <em>Digital Hustler Academy</em> ?</h1>
+      <p class="lead">On ne prend pas tout le monde : on cherche des personnes motivées, prêtes à apprendre et à avancer avec un groupe. Réponds honnêtement, il n'y a pas de mauvaise réponse. Je lis chaque candidature moi-même et je te recontacte personnellement.</p>
+      <div class="facts"><span>⏱ 2 MINUTES</span><span>📝 11 QUESTIONS</span><span>🔒 RÉPONSES CONFIDENTIELLES</span></div>
+      <div class="nav"><button class="btn" data-next>COMMENCER MA CANDIDATURE →</button></div>
+    </section>
+
+    <!-- 1 -->
+    <section class="step" data-id="prenom" data-q>
+      <h2>Comment tu t'appelles ?</h2>
+      <p class="sub">Ton prénom suffit.</p>
+      <input class="field" id="f-prenom" type="text" autocomplete="given-name" maxlength="40" placeholder="Ton prénom">
+      <div class="err" id="e-prenom"></div>
+      <div class="nav"><button class="back" data-back aria-label="Question précédente">←</button><button class="btn" data-next>SUIVANT →</button></div>
+      <div class="enter">ou appuie sur Entrée ↵</div>
+    </section>
+
+    <!-- 2 -->
+    <section class="step" data-id="age" data-q>
+      <h2>Enchanté <span class="pn"></span> ! Quel âge as-tu ?</h2>
+      <p class="sub">&nbsp;</p>
+      <input class="field" id="f-age" type="number" inputmode="numeric" min="17" max="99" placeholder="Ex : 22">
+      <div class="err" id="e-age"></div>
+      <div class="nav"><button class="back" data-back aria-label="Question précédente">←</button><button class="btn" data-next>SUIVANT →</button></div>
+      <div class="enter">ou appuie sur Entrée ↵</div>
+    </section>
+
+    <!-- 3 -->
+    <section class="step" data-id="situation" data-q data-single>
+      <h2>Quelle est ta situation aujourd'hui ?</h2>
+      <p class="sub">&nbsp;</p>
+      <div class="opts">
+        <button class="opt" data-v="Étudiant(e)"><span class="k">A</span>Étudiant(e)</button>
+        <button class="opt" data-v="Étudiant(e) en alternance"><span class="k">B</span>Étudiant(e) en alternance</button>
+        <button class="opt" data-v="Salarié(e)"><span class="k">C</span>Salarié(e)</button>
+        <button class="opt" data-v="Entrepreneur / indépendant"><span class="k">D</span>Entrepreneur / indépendant</button>
+        <button class="opt" data-v="En recherche d'emploi"><span class="k">E</span>En recherche d'emploi</button>
+        <button class="opt" data-v="Autre"><span class="k">F</span>Autre</button>
+      </div>
+      <div class="nav"><button class="back" data-back aria-label="Question précédente">←</button></div>
+    </section>
+
+    <!-- 4 -->
+    <section class="step" data-id="business_en_ligne" data-q data-single>
+      <h2>Tu as déjà entendu parler de business en ligne ?</h2>
+      <p class="sub">Trading, e-commerce, marketing digital, création de contenu…</p>
+      <div class="opts">
+        <button class="opt" data-v="Oui, j'en fais déjà"><span class="k">A</span>Oui, j'en fais déjà</button>
+        <button class="opt" data-v="Oui, je m'y intéresse"><span class="k">B</span>Oui, je m'y intéresse</button>
+        <button class="opt" data-v="Vaguement"><span class="k">C</span>Vaguement</button>
+        <button class="opt" data-v="Non, jamais"><span class="k">D</span>Non, jamais</button>
+      </div>
+      <div class="nav"><button class="back" data-back aria-label="Question précédente">←</button></div>
+    </section>
+
+    <!-- 5 -->
+    <section class="step" data-id="formations" data-q data-single>
+      <h2>Tu as déjà suivi une formation ?</h2>
+      <p class="sub">En ligne ou en présentiel, payante ou gratuite.</p>
+      <div class="opts">
+        <button class="opt" data-v="Oui, en trading"><span class="k">A</span>Oui, en trading</button>
+        <button class="opt" data-v="Oui, dans un autre domaine"><span class="k">B</span>Oui, dans un autre domaine</button>
+        <button class="opt" data-v="Non, ce serait ma première"><span class="k">C</span>Non, ce serait ma première</button>
+      </div>
+      <div class="nav"><button class="back" data-back aria-label="Question précédente">←</button></div>
+    </section>
+
+    <!-- 6 -->
+    <section class="step multi" data-id="avantages" data-q data-multi>
+      <h2>Qu'est-ce qui t'attire le plus dans la DHA ?</h2>
+      <p class="sub">Plusieurs choix possibles.</p>
+      <div class="opts">
+        <button class="opt" data-v="Apprendre le trading de A à Z"><span class="k"></span>Apprendre le trading de A à Z</button>
+        <button class="opt" data-v="Être accompagné par un mentor"><span class="k"></span>Être accompagné par un mentor</button>
+        <button class="opt" data-v="Une communauté qui avance ensemble"><span class="k"></span>Une communauté qui avance ensemble</button>
+        <button class="opt" data-v="Les sorties, séminaires et voyages"><span class="k"></span>Les sorties, séminaires et voyages</button>
+        <button class="opt" data-v="Les avantages membres"><span class="k"></span>Les avantages membres (vols business à prix réduits…)</button>
+        <button class="opt" data-v="La formation façon jeu vidéo"><span class="k"></span>La formation façon jeu vidéo (XP, niveaux, rangs)</button>
+      </div>
+      <div class="err" id="e-avantages"></div>
+      <div class="nav"><button class="back" data-back aria-label="Question précédente">←</button><button class="btn" data-next>SUIVANT →</button></div>
+    </section>
+
+    <!-- 7 -->
+    <section class="step" data-id="seul_equipe" data-q data-single>
+      <h2>Tu préfères avancer seul ou en équipe ?</h2>
+      <p class="sub">&nbsp;</p>
+      <div class="opts">
+        <button class="opt" data-v="Seul, à mon rythme"><span class="k">A</span>Seul, à mon rythme</button>
+        <button class="opt" data-v="En équipe, ça me motive"><span class="k">B</span>En équipe, ça me motive</button>
+        <button class="opt" data-v="Un mélange des deux"><span class="k">C</span>Un mélange des deux</button>
+      </div>
+      <div class="nav"><button class="back" data-back aria-label="Question précédente">←</button></div>
+    </section>
+
+    <!-- 8 -->
+    <section class="step" data-id="investir" data-q data-single>
+      <h2>Si une vraie opportunité se présente, tu es prêt à investir du temps et de l'argent ?</h2>
+      <p class="sub">(Ça demande entre 30 min minimum et 1h30 maximum par jour, et un budget entre 180€ minimum et 750€ maximum.)</p>
+      <div class="opts">
+        <button class="opt" data-v="Oui, du temps et de l'argent"><span class="k">A</span>Oui, du temps et de l'argent</button>
+        <button class="opt" data-v="L'argent oui, le temps c'est plus compliqué"><span class="k">B</span>L'argent oui, le temps c'est plus compliqué</button>
+        <button class="opt" data-v="Du temps oui, l'argent c'est plus compliqué"><span class="k">C</span>Du temps oui, l'argent c'est plus compliqué</button>
+        <button class="opt" data-v="Pas pour l'instant"><span class="k">D</span>Pas pour l'instant</button>
+      </div>
+      <div class="nav"><button class="back" data-back aria-label="Question précédente">←</button></div>
+    </section>
+
+    <!-- 9 -->
+    <section class="step" data-id="deplacements" data-q data-single>
+      <h2>Dans notre projet, on fait des déplacements et des voyages. Ça te dérange ?</h2>
+      <p class="sub">Sorties, séminaires, voyages entre membres.</p>
+      <div class="opts">
+        <button class="opt" data-v="Non, au contraire ça me motive"><span class="k">A</span>Non, au contraire ça me motive</button>
+        <button class="opt" data-v="Ça dépend des dates"><span class="k">B</span>Ça dépend des dates</button>
+        <button class="opt" data-v="Oui, ça me dérange"><span class="k">C</span>Oui, ça me dérange</button>
+      </div>
+      <div class="nav"><button class="back" data-back aria-label="Question précédente">←</button></div>
+    </section>
+
+    <!-- 10 -->
+    <section class="step" data-id="contact" data-q>
+      <h2>Où est-ce que je peux te contacter ?</h2>
+      <p class="sub">Choisis le réseau, puis laisse ton contact. C'est là que je t'écrirai.</p>
+      <div class="chips" role="radiogroup" aria-label="Réseau de contact">
+        <button class="chip" role="radio" aria-checked="false" data-c="WhatsApp"><b>💬</b>WHATSAPP</button>
+        <button class="chip" role="radio" aria-checked="false" data-c="Instagram"><b>📸</b>INSTAGRAM</button>
+        <button class="chip" role="radio" aria-checked="false" data-c="Snapchat"><b>👻</b>SNAPCHAT</button>
+        <button class="chip" role="radio" aria-checked="false" data-c="TikTok"><b>🎵</b>TIKTOK</button>
+        <button class="chip" role="radio" aria-checked="false" data-c="Téléphone"><b>📞</b>TÉLÉPHONE</button>
+        <button class="chip" role="radio" aria-checked="false" data-c="Email"><b>✉️</b>EMAIL</button>
+      </div>
+      <input class="field" id="f-contact" type="text" maxlength="80" placeholder="Choisis d'abord un réseau" disabled>
+      <div class="err" id="e-contact"></div>
+      <div class="nav"><button class="back" data-back aria-label="Question précédente">←</button><button class="btn" data-next>SUIVANT →</button></div>
+    </section>
+
+    <!-- 11 -->
+    <section class="step" data-id="source" data-q data-single data-stay>
+      <h2>Comment as-tu entendu parler de la DHA ?</h2>
+      <p class="sub">&nbsp;</p>
+      <div class="opts">
+        <button class="opt" data-v="Instagram"><span class="k">A</span>Instagram</button>
+        <button class="opt" data-v="TikTok"><span class="k">B</span>TikTok</button>
+        <button class="opt" data-v="Snapchat"><span class="k">C</span>Snapchat</button>
+        <button class="opt" data-v="Ebook DHA"><span class="k">D</span>L'ebook DHA</button>
+        <button class="opt" data-v="Un ami / un membre"><span class="k">E</span>Un ami ou un membre de la DHA</button>
+        <button class="opt" data-v="Autre"><span class="k">F</span>Autre</button>
+      </div>
+      <div class="extra" id="x-source"><input class="field" id="f-source" type="text" maxlength="60" placeholder="Qui ? (prénom ou pseudo)"></div>
+      <div class="err" id="e-envoi"></div>
+      <div class="nav"><button class="back" data-back aria-label="Question précédente">←</button><button class="btn" id="send" data-send disabled>ENVOYER MA CANDIDATURE 🔥</button></div>
+    </section>
+
+    <!-- FIN -->
+    <section class="step done" data-id="fin">
+      <div class="ico">🔥</div>
+      <div class="kicker">CANDIDATURE ENVOYÉE</div>
+      <h1>Merci <em class="pn"></em> !</h1>
+      <p class="lead" style="margin-bottom:0">Ta candidature est bien arrivée. Je la lis personnellement et je reviens vers toi très vite.</p>
+      <div class="recap"><small>JE TE CONTACTE SUR</small><span id="recap-contact"></span></div>
+      <p class="hint" style="margin-top:14px">Garde un œil sur tes messages, et pense à vérifier tes demandes de message si tu ne me suis pas encore.</p>
+    </section>
+
+  </main>
+  <footer>DIGITAL HUSTLER ACADEMY</footer>
+</div>
+
+<script>
+(function(){
+  var SUPA='https://kdetwppxsfoagyndrlzr.supabase.co';
+  var KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtkZXR3cHB4c2ZvYWd5bmRybHpyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzcyMzM3NjQsImV4cCI6MjA5MjgwOTc2NH0.OodaFQKEHcncDYdO6uM121NAUbyxD4UxpptSjzzZOi0';
+  var FORMSPREE='https://formspree.io/f/mjgjrojb';
+
+  var steps=[].slice.call(document.querySelectorAll('.step'));
+  var qs=steps.filter(function(s){return s.hasAttribute('data-q');});
+  var cur=0, envoye=false;
+  var R={prenom:'',age:null,situation:'',business_en_ligne:'',formations:'',avantages:[],seul_equipe:'',investir:'',deplacements:'',contact_canal:'',contact_valeur:'',source:'',source_detail:''};
+
+  // Lien partagé : ?src=ebook / ?src=insta… (pour savoir d'où vient la candidature)
+  var params=new URLSearchParams(location.search);
+  var SRC=(params.get('src')||params.get('utm_source')||'').slice(0,40);
+  if(/ebook/i.test(SRC)) preselect('source','Ebook DHA');
+  else if(/insta|ig/i.test(SRC)) preselect('source','Instagram');
+  else if(/tiktok|tt/i.test(SRC)) preselect('source','TikTok');
+  else if(/snap/i.test(SRC)) preselect('source','Snapchat');
+
+  function preselect(id,v){
+    var s=byId(id); if(!s)return;
+    s.querySelectorAll('.opt').forEach(function(o){if(o.getAttribute('data-v')===v){o.classList.add('sel');R[id]=v;}});
+    majSend();
+  }
+  function byId(id){for(var i=0;i<steps.length;i++)if(steps[i].getAttribute('data-id')===id)return steps[i];return null;}
+
+  function show(i,back){
+    steps[cur].classList.remove('on','back-anim');
+    cur=i;
+    var s=steps[cur];
+    s.classList.add('on'); if(back)s.classList.add('back-anim');
+    var qi=qs.indexOf(s);
+    document.getElementById('count').textContent=qi>-1?(qi+1)+' / '+qs.length:'';
+    document.getElementById('bar').style.width=(s.getAttribute('data-id')==='fin'?100:qi>-1?Math.round(qi/qs.length*100):0)+'%';
+    document.querySelectorAll('.pn').forEach(function(e){e.textContent=R.prenom;});
+    var f=s.querySelector('input.field:not([disabled])');
+    if(f && window.matchMedia('(hover:hover)').matches) setTimeout(function(){f.focus();},60);
+    window.scrollTo(0,0);
+  }
+
+  function err(id,msg){var e=document.getElementById('e-'+id);if(e)e.textContent=msg||'';}
+
+  function valider(s){
+    var id=s.getAttribute('data-id');
+    if(id==='prenom'){
+      var v=document.getElementById('f-prenom').value.trim();
+      if(v.length<2){err('prenom','Écris ton prénom 🙂');return false;}
+      R.prenom=v.charAt(0).toUpperCase()+v.slice(1); err('prenom'); return true;
+    }
+    if(id==='age'){
+      var a=parseInt(document.getElementById('f-age').value,10);
+      if(!a||a>99){err('age','Indique un âge valide.');return false;}
+      if(a<17){err('age','Désolé, il faut avoir au moins 17 ans pour candidater à la DHA.');return false;}
+      R.age=a; err('age'); return true;
+    }
+    if(id==='avantages'){
+      if(!R.avantages.length){err('avantages','Choisis au moins une réponse.');return false;}
+      err('avantages'); return true;
+    }
+    if(id==='contact'){
+      var c=R.contact_canal, val=document.getElementById('f-contact').value.trim();
+      if(!c){err('contact','Choisis d\'abord un réseau.');return false;}
+      if(c==='WhatsApp'||c==='Téléphone'){
+        var d=val.replace(/[^\d+]/g,'');
+        if(d.replace(/\D/g,'').length<9){err('contact','Numéro invalide. Ex : 06 12 34 56 78');return false;}
+      } else if(c==='Email'){
+        if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(val)){err('contact','Adresse email invalide.');return false;}
+      } else {
+        val=val.replace(/^@+/,'');
+        if(val.length<2||/\s/.test(val)){err('contact','Indique ton nom d\'utilisateur, sans espace.');return false;}
+        val='@'+val;
+      }
+      R.contact_valeur=val; err('contact'); return true;
+    }
+    return true;
+  }
+
+  function suivant(){
+    var s=steps[cur];
+    if(!valider(s))return;
+    if(cur<steps.length-1)show(cur+1);
+  }
+
+  var PH={WhatsApp:['Ton numéro WhatsApp','tel','06 12 34 56 78'],Téléphone:['Ton numéro','tel','06 12 34 56 78'],Instagram:['Ton nom d\'utilisateur Instagram','text','@tonpseudo'],Snapchat:['Ton nom d\'utilisateur Snapchat','text','@tonpseudo'],TikTok:['Ton nom d\'utilisateur TikTok','text','@tonpseudo'],Email:['Ton adresse email','email','toi@email.com']};
+
+  function majSend(){
+    var b=document.getElementById('send');
+    var ok=!!R.source && (R.source!=='Un ami / un membre' || true);
+    b.disabled=!ok||envoye;
+  }
+
+  document.addEventListener('click',function(e){
+    var t=e.target;
+    if(t.closest('[data-next]')){suivant();return;}
+    if(t.closest('[data-back]')){if(cur>0)show(cur-1,true);return;}
+    if(t.closest('[data-send]')){envoyer();return;}
+
+    var chip=t.closest('.chip');
+    if(chip){
+      document.querySelectorAll('.chip').forEach(function(c){c.classList.remove('sel');c.setAttribute('aria-checked','false');});
+      chip.classList.add('sel');chip.setAttribute('aria-checked','true');
+      var c=chip.getAttribute('data-c');
+      if(R.contact_canal!==c)document.getElementById('f-contact').value='';
+      R.contact_canal=c;
+      var f=document.getElementById('f-contact'), p=PH[c];
+      f.disabled=false; f.type=p[1]; f.placeholder=p[2]; f.setAttribute('aria-label',p[0]);
+      f.setAttribute('inputmode',p[1]==='tel'?'tel':p[1]==='email'?'email':'text');
+      err('contact'); f.focus();
+      return;
+    }
+
+    var opt=t.closest('.opt');
+    if(opt){
+      var s=opt.closest('.step'), id=s.getAttribute('data-id'), v=opt.getAttribute('data-v');
+      if(s.hasAttribute('data-multi')){
+        opt.classList.toggle('sel');
+        R[id]=[].slice.call(s.querySelectorAll('.opt.sel')).map(function(o){return o.getAttribute('data-v');});
+        if(R[id].length)err(id);
+        return;
+      }
+      s.querySelectorAll('.opt').forEach(function(o){o.classList.remove('sel');});
+      opt.classList.add('sel'); R[id]=v;
+      if(id==='source'){
+        var x=document.getElementById('x-source');
+        x.classList.toggle('on',v==='Un ami / un membre'||v==='Autre');
+        document.getElementById('f-source').placeholder=v==='Autre'?'Précise (optionnel)':'Qui ? Prénom ou pseudo (optionnel)';
+        if(x.classList.contains('on'))document.getElementById('f-source').focus();
+        majSend(); return;
+      }
+      setTimeout(function(){show(cur+1);},220);
+    }
+  });
+
+  document.addEventListener('input',function(e){var s=e.target.closest('.step');if(s)err(s.getAttribute('data-id'));});
+
+  document.addEventListener('keydown',function(e){
+    if(e.key!=='Enter')return;
+    var s=steps[cur];
+    if(e.target.tagName==='BUTTON')return;
+    e.preventDefault();
+    if(s.hasAttribute('data-send')||s.getAttribute('data-id')==='source'){if(!document.getElementById('send').disabled)envoyer();return;}
+    if(s.getAttribute('data-id')==='intro'||s.querySelector('[data-next]'))suivant();
+  });
+
+  function envoyer(){
+    if(envoye)return;
+    if(!R.source){err('envoi','Choisis une réponse.');return;}
+    envoye=true;
+    var b=document.getElementById('send'); b.disabled=true; b.textContent='ENVOI…';
+    R.source_detail=document.getElementById('f-source').value.trim();
+    var row={
+      prenom:R.prenom, age:R.age, situation:R.situation, business_en_ligne:R.business_en_ligne,
+      formations:R.formations, avantages:R.avantages, seul_equipe:R.seul_equipe, investir:R.investir,
+      deplacements:R.deplacements, contact_canal:R.contact_canal, contact_valeur:R.contact_valeur,
+      source:R.source, source_detail:R.source_detail||null, source_lien:SRC||null
+    };
+    fetch(SUPA+'/rest/v1/candidatures',{method:'POST',headers:{'apikey':KEY,'Authorization':'Bearer '+KEY,'Content-Type':'application/json','Prefer':'return=minimal'},body:JSON.stringify(row)})
+      .then(function(r){if(!r.ok)return r.text().then(function(t){throw t;});})
+      .then(function(){
+        // Notif pour Quincy (non bloquante)
+        try{
+          fetch(FORMSPREE,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({
+            _subject:'🔥 Nouvelle candidature DHA — '+R.prenom+' ('+R.age+' ans)',
+            sujet:'Nouvelle candidature DHA',
+            prenom:R.prenom, age:R.age, situation:R.situation,
+            contact:R.contact_canal+' : '+R.contact_valeur,
+            business_en_ligne:R.business_en_ligne, formations:R.formations,
+            attire_par:R.avantages.join(', '), seul_ou_equipe:R.seul_equipe,
+            pret_a_investir:R.investir, deplacements:R.deplacements,
+            connu_par:R.source+(R.source_detail?' ('+R.source_detail+')':'')+(SRC?' · lien '+SRC:'')
+          })}).catch(function(){});
+        }catch(x){}
+        document.getElementById('recap-contact').textContent=R.contact_canal+' · '+R.contact_valeur;
+        try{localStorage.setItem('dha_candidature','1');}catch(x){}
+        show(steps.length-1);
+      })
+      .catch(function(e){
+        console.error('Candidature :',e);
+        envoye=false; b.disabled=false; b.textContent='ENVOYER MA CANDIDATURE 🔥';
+        err('envoi','Oups, l\'envoi a échoué. Vérifie ta connexion et réessaie.');
+      });
+  }
+
+  show(0);
+})();
+</script>
+</body>
+</html>
