@@ -755,7 +755,7 @@ var TABS = {
   funnel:'Entonnoir', content:'Contenu', prospects:'Prospects', launches:'Lancements programmés', clients:'Membres', objectifs:'Objectifs', brain:'Analyse IA'
 };
 
-var NAV_TABS = ['home','objectifs','prospects','perdus','launches','clients','cand','content','brain'];
+var NAV_TABS = ['home','objectifs','prospects','launches','clients','cand','content','brain'];
 var NAV_ICON = {perdus:'🚫', home:'🏠', stats:'📊', cand:'📝', membres:'👥', objectifs:'🎯', funnel:'📉', prospects:'💬', clients:'🎓', content:'🎬', launches:'🚀', brain:'🤖'};
 var NAV_SHORT = {perdus:'Perdus', home:'Accueil', stats:'Stats', cand:'Candid.', membres:'Membres', objectifs:'Objectifs', funnel:'Entonnoir', prospects:'Prospects', clients:'Membres', content:'Contenu', launches:'Lancements', brain:'IA'};
 function paintNav(){
@@ -942,7 +942,7 @@ function paintLaunches(){
   if(!list.length){ $('#lg').innerHTML = '<div class="card empty" style="grid-column:1/-1">Aucun lancement programmé. Ajoute une date de lancement depuis la fiche détaillée d\'un prospect.</div>'; return; }
   $('#lg').innerHTML = list.map(function(p){
     var stLabel = STAGE_LABEL[p.status]||p.status;
-    return '<div class="card ccard-wrap"><button type="button" class="ccard-inner" data-act="details-p" data-id="'+esc(p.id)+'"><div style="display:flex;justify-content:space-between;gap:8px;align-items:flex-start"><h3>'+(p.prenom?esc(p.prenom)+' · ':'')+'@'+esc(p.handle)+'</h3><span class="badge'+(p.status==='close'?' ok':'')+'" style="margin:0">'+esc(stLabel)+'</span></div>'
+    return '<div class="card ccard-wrap"><button type="button" class="ccard-inner" data-act="details-p" data-id="'+esc(p.id)+'"><div style="display:flex;justify-content:space-between;gap:8px;align-items:flex-start"><h3>@'+esc(p.handle)+'</h3><span class="badge'+(p.status==='close'?' ok':'')+'" style="margin:0">'+esc(stLabel)+'</span></div>'
       +'<div class="prog">'+launchGauge(p)+'<span>'+esc(prospectLaunchLabel(p))+'</span></div>'
       +'<div class="p-when">Lancement prévu le '+dShort(p.launchAt)+'</div></button>'
       +'<a class="btn small launch-cal" href="'+esc(gcalLink('Lancement de @'+p.handle+' (DHA)', p.launchAt, p.launchAt+DAY, p.objectif||'', true))+'" target="_blank" rel="noopener">Ajouter au calendrier</a></div>';
@@ -1194,7 +1194,7 @@ function xpValidate(){
 
 /* ---------- vue : prospects perdus ---------- */
 function skelLost(){
-  return '<div class="stack"><section class="card"><p class="sub" style="margin:0 0 6px">Les prospects marqués « Perdu » sortent de la liste Prospects et arrivent ici. Pour en relancer un, clique sur « Modifier l\'étape » et choisis l\'étape où il en est.</p><div class="plist" id="lostlist"></div></section></div>';
+  return '<div class="stack"><button type="button" class="btn small" data-act="tab" data-tab="prospects" style="align-self:flex-start">← Retour aux prospects</button><section class="card"><p class="sub" style="margin:0 0 6px">Les prospects marqués « Perdu » sortent de la liste Prospects et arrivent ici. Pour en relancer un, clique sur « Modifier l\'étape » et choisis l\'étape où il en est.</p><div class="plist" id="lostlist"></div></section></div>';
 }
 function paintLost(){
   if(!$('#lostlist')) return;
@@ -1404,7 +1404,8 @@ function paintProspects(){
     }).join('')+'</div>';
   }).join('')+'</div>';
   var list = openProspects.filter(function(p){ return matches(p, null); });
-  h += '<div class="fbar"><span class="fcount">'+list.length+' prospect'+(list.length>1?'s':'')+(active||S.funnelView?' avec ces filtres':'')+'</span><span style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">'
+  var nLost = S.prospects.filter(function(p){ return p.status==='perdu'; }).length;
+  h += '<div class="fbar"><span class="fcount">'+list.length+' prospect'+(list.length>1?'s':'')+(active||S.funnelView?' avec ces filtres':'')+'</span><span style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">'+(nLost?'<button type="button" class="iconbtn" data-act="tab" data-tab="perdus">🚫 Voir les perdus ('+nLost+')</button>':'')
     +(active?'<button type="button" class="iconbtn" data-act="pf-clear">Effacer les filtres</button>':'')
     +'<label for="psort" class="sr">Trier</label><select id="psort">'+[['recent','Plus récents d\'abord'],['old','Plus anciens d\'abord'],['launch','Lancement le plus proche'],['touch','Sans contact depuis le plus longtemps']].map(function(o){ return '<option value="'+o[0]+'"'+(S.sort===o[0]?' selected':'')+'>'+o[1]+'</option>'; }).join('')+'</select></span></div>';
   $('#pchips').innerHTML = h;
