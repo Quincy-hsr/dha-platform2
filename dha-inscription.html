@@ -1054,6 +1054,10 @@ function validerReglement() {
 }
 
 function showOnboardingModal() {
+  try {
+    const m = JSON.parse(localStorage.getItem('dha_member') || '{}');
+    if (m.email) document.getElementById('ob-email').textContent = ' à ' + m.email;
+  } catch(e) {}
   document.getElementById('onboarding-overlay').classList.add('active');
 }
 
@@ -1077,42 +1081,16 @@ document.addEventListener('DOMContentLoaded', () => {
 <div class="onboarding-overlay" id="onboarding-overlay">
   <div class="onboarding-box">
 
-    <!-- STEP 1 — Réserver l'appel -->
+    <!-- Après l'inscription : on renvoie vers le mail de bienvenue -->
     <div class="onboarding-step active" id="onboarding-step-1">
       <div class="onboarding-step-1">
-        <div class="onboarding-icon">📞</div>
-        <div class="onboarding-title">ÉTAPE OBLIGATOIRE</div>
-        <div class="onboarding-sub">Tu dois réserver ton appel d'initiation avec Quincy avant de commencer les modules. Sans cet appel, tu risques de passer à côté de l'essentiel.</div>
-        <div class="onboarding-warning">Ça prend 15 minutes et ça change tout. 🔥</div>
-        <div style="background:rgba(255,215,0,0.06);border:1px solid rgba(255,215,0,0.25);border-radius:10px;padding:10px 14px;margin-bottom:18px;font-size:12px;color:rgba(255,215,0,0.85);line-height:1.6;">
-          ⚠️ Sur Calendly, sélectionne bien le type <strong style="color:var(--gold);">"Appel d'initiation (nouveaux membres)"</strong>
+        <div class="onboarding-icon">📩</div>
+        <div class="onboarding-title">REGARDE TES MAILS</div>
+        <div class="onboarding-sub">Ton mail de bienvenue vient de partir<span id="ob-email"></span>. Ouvre-le et suis les étapes dans l'ordre : c'est ton point de départ dans la DHA.</div>
+        <div style="background:rgba(255,215,0,0.06);border:1px solid rgba(255,215,0,0.25);border-radius:10px;padding:12px 14px;margin-bottom:18px;font-size:12.5px;color:rgba(255,215,0,0.9);line-height:1.6;text-align:left;">
+          ⚠️ Tu ne le vois pas ? Regarde tes <strong style="color:var(--gold);">spams</strong>.
         </div>
-        <a href="https://calendly.com/quincy-massol/appel-pour-huslter" target="_blank" class="onboarding-btn-primary" onclick="showOnboardingStep2()">📅 RÉSERVER MON APPEL D'INITIATION</a>
-        <button class="onboarding-btn-skip" onclick="showOnboardingStep2()">Passer pour l'instant</button>
-      </div>
-    </div>
-
-    <!-- STEP 2 — Choix après réservation -->
-    <div class="onboarding-step" id="onboarding-step-2">
-      <div class="onboarding-step-2">
-        <div class="onboarding-icon" style="margin:0 auto 16px;">✅</div>
-        <div class="onboarding-title">ET MAINTENANT ?</div>
-        <div class="onboarding-sub">En attendant ton appel, que veux-tu faire ?</div>
-
-        <!-- Option recommandée -->
-        <div class="onboarding-card-recommended">
-          <div class="onboarding-card-badge">FORTEMENT RECOMMANDÉ</div>
-          <div class="onboarding-card-text">
-            Regarde le fichier <strong>Prise de conscience</strong> avant ton appel. Les vidéos qu'il contient ont changé la vie de millions de personnes. Prends-les au sérieux — ce que tu vas apprendre ici commence dans ta tête.
-          </div>
-          <a href="https://gentle-cart-f82.notion.site/Prise-de-conscience-03ea3cd27f0d4cfd9b3b06e1674ecf4b" target="_blank" class="onboarding-btn-primary" style="margin-bottom:0;">▶ ACCÉDER À LA PRISE DE CONSCIENCE</a>
-        </div>
-
-        <!-- Option secondaire -->
-        <div class="onboarding-card-secondary">
-          <div class="onboarding-card-text">Accéder à la plateforme maintenant — mais sans ton appel d'initiation, les modules n'auront pas encore de sens.</div>
-          <a href="dha-dashboard.html" class="onboarding-btn-secondary">ACCÉDER AU DASHBOARD →</a>
-        </div>
+        <a href="dha-dashboard.html" class="onboarding-btn-primary">ACCÉDER AU DASHBOARD →</a>
       </div>
     </div>
 
