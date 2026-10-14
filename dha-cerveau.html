@@ -288,6 +288,52 @@ input[type=range]{padding:0;border:0;accent-color:var(--gain)}
 .topnav:hover{color:var(--ink);border-color:var(--muted)}
 .check input:disabled{opacity:.9}
 .auto-tag{font-size:11px;font-weight:700;padding:1px 7px;border-radius:999px;background:var(--gain-bg);color:var(--gain);margin-left:4px}
+/* ===== ACCUEIL / STATS / ADMIN intégrés ===== */
+.pinfo{display:grid;grid-template-columns:max-content 1fr;gap:6px 14px;margin:0;padding:12px 14px;border:1px solid var(--line);border-radius:10px;background:var(--bg)}
+.pinfo dt{color:var(--muted);font-size:13px}
+.pinfo dd{margin:0;font-size:14px;white-space:pre-wrap;overflow-wrap:anywhere}
+.hello h2{font-size:24px}
+.hello p{color:var(--muted);margin:2px 0 0;text-transform:capitalize}
+.objcard{cursor:pointer;border-color:var(--focus)}
+.objcard:hover{box-shadow:0 0 0 1px var(--focus)}
+.objk{font-size:12px;font-weight:700;letter-spacing:.08em;color:var(--focus);text-transform:uppercase}
+.objt{font:700 21px/1.3 var(--f-display);margin:8px 0 12px}
+.objn{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+.objn b{font:700 40px/1 var(--f-display);font-variant-numeric:tabular-nums}
+.objn .of{color:var(--muted);font-size:16px}
+.objn .pc{margin-left:auto;font:700 18px var(--f-display);color:var(--focus)}
+.objm{color:var(--muted);font-size:14px;margin-top:8px}
+.ktiles{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.ktile{all:unset;box-sizing:border-box;display:block;cursor:pointer;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px}
+.ktile:hover{border-color:var(--muted)}
+.ktile:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+.ktile .ki{font-size:20px}
+.ktile .kl{display:block;color:var(--muted);font-size:13px;font-weight:600;margin:8px 0 2px}
+.ktile .kv{display:block;font:700 34px/1.1 var(--f-display);font-variant-numeric:tabular-nums}
+.ktile .ks{display:block;color:var(--muted);font-size:13px;margin-top:4px}
+.ktile .ks b{color:var(--leak)}
+.statsbtn{width:100%;padding:16px;font-size:15px}
+.skpi{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.skpi .ktile{cursor:default}
+.skpi2{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.skpi2 .ktile{cursor:default;padding:14px 16px}.skpi2 .kv{font-size:24px}
+.custp{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.custp input{width:auto}
+.bars{display:flex;align-items:flex-end;gap:3px;height:160px;border-bottom:1px solid var(--line);margin-top:10px}
+.bars i{flex:1;min-width:2px;background:var(--focus);border-radius:3px 3px 0 0}
+.bars i.z{background:var(--soft);height:2px!important}
+.bxl{display:flex;justify-content:space-between;color:var(--muted);font-size:12px;margin-top:6px}
+.mgoals{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+.embed{width:100%;border:0;border-radius:14px;background:var(--surface);height:calc(100vh - 150px);min-height:520px;display:block}
+@media (max-width:860px){
+  .ktiles{grid-template-columns:1fr 1fr}
+  .skpi,.skpi2{grid-template-columns:1fr 1fr}
+  .skpi .ktile:first-child{grid-column:1/-1}
+  .nav{overflow-x:auto;scrollbar-width:none}
+  .nav::-webkit-scrollbar{display:none}
+  .nav button{flex:0 0 62px}
+  .embed{height:calc(100vh - 200px)}
+}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
 </head>
@@ -374,11 +420,13 @@ var LOST = ['Pas de réponse après relances','Pas intéressé','Budget','Pas le
 var STAGES = ['dm','reponse','call','held','close'];
 var STAGE_LABEL = {dm:'DM',reponse:'Réponse',call:'Call booké',held:'Call fait',close:'Client',perdu:'Perdu'};
 function nextStage(status){ var i = STAGES.indexOf(status); return (i>=0 && i<STAGES.length-1) ? STAGES[i+1] : null; }
+var SITUATIONS = ['Étudiant(e)','Étudiant(e) en alternance','Salarié(e)','Entrepreneur / indépendant',"En recherche d'emploi",'Autre'];
+var REV_LABEL = {sdr:'Avec revenus', sr:'Sans revenus'};
 var CLIENT_STATUS = [['actif','Actif'],['pause','En pause'],['termine','Terminé'],['perdu','Parti']];
 
 /* ---------- état ---------- */
 var S = {
-  mode:'loading', tab:'objectifs', period:'month',
+  mode:'loading', tab:'home', period:'month', goalPer:'week', statPer:'month', objectif:null,
   prospects:[], content:[], clients:[], dmlogs:[],
   targets:Object.assign({}, DEFAULT_TARGETS), goals:Object.assign({}, DEFAULT_GOALS), weekOffset:0,
   filter:'all', q:'', limit:60, expandedSteps:{},
@@ -387,6 +435,8 @@ var S = {
   ai:{loading:false, text:'', error:'', note:''},
   error:''
 };
+// Lien direct vers un onglet depuis l'admin : dha-cerveau.html#prospects, #clients, #launches…
+try{ var h0 = location.hash.replace('#',''); if(['perdus','home','objectifs','funnel','prospects','clients','content','launches','stats','cand','membres','brain'].indexOf(h0)>-1) S.tab = h0; }catch(e){}
 var dbh = null, sampleFn = null, dlNs = null, aiCtl = null, skeletonTab = null, raf = 0;
 var local = {prospects:{}, content:{}, clients:{}, dmlogs:{}, settings:{}};
 var LS = 'cerveau-v1', LSQ = 'cerveau-qa';
@@ -455,10 +505,12 @@ function makeSupaDb(){
 }
 
 /* ---------- lien avec la plateforme DHA : modules faits ---------- */
-var PLAT = {members:[], done:{}, loaded:false};
+var PLAT = {members:[], done:{}, loaded:false, recent:{}};
+function memberOf(c){ if(!c || !c.pseudo) return null; var k = normPseudo(c.pseudo); return PLAT.members.filter(function(m){ return normPseudo(m.pseudo)===k; })[0] || null; }
+function levelOf(xp){ return Math.min(10, Math.floor((Number(xp)||0)/500)+1); }
 function normPseudo(p){ return String(p||'').trim().replace(/^@+/,'').toLowerCase(); }
 function loadPlatform(){
-  return fetch(SUPA_URL+'/rest/v1/membres?select=pseudo,prenom,nom,plan&or=(plan.is.null,plan.neq.demo)', {headers:SUPA_H})
+  return fetch(SUPA_URL+'/rest/v1/membres?select=id,pseudo,prenom,nom,plan,xp&or=(plan.is.null,plan.neq.demo)', {headers:SUPA_H})
     .then(function(r){ return r.ok ? r.json() : []; })
     .then(function(ms){
       PLAT.members = Array.isArray(ms) ? ms : [];
@@ -479,6 +531,14 @@ function loadPlatform(){
             if(!done[k][r.action_key] || t<done[k][r.action_key]) done[k][r.action_key] = t;
           });
           PLAT.done = done; PLAT.loaded = true; syncModules();
+          // Activité récente sur la plateforme (tout ce qui rapporte de l'XP)
+          return fetch(SUPA_URL+'/rest/v1/xp_historique?membre_pseudo=in.('+encodeURIComponent(who)+')&select=membre_pseudo,xp_gagne,raison,created_at&order=created_at.desc&limit=400', {headers:SUPA_H})
+            .then(function(r){ return r.ok ? r.json() : []; })
+            .then(function(rows){
+              var rec = {};
+              (Array.isArray(rows)?rows:[]).forEach(function(r){ var k = normPseudo(r.membre_pseudo); (rec[k] = rec[k] || []).push(r); });
+              PLAT.recent = rec; if(S.tab==='clients') schedule();
+            });
         });
     }).catch(function(){});
 }
@@ -559,6 +619,9 @@ function connectCloud(db){
   }, function(){});
   db.doc('settings/goals').onSnapshot(function(snap){
     S.goals = Object.assign({}, DEFAULT_GOALS, snap.exists ? snap.data() : {}); schedule();
+  }, function(){});
+  db.doc('admin/objectif').onSnapshot(function(snap){
+    S.objectif = snap.exists ? snap.data() : null; schedule();
   }, function(){});
   schedule();
 }
@@ -688,15 +751,16 @@ function groupBy(list, logs, keyFn){
 function schedule(){ if(raf) return; raf = requestAnimationFrame(function(){ raf = 0; render(); }); }
 
 var TABS = {
+  home:'Accueil', perdus:'Prospects perdus', stats:'Mes stats', cand:'Candidatures', membres:'Membres',
   funnel:'Entonnoir', content:'Contenu', prospects:'Prospects', launches:'Lancements programmés', clients:'Clients', objectifs:'Objectifs', brain:'Analyse IA'
 };
 
-var NAV_TABS = ['objectifs','funnel','prospects','clients','content','launches','brain'];
-var NAV_ICON = {objectifs:'🎯', funnel:'📉', prospects:'💬', clients:'🎓', content:'🎬', launches:'🚀', brain:'🤖'};
-var NAV_SHORT = {objectifs:'Objectifs', funnel:'Entonnoir', prospects:'Prospects', clients:'Clients', content:'Contenu', launches:'Lancements', brain:'IA'};
+var NAV_TABS = ['home','objectifs','prospects','perdus','clients','launches','content','funnel','stats','cand','membres','brain'];
+var NAV_ICON = {perdus:'🚫', home:'🏠', stats:'📊', cand:'📝', membres:'👥', objectifs:'🎯', funnel:'📉', prospects:'💬', clients:'🎓', content:'🎬', launches:'🚀', brain:'🤖'};
+var NAV_SHORT = {perdus:'Perdus', home:'Accueil', stats:'Stats', cand:'Candid.', membres:'Membres', objectifs:'Objectifs', funnel:'Entonnoir', prospects:'Prospects', clients:'Clients', content:'Contenu', launches:'Lancements', brain:'IA'};
 function paintNav(){
   $('#nav').innerHTML = NAV_TABS.map(function(k){
-    var n = k==='prospects' ? S.prospects.filter(function(p){ return needsFollowUp(p) || prospectDue(p); }).length : 0;
+    var n = k==='prospects' ? S.prospects.filter(function(p){ return needsFollowUp(p) || prospectDue(p); }).length : k==='cand' ? CAND.list.filter(function(c){ return (c.statut||'nouvelle')==='nouvelle'; }).length : 0;
     return '<button type="button" data-act="tab" data-tab="'+k+'"'+(S.tab===k?' aria-current="page"':'')+'><span class="ni" aria-hidden="true">'+NAV_ICON[k]+'</span><span class="nl">'+(k==='launches'?'Lancements':TABS[k])+'</span><span class="ns">'+NAV_SHORT[k]+'</span>'+(n?'<span class="count" title="À contacter ou à relancer">'+n+'</span>':'')+'</button>';
   }).join('');
 }
@@ -712,7 +776,7 @@ function paintTop(){
   }
   if(S.tab==='funnel') h += '<button type="button" class="btn" data-act="targets">Taux cibles</button>';
   if(S.tab==='objectifs') h += '<button type="button" class="btn" data-act="goals">Modifier mes objectifs</button>';
-  h += '<a class="topnav" href="dha-admin.html">Admin DHA</a></div>';
+  h += '</div>';
   $('#top').innerHTML = h;
 }
 
@@ -844,6 +908,7 @@ function kpi(label, val){ return '<div class="kpi"><span>'+label+'</span><b>'+va
 
 /* ---------- vue : objectifs ---------- */
 var GOAL_DEFS = [
+  {k:'clients', label:'Clients signés', short:'clients', note:''},
   {k:'content', label:'Contenus publiés', short:'contenus', note:''},
   {k:'dm', label:'DM envoyés', short:'DM', note:'hors ebooks'},
   {k:'held', label:'Calls faits', short:'calls faits', note:''}
@@ -854,6 +919,7 @@ function goalCount(k, a, b){
   if(k==='content') return S.content.filter(function(c){ return inr(c.date||0); }).length;
   if(k==='dm') return sumLogs(S.dmlogs.filter(function(l){ return inr(l.date||0); }));
   if(k==='held') return S.prospects.filter(function(p){ return p.heldAt && inr(p.heldAt); }).length;
+  if(k==='clients') return S.clients.filter(function(c){ return c.startAt && inr(c.startAt); }).length;
 }
 function dayTs(ws, i){ var d = new Date(ws); d.setDate(d.getDate()+i); return d.getTime(); }
 function weekGoalsPct(){
@@ -868,7 +934,7 @@ function weekGoalsPct(){
   return Math.round(sum/defs.length);
 }
 function skelLaunches(){
-  return '<div class="stack"><section class="card"><h2>Lancements programmés</h2><p class="sub">Tous les prospects avec une date de lancement, du plus proche (ou du plus en retard) au plus lointain. Clique sur une fiche pour voir ou modifier ses détails.</p></section><div class="grid" id="lg"></div></div>';
+  return '<div class="stack"><div class="grid" id="lg"></div></div>';
 }
 function paintLaunches(){
   if(!$('#lg')) return;
@@ -876,8 +942,7 @@ function paintLaunches(){
   if(!list.length){ $('#lg').innerHTML = '<div class="card empty" style="grid-column:1/-1">Aucun lancement programmé. Ajoute une date de lancement depuis la fiche détaillée d\'un prospect.</div>'; return; }
   $('#lg').innerHTML = list.map(function(p){
     var stLabel = STAGE_LABEL[p.status]||p.status;
-    return '<div class="card ccard-wrap"><button type="button" class="ccard-inner" data-act="details-p" data-id="'+esc(p.id)+'"><div style="display:flex;justify-content:space-between;gap:8px;align-items:flex-start"><h3>@'+esc(p.handle)+'</h3><span class="badge'+(p.status==='close'?' ok':'')+'" style="margin:0">'+esc(stLabel)+'</span></div>'
-      +'<div class="sub">'+[p.platform,p.source].filter(Boolean).map(esc).join(', ')+'</div>'
+    return '<div class="card ccard-wrap"><button type="button" class="ccard-inner" data-act="details-p" data-id="'+esc(p.id)+'"><div style="display:flex;justify-content:space-between;gap:8px;align-items:flex-start"><h3>'+(p.prenom?esc(p.prenom)+' · ':'')+'@'+esc(p.handle)+'</h3><span class="badge'+(p.status==='close'?' ok':'')+'" style="margin:0">'+esc(stLabel)+'</span></div>'
       +'<div class="goal">'+(p.objectif?esc(p.objectif):'Objectif non renseigné')+'</div>'
       +'<div class="prog">'+launchGauge(p)+'<span>'+esc(prospectLaunchLabel(p))+'</span></div>'
       +'<div class="p-when">Lancement prévu le '+dShort(p.launchAt)+'</div></button>'
@@ -885,10 +950,13 @@ function paintLaunches(){
   }).join('');
 }
 function skelGoals(){
-  return '<div class="stack"><div class="toolbar" style="margin:0" id="gnav"></div><div class="goals" id="goals"></div><p class="note" id="gnote"></p></div>';
+  return '<div class="stack"><div class="seg" role="group" aria-label="Période" id="gper"></div><div class="toolbar" style="margin:0" id="gnav"></div><div class="goals" id="goals"></div><p class="note" id="gnote"></p></div>';
 }
+var GPER = [['week','Cette semaine'],['lweek','Semaine dernière'],['month','Ce mois-ci'],['lmonth','Mois dernier']];
 function paintGoals(){
   if(!$('#goals')) return;
+  $('#gper').innerHTML = GPER.map(function(p){ return '<button type="button" data-act="gper" data-v="'+p[0]+'" aria-pressed="'+(S.goalPer===p[0])+'">'+p[1]+'</button>'; }).join('');
+  if(S.goalPer==='month' || S.goalPer==='lmonth'){ paintGoalsMonth(); return; }
   var d0 = new Date(weekStart(Date.now())); d0.setDate(d0.getDate()+7*S.weekOffset);
   var ws = d0.getTime(), now = Date.now(), cur = S.weekOffset===0, todayIdx = 0, i;
   if(cur){ for(i=0;i<7;i++){ if(now>=dayTs(ws,i) && now<dayTs(ws,i+1)) todayIdx = i; } }
@@ -932,6 +1000,277 @@ function paintGoals(){
   }).join('');
   $('#gnote').textContent = (cur ? 'Le trait bleu sur la jauge marque où tu devrais en être à la fin d\'aujourd\'hui. ' : '')+'L\'objectif par jour est l\'objectif de la semaine divisé par 7. Les DM comptés sont ceux de l\'onglet Prospects, hors ebooks. Chaque entrée de l\'onglet Contenu compte pour un contenu.';
 }
+function paintGoalsMonth(){
+  var n = new Date(), a, b;
+  if(S.goalPer==='month'){ a = new Date(n.getFullYear(), n.getMonth(), 1); b = new Date(n.getFullYear(), n.getMonth()+1, 1); }
+  else { a = new Date(n.getFullYear(), n.getMonth()-1, 1); b = new Date(n.getFullYear(), n.getMonth(), 1); }
+  a = a.getTime(); b = b.getTime();
+  var jours = Math.round((b-a)/DAY), now = Date.now(), cur = now>=a && now<b, ecoule = cur ? (now-a)/(b-a) : 1;
+  $('#gnav').innerHTML = '<span class="sub">Du '+dShort(a)+' au '+dShort(b-1)+' · objectif du mois = objectif de la semaine × '+(jours/7).toLocaleString('fr-FR',{maximumFractionDigits:1})+'</span>';
+  var defs = GOAL_DEFS.filter(function(g){ return Number(S.goals[g.k])>0; });
+  if(!defs.length){ $('#goals').innerHTML = '<div class="card empty" style="grid-column:1/-1">Aucun objectif défini. Clique sur « Modifier mes objectifs » pour en fixer un.</div>'; $('#gnote').textContent=''; return; }
+  $('#goals').innerHTML = defs.map(function(g){
+    var t = Math.round(Number(S.goals[g.k])*jours/7), total = goalCount(g.k, a, b), pc = Math.round(total/t*100), done = total>=t, pace;
+    if(done) pace = '<span class="ok">Objectif du mois atteint.</span>'+(total>t?' Dépassé de '+fmtN(total-t)+'.':'');
+    else if(cur){ var late = Math.ceil(t*ecoule-total), left = Math.max(1, Math.ceil((b-now)/DAY));
+      pace = (late>0 ? '<span class="late">En retard de '+fmtN(late)+' '+g.short+'.</span>' : '<span class="ok">Dans le rythme.</span>')+' Il reste '+fmtN(t-total)+' '+g.short+' en '+left+' jour'+(left>1?'s':'')+'.'; }
+    else pace = '<span class="late">Objectif manqué.</span> Tu as réalisé '+pc+' % de l\'objectif.';
+    return '<section class="card goal"><div><h2>'+esc(g.label)+'</h2><p class="sub">Objectif : '+fmtN(t)+' sur le mois</p></div>'
+      +'<div class="goal-main"><b>'+fmtN(total)+'</b><span class="of">/ '+fmtN(t)+'</span><span class="pc">'+pc+'&nbsp;%</span></div>'
+      +'<div class="gauge'+(done?' done':'')+'" role="progressbar" aria-label="Mois, '+esc(g.label)+'" aria-valuemin="0" aria-valuemax="'+t+'" aria-valuenow="'+total+'"><i style="width:'+Math.min(100,pc)+'%"></i></div>'
+      +'<p class="pace">'+pace+'</p></section>';
+  }).join('');
+  $('#gnote').textContent = 'Les chiffres viennent de tes onglets Prospects, Clients et Contenu.';
+}
+
+/* ---------- vue : accueil ---------- */
+var CAND = {list:[], ok:false};
+function loadCand(){
+  return fetch(SUPA_URL+'/rest/v1/candidatures?select=*&order=created_at.desc', {headers:SUPA_H})
+    .then(function(r){ return r.ok ? r.json() : []; })
+    .then(function(d){ CAND.list = Array.isArray(d) ? d : []; CAND.ok = true; schedule(); })
+    .catch(function(){});
+}
+function ymdToTs(v, fin){ return new Date(v+(fin?'T23:59:59':'T00:00:00')).getTime(); }
+function objDefaut(){ var n = new Date(); return {titre:'Signer 10 clients ce mois-ci', type:'clients', cible:10, valeur:0, debut:ymd(new Date(n.getFullYear(),n.getMonth(),1).getTime()), fin:ymd(new Date(n.getFullYear(),n.getMonth()+1,0).getTime()), defaut:true}; }
+var OBJ_TYPES = [['clients','Clients signés'],['cand','Candidatures reçues'],['dm','DM envoyés'],['content','Contenus publiés'],['held','Calls faits'],['manuel','Je mets à jour moi-même']];
+var OBJ_UNIT = {clients:'clients signés', cand:'candidatures', dm:'DM envoyés', content:'contenus', held:'calls faits', manuel:''};
+function objValeur(o){
+  var a = ymdToTs(o.debut), b = ymdToTs(o.fin, true)+1;
+  if(o.type==='cand') return CAND.list.filter(function(c){ var t = new Date(c.created_at).getTime(); return t>=a && t<b; }).length;
+  if(o.type==='manuel') return Number(o.valeur)||0;
+  return goalCount(o.type, a, b) || 0;
+}
+function skelHome(){
+  return '<div class="stack"><div class="hello"><h2>Salut Quincy 👋</h2><p id="hdate"></p></div>'
+    +'<section class="card objcard" id="hobj" data-act="tab" data-tab="objectifs" aria-label="Objectif du moment"></section>'
+    +'<div class="ktiles" id="htiles"></div>'
+    +'<button type="button" class="btn statsbtn" data-act="tab" data-tab="stats">📊 Voir mes stats →</button></div>';
+}
+function paintHome(){
+  if(!$('#hobj')) return;
+  $('#hdate').textContent = new Date().toLocaleDateString('fr-FR',{weekday:'long', day:'numeric', month:'long'});
+  var o = S.objectif || objDefaut(), v = objValeur(o), c = Math.max(1, Number(o.cible)||1), pc = Math.round(v/c*100);
+  var fin = ymdToTs(o.fin, true), reste = Math.ceil((fin-Date.now())/DAY), m = 'Du '+dShort(ymdToTs(o.debut))+' au '+dShort(fin)+' · ';
+  if(v>=c) m += '<span class="ok">Objectif atteint 🔥</span>';
+  else if(reste<0) m += '<span class="late">Terminé</span>, il manquait '+fmtN(c-v);
+  else m += 'il reste <b>'+fmtN(c-v)+'</b> en <b>'+reste+' jour'+(reste>1?'s':'')+'</b>';
+  if(o.defaut) m += ' · exemple : clique sur « Modifier » pour mettre le tien';
+  $('#hobj').innerHTML = '<div style="display:flex;justify-content:space-between;align-items:center;gap:10px"><span class="objk">🎯 Objectif du moment</span><button type="button" class="btn small" data-act="obj-edit">Modifier</button></div>'
+    +'<div class="objt">'+esc(o.titre||'Mon objectif')+'</div>'
+    +'<div class="objn"><b>'+fmtN(v)+'</b><span class="of">/ '+fmtN(c)+(OBJ_UNIT[o.type]?' '+OBJ_UNIT[o.type]:'')+'</span><span class="pc">'+pc+'&nbsp;%</span></div>'
+    +'<div class="gauge'+(v>=c?' done':'')+'" role="progressbar" aria-label="Progression de l\'objectif" aria-valuemin="0" aria-valuemax="'+c+'" aria-valuenow="'+v+'" style="margin-top:12px"><i style="width:'+Math.min(100,pc)+'%"></i></div>'
+    +'<div class="objm">'+m+'</div><button type="button" class="btn small" data-act="tab" data-tab="objectifs" style="margin-top:12px">Voir tous mes objectifs →</button>';
+  var openP = S.prospects.filter(function(p){ return p.status!=='close' && p.status!=='perdu'; }).length;
+  var lanc = S.prospects.filter(function(p){ return p.launchAt; });
+  var proch = lanc.filter(function(p){ return p.launchAt>=Date.now()-DAY; }).sort(function(a,b){ return a.launchAt-b.launchAt; })[0];
+  var actifs = S.clients.filter(function(c){ return (c.status||'actif')==='actif'; }).length;
+  var nouv = CAND.list.filter(function(c){ return (c.statut||'nouvelle')==='nouvelle'; }).length;
+  var tile = function(tab, ic, lbl, val, sub){ return '<button type="button" class="ktile" data-act="tab" data-tab="'+tab+'"><span class="ki" aria-hidden="true">'+ic+'</span><span class="kl">'+lbl+'</span><span class="kv">'+val+'</span><span class="ks">'+sub+'</span></button>'; };
+  $('#htiles').innerHTML = tile('prospects','💬','Prospects',fmtN(openP),'en cours')
+    + tile('launches','🚀','Lancements programmés',fmtN(lanc.length), proch ? 'prochain le '+dShort(proch.launchAt) : 'aucun à venir')
+    + tile('clients','🎓','Clients',fmtN(actifs), fmtN(S.clients.length)+' au total')
+    + tile('cand','📝','Candidatures reçues', CAND.ok ? fmtN(CAND.list.length) : '—', nouv ? '<b>'+nouv+' à traiter</b>' : 'tout est traité');
+}
+function openObjectif(){
+  var o = S.objectif || objDefaut();
+  openDlg('<div class="dlg-body"><h2 id="dlgTitle">Mon objectif du moment</h2>'
+    +'<div><label for="obT">Mon objectif</label><input id="obT" maxlength="80" value="'+esc(o.defaut?'':(o.titre||''))+'" placeholder="Ex : '+esc(objDefaut().titre)+'"></div>'
+    +'<div><label for="obType">Ce qui fait avancer la jauge</label><select id="obType">'+OBJ_TYPES.map(function(t){ return '<option value="'+t[0]+'"'+(o.type===t[0]?' selected':'')+'>'+t[1]+'</option>'; }).join('')+'</select></div>'
+    +'<div class="two"><div><label for="obC">Objectif à atteindre</label><input id="obC" type="number" min="1" inputmode="numeric" value="'+(o.cible||'')+'"></div><div id="obVw"'+(o.type==='manuel'?'':' hidden')+'><label for="obV">J\'en suis à</label><input id="obV" type="number" min="0" inputmode="numeric" value="'+(Number(o.valeur)||0)+'"></div></div>'
+    +'<div class="two"><div><label for="obD">Du</label><input id="obD" type="date" value="'+esc(o.debut)+'"></div><div><label for="obF">Au</label><input id="obF" type="date" value="'+esc(o.fin)+'"></div></div></div>'
+    +'<div class="dlg-foot"><span></span><div class="r"><button type="button" class="btn" data-act="close">Annuler</button><button type="button" class="btn primary" data-act="save-obj">Enregistrer</button></div></div>');
+  $('#obType').onchange = function(){ $('#obVw').hidden = this.value!=='manuel'; };
+}
+function saveObjectif(){
+  var o = {titre:$('#obT').value.trim(), type:$('#obType').value, cible:Math.floor(Number($('#obC').value)||0), valeur:Math.floor(Number($('#obV').value)||0), debut:$('#obD').value, fin:$('#obF').value};
+  if(!o.titre){ toast('Écris ton objectif.'); return; }
+  if(o.cible<1){ toast('Indique le chiffre à atteindre.'); return; }
+  if(!o.debut || !o.fin || o.fin<o.debut){ toast('Vérifie les dates.'); return; }
+  var p = dbh ? dbh.doc('admin/objectif').set(o) : Promise.resolve();
+  if(!dbh){ S.objectif = o; schedule(); }
+  safe(p).then(function(){ S.objectif = o; closeDlg(); schedule(); toast('Objectif enregistré'); }).catch(function(){});
+}
+
+loadCand(); setInterval(function(){ if(document.visibilityState==='visible') loadCand(); }, 60000);
+document.addEventListener('change', function(ev){
+  var t = ev.target; if(!t) return;
+  if(t.id==='sA' || t.id==='sB'){ STAT_RANGE[t.id==='sA'?'a':'b'] = t.value; schedule(); }
+});
+window.addEventListener('message', function(ev){ if(ev.data==='dha-cand-maj') loadCand(); });
+
+/* ---------- vue : candidatures ---------- */
+var CST = {nouvelle:['Nouvelle','#B7791F'], contactee:['Contactée','var(--focus)'], acceptee:['Acceptée','var(--gain)'], refusee:['Refusée','var(--leak)']};
+var CANDF = 'nouvelle';
+function candLink(c){
+  var v = String(c.contact_valeur||'').trim(), u = v.replace(/^@+/,'');
+  switch(c.contact_canal){
+    case 'WhatsApp': var d = v.replace(/\D/g,''); if(/^0\d{9}$/.test(d)) d = '33'+d.slice(1); return 'https://wa.me/'+d;
+    case 'Téléphone': return 'tel:'+v.replace(/[^\d+]/g,'');
+    case 'Instagram': return 'https://instagram.com/'+encodeURIComponent(u);
+    case 'TikTok': return 'https://www.tiktok.com/@'+encodeURIComponent(u);
+    case 'Snapchat': return 'https://www.snapchat.com/add/'+encodeURIComponent(u);
+    case 'Email': return 'mailto:'+v;
+  }
+  return '';
+}
+function candProspect(c){ return S.prospects.filter(function(p){ return p.fromCand===c.id; })[0]; }
+function skelCand(){
+  return '<div class="stack"><section class="card"><div id="cchips" style="display:flex;flex-wrap:wrap;gap:8px;margin:0 0 6px"></div><div class="plist" id="clist"></div></section></div>';
+}
+function paintCand(){
+  if(!$('#clist')) return;
+  var cnt = {all:CAND.list.length};
+  CAND.list.forEach(function(c){ var k = c.statut||'nouvelle'; cnt[k] = (cnt[k]||0)+1; });
+  $('#cchips').innerHTML = [['nouvelle','Nouvelles'],['contactee','Contactées'],['acceptee','Acceptées'],['refusee','Refusées'],['all','Toutes']].map(function(f){
+    return '<button type="button" class="chip" data-act="candf" data-v="'+f[0]+'" aria-pressed="'+(CANDF===f[0])+'">'+f[1]+'<small>'+(cnt[f[0]]||0)+'</small></button>';
+  }).join('');
+  if(!CAND.ok){ $('#clist').innerHTML = '<div class="empty">Chargement des candidatures…</div>'; return; }
+  var list = CAND.list.filter(function(c){ return CANDF==='all' || (c.statut||'nouvelle')===CANDF; });
+  $('#clist').innerHTML = list.length ? list.map(function(c){
+    var st = CST[c.statut||'nouvelle']||CST.nouvelle, l = candLink(c);
+    return '<article class="prow" style="display:flex;align-items:center;gap:12px;flex-wrap:wrap"><div style="flex:1;min-width:160px"><button type="button" class="p-handle" data-act="cand-det" data-id="'+esc(c.id)+'">'+esc(c.prenom||'?')+(c.age?' · '+c.age+' ans':'')+'</button>'
+      +' <span class="badge" style="color:'+st[1]+';border:1px solid currentColor;background:transparent">'+st[0]+'</span></div>'
+      +'<div class="p-actions" style="margin:0">'+(l?'<a class="btn small primary" href="'+esc(l)+'" target="_blank" rel="noopener">💬 Écrire</a>':'')+'<button type="button" class="btn small" data-act="cand-det" data-id="'+esc(c.id)+'">Voir les détails</button></div></article>';
+  }).join('') : '<div class="empty">'+(CAND.list.length?'Aucune candidature ici.':'Aucune candidature pour l\'instant.')+'</div>';
+}
+function openCand(id){
+  var c = CAND.list.filter(function(x){ return String(x.id)===String(id); })[0]; if(!c) return;
+  var l = candLink(c), pr = candProspect(c);
+  var rows = [['Âge',c.age?c.age+' ans':''],['Contact',(c.contact_canal||'')+' · '+(c.contact_valeur||'')],['Reçue le',c.created_at?dShort(new Date(c.created_at).getTime()):''],['Situation',c.situation],['Business en ligne',c.business_en_ligne],['Formations',c.formations],['Ce qui l\'attire',(c.avantages||[]).join(', ')],['Seul ou en équipe',c.seul_equipe],['Prêt à investir',c.investir],['Déplacements',c.deplacements],['Connu par',(c.source||'')+(c.source_detail?' ('+c.source_detail+')':'')+(c.source_lien?' · lien '+c.source_lien:'')]].filter(function(r){ return r[1]; });
+  openDlg('<div class="dlg-body"><h2 id="dlgTitle">'+esc(c.prenom||'Candidature')+'</h2>'
+    +(l?'<a class="btn primary" href="'+esc(l)+'" target="_blank" rel="noopener" style="text-align:center">💬 Écrire sur '+esc(c.contact_canal)+'</a>':'')
+    +'<dl class="pinfo">'+rows.map(function(r){ return '<dt>'+r[0]+'</dt><dd>'+esc(r[1])+'</dd>'; }).join('')+'</dl>'
+    +'<div><label>Statut</label><div class="seg" role="group" aria-label="Statut">'+Object.keys(CST).map(function(k){ return '<button type="button" data-act="cand-st" data-id="'+esc(c.id)+'" data-v="'+k+'" aria-pressed="'+((c.statut||'nouvelle')===k)+'">'+CST[k][0]+'</button>'; }).join('')+'</div></div>'
+    +'<div><label for="cnNote">Note perso</label><textarea id="cnNote" rows="3" placeholder="Ex. appelé le 14/10, intéressé par le 500€">'+esc(c.note||'')+'</textarea></div></div>'
+    +'<div class="dlg-foot">'+(pr?'<span class="sub">✓ Déjà dans tes prospects</span>':'<button type="button" class="btn" data-act="cand-pros" data-id="'+esc(c.id)+'">➜ Passer en prospect</button>')
+    +'<div class="r"><button type="button" class="btn" data-act="close">Fermer</button><button type="button" class="btn primary" data-act="cand-save" data-id="'+esc(c.id)+'">Enregistrer la note</button></div></div>');
+}
+function patchCandDb(c, body){
+  return fetch(SUPA_URL+'/rest/v1/candidatures?id=eq.'+encodeURIComponent(c.id), {method:'PATCH', headers:SUPA_H, body:JSON.stringify(body)})
+    .then(function(r){ if(!r.ok) throw {code:'http_'+r.status}; Object.assign(c, body); schedule(); });
+}
+function candById(id){ return CAND.list.filter(function(x){ return String(x.id)===String(id); })[0]; }
+function candToProspect(c){
+  if(candProspect(c)){ toast('Déjà dans tes prospects'); return; }
+  var social = ['Instagram','TikTok','Snapchat'].indexOf(c.contact_canal)>-1;
+  var handle = social ? String(c.contact_valeur||'').replace(/^@+/,'') : String(c.prenom||'candidat').toLowerCase().replace(/\s+/g,'');
+  var src = c.source==='Ebook DHA' ? EBOOK : (c.source==='Un ami / un membre' ? 'Recommandation' : 'Autre');
+  var at = c.created_at ? new Date(c.created_at).getTime() : Date.now();
+  var note = 'Candidature du '+dShort(at)+' · '+(c.contact_canal||'')+' : '+(c.contact_valeur||'')+(c.age?' · '+c.age+' ans':'')+(c.source?' · connu par '+c.source:'');
+  var o = {id:uid(), handle:handle, prenom:c.prenom||'', platform:(['Instagram','TikTok'].indexOf(c.contact_canal)>-1?c.contact_canal:'Autre'), source:src, variant:'Sans script', status:'reponse', dmAt:at, repliedAt:Date.now(), callAt:null, wonAt:null, lostAt:null, lostStage:null, lostReason:'', notes:note, objectif:'', clientId:null, revenu:null, situation:c.situation||'', ville:'', fromCand:c.id};
+  safe(put('prospects', o)).then(function(){ toast(c.prenom+' ajouté(e) à tes prospects'); closeDlg(); if((c.statut||'nouvelle')==='nouvelle') patchCandDb(c,{statut:'contactee'}).catch(function(){}); }).catch(function(){});
+}
+
+/* ---------- XP depuis le Cerveau (mêmes actions que l'ancien admin) ---------- */
+var XP_ACTIONS = [
+  {k:'li',i:'📺',l:'Participer à un live',x:100},{k:'me',i:'📞',l:'Appel mentor',x:75},{k:'fi',i:'🗓️',l:'Fidélité mensuelle',x:100},
+  {k:'pa',i:'🤝',l:'Parrainer un ami',x:250},{k:'tp',i:'💰',l:'Take Profit validé',x:200},{k:'qg',i:'🏢',l:'Venir au QG',x:250},
+  {k:'ev',i:'🎉',l:'Venir à un événement',x:300},{k:'mo',i:'📚',l:'Finir un module',x:50},{k:'co',i:'🔌',l:'Connexion quotidienne',x:10}
+];
+var XPC = {};
+function openXp(c){
+  var m = memberOf(c); if(!m){ toast('Relie d\'abord ce client à son compte.'); return; }
+  XPC = {clientId:c.id, q:{}};
+  openDlg('<div class="dlg-body"><h2 id="dlgTitle">⚡ XP pour @'+esc(m.pseudo)+'</h2><p class="sub" style="margin:0">Actuellement '+fmtN(m.xp||0)+' XP · niveau '+levelOf(m.xp)+'. Choisis les actions, puis valide.</p>'
+    +'<div class="tl" id="xpList">'+XP_ACTIONS.map(function(a){ return '<div style="display:flex;align-items:center;gap:10px;justify-content:space-between"><span>'+a.i+' '+esc(a.l)+' <span class="sub">+'+a.x+' XP</span></span><span style="display:flex;align-items:center;gap:6px"><button type="button" class="btn small" data-act="xp-q" data-k="'+a.k+'" data-d="-1" aria-label="Retirer">−</button><b id="xq_'+a.k+'" style="min-width:18px;text-align:center">0</b><button type="button" class="btn small" data-act="xp-q" data-k="'+a.k+'" data-d="1" aria-label="Ajouter">+</button></span></div>'; }).join('')+'</div>'
+    +'<div><label for="xpNote">Message pour le membre (facultatif)</label><input id="xpNote" maxlength="280" placeholder="Ex. Super appel, continue comme ça 🔥"></div>'
+    +'<p class="note" id="xpTot" style="margin:0">Total : +0 XP</p></div>'
+    +'<div class="dlg-foot"><span></span><div class="r"><button type="button" class="btn" data-act="close">Annuler</button><button type="button" class="btn primary" data-act="xp-ok">Valider</button></div></div>');
+}
+function xpTotal(){ return XP_ACTIONS.reduce(function(t,a){ return t + a.x*(XPC.q[a.k]||0); },0); }
+function xpValidate(){
+  var c = S.clients.filter(function(x){ return x.id===XPC.clientId; })[0], m = memberOf(c); if(!m) return;
+  var tot = xpTotal(); if(!tot){ toast('Choisis au moins une action.'); return; }
+  var lignes = []; XP_ACTIONS.forEach(function(a){ for(var n=0;n<(XPC.q[a.k]||0);n++) lignes.push(a.i+' '+a.l+' (+'+a.x+' XP)'); });
+  var note = ($('#xpNote').value||'').trim().replace(/\s*·\s*/g,' - ');
+  var raison = lignes.join(' · ')+(note?' · 📝 '+note:'');
+  var nv = (Number(m.xp)||0)+tot, btn = $('[data-act="xp-ok"]'); if(btn) btn.disabled = true;
+  fetch(SUPA_URL+'/rest/v1/membres?id=eq.'+encodeURIComponent(m.id), {method:'PATCH', headers:SUPA_H, body:JSON.stringify({xp:nv})})
+    .then(function(r){ if(!r.ok) throw {code:'http_'+r.status}; m.xp = nv;
+      return fetch(SUPA_URL+'/rest/v1/xp_historique', {method:'POST', headers:SUPA_H, body:JSON.stringify({membre_pseudo:m.pseudo, xp_gagne:tot, raison:raison})}); })
+    .then(function(){ closeDlg(); toast('+'+fmtN(tot)+' XP pour @'+m.pseudo); loadPlatform(); schedule(); })
+    .catch(function(e){ if(btn) btn.disabled = false; toast(errCopy(e)); });
+}
+
+/* ---------- vue : prospects perdus ---------- */
+function skelLost(){
+  return '<div class="stack"><section class="card"><p class="sub" style="margin:0 0 6px">Les prospects marqués « Perdu » sortent de la liste Prospects et arrivent ici. Pour en relancer un, clique sur « Modifier l\'étape » et choisis l\'étape où il en est.</p><div class="plist" id="lostlist"></div></section></div>';
+}
+function paintLost(){
+  if(!$('#lostlist')) return;
+  var list = S.prospects.filter(function(p){ return p.status==='perdu'; }).sort(function(a,b){ return (b.lostAt||0)-(a.lostAt||0); });
+  $('#lostlist').innerHTML = list.length ? list.map(function(p){
+    var why = '<div class="p-note"><b>Perdu</b>'+(p.lostAt?' le '+dShort(p.lostAt):'')+(p.lostReason?' · '+esc(p.lostReason):'')+'</div>';
+    return prow(p).replace('</article>', why+'</article>');
+  }).join('') : '<div class="empty">Aucun prospect perdu.</div>';
+}
+
+/* ---------- vue : stats ---------- */
+var SPER = [['day',"Aujourd'hui"],['week','Cette semaine'],['month','Ce mois-ci'],['year','Cette année'],['custom','📅 Choisir une période']];
+var STAT_RANGE = {a:'', b:''};
+function statBornes(){
+  var n = new Date(), a, b;
+  if(S.statPer==='day'){ a = new Date(n.getFullYear(),n.getMonth(),n.getDate()); b = new Date(a.getTime()); b.setDate(b.getDate()+1); }
+  else if(S.statPer==='week'){ a = new Date(weekStart(Date.now())); b = new Date(a.getTime()); b.setDate(b.getDate()+7); }
+  else if(S.statPer==='month'){ a = new Date(n.getFullYear(),n.getMonth(),1); b = new Date(n.getFullYear(),n.getMonth()+1,1); }
+  else if(S.statPer==='year'){ a = new Date(n.getFullYear(),0,1); b = new Date(n.getFullYear()+1,0,1); }
+  else { a = new Date(ymdToTs(STAT_RANGE.a||ymd(new Date(n.getFullYear(),n.getMonth(),1).getTime()))); b = new Date(ymdToTs(STAT_RANGE.b||ymd(Date.now()))); b.setDate(b.getDate()+1); }
+  return [a.getTime(), b.getTime()];
+}
+function encaisse(a, b){
+  var inr = function(t){ t = Number(t)||0; return t>=a && t<b; }, tot = 0;
+  S.clients.forEach(function(c){
+    if(c.payMulti) (c.payments||[]).forEach(function(x){ if(inr(x.at)) tot += Number(x.amount)||0; });
+    else if(inr(c.startAt)) tot += Number(c.price)||0;
+  });
+  return tot;
+}
+function eur(n){ return fmtN(Math.round(n)||0)+'\u00a0€'; }
+function skelStats(){
+  return '<div class="stack"><div class="seg" role="group" aria-label="Période" id="sper"></div>'
+    +'<div class="custp" id="scust" hidden><label for="sA">Du</label><input type="date" id="sA"><label for="sB">au</label><input type="date" id="sB"></div>'
+    +'<p class="sub" id="spd" style="margin:0"></p>'
+    +'<div class="skpi" id="skpi"></div><div class="skpi2" id="skpi2"></div>'
+    +'<section class="card" id="schart"><h2 id="scht">Chiffre d\'affaires encaissé</h2><div class="bars" id="sbars"></div><div class="bxl"><span id="sl0"></span><span id="sl1"></span></div></section></div>';
+}
+function paintStats(){
+  if(!$('#skpi')) return;
+  $('#sper').innerHTML = SPER.map(function(p){ return '<button type="button" data-act="sper" data-v="'+p[0]+'" aria-pressed="'+(S.statPer===p[0])+'">'+p[1]+'</button>'; }).join('');
+  $('#scust').hidden = S.statPer!=='custom';
+  if(S.statPer==='custom'){ var n0 = new Date(); if(!STAT_RANGE.a) STAT_RANGE.a = ymd(new Date(n0.getFullYear(),n0.getMonth(),1).getTime()); if(!STAT_RANGE.b) STAT_RANGE.b = ymd(Date.now()); if(document.activeElement!==$('#sA')) $('#sA').value = STAT_RANGE.a; if(document.activeElement!==$('#sB')) $('#sB').value = STAT_RANGE.b; }
+  var bb = statBornes(), a = bb[0], b = bb[1], inr = function(t){ t = Number(t)||0; return t>=a && t<b; };
+  var fl = function(t){ return new Date(t).toLocaleDateString('fr-FR',{day:'numeric', month:'long', year:'numeric'}); };
+  $('#spd').textContent = S.statPer==='day' ? "Aujourd'hui, "+fl(a) : 'Du '+fl(a)+' au '+fl(b-1);
+  var cts = S.content.filter(function(c){ return inr(c.date); }), vues = cts.reduce(function(t,c){ return t+(Number(c.views)||0); },0);
+  var cls = S.clients.filter(function(c){ return inr(c.startAt); }), offres = {};
+  cls.forEach(function(c){ var o = c.offer||'Autre'; offres[o] = (offres[o]||0)+1; });
+  var ca = encaisse(a,b), signe = cls.reduce(function(t,c){ return t+(Number(c.price)||0); },0);
+  var tile = function(ic, lbl, val, sub){ return '<div class="ktile">'+(ic?'<span class="ki" aria-hidden="true">'+ic+'</span>':'')+'<span class="kl">'+lbl+'</span><span class="kv">'+val+'</span>'+(sub!=null?'<span class="ks">'+sub+'</span>':'')+'</div>'; };
+  $('#skpi').innerHTML = tile('🎬','Contenus partagés',fmtN(cts.length), vues?fmtN(vues)+' vues':'&nbsp;')
+    + tile('🎓','Clients signés',fmtN(cls.length), Object.keys(offres).map(function(o){ return offres[o]+' × '+esc(o); }).join(' · ')||'&nbsp;')
+    + tile('💶',"Chiffre d'affaires",eur(ca),'encaissé · '+eur(signe)+' signés');
+  var dm = sumLogs(S.dmlogs.filter(function(l){ return inr(l.date); }));
+  var calls = S.prospects.filter(function(p){ return inr(p.heldAt); }).length;
+  var cn = CAND.list.filter(function(c){ return inr(new Date(c.created_at).getTime()); }).length;
+  $('#skpi2').innerHTML = tile('','DM envoyés',fmtN(dm)) + tile('','Calls faits',fmtN(calls)) + tile('','Candidatures',CAND.ok?fmtN(cn):'—');
+  var jours = Math.round((b-a)/DAY);
+  if(S.statPer==='day'){ $('#schart').hidden = true; return; }
+  $('#schart').hidden = false;
+  var parMois = jours>62, pts = [], t = new Date(a);
+  while(t.getTime()<b){ var n2 = new Date(t.getTime()); if(parMois) n2.setMonth(n2.getMonth()+1); else n2.setDate(n2.getDate()+1); pts.push({a:t.getTime(), v:encaisse(t.getTime(), Math.min(n2.getTime(), b))}); t = n2; }
+  var mx = Math.max.apply(null, pts.map(function(p){ return p.v; }).concat([1]));
+  $('#scht').textContent = "Chiffre d'affaires encaissé, par "+(parMois?'mois':'jour');
+  $('#sbars').innerHTML = pts.map(function(p){ var l = parMois ? new Date(p.a).toLocaleDateString('fr-FR',{month:'long'}) : dShort(p.a); return '<i class="'+(p.v?'':'z')+'" style="height:'+(p.v/mx*100)+'%" title="'+esc(l)+' : '+eur(p.v)+'"></i>'; }).join('');
+  var f2 = function(t){ return parMois ? new Date(t).toLocaleDateString('fr-FR',{month:'short'}) : dShort(t); };
+  $('#sl0').textContent = f2(pts[0].a); $('#sl1').textContent = f2(pts[pts.length-1].a);
+}
+
+/* ---------- vues : candidatures et membres (page admin intégrée) ---------- */
+function skelEmbed(){
+  return '<iframe class="embed" title="'+esc(TABS[S.tab])+'" src="dha-admin.html?embed=membres"></iframe>';
+}
+
 function openGoals(){
   var g = S.goals;
   openDlg('<div class="dlg-body"><h2 id="dlgTitle">Mes objectifs de la semaine</h2><p class="sub">Indique combien tu vises par semaine. L\'objectif par jour est calculé en divisant par 7.</p>'
@@ -943,7 +1282,7 @@ function openGoals(){
 function opts(list, sel){ return list.map(function(o){ return '<option'+(o===sel?' selected':'')+'>'+esc(o)+'</option>'; }).join(''); }
 function skelProspects(){
   return '<div class="stack"><section class="card"><div class="toolbar" style="margin:0"><input type="search" id="pq" placeholder="Rechercher un pseudo ou une note" aria-label="Rechercher un prospect">'
-    +'<span style="display:flex;gap:10px;flex-wrap:wrap;align-items:center"><button type="button" class="btn" data-act="open-dmlog">Ajouter des DM à froid</button><button type="button" class="btn primary" data-act="open-reply">Ajouter un prospect</button><span id="pexp"></span></span></div>'
+    +'<span style="display:flex;gap:10px;flex-wrap:wrap;align-items:center"><button type="button" class="btn primary" data-act="open-reply">Ajouter un prospect</button><span id="pexp"></span></span></div>'
     +'<div id="pbanner"></div><div class="filters" id="pchips"></div><div class="plist" id="plist"></div></section></div>';
 }
 function initProspectsForm(){
@@ -961,20 +1300,17 @@ function openDmLogDialog(){
   $('#dlCount').focus();
 }
 function openReplyDialog(){
-  var vs = {}; S.prospects.concat(S.dmlogs).forEach(function(p){ if(p.variant && p.variant!=='Sans script' && p.variant!=='Envoi ebook') vs[p.variant]=1; });
   openDlg('<div class="dlg-body"><h2 id="dlgTitle">Ajouter un prospect</h2>'
-    +'<div><label for="qaHandles">Pseudo</label><textarea id="qaHandles" rows="2" placeholder="@pseudo (un par ligne si tu en ajoutes plusieurs)"></textarea></div>'
-    +'<div class="two"><div><label for="qaPlat">Plateforme</label><select id="qaPlat">'+opts(PLATFORMS,S.qa.platform)+'</select></div><div><label for="qaSrc">Source</label><select id="qaSrc">'+opts(SOURCES,S.qa.source)+'</select></div></div>'
-    +'<div class="two"><div><label for="qaVar">Script utilisé</label><input id="qaVar" list="qaVars" value="'+esc(S.qa.variant&&S.qa.variant!=='Sans script'?S.qa.variant:'')+'" placeholder="Ex. Script question"><datalist id="qaVars">'+Object.keys(vs).map(function(v){ return '<option value="'+esc(v)+'">'; }).join('')+'</datalist></div>'
-    +'<div><label for="qaRev">Source de revenus</label><select id="qaRev"><option value="">Non renseignée</option><option value="sdr">SDR</option><option value="sr">SR</option></select></div></div>'
-    +'<div><label for="qaDate">Date du DM</label><input type="date" id="qaDate"></div>'
-    +'<div><label for="qaObj">Objectif</label><input id="qaObj" placeholder="Ex. Générer un complément de revenu en 6 mois"></div>'
-    +'<div><label for="qaNotes">Situation (objections, contexte, prochaine étape)</label><textarea id="qaNotes" rows="3" placeholder="Ex. CDI, 25 ans, déjà testé le trading seul"></textarea></div>'
+    +'<div class="two"><div><label for="qaPrenom">Prénom</label><input id="qaPrenom" autocomplete="off" placeholder="Ex. Lucas"></div><div><label for="qaHandles">Pseudo</label><input id="qaHandles" autocomplete="off" placeholder="@pseudo"></div></div>'
+    +'<div class="two"><div><label for="qaPlat">Réseau</label><select id="qaPlat">'+opts(PLATFORMS,S.qa.platform)+'</select></div><div><label for="qaVille">Ville</label><input id="qaVille" autocomplete="off" placeholder="Ex. Sarcelles"></div></div>'
+    +'<div class="two"><div><label for="qaSit">Situation</label><select id="qaSit"><option value="">Non renseignée</option>'+opts(SITUATIONS,'')+'</select></div><div><label for="qaRev">Revenus</label><select id="qaRev"><option value="">Non renseigné</option><option value="sdr">Avec revenus</option><option value="sr">Sans revenus</option></select></div></div>'
+    +'<div><label for="qaObj">Son objectif</label><input id="qaObj" placeholder="Ex. Générer un complément de revenu en 6 mois"></div>'
+    +'<div><label for="qaNotes">Note (facultatif)</label><textarea id="qaNotes" rows="3" placeholder="Tout ce que tu veux retenir : contexte, objections, prochaine étape…"></textarea></div>'
+    +'<details><summary class="sub" style="cursor:pointer">Plus d\'options (source, date du 1er contact)</summary><div class="two" style="margin-top:10px"><div><label for="qaSrc">Source</label><select id="qaSrc">'+opts(SOURCES,S.qa.source)+'</select></div><div><label for="qaDate">Date du 1er contact</label><input type="date" id="qaDate"></div></div></details>'
     +'<p class="note" id="qaHint" style="margin:0"></p></div>'
     +'<div class="dlg-foot"><span></span><div class="r"><button type="button" class="btn" data-act="close">Annuler</button><button type="button" class="btn primary" data-act="submit-reply">Ajouter le prospect</button></div></div>');
   $('#qaDate').value = ymd(Date.now());
-  $('#qaHandles').addEventListener('keydown', function(ev){ if((ev.ctrlKey||ev.metaKey) && ev.key==='Enter'){ ev.preventDefault(); submitReplies(); } });
-  $('#qaHandles').focus();
+  $('#qaPrenom').focus();
 }
 function rememberQa(o){
   S.qa = {platform:o.platform, source:o.source, variant:o.variant};
@@ -997,18 +1333,19 @@ function parseHandles(txt){
 }
 function submitReplies(){
   var handles = parseHandles($('#qaHandles').value);
-  if(!handles.length){ $('#qaHint').textContent = 'Colle au moins un pseudo.'; $('#qaHandles').focus(); return; }
-  var platform = $('#qaPlat').value, source = $('#qaSrc').value, variant = ($('#qaVar').value||'').trim() || 'Sans script';
+  if(!handles.length){ $('#qaHint').textContent = 'Indique son pseudo.'; $('#qaHandles').focus(); return; }
+  var platform = $('#qaPlat').value, source = $('#qaSrc').value, variant = 'Sans script';
   var revenu = $('#qaRev').value || null, objectif = ($('#qaObj').value||'').trim(), notesIn = $('#qaNotes').value || '';
+  var prenom = ($('#qaPrenom').value||'').trim(), ville = ($('#qaVille').value||'').trim(), situation = $('#qaSit').value || '';
   var at = fromYmd($('#qaDate').value), now = Date.now();
   rememberQa({platform:platform, source:source, variant:variant});
   var exist = {}; S.prospects.forEach(function(p){ exist[(p.platform||'')+'|'+String(p.handle).toLowerCase()] = 1; });
   var fresh = handles.filter(function(h){ return !exist[platform+'|'+h.toLowerCase()]; });
   var skipped = handles.length - fresh.length;
   var items = fresh.map(function(h){
-    return {id:uid(), handle:h, platform:platform, source:source, variant:variant, status:'reponse', dmAt:at, repliedAt:now, callAt:null, wonAt:null, lostAt:null, lostStage:null, lostReason:'', notes:notesIn, objectif:objectif, clientId:null, revenu:revenu};
+    return {id:uid(), handle:h, platform:platform, source:source, variant:variant, status:'reponse', dmAt:at, repliedAt:now, callAt:null, wonAt:null, lostAt:null, lostStage:null, lostReason:'', notes:notesIn, objectif:objectif, clientId:null, revenu:revenu, prenom:prenom, ville:ville, situation:situation};
   });
-  $('#qaHandles').value = ''; $('#qaHint').textContent = '';
+  $('#qaHint').textContent = '';
   var btn = $('[data-act="submit-reply"]'); if(btn) btn.disabled = true;
   var chain = Promise.resolve();
   for(var i=0;i<items.length;i+=5){
@@ -1036,12 +1373,12 @@ function paintProspects(){
   var dl = $('#variants');
   if(dl){ var vs = {}; S.prospects.concat(S.dmlogs).forEach(function(p){ if(p.variant) vs[p.variant]=1; }); dl.innerHTML = Object.keys(vs).map(function(v){ return '<option value="'+esc(v)+'">'; }).join(''); }
   var pe = $('#pexp'); if(pe) pe.innerHTML = dlNs ? '<button type="button" class="btn small" data-act="export" data-kind="prospects">Exporter en CSV</button>' : '';
-  var openProspects = S.prospects.filter(function(p){ return p.status!=='close'; });
+  var openProspects = S.prospects.filter(function(p){ return p.status!=='close' && p.status!=='perdu'; });
   // Filtres : plusieurs choix possibles. Dans un même groupe = OU, entre les groupes = ET.
   var GROUPS = [
     ['act','À faire',[['contact','À contacter'],['relance','À relancer']]],
-    ['stage','Étape',[['reponse','Répondu'],['call','Call booké'],['held','Call fait'],['perdu','Perdu']]],
-    ['rev','Revenus',[['sdr','SDR'],['sr','SR'],['none','Non renseigné']]],
+    ['stage','Étape',[['reponse','Répondu'],['call','Call booké'],['held','Call fait']]],
+    ['rev','Revenus',[['sdr','Avec revenus'],['sr','Sans revenus'],['none','Non renseigné']]],
     ['src','Source',SOURCES.map(function(x){ return [x, x===EBOOK?'Ebook':x.replace('Like ou abonné de ','Like/abo ')]; })]
   ];
   var test = {
@@ -1054,7 +1391,7 @@ function paintProspects(){
   function matches(p, skip){
     if(S.funnelView){ var fld = {replied:'repliedAt',call:'callAt',held:'heldAt',won:'wonAt'}[S.funnelView]; if(fld && !p[fld]) return false; }
     for(var g in S.pf){ if(g===skip) continue; var vals = S.pf[g]||[]; if(vals.length && !vals.some(function(v){ return test[g](p,v); })) return false; }
-    if(q && (String(p.handle).toLowerCase().indexOf(q)<0 && String(p.notes||'').toLowerCase().indexOf(q)<0 && String(p.objectif||'').toLowerCase().indexOf(q)<0)) return false;
+    if(q && [p.handle,p.prenom,p.ville,p.notes,p.objectif].join(' ').toLowerCase().indexOf(q)<0) return false;
     return true;
   }
   var active = Object.keys(S.pf).reduce(function(t,g){ return t+(S.pf[g]||[]).length; },0);
@@ -1097,8 +1434,8 @@ function prow(p){
     else cls = i<ri ? 'done' : i===ri ? 'now'+(i===4?' won':'') : '';
     return '<button type="button" class="'+cls+'" data-act="stage" data-id="'+esc(p.id)+'" data-stage="'+s+'" aria-pressed="'+(!lost&&i===ri)+'">'+STAGE_LABEL[s]+'</button>';
   }).join('') + '<button type="button" class="'+(lost?'now lost':'')+'" data-act="stage" data-id="'+esc(p.id)+'" data-stage="perdu" aria-pressed="'+lost+'">Perdu</button>';
-  var meta = [p.platform, p.source, p.variant, p.dmAt?'DM du '+dShort(p.dmAt):''].filter(Boolean).map(esc).join(', ');
-  var revLabel = p.revenu==='sdr' ? 'SDR' : p.revenu==='sr' ? 'SR' : 'Revenus ?';
+  var meta = [p.platform, p.ville, p.situation, p.source, p.dmAt?'1er contact le '+dShort(p.dmAt):''].filter(Boolean).map(esc).join(', ');
+  var revLabel = REV_LABEL[p.revenu] || 'Revenus ?';
   var revCls = 'rev-badge'+(p.revenu==='sdr'?' sdr':p.revenu==='sr'?' sr':'');
   var revBtn = '<button type="button" class="'+revCls+'" data-act="cycle-rev" data-id="'+esc(p.id)+'" title="Source de revenus : clique pour changer">'+revLabel+'</button>';
   var fu = needsFollowUp(p);
@@ -1111,7 +1448,7 @@ function prow(p){
   }else if(active){
     cadence = '<div class="pcadence"><div class="gauge small'+(due?' late':'')+'"><i style="width:'+Math.max(0,Math.min(100,left/7*100))+'%"></i></div><span>'+(due?'À contacter aujourd\'hui':'Prochain contact dans '+left+' j')+'</span></div>';
   }
-  var when = 'Réponse '+ago(p.repliedAt||p.dmAt||Date.now()) + (fu?'<span class="badge">À relancer</span>':'') + (due?'<span class="badge">À contacter</span>':'') + (p.clientId && p.status==='close'?'<span class="badge ok">Fiche client</span>':'') + cadence + relBtn;
+  var when = (fu?'<span class="badge">À relancer</span>':'') + (due?'<span class="badge">À contacter</span>':'') + (p.clientId && p.status==='close'?'<span class="badge ok">Fiche client</span>':'') + relBtn;
   var ns = p.status==='perdu' ? null : nextStage(p.status);
   var expanded = !!S.expandedSteps[p.id];
   var quickStep = '<div class="stepwrap">'
@@ -1119,8 +1456,8 @@ function prow(p){
     + (p.status!=='perdu' && p.status!=='close' ? '<button type="button" class="iconbtn" data-act="stage" data-id="'+esc(p.id)+'" data-stage="perdu">Perdu</button>' : '')
     + '<button type="button" class="iconbtn" data-act="toggle-steps" data-id="'+esc(p.id)+'">'+(expanded?'Masquer les étapes':'Modifier l\'étape')+'</button></div>';
   var stepsBlock = expanded ? '<div class="steps" role="group" aria-label="Étape de @'+esc(p.handle)+'">'+btns+'</div>' : '';
-  return '<article class="prow"><div><button type="button" class="p-handle" data-act="edit-p" data-id="'+esc(p.id)+'">@'+esc(p.handle)+'</button><span class="p-meta">'+meta+'</span>'+revBtn+'</div>'
-    +quickStep+stepsBlock+'<div class="p-when">'+when+'</div>'+(p.notes?'<div class="p-note">'+esc(p.notes)+'</div>':'')+'</article>';
+  return '<article class="prow"><div><button type="button" class="p-handle" data-act="edit-p" data-id="'+esc(p.id)+'">'+(p.prenom?esc(p.prenom)+' · ':'')+'@'+esc(p.handle)+'</button>'+revBtn+'</div>'
+    +quickStep+stepsBlock+'<div class="p-when">'+when+'</div></article>';
 }
 function setStage(p, stage){
   var now = Date.now(), n = Object.assign({}, p);
@@ -1180,7 +1517,8 @@ function changeStage(id, stage){
     else if(isEmptyClient(cl)){ dropId = cl.id; n.clientId = null; }
   }
   if(stage==='close' && !hasFiche){
-    newClient = {id:uid(), name:p.handle, prospectId:p.id, startAt:Date.now(), status:'actif', goal:'', offer:'', price:0, checkins:[], onb:{}, mil:{}, demoGoal:'', rdv:false};
+    var mm = PLAT.members.filter(function(m){ return normPseudo(m.pseudo)===normPseudo(p.handle); });
+    newClient = {id:uid(), name:p.prenom||p.handle, pseudo:(mm.length===1?mm[0].pseudo:''), prospectId:p.id, startAt:Date.now(), status:'actif', goal:'', offer:'', price:0, checkins:[], onb:{}, mil:{}, demoGoal:'', rdv:false};
     n.clientId = newClient.id;
   }
   var chain = newClient ? put('clients', newClient) : Promise.resolve();
@@ -1244,22 +1582,22 @@ function paintClients(){
   $('#cg').innerHTML = list.map(function(c){
     var st = c.status||'actif', active = st==='actif';
     var stLabel = (CLIENT_STATUS.filter(function(x){return x[0]===st;})[0]||[0,'Actif'])[1];
-    var m = monthOf(c), done = stepsDone(c);
-    var phase = active ? (m<=4 ? MILES[m-1][1] : 'Après les 4 mois') : '';
-    var group = (c.checkins||[]).filter(function(k){ return k.type==='Appel de groupe' && Date.now()-k.at<=30*DAY; }).length;
-    var badges = '';
-    if(active && Date.now()-lastTouch(c) > 3*DAY) badges += '<span class="badge">À recontacter</span>';
-    var late = active ? lateInfo(c) : ''; if(late) badges += '<span class="badge">'+esc(late)+'</span>';
+    var offer = String(c.offer||'').replace(/\s*\d+\s*€/,'') || 'Formule ?';
+    var m = memberOf(c), rec = c.pseudo ? (PLAT.recent[normPseudo(c.pseudo)]||[]) : [];
+    var plat = '';
+    if(!c.pseudo) plat = '<span class="badge">Pas relié</span> <button type="button" class="iconbtn" data-act="open-client" data-id="'+esc(c.id)+'">Relier son compte</button>';
+    else plat = '@'+esc(c.pseudo)+(m ? ' · ⚡ '+fmtN(m.xp||0)+' XP · niveau '+levelOf(m.xp) : '')+(rec[0] ? ' · actif '+ago(new Date(rec[0].created_at).getTime()) : '');
+    var alert = '';
     var restC = remainingOf(c);
-    if(c.payMulti && c.price>0) badges += restC>0 ? '<span class="badge">Reste '+euro(restC)+'</span>' : '<span class="badge ok">Soldé</span>';
-    return '<button type="button" class="card ccard" data-act="open-client" data-id="'+esc(c.id)+'"><div style="display:flex;justify-content:space-between;gap:8px;align-items:flex-start"><h3>'+esc(c.name||'Sans nom')+'</h3><span class="badge'+(active?' ok':'')+'" style="margin:0">'+esc(stLabel)+'</span></div>'
-      +'<div class="sub">'+esc(c.offer||'Formule non renseignée')+(c.price?', '+euro(c.price):'')+'</div>'
-      +(c.payMulti ? '<div class="p-when">Paiement en plusieurs fois : '+euro(paidOf(c))+' payés, reste '+euro(restC)+'</div>' : '')
-      +(phase?'<div style="font-weight:600;font-size:14px">'+esc(phase)+'</div>':'')
-      +'<div class="goal">'+esc(c.goal||'Objectif non renseigné')+'</div>'
-      +'<div class="prog"><span>'+done+'/'+STEP_TOTAL+'</span><div class="bar"><i style="width:'+Math.round(done/STEP_TOTAL*100)+'%"></i></div></div>'
-      +'<div class="p-when" style="margin-top:-4px">Modules faits : '+modsDoneCount(c)+'/'+MODULES+' · maîtrisés : '+modsMastered(c)+'/'+MODULES+(c.pseudo?' · relié à @'+esc(c.pseudo):'<span class="badge">Pas relié</span>')+'</div>'
-      +'<div class="p-when">'+((c.checkins||[]).length?'Dernière interaction '+ago(lastTouch(c)):'Aucune interaction')+', appels de groupe sur 30 j : '+group+badges+'</div></button>';
+    if(c.payMulti && c.price>0 && restC>0) alert = 'Reste '+euro(restC);
+    else if(active && Date.now()-lastTouch(c) > 3*DAY) alert = 'À recontacter';
+    else { var late = active ? lateInfo(c) : ''; if(late) alert = late; }
+    var md = modsDoneCount(c);
+    return '<div class="card ccard"><div style="display:flex;justify-content:space-between;gap:8px;align-items:flex-start"><h3>'+esc(c.name||'Sans nom')+' <span class="sub" style="font-weight:500;font-size:14px">· '+esc(offer)+'</span></h3><span class="badge'+(active?' ok':'')+'" style="margin:0">'+esc(stLabel)+'</span></div>'
+      +'<div class="p-when" style="margin:0">'+plat+'</div>'
+      +'<div class="prog"><span>'+md+'/'+MODULES+' modules</span><div class="bar"><i style="width:'+Math.round(md/MODULES*100)+'%"></i></div></div>'
+      +(alert?'<div><span class="badge">'+esc(alert)+'</span></div>':'')
+      +'<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:auto">'+(m?'<button type="button" class="btn small primary" data-act="xp-open" data-id="'+esc(c.id)+'">⚡ Ajouter de l\'XP</button>':'')+'<button type="button" class="btn small" data-act="open-client" data-id="'+esc(c.id)+'">Voir les détails</button></div></div>';
   }).join('');
 }
 
@@ -1377,17 +1715,21 @@ var draft = null;
 function openProspect(p, focusNotes){
   draft = Object.assign({}, p);
   openDlg('<div class="dlg-body"><h2 id="dlgTitle">@'+esc(p.handle)+'</h2>'
-    +'<div class="two"><div><label for="pdHandle">Pseudo</label><input id="pdHandle" value="'+esc(p.handle)+'"></div><div><label for="pdPlat">Plateforme</label><select id="pdPlat">'+opts(PLATFORMS,p.platform)+'</select></div></div>'
-    +'<div class="two"><div><label for="pdSrc">Source</label><select id="pdSrc">'+opts(SOURCES,p.source)+'</select></div><div><label for="pdVar">Script utilisé</label><input id="pdVar" value="'+esc(p.variant||'')+'"></div></div>'
+    +'<div class="two"><div><label for="pdPrenom">Prénom</label><input id="pdPrenom" value="'+esc(p.prenom||'')+'"></div><div><label for="pdHandle">Pseudo</label><input id="pdHandle" value="'+esc(p.handle)+'"></div></div>'
+    +'<div class="two"><div><label for="pdPlat">Réseau</label><select id="pdPlat">'+opts(PLATFORMS,p.platform)+'</select></div><div><label for="pdVille">Ville</label><input id="pdVille" value="'+esc(p.ville||'')+'"></div></div>'
+    +'<div class="two"><div><label for="pdSit">Situation</label><select id="pdSit"><option value="">Non renseignée</option>'+opts(SITUATIONS,p.situation||'')+'</select></div><div><label for="pdRev">Revenus</label><select id="pdRev"><option value="">Non renseigné</option><option value="sdr"'+(p.revenu==='sdr'?' selected':'')+'>Avec revenus</option><option value="sr"'+(p.revenu==='sr'?' selected':'')+'>Sans revenus</option></select></div></div>'
+    +'<div><label for="pdObj2">Son objectif</label><input id="pdObj2" value="'+esc(p.objectif||'')+'"></div>'
+    +'<div><label for="pdSrc">Source</label><select id="pdSrc">'+opts(SOURCES,p.source)+'</select></div>'
     +'<div><label for="pdLost">Raison de la perte (si perdu)</label><select id="pdLost"><option value="">Non précisée</option>'+opts(LOST,p.lostReason)+'</select></div>'
-    +'<div><label for="pdNotes">Notes (objections, situation, prochaine étape)</label><textarea id="pdNotes" rows="4">'+esc(p.notes||'')+'</textarea></div></div>'
+    +'<div><label for="pdNotes">Note</label><textarea id="pdNotes" rows="4">'+esc(p.notes||'')+'</textarea></div></div>'
     +'<div class="dlg-foot"><button type="button" class="btn danger" data-act="del-arm" data-kind="p">Supprimer</button><div class="r"><button type="button" class="btn" data-act="details-p" data-id="'+esc(p.id)+'">Voir les détails</button><button type="button" class="btn" data-act="close">Annuler</button><button type="button" class="btn primary" data-act="save-p">Enregistrer</button></div></div>');
   if(focusNotes){ var ta = $('#pdNotes'); if(ta) setTimeout(function(){ ta.focus(); ta.setSelectionRange(ta.value.length, ta.value.length); }, 20); }
 }
 function saveProspect(){
   var d = Object.assign({}, draft);
   d.handle = $('#pdHandle').value.trim().replace(/^@+/,'') || d.handle; d.platform = $('#pdPlat').value; d.source = $('#pdSrc').value;
-  d.variant = $('#pdVar').value.trim(); d.lostReason = $('#pdLost').value; d.notes = $('#pdNotes').value;
+  d.lostReason = $('#pdLost').value; d.notes = $('#pdNotes').value;
+  d.prenom = $('#pdPrenom').value.trim(); d.ville = $('#pdVille').value.trim(); d.situation = $('#pdSit').value; d.revenu = $('#pdRev').value || null; d.objectif = $('#pdObj2').value.trim();
   safe(put('prospects', d)).then(closeDlg).catch(function(){});
 }
 function openProspectDetails(id){
@@ -1403,9 +1745,11 @@ function openProspectDetails(id){
   }else{
     gauge = '<p class="note">'+(p.status==='close'?'C\'est un client, suis-le depuis sa fiche client.':'Prospect perdu, plus de rappel de contact.')+'</p>';
   }
-  openDlg('<div class="dlg-body"><h2 id="dlgTitle">Détails de @'+esc(p.handle)+'</h2>'+gauge
+  var info = [['Prénom',p.prenom],['Réseau',p.platform],['Ville',p.ville],['Situation',p.situation],['Revenus',REV_LABEL[p.revenu]||'Non renseigné'],['Source',p.source],['1er contact',p.dmAt?dShort(p.dmAt):''],['Réponse',p.repliedAt?ago(p.repliedAt):'']].filter(function(r){ return r[1]; });
+  var infoH = '<dl class="pinfo">'+info.map(function(r){ return '<dt>'+r[0]+'</dt><dd>'+esc(r[1])+'</dd>'; }).join('')+'</dl>';
+  openDlg('<div class="dlg-body"><h2 id="dlgTitle">'+(p.prenom?esc(p.prenom)+' · ':'')+'@'+esc(p.handle)+'</h2>'+infoH+gauge
     +'<div><label for="pdObj">Objectif</label><input id="pdObj" value="'+esc(p.objectif||'')+'" placeholder="Ex. Passer un challenge en 3 mois"></div>'
-    +'<div><label for="pdSit">Situation</label><textarea id="pdSit" rows="3" placeholder="Objections, contexte, où il en est">'+esc(p.notes||'')+'</textarea></div>'
+    +'<div><label for="pdSit">Note</label><textarea id="pdSit" rows="3" placeholder="Contexte, objections, où il en est">'+esc(p.notes||'')+'</textarea></div>'
     +'<div><label for="pdLaunch">Date de lancement prévue</label><input id="pdLaunch" type="date" value="'+(p.launchAt?ymd(p.launchAt):'')+'"><div id="pdLaunchLink" style="margin-top:8px"></div></div>'
     +(active ? '<div><label for="pdCallAt">Prochain call prévu (date et heure)</label><input id="pdCallAt" type="datetime-local" value="'+dtLocal(p.callScheduledAt)+'"><div id="pdCallLink" style="margin-top:8px"></div></div>' : '')
     +'<div><label for="pdIType">Nouveau suivi</label><div style="display:flex;gap:10px;flex-wrap:wrap"><select id="pdIType" style="width:auto">'+opts(CI_TYPES,'Message')+'</select><input id="pdINote" style="flex:1;min-width:160px" placeholder="Note (optionnelle)"><button type="button" class="btn" data-act="add-pint">Ajouter</button></div></div>'
@@ -1439,7 +1783,12 @@ function saveProspectDetails(){
 function openClient(c){
   draft = Object.assign({}, c, {checkins:(c.checkins||[]).slice(), onb:Object.assign({}, c.onb||{}), mil:Object.assign({}, c.mil||{}), mods:Object.assign({}, c.mods||{}), payments:(c.payments||[]).slice()});
   var chk = function(id, label, on){ return '<label class="check"><input type="checkbox" id="'+id+'"'+(on?' checked':'')+'>'+label+'</label>'; };
-  openDlg('<div class="dlg-body"><h2 id="dlgTitle">'+(c.name?esc(c.name):'Nouveau membre')+'</h2>'
+  var pm = memberOf(c), prec = c.pseudo ? (PLAT.recent[normPseudo(c.pseudo)]||[]) : [];
+  var platBox = pm ? '<div class="pinfo" style="display:block"><div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap"><b>Sur la plateforme : @'+esc(pm.pseudo)+'</b><span>⚡ '+fmtN(pm.xp||0)+' XP · niveau '+levelOf(pm.xp)+'</span></div>'
+    +(prec.length ? '<div class="tl" style="margin-top:8px">'+prec.slice(0,8).map(function(r){ return '<div><b>+'+fmtN(r.xp_gagne||0)+' XP</b> · '+esc(String(r.raison||'').split(' · ')[0])+' <span class="sub">('+ago(new Date(r.created_at).getTime())+')</span></div>'; }).join('')+'</div>' : '<p class="sub" style="margin:6px 0 0">Aucune activité pour l\'instant.</p>')
+    +'<button type="button" class="btn small primary" data-act="xp-open" data-id="'+esc(c.id)+'" style="margin-top:10px">⚡ Ajouter de l\'XP</button></div>'
+    : '<div class="pinfo" style="display:block"><b>Pas encore relié à son compte.</b> <span class="sub">Choisis son pseudo plus bas pour voir son activité en temps réel.</span></div>';
+  openDlg('<div class="dlg-body"><h2 id="dlgTitle">'+(c.name?esc(c.name):'Nouveau membre')+'</h2>'+(c.id && S.clients.some(function(x){ return x.id===c.id; }) ? platBox : '')
     +'<div class="two"><div><label for="cdName">Nom ou pseudo</label><input id="cdName" value="'+esc(c.name||'')+'"></div><div><label for="cdStatus">Statut</label><select id="cdStatus">'+CLIENT_STATUS.map(function(s){return '<option value="'+s[0]+'"'+((c.status||'actif')===s[0]?' selected':'')+'>'+s[1]+'</option>';}).join('')+'</select></div></div>'
     +'<div><label for="cdPseudo">Pseudo sur la plateforme DHA</label><input id="cdPseudo" list="dhaMembers" value="'+esc(c.pseudo||'')+'" placeholder="'+esc((!c.pseudo && guessMember(c).length===1) ? 'Suggestion : '+guessMember(c)[0].pseudo : 'Choisis son pseudo de membre')+'" autocomplete="off"><p class="note" style="margin-top:6px">Relie la fiche à son compte : la case « Fait » de chaque module se coche toute seule dès qu\'il valide le module sur la plateforme. « Maîtrisé » reste à cocher par toi.</p></div>'
     +'<div class="two"><div><label for="cdOffer">Formule</label><select id="cdOffer">'+offerOpts(c.offer)+'</select></div><div><label for="cdPrice">Prix de la formule (€)</label><input id="cdPrice" type="number" min="0" inputmode="decimal" value="'+(Number(c.price)||0)+'"></div></div>'
@@ -1582,6 +1931,18 @@ document.addEventListener('click', function(ev){
   switch(act){
     case 'tab': S.tab = el.getAttribute('data-tab'); render(); window.scrollTo(0,0); break;
     case 'period': S.period = el.getAttribute('data-v'); render(); break;
+    case 'gper': S.goalPer = el.getAttribute('data-v'); S.weekOffset = S.goalPer==='lweek' ? -1 : 0; render(); break;
+    case 'sper': S.statPer = el.getAttribute('data-v'); render(); break;
+    case 'obj-edit': ev.stopPropagation(); openObjectif(); return;
+    case 'save-obj': saveObjectif(); break;
+    case 'candf': CANDF = el.getAttribute('data-v'); schedule(); break;
+    case 'cand-det': openCand(id); break;
+    case 'xp-open': ev.stopPropagation(); var xc = byId(S.clients); if(xc) openXp(xc); break;
+    case 'xp-q': var k = el.getAttribute('data-k'); XPC.q[k] = Math.max(0, (XPC.q[k]||0)+Number(el.getAttribute('data-d'))); $('#xq_'+k).textContent = XPC.q[k]; $('#xpTot').textContent = 'Total : +'+fmtN(xpTotal())+' XP'; break;
+    case 'xp-ok': xpValidate(); break;
+    case 'cand-st': var cs = candById(id); if(cs){ var v2 = el.getAttribute('data-v'); safe(patchCandDb(cs,{statut:v2})).then(function(){ openCand(id); toast('Statut : '+CST[v2][0]); }).catch(function(){}); } break;
+    case 'cand-save': var cn = candById(id); if(cn){ safe(patchCandDb(cn,{note:($('#cnNote').value||'').trim()||null})).then(function(){ closeDlg(); toast('Note enregistrée'); }).catch(function(){}); } break;
+    case 'cand-pros': var cp = candById(id); if(cp) candToProspect(cp); break;
     case 'add-dm': S.tab = 'prospects'; render(); setTimeout(function(){ openDmLogDialog(); }, 30); break;
     case 'open-dmlog': openDmLogDialog(); break;
     case 'open-reply': openReplyDialog(); break;
@@ -1690,8 +2051,8 @@ document.addEventListener('keydown', function(ev){
 });
 
 /* ---------- démarrage ---------- */
-var SKEL = {funnel:skelFunnel, objectifs:skelGoals, launches:skelLaunches, prospects:skelProspects, content:skelContent, clients:skelClients, brain:skelBrain};
-var PAINT = {funnel:paintFunnel, objectifs:paintGoals, launches:paintLaunches, prospects:paintProspects, content:paintContent, clients:paintClients, brain:function(){}};
+var SKEL = {cand:skelCand, perdus:skelLost, home:skelHome, stats:skelStats, membres:skelEmbed, funnel:skelFunnel, objectifs:skelGoals, launches:skelLaunches, prospects:skelProspects, content:skelContent, clients:skelClients, brain:skelBrain};
+var PAINT = {cand:paintCand, perdus:paintLost, home:paintHome, stats:paintStats, membres:function(){}, funnel:paintFunnel, objectifs:paintGoals, launches:paintLaunches, prospects:paintProspects, content:paintContent, clients:paintClients, brain:function(){}};
 
 function use(name){
   try{ if(window.claude && typeof window.claude.use==='function') return Promise.resolve(window.claude.use(name)).catch(function(){ return null; }); }catch(e){}
@@ -1711,7 +2072,8 @@ function start(){
   connectCloud(makeSupaDb());
   setInterval(loadPlatform, 60000);
 }
-var okSession = false; try{ okSession = sessionStorage.getItem('dha_admin')==='1'; }catch(e){}
+// Plus de mot de passe (comme l'admin) : le Cerveau s'ouvre directement
+var okSession = true;
 if(okSession) start();
 else {
   $('#gatePwd').focus();
