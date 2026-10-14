@@ -43,6 +43,7 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
 .lb-pack{display:inline-flex;align-items:center;padding:3px 8px;border-radius:99px;font-family:'Orbitron',sans-serif;font-size:8px;font-weight:900;letter-spacing:1px;}
 .lb-pack.pro{background:rgba(255,215,0,0.15);color:var(--gold);border:1px solid rgba(255,215,0,0.35);}
 .lb-pack.medium{background:rgba(0,212,255,0.1);color:var(--cyan);border:1px solid rgba(0,212,255,0.25);}
+.lb-pack.base{background:rgba(232,244,255,0.06);color:rgba(232,244,255,0.75);border:1px solid rgba(232,244,255,0.18);}
 .lb-rang-badge{display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:99px;font-family:'Orbitron',sans-serif;font-size:8px;font-weight:900;}
 .lb-pseudo{font-family:'Orbitron',sans-serif;font-size:11px;font-weight:900;color:var(--white);display:flex;align-items:center;gap:8px;}
 .lb-me-tag{padding:2px 8px;border-radius:99px;background:rgba(0,212,255,0.2);font-size:8px;color:var(--cyan);letter-spacing:1px;}
@@ -108,8 +109,9 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
 
   <!-- LÉGENDE -->
   <div class="legend">
-    <div class="legend-item"><span style="display:inline-flex;padding:3px 8px;border-radius:99px;background:rgba(255,215,0,0.15);color:var(--gold);border:1px solid rgba(255,215,0,0.35);font-size:8px;font-family:Orbitron,sans-serif;">💎 PRO</span> Pack Pro — accès à vie</div>
-    <div class="legend-item"><span style="display:inline-flex;padding:3px 8px;border-radius:99px;background:rgba(0,212,255,0.1);color:var(--cyan);border:1px solid rgba(0,212,255,0.25);font-size:8px;font-family:Orbitron,sans-serif;">⚡ MED</span> Pack Medium — abonnement</div>
+    <div class="legend-item"><span style="display:inline-flex;padding:3px 8px;border-radius:99px;font-size:8px;font-family:Orbitron,sans-serif;background:rgba(255,215,0,0.15);color:var(--gold);border:1px solid rgba(255,215,0,0.35);">💎 1:1</span> Accompagnement 1:1</div>
+    <div class="legend-item"><span style="display:inline-flex;padding:3px 8px;border-radius:99px;font-size:8px;font-family:Orbitron,sans-serif;background:rgba(0,212,255,0.1);color:var(--cyan);border:1px solid rgba(0,212,255,0.25);">⚡ GROUPE</span> Accompagnement en groupe</div>
+    <div class="legend-item"><span style="display:inline-flex;padding:3px 8px;border-radius:99px;font-size:8px;font-family:Orbitron,sans-serif;background:rgba(232,244,255,0.06);color:rgba(232,244,255,0.75);border:1px solid rgba(232,244,255,0.18);">📘 ESSENTIEL</span> Formation</div>
     <div class="legend-item"><span style="padding:2px 8px;border-radius:99px;background:rgba(0,212,255,0.2);color:var(--cyan);font-size:8px;font-family:Orbitron,sans-serif;">← TOI</span> Ta position</div>
   </div>
 
@@ -153,7 +155,7 @@ function getScore(m){
 
 async function loadLeaderboard(){
   try{
-const res=await fetch(SUPABASE_URL+'/rest/v1/membres?select=pseudo,xp&or=(plan.is.null,plan.neq.demo)',{
+const res=await fetch(SUPABASE_URL+'/rest/v1/membres?select=pseudo,xp,pack&or=(plan.is.null,plan.neq.demo)',{
   headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY}
 });     const data=await res.json();
     if(!data||!Array.isArray(data)){
@@ -173,7 +175,8 @@ const res=await fetch(SUPABASE_URL+'/rest/v1/membres?select=pseudo,xp&or=(plan.i
     data.forEach((m,i)=>{
       const rang=getRang(m.xp||0);
       const isMe=member&&m.pseudo===member.pseudo;
-      const isPro=m.pack==='pro';
+      const pk=String(m.pack||'');
+      const packB=pk==='750'||pk==='pro'?['pro','💎 1:1']:pk==='500'?['medium','⚡ GROUPE']:pk==='180'?['base','📘 ESSENTIEL']:['base','MEMBRE'];
       const rankColor=i<3?rankColors[i]:'var(--dim)';
       const rankDisplay=i<3?rankIcons[i]:(i+1);
 
@@ -181,7 +184,7 @@ const res=await fetch(SUPABASE_URL+'/rest/v1/membres?select=pseudo,xp&or=(plan.i
         <div class="lb-item ${isMe?'me':''}">
           <div class="lb-rank" style="color:${rankColor};">${rankDisplay}</div>
           <div>
-            <span class="lb-pack ${isPro?'pro':'medium'}">${isPro?'💎 PRO':'⚡ MED'}</span>
+            <span class="lb-pack ${packB[0]}">${packB[1]}</span>
           </div>
           <div>
             <span class="lb-rang-badge" style="background:${rang.color}22;color:${rang.color};border:1px solid ${rang.color}44;">
