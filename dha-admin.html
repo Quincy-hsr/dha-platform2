@@ -18,7 +18,7 @@ body{background:var(--bg);color:var(--tx);font-family:'Inter',sans-serif;min-hei
 .li:focus{border-color:var(--cy)}
 .lbtn{width:100%;padding:12px;background:var(--cy);color:#050914;font-family:'Orbitron',sans-serif;font-size:11px;font-weight:700;letter-spacing:3px;border:none;border-radius:8px;cursor:pointer}
 .lerr{color:var(--re);font-size:12px;margin-top:8px;min-height:16px}
-#app{display:none}
+#app{display:block}
 .topbar{display:flex;align-items:center;justify-content:space-between;padding:14px 24px;border-bottom:0.5px solid var(--bd);position:sticky;top:0;background:var(--bg);z-index:10}
 .tlogo{font-family:'Orbitron',sans-serif;font-size:15px;font-weight:900;letter-spacing:4px}
 .tlogo span{color:var(--cy)}
@@ -125,7 +125,23 @@ body{background:var(--bg);color:var(--tx);font-family:'Inter',sans-serif;min-hei
 #toast.err{opacity:1;background:rgba(255,68,85,0.15);color:var(--re);border:0.5px solid rgba(255,68,85,0.35)}
 .loader{text-align:center;padding:36px;color:var(--mu);font-size:14px}
 .empty{text-align:center;padding:36px;color:var(--mu);font-size:14px}
+/* ONGLETS + CANDIDATURES */
+.tabs{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+.tab{padding:9px 16px;border-radius:10px;border:0.5px solid var(--bd2);background:transparent;color:var(--mu);font-family:'Inter',sans-serif;font-size:13px;font-weight:600;cursor:pointer}
+.tab.on{background:rgba(0,212,255,0.1);color:var(--cy);border-color:rgba(0,212,255,0.4)}
+.tab .nb{display:inline-block;min-width:18px;padding:1px 6px;margin-left:6px;border-radius:99px;background:var(--go);color:#050914;font-size:11px;font-weight:700}
+.cgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.cq{background:var(--s2);border:0.5px solid var(--bd);border-radius:10px;padding:10px 12px}
+.cq small{display:block;font-size:10px;color:var(--mu);letter-spacing:1px;text-transform:uppercase;margin-bottom:3px}
+.cq div{font-size:13px;line-height:1.45}
+.cst{display:flex;gap:6px;flex-wrap:wrap}
+.cst button{padding:7px 12px;border-radius:8px;border:0.5px solid var(--bd2);background:transparent;color:var(--mu);font-size:12px;cursor:pointer;font-family:'Inter',sans-serif}
+.cst button.on{color:#050914;font-weight:600}
+.ccontact{display:inline-flex;align-items:center;gap:8px;margin-top:4px;padding:9px 14px;border-radius:8px;background:rgba(0,212,255,0.12);border:0.5px solid rgba(0,212,255,0.35);color:var(--cy);font-size:13px;font-weight:600;text-decoration:none}
+.cnote{width:100%;margin-top:6px;padding:9px 12px;border-radius:8px;background:var(--bg);border:0.5px solid var(--bd2);color:var(--tx);font-family:'Inter',sans-serif;font-size:13px;resize:vertical;outline:none}
+.cnote:focus{border-color:var(--cy)}
 @media(max-width:700px){
+  .cgrid{grid-template-columns:1fr}
   .sgrid{grid-template-columns:repeat(2,1fr);gap:8px}
   .sc{padding:11px 12px}
   .sval{font-size:17px}
@@ -162,7 +178,7 @@ body{background:var(--bg);color:var(--tx);font-family:'Inter',sans-serif;min-hei
 </head>
 <body>
 
-<div id="lock">
+<div id="lock" style="display:none">
   <div class="ll">DH<span>A</span></div>
   <div class="lb">
     <div class="lt">Accès administrateur</div>
@@ -179,7 +195,6 @@ body{background:var(--bg);color:var(--tx);font-family:'Inter',sans-serif;min-hei
       <div class="ldot"></div><span class="llbl">En ligne</span>
       <a class="tbtn" href="dha-cerveau.html" style="text-decoration:none">🧠 Cerveau</a>
       <button class="tbtn" id="rbtn">↻ Actualiser</button>
-      <button class="tbtn red" id="obtn">Déconnexion</button>
     </div>
   </div>
   <div class="main">
@@ -189,8 +204,15 @@ body{background:var(--bg);color:var(--tx);font-family:'Inter',sans-serif;min-hei
       <div class="sc"><div class="slbl">En cours</div><div class="sval or" id="se">—</div></div>
       <div class="sc"><div class="slbl">Versé</div><div class="sval gr" id="sv">—</div></div>
     </div>
+    <div class="tabs"><button class="tab on" data-tab="membres" type="button">👥 Membres</button><button class="tab" data-tab="cand" type="button">📝 Candidatures<span class="nb" id="cnb" style="display:none">0</span></button></div>
+    <div id="v-cand" style="display:none">
+      <div class="sr" style="display:flex;gap:8px;flex-wrap:wrap"><input class="si" id="csearch" placeholder="Rechercher prénom, contact..." style="flex:1;min-width:200px"><select class="si" id="cfilt" style="width:auto"><option value="">Tous les statuts</option><option value="nouvelle">🆕 Nouvelles</option><option value="contactee">📨 Contactées</option><option value="acceptee">✅ Acceptées</option><option value="refusee">✕ Refusées</option></select></div>
+      <div class="mlist" id="clist"><div class="loader">Chargement...</div></div>
+    </div>
+    <div id="v-membres">
     <div class="sr" style="display:flex;gap:8px;flex-wrap:wrap"><input class="si" id="search" placeholder="Rechercher pseudo, prénom, email..." style="flex:1;min-width:200px"><button class="tbtn" id="fcom" type="button" style="white-space:nowrap">🤝 Parrainages à valider (0)</button></div>
     <div class="mlist" id="mlist"><div class="loader">Chargement...</div></div>
+    </div>
   </div>
 </div>
 
@@ -260,7 +282,6 @@ function ini(m){return((m.pseudo||m.prenom||'?').substring(0,2)).toUpperCase();}
 document.getElementById('lbtn').onclick=unlock;
 document.getElementById('pwd').onkeydown=function(e){if(e.key==='Enter')unlock();};
 document.getElementById('rbtn').onclick=load;
-document.getElementById('obtn').onclick=function(){sessionStorage.removeItem('dha_admin');location.reload();};
 document.getElementById('search').oninput=filter;
 document.getElementById('cno').onclick=function(){document.getElementById('conf').style.display='none';confCb=null;};
 document.getElementById('cyes').onclick=function(){if(confCb){confCb();document.getElementById('conf').style.display='none';confCb=null;}};
@@ -276,7 +297,8 @@ function unlock(){
     document.getElementById('pwd').value='';
   }
 }
-if(sessionStorage.getItem('dha_admin')==='1'){
+// Plus de mot de passe : l'admin s'ouvre directement
+if(true){
   document.getElementById('lock').style.display='none';
   document.getElementById('app').style.display='block';
   load();
@@ -293,7 +315,104 @@ function load(){
       filter();
     })
     .catch(function(){document.getElementById('mlist').innerHTML='<div class="empty">Erreur Supabase.</div>';});
+  loadCand();
 }
+
+// ===== CANDIDATURES =====
+var cands=[];
+var CST={nouvelle:{l:'🆕 Nouvelle',c:'#FFD700'},contactee:{l:'📨 Contactée',c:'#00d4ff'},acceptee:{l:'✅ Acceptée',c:'#00e676'},refusee:{l:'✕ Refusée',c:'#ff4455'}};
+function esc(v){return String(v==null?'':v).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+function loadCand(){
+  fetch(SUPA+'/rest/v1/candidatures?select=*&order=created_at.desc',{headers:H})
+    .then(function(r){return r.json();})
+    .then(function(d){
+      if(!Array.isArray(d))throw 0;
+      cands=d;majCnb();
+      // ne pas écraser une fiche ouverte pendant qu'on écrit une note
+      var ae=document.activeElement;if(ae&&ae.classList&&ae.classList.contains('cnote'))return;
+      renderCand();
+    })
+    .catch(function(){document.getElementById('clist').innerHTML='<div class="empty">Table candidatures introuvable (lance le SQL dans Supabase).</div>';});
+}
+function majCnb(){
+  var n=cands.filter(function(c){return (c.statut||'nouvelle')==='nouvelle';}).length;
+  var b=document.getElementById('cnb');b.textContent=n;b.style.display=n?'inline-block':'none';
+}
+function lienContact(c){
+  var v=(c.contact_valeur||'').trim(),u=v.replace(/^@/,'');
+  switch(c.contact_canal){
+    case 'WhatsApp':var d=v.replace(/\D/g,'');if(/^0\d{9}$/.test(d))d='33'+d.slice(1);return 'https://wa.me/'+d;
+    case 'Téléphone':return 'tel:'+v.replace(/[^\d+]/g,'');
+    case 'Instagram':return 'https://instagram.com/'+encodeURIComponent(u);
+    case 'TikTok':return 'https://www.tiktok.com/@'+encodeURIComponent(u);
+    case 'Snapchat':return 'https://www.snapchat.com/add/'+encodeURIComponent(u);
+    case 'Email':return 'mailto:'+v;
+  }
+  return '';
+}
+function renderCand(){
+  var el=document.getElementById('clist');
+  var q=(document.getElementById('csearch').value||'').toLowerCase(),f=document.getElementById('cfilt').value;
+  var data=cands.filter(function(c){
+    if(f&&(c.statut||'nouvelle')!==f)return false;
+    return ((c.prenom||'')+' '+(c.contact_valeur||'')+' '+(c.source||'')).toLowerCase().indexOf(q)>-1;
+  });
+  if(!data.length){el.innerHTML='<div class="empty">'+(cands.length?'Aucune candidature pour ce filtre.':'Aucune candidature pour l\'instant.')+'</div>';return;}
+  var h='';
+  data.forEach(function(c){
+    var id='c-'+c.id,st=CST[c.statut||'nouvelle']||CST.nouvelle;
+    var dt=c.created_at?new Date(c.created_at).toLocaleString('fr-FR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}):'';
+    var ouvert=(document.getElementById('md-'+id)||{}).style;ouvert=ouvert&&ouvert.display==='block';
+    h+='<div class="mc"><div class="mh" data-toggle="'+id+'">';
+    h+='<div class="av">'+esc((c.prenom||'?').substring(0,2).toUpperCase())+'</div>';
+    h+='<div class="mi"><div class="mn">'+esc(c.prenom)+(c.age?' · '+c.age+' ans':'')+'</div><div class="me">'+esc(c.contact_canal)+' : '+esc(c.contact_valeur)+' · '+dt+'</div></div>';
+    h+='<div class="mbd"><span class="bx" style="background:rgba(255,255,255,0.04);color:'+st.c+';border:0.5px solid '+st.c+'55">'+st.l+'</span>';
+    if(c.source)h+='<span class="bx br">'+esc(c.source)+'</span>';
+    h+='</div><span class="ch" id="ch-'+id+'"'+(ouvert?' style="transform:rotate(180deg)"':'')+'>▾</span></div>';
+    h+='<div class="md" id="md-'+id+'" style="display:'+(ouvert?'block':'none')+'">';
+    var l=lienContact(c);
+    h+='<div class="stitle">Contact</div>'+(l?'<a class="ccontact" href="'+esc(l)+'" target="_blank" rel="noopener">✉ Écrire sur '+esc(c.contact_canal)+' · '+esc(c.contact_valeur)+'</a>':esc(c.contact_valeur));
+    h+='<div class="stitle">Réponses</div><div class="cgrid">';
+    [['Situation',c.situation],['Business en ligne',c.business_en_ligne],['Formations',c.formations],['Seul ou en équipe',c.seul_equipe],['Prêt à investir',c.investir],['Déplacements / voyages',c.deplacements],['Ce qui l\'attire',(c.avantages||[]).join(' · ')],['Connu par',(c.source||'')+(c.source_detail?' ('+c.source_detail+')':'')+(c.source_lien?' · lien '+c.source_lien:'')]].forEach(function(r){
+      h+='<div class="cq"><small>'+r[0]+'</small><div>'+esc(r[1]||'—')+'</div></div>';
+    });
+    h+='</div><div class="stitle">Statut</div><div class="cst">';
+    for(var k in CST){var on=(c.statut||'nouvelle')===k;h+='<button type="button" data-cst="'+c.id+'" data-v="'+k+'" class="'+(on?'on':'')+'"'+(on?' style="background:'+CST[k].c+';border-color:'+CST[k].c+'"':'')+'>'+CST[k].l+'</button>';}
+    h+='</div><div class="stitle">Note perso</div><textarea class="cnote" rows="2" data-cnote="'+c.id+'" placeholder="Ex : appelé le 14/10, intéressé par le 500€, rappeler vendredi">'+esc(c.note||'')+'</textarea>';
+    h+='</div></div>';
+  });
+  el.innerHTML=h;
+}
+function patchCand(id,body,cb){
+  fetch(SUPA+'/rest/v1/candidatures?id=eq.'+id,{method:'PATCH',headers:H,body:JSON.stringify(body)})
+    .then(function(r){if(!r.ok)throw r.status;cb&&cb();})
+    .catch(function(e){toast('Erreur Supabase: '+e,'err');});
+}
+function getCand(id){for(var i=0;i<cands.length;i++)if(String(cands[i].id)===String(id))return cands[i];return null;}
+document.getElementById('csearch').oninput=renderCand;
+document.getElementById('cfilt').onchange=renderCand;
+document.addEventListener('change',function(e){
+  var n=e.target.closest&&e.target.closest('[data-cnote]');if(!n)return;
+  var c=getCand(n.getAttribute('data-cnote'));if(!c)return;
+  var v=n.value.trim();
+  patchCand(c.id,{note:v||null},function(){c.note=v;toast('Note enregistrée ✓','ok');});
+});
+document.addEventListener('click',function(e){
+  var tb=e.target.closest&&e.target.closest('[data-tab]');
+  if(tb){
+    var v=tb.getAttribute('data-tab');
+    document.querySelectorAll('.tab').forEach(function(x){x.classList.toggle('on',x===tb);});
+    document.getElementById('v-membres').style.display=v==='membres'?'block':'none';
+    document.getElementById('v-cand').style.display=v==='cand'?'block':'none';
+    return;
+  }
+  var sb=e.target.closest&&e.target.closest('[data-cst]');
+  if(sb){
+    var c=getCand(sb.getAttribute('data-cst'));if(!c)return;
+    var v=sb.getAttribute('data-v');
+    patchCand(c.id,{statut:v},function(){c.statut=v;majCnb();renderCand();toast(CST[v].l,'ok');});
+  }
+});
 
 function stats(d){
   document.getElementById('st').textContent=d.length;
@@ -450,7 +569,7 @@ document.addEventListener('click',function(e){
 
   // Toggle membre
   var th=t.closest('[data-toggle]');
-  if(th&&!t.closest('button')&&!t.closest('input')){
+  if(th&&!t.closest('button')&&!t.closest('input')&&!t.closest('textarea')){
     var mid=th.getAttribute('data-toggle');
     var md=document.getElementById('md-'+mid);
     var ch=document.getElementById('ch-'+mid);
