@@ -751,13 +751,13 @@ function groupBy(list, logs, keyFn){
 function schedule(){ if(raf) return; raf = requestAnimationFrame(function(){ raf = 0; render(); }); }
 
 var TABS = {
-  home:'Accueil', perdus:'Prospects perdus', stats:'Mes stats', cand:'Candidatures', membres:'Membres',
-  funnel:'Entonnoir', content:'Contenu', prospects:'Prospects', launches:'Lancements programmés', clients:'Clients', objectifs:'Objectifs', brain:'Analyse IA'
+  home:'Accueil', perdus:'Prospects perdus', stats:'Mes stats', cand:'Candidatures', membres:'Parrainages & comptes de la plateforme',
+  funnel:'Entonnoir', content:'Contenu', prospects:'Prospects', launches:'Lancements programmés', clients:'Membres', objectifs:'Objectifs', brain:'Analyse IA'
 };
 
-var NAV_TABS = ['home','objectifs','prospects','perdus','clients','launches','content','funnel','stats','cand','membres','brain'];
+var NAV_TABS = ['home','objectifs','prospects','perdus','launches','clients','cand','content','brain'];
 var NAV_ICON = {perdus:'🚫', home:'🏠', stats:'📊', cand:'📝', membres:'👥', objectifs:'🎯', funnel:'📉', prospects:'💬', clients:'🎓', content:'🎬', launches:'🚀', brain:'🤖'};
-var NAV_SHORT = {perdus:'Perdus', home:'Accueil', stats:'Stats', cand:'Candid.', membres:'Membres', objectifs:'Objectifs', funnel:'Entonnoir', prospects:'Prospects', clients:'Clients', content:'Contenu', launches:'Lancements', brain:'IA'};
+var NAV_SHORT = {perdus:'Perdus', home:'Accueil', stats:'Stats', cand:'Candid.', membres:'Membres', objectifs:'Objectifs', funnel:'Entonnoir', prospects:'Prospects', clients:'Membres', content:'Contenu', launches:'Lancements', brain:'IA'};
 function paintNav(){
   $('#nav').innerHTML = NAV_TABS.map(function(k){
     var n = k==='prospects' ? S.prospects.filter(function(p){ return needsFollowUp(p) || prospectDue(p); }).length : k==='cand' ? CAND.list.filter(function(c){ return (c.statut||'nouvelle')==='nouvelle'; }).length : 0;
@@ -938,12 +938,11 @@ function skelLaunches(){
 }
 function paintLaunches(){
   if(!$('#lg')) return;
-  var list = S.prospects.filter(function(p){ return p.launchAt; }).sort(function(a,b){ return a.launchAt-b.launchAt; });
+  var list = S.prospects.filter(function(p){ return p.launchAt && p.status!=='close' && p.status!=='perdu'; }).sort(function(a,b){ return a.launchAt-b.launchAt; });
   if(!list.length){ $('#lg').innerHTML = '<div class="card empty" style="grid-column:1/-1">Aucun lancement programmé. Ajoute une date de lancement depuis la fiche détaillée d\'un prospect.</div>'; return; }
   $('#lg').innerHTML = list.map(function(p){
     var stLabel = STAGE_LABEL[p.status]||p.status;
     return '<div class="card ccard-wrap"><button type="button" class="ccard-inner" data-act="details-p" data-id="'+esc(p.id)+'"><div style="display:flex;justify-content:space-between;gap:8px;align-items:flex-start"><h3>'+(p.prenom?esc(p.prenom)+' · ':'')+'@'+esc(p.handle)+'</h3><span class="badge'+(p.status==='close'?' ok':'')+'" style="margin:0">'+esc(stLabel)+'</span></div>'
-      +'<div class="goal">'+(p.objectif?esc(p.objectif):'Objectif non renseigné')+'</div>'
       +'<div class="prog">'+launchGauge(p)+'<span>'+esc(prospectLaunchLabel(p))+'</span></div>'
       +'<div class="p-when">Lancement prévu le '+dShort(p.launchAt)+'</div></button>'
       +'<a class="btn small launch-cal" href="'+esc(gcalLink('Lancement de @'+p.handle+' (DHA)', p.launchAt, p.launchAt+DAY, p.objectif||'', true))+'" target="_blank" rel="noopener">Ajouter au calendrier</a></div>';
@@ -1062,14 +1061,14 @@ function paintHome(){
     +'<div class="gauge'+(v>=c?' done':'')+'" role="progressbar" aria-label="Progression de l\'objectif" aria-valuemin="0" aria-valuemax="'+c+'" aria-valuenow="'+v+'" style="margin-top:12px"><i style="width:'+Math.min(100,pc)+'%"></i></div>'
     +'<div class="objm">'+m+'</div><button type="button" class="btn small" data-act="tab" data-tab="objectifs" style="margin-top:12px">Voir tous mes objectifs →</button>';
   var openP = S.prospects.filter(function(p){ return p.status!=='close' && p.status!=='perdu'; }).length;
-  var lanc = S.prospects.filter(function(p){ return p.launchAt; });
+  var lanc = S.prospects.filter(function(p){ return p.launchAt && p.status!=='close' && p.status!=='perdu'; });
   var proch = lanc.filter(function(p){ return p.launchAt>=Date.now()-DAY; }).sort(function(a,b){ return a.launchAt-b.launchAt; })[0];
   var actifs = S.clients.filter(function(c){ return (c.status||'actif')==='actif'; }).length;
   var nouv = CAND.list.filter(function(c){ return (c.statut||'nouvelle')==='nouvelle'; }).length;
   var tile = function(tab, ic, lbl, val, sub){ return '<button type="button" class="ktile" data-act="tab" data-tab="'+tab+'"><span class="ki" aria-hidden="true">'+ic+'</span><span class="kl">'+lbl+'</span><span class="kv">'+val+'</span><span class="ks">'+sub+'</span></button>'; };
   $('#htiles').innerHTML = tile('prospects','💬','Prospects',fmtN(openP),'en cours')
     + tile('launches','🚀','Lancements programmés',fmtN(lanc.length), proch ? 'prochain le '+dShort(proch.launchAt) : 'aucun à venir')
-    + tile('clients','🎓','Clients',fmtN(actifs), (function(){ var r = S.clients.filter(function(c){ return c.status!=='perdu'; }).reduce(function(t,c){ return t+remainingOf(c); },0); return r>0 ? '<b>'+euro(r)+' à encaisser</b>' : fmtN(S.clients.length)+' au total'; })())
+    + tile('clients','🎓','Membres',fmtN(actifs), (function(){ var r = S.clients.filter(function(c){ return c.status!=='perdu'; }).reduce(function(t,c){ return t+remainingOf(c); },0); return r>0 ? '<b>'+euro(r)+' à encaisser</b>' : fmtN(S.clients.length)+' au total'; })())
     + tile('cand','📝','Candidatures reçues', CAND.ok ? fmtN(CAND.list.length) : '—', nouv ? '<b>'+nouv+' à traiter</b>' : 'tout est traité');
 }
 function openObjectif(){
@@ -1569,7 +1568,7 @@ function paintContent(){
 
 /* ---------- vue : clients ---------- */
 function skelClients(){
-  return '<div class="stack"><div id="cash"></div><div id="linkBanner"></div><div id="cfilt" style="display:flex;flex-wrap:wrap;gap:8px"></div><div class="toolbar" style="margin:0"><p class="sub">Un prospect passé en « Client » crée sa fiche automatiquement.</p><span style="display:flex;gap:10px"><span id="clexp"></span><button type="button" class="btn primary" data-act="new-client">Nouveau membre</button></span></div><div class="grid" id="cg"></div></div>';
+  return '<div class="stack"><div id="cash"></div><div id="linkBanner"></div><div id="cfilt" style="display:flex;flex-wrap:wrap;gap:8px"></div><div class="toolbar" style="margin:0"><p class="sub">Un prospect passé en « Client » crée sa fiche automatiquement.</p><span style="display:flex;gap:10px;flex-wrap:wrap"><button type="button" class="btn" data-act="tab" data-tab="membres">🤝 Parrainages &amp; comptes</button><span id="clexp"></span><button type="button" class="btn primary" data-act="new-client">Nouveau membre</button></span></div><div class="grid" id="cg"></div></div>';
 }
 function paintClients(){
   if(!$('#cg')) return;
@@ -1596,8 +1595,7 @@ function paintClients(){
     if(!c.pseudo) plat = '<span class="badge">Pas relié</span> <button type="button" class="iconbtn" data-act="open-client" data-id="'+esc(c.id)+'">Relier son compte</button>';
     else plat = '@'+esc(c.pseudo)+(m ? ' · ⚡ '+fmtN(m.xp||0)+' XP · niveau '+levelOf(m.xp) : (PLAT.members.length?' <span class="badge">Compte introuvable</span>':''))+(rec[0] ? ' · actif '+ago(new Date(rec[0].created_at).getTime()) : '')+' <button type="button" class="iconbtn" data-act="relink" data-id="'+esc(c.id)+'">Changer</button>';
     var alert = '', restC = remainingOf(c);
-    if(active && Date.now()-lastTouch(c) > 3*DAY) alert = 'À recontacter';
-    else { var late = active ? lateInfo(c) : ''; if(late) alert = late; }
+    { var late = active ? lateInfo(c) : ''; if(late) alert = late; }
     var money = restC>0 ? '<span class="badge" style="background:var(--leak-bg);color:var(--leak)">💶 Doit encore '+euro(restC)+'</span>' : (c.price>0 ? '<span class="badge ok">Payé</span>' : '');
     var md = modsDoneCount(c);
     return '<div class="card ccard"><div style="display:flex;justify-content:space-between;gap:8px;align-items:flex-start"><h3>'+esc(c.name||'Sans nom')+' <span class="sub" style="font-weight:500;font-size:14px">· '+esc(offer)+'</span></h3><span class="badge'+(active?' ok':'')+'" style="margin:0">'+esc(stLabel)+'</span></div>'
@@ -1610,14 +1608,15 @@ function paintClients(){
 
 /* ---------- vue : analyse IA ---------- */
 function skelBrain(){
-  return '<div class="stack"><section class="card"><h2>Ce que disent tes chiffres</h2><p class="sub" style="max-width:64ch">Claude lit ton entonnoir, tes scripts, tes sources et tes contenus, puis te dit où tu perds des gens et quoi tester en premier. Seules des données agrégées sont envoyées : aucun pseudo, aucune note.</p><div id="aiForm" style="margin-top:16px"></div><div class="ai-out" id="aiOut" aria-live="polite"></div></section></div>';
+  return '<div class="stack"><section class="card"><h2>Ce que disent tes chiffres</h2><p class="sub" style="max-width:64ch">Pose ta question ou clique sur un exemple : la réponse est calculée directement à partir de tes prospects, membres, contenus et objectifs. La période (en haut) s\'applique à l\'entonnoir et aux sources.</p><div id="aiForm" style="margin-top:16px"></div><div class="ai-out" id="aiOut" aria-live="polite"></div></section></div>';
 }
 function paintAIForm(){
   var el = $('#aiForm'); if(!el) return;
   if(!sampleFn){
-    el.innerHTML = '<p class="sub" style="max-width:64ch;margin-bottom:12px">Copie tes chiffres en un clic, puis colle-les dans une conversation avec Claude : il te fait l\'analyse complète (diagnostic, ce que disent les chiffres, 3 tests à lancer).</p>'
-      +'<div style="display:flex;gap:10px;flex-wrap:wrap"><input id="aiQ" style="flex:1;min-width:220px" placeholder="Question précise (optionnel)" aria-label="Question sur tes chiffres"><button type="button" class="btn primary" data-act="ai-copy">Copier mes chiffres pour Claude</button></div>'
-      +'<textarea id="aiCopyBox" class="sr" aria-hidden="true" tabindex="-1"></textarea>';
+    var QS = ['Où est ma fuite ?','Qui je dois relancer ?','Quelle source marche le mieux ?','Qui me doit de l\'argent ?','Où j\'en suis de mes objectifs ?','Combien j\'ai encaissé ?'];
+    el.innerHTML = '<div style="display:flex;gap:10px;flex-wrap:wrap"><input id="aiQ" style="flex:1;min-width:220px" placeholder="Pose ta question, ex. où est ma fuite ?" aria-label="Question sur tes chiffres"><button type="button" class="btn primary" data-act="ai-ask">Demander</button></div>'
+      +'<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px">'+QS.map(function(q){ return '<button type="button" class="chip" data-act="ai-quick" data-q="'+esc(q)+'">'+esc(q)+'</button>'; }).join('')+'</div>';
+    paintAI();
     return;
   }
   el.innerHTML = '<div style="display:flex;flex-wrap:wrap;gap:10px"><button type="button" class="btn primary" data-act="ai-run" id="aiRun">Analyser mon entonnoir</button><button type="button" class="btn" data-act="ai-stop" id="aiStop" style="display:none">Arrêter</button></div>'
@@ -1678,7 +1677,8 @@ function buildStats(){
   };
 }
 function runAI(question, copyOnly){
-  if((!sampleFn && !copyOnly) || S.ai.loading) return;
+  if(!sampleFn && !copyOnly){ S.ai = {loading:false, text:localAnswer(question||'fuite'), error:'', note:''}; paintAI(); return; }
+  if(S.ai.loading) return;
   var stats = buildStats();
   var prompt = "Tu es un analyste growth spécialisé dans les business de coaching et de formation qui vendent via Instagram, TikTok et les messages privés. Contexte : je vends l'accès à la DHA (formation trading et coaching sur 4 mois). Acquisition : (1) mes vidéos Instagram et TikTok invitent à commenter ou envoyer « DHA » en DM pour recevoir un ebook gratuit, puis je discute avec ces personnes ; (2) je contacte les gens qui likent ou s'abonnent à mon contenu ; (3) je fais du DM à froid auprès de likes et abonnés de comptes de ma niche (mindset, business, trading), ou des abonnés de mes abonnés, avec des scripts différents. Objectif : un appel, un closing, puis l'entrée dans la DHA. Après la vente : accès plateforme, fichier « prise de conscience », appel de prise en main, messages quotidiens, appels de groupe mardi et jeudi, puis parcours : mois 1 maîtrise de la stratégie, mois 2 objectif en démo, mois 3 passage en réel, mois 4 validation d'un challenge. Voici les données agrégées (pourcentages en points, échantillons parfois petits). Analyse aussi le parcours des membres après la vente (activation, décrochage) et les sources d'acquisition, pas seulement l'entonnoir de vente.\n\n"
     + (question ? "Question précise : " + question + "\n\nRéponds d'abord à cette question, en t'appuyant sur les données, puis ajoute au maximum 2 remarques utiles.\n\n"
@@ -1698,6 +1698,80 @@ function runAI(question, copyOnly){
       else if(c!=='cancelled') S.ai.error = "L'analyse a échoué. Réessaie.";
       paintAI();
     });
+}
+
+/* ---------- réponses calculées sur tes chiffres (sans connexion à une IA) ---------- */
+function nrm(t){ return String(t||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase(); }
+function localAnswer(q){
+  var t = nrm(q), per = periodLabel(), out = [];
+  var has = function(){ for(var i=0;i<arguments.length;i++) if(t.indexOf(arguments[i])>-1) return true; return false; };
+  var who = function(p){ return (p.prenom?p.prenom+' (@'+p.handle+')':'@'+p.handle); };
+  if(has('fuite','bloque','perd','faible','probleme','entonnoir','conversion','taux')){
+    var a = analyse(), f = a.f;
+    out.push('## Ta fuite principale ('+per+')');
+    if(a.weak){
+      out.push('**'+a.weak.label+'** : '+pct(a.weak.rate)+' '+a.weak.what+', alors que ton objectif est '+pct(a.weak.target)+'.');
+      if(a.gain!=null && a.gain>=0.3) out.push('Si tu atteignais l\'objectif sur cette étape, tu signerais environ **'+(a.gain>=1?Math.round(a.gain):a.gain.toLocaleString('fr-FR',{maximumFractionDigits:1}))+' client(s) de plus**.');
+    } else if(f.sent<5) out.push('Pas encore assez de données : il faut au moins 5 DM sur la période pour repérer une fuite. Tu en as '+fmtN(f.sent)+'.');
+    else out.push('Aucune fuite nette : toutes les étapes avec assez de données atteignent leur objectif. Augmente le volume de DM pour aller plus loin.');
+    out.push('', '**Ton entonnoir** : '+fmtN(f.sent)+' DM → '+fmtN(f.replied)+' réponses → '+fmtN(f.call)+' calls bookés → '+fmtN(f.held)+' calls faits → '+fmtN(f.won)+' clients.');
+    a.steps.forEach(function(s2){ out.push('- '+s2.label+' : '+(s2.rate==null?'pas de données':pct(s2.rate))+' (objectif '+pct(s2.target)+')'); });
+  }
+  else if(has('relanc','contacter','rappeler','suivre')){
+    var rel = S.prospects.filter(needsFollowUp), due = S.prospects.filter(function(p){ return prospectDue(p) && !needsFollowUp(p); });
+    out.push('## À relancer : '+rel.length);
+    rel.slice(0,15).forEach(function(p){ out.push('- '+who(p)+' · '+STAGE_LABEL[p.status]); });
+    out.push('', '## À contacter : '+due.length);
+    due.slice(0,15).forEach(function(p){ out.push('- '+who(p)+' · '+STAGE_LABEL[p.status]); });
+    if(!rel.length && !due.length) out.push('Personne à relancer pour l\'instant 👌');
+  }
+  else if(has('source','marche','meilleur','script','canal','insta','tiktok','ebook')){
+    var bySrc = groupBy(prospectsIn(), logsIn(), function(x){ return x.source; }).filter(function(g){ return g.sent+g.replied>0; });
+    out.push('## Tes sources ('+per+')');
+    if(!bySrc.length) out.push('Pas encore de données sur la période.');
+    bySrc.forEach(function(g){ var base = g.sent+g.replied; out.push('- **'+g.k+'** : '+fmtN(base)+' contacts, '+fmtN(g.replied)+' réponses ('+(rate(g.replied,base)==null?'—':pct(rate(g.replied,base)))+'), '+fmtN(g.won)+' client(s)'); });
+    var best = bySrc.filter(function(g){ return g.sent+g.replied>=10; }).sort(function(a2,b2){ return (b2.won/(b2.sent+b2.replied))-(a2.won/(a2.sent+a2.replied)) || b2.replied-a2.replied; })[0];
+    if(best) out.push('', 'Celle qui rapporte le plus : **'+best.k+'**.');
+  }
+  else if(has('doit','argent','encaisser','paye','reste','impaye')){
+    var owe = S.clients.filter(function(c){ return c.status!=='perdu' && remainingOf(c)>0; }).sort(function(a2,b2){ return remainingOf(b2)-remainingOf(a2); });
+    out.push('## Reste à encaisser : '+euro(owe.reduce(function(x,c){ return x+remainingOf(c); },0)));
+    owe.forEach(function(c){ out.push('- '+(c.name||'?')+' doit encore **'+euro(remainingOf(c))+'**'); });
+    if(!owe.length) out.push('Personne ne te doit d\'argent ✅');
+  }
+  else if(has('encaiss','chiffre','ca ','ca?','gagne','revenu','vente')){
+    var n = new Date(), a0 = new Date(n.getFullYear(), n.getMonth(), 1).getTime(), b0 = new Date(n.getFullYear(), n.getMonth()+1, 1).getTime();
+    var cls = S.clients.filter(function(c){ return c.startAt>=a0 && c.startAt<b0; });
+    out.push('## Ce mois-ci');
+    out.push('- Encaissé : **'+euro(encaisse(a0,b0))+'**');
+    out.push('- Signé : '+euro(cls.reduce(function(x,c){ return x+(Number(c.price)||0); },0))+' ('+cls.length+' client'+(cls.length>1?'s':'')+')');
+  }
+  else if(has('objectif','rythme','retard','semaine')){
+    var ws = weekStart(Date.now()), we = ws+7*DAY, defs = GOAL_DEFS.filter(function(g){ return Number(S.goals[g.k])>0; });
+    out.push('## Tes objectifs de la semaine');
+    if(!defs.length) out.push('Aucun objectif fixé. Va dans Objectifs → « Modifier mes objectifs ».');
+    defs.forEach(function(g){ var tg = Number(S.goals[g.k]), v = goalCount(g.k, ws, we); out.push('- '+g.label+' : **'+fmtN(v)+' / '+fmtN(tg)+'** ('+Math.round(v/tg*100)+' %)'+(v>=tg?' ✅':'')); });
+  }
+  else if(has('candidat')){
+    var nv = CAND.list.filter(function(c){ return (c.statut||'nouvelle')==='nouvelle'; });
+    out.push('## Candidatures : '+CAND.list.length+' au total, '+nv.length+' à traiter');
+    nv.slice(0,10).forEach(function(c){ out.push('- '+(c.prenom||'?')+(c.age?' · '+c.age+' ans':'')+' · '+(c.contact_canal||'')); });
+  }
+  else if(has('contenu','post','video','reel','vue')){
+    var cts = S.content.slice().sort(function(a2,b2){ return (Number(b2.views)||0)-(Number(a2.views)||0); });
+    out.push('## Tes contenus : '+cts.length);
+    cts.slice(0,5).forEach(function(c){ out.push('- '+(c.title||c.format||'Contenu')+' · '+fmtN(Number(c.views)||0)+' vues · '+dShort(c.date||0)); });
+  }
+  else if(has('lancement')){
+    var la = S.prospects.filter(function(p){ return p.launchAt && p.status!=='close' && p.status!=='perdu'; }).sort(function(a2,b2){ return a2.launchAt-b2.launchAt; });
+    out.push('## Lancements à venir : '+la.length);
+    la.forEach(function(p){ out.push('- '+who(p)+' · '+dShort(p.launchAt)); });
+  }
+  else {
+    out.push("Je réponds à partir de tes chiffres. Je comprends les questions sur : **ta fuite**, **qui relancer**, **tes sources**, **qui te doit de l'argent**, **ce que tu as encaissé**, **tes objectifs**, **tes candidatures**, **tes contenus** et **tes lancements**.");
+    out.push('Essaie par exemple : « Où est ma fuite ? »');
+  }
+  return out.join('\n');
 }
 
 /* ---------- dialogues ---------- */
@@ -1806,13 +1880,7 @@ function openClient(c){
     +'<div><label for="cdStart">Date d\'entrée dans la DHA</label><input id="cdStart" type="date" value="'+ymd(c.startAt||Date.now())+'"></div>'
     +'<details class="section"><summary>Prise en main ('+ONB.filter(function(k){ return (draft.onb||{})[k[0]]; }).length+'/'+ONB.length+')</summary><div class="checks">'+ONB.map(function(k){ return chk('ob_'+k[0], k[1], (draft.onb||{})[k[0]]); }).join('')+'</div></details>'
     +monthsHtml(draft, chk)
-    +'<div><label for="cdDemo">Objectif fixé en démo (mois 2)</label><input id="cdDemo" value="'+esc(c.demoGoal||'')+'" placeholder="Ex. +5 % sur le compte démo en 30 jours"></div>'
-    +'<div><label for="cdReal">Objectif fixé en réel (mois 3)</label><input id="cdReal" value="'+esc(c.realGoal||'')+'" placeholder="Ex. 1re payout ou +3 % sur le compte réel"></div>'
-    +'<div><label for="cdGoal">Son objectif personnel</label><textarea id="cdGoal" rows="2" placeholder="Ex. Passer son premier challenge">'+esc(c.goal||'')+'</textarea></div>'
-    +chk('cdRdv','Participe aux RDV en personne', c.rdv)
-    +'<div><label for="cdNote">Nouvelle interaction</label><div style="display:flex;gap:10px;flex-wrap:wrap"><select id="cdType" style="width:auto">'+opts(CI_TYPES,'Message')+'</select><input id="cdNote" style="flex:1;min-width:160px" placeholder="Note (optionnelle)"><button type="button" class="btn" data-act="add-checkin">Ajouter</button></div></div>'
-    +'<div class="tl" id="cdTl"></div></div>'
-    +'<div class="dlg-foot"><button type="button" class="btn danger" data-act="del-arm" data-kind="c">Supprimer</button><div class="r"><button type="button" class="btn" data-act="close">Annuler</button><button type="button" class="btn primary" data-act="save-c">Enregistrer</button></div></div>');
+    +'</div><div class="dlg-foot"><button type="button" class="btn danger" data-act="del-arm" data-kind="c">Supprimer</button><div class="r"><button type="button" class="btn" data-act="close">Annuler</button><button type="button" class="btn primary" data-act="save-c">Enregistrer</button></div></div>');
   paintTimeline();
   $('#cdPayDate').value = ymd(Date.now()); paintPay();
 }
@@ -1855,7 +1923,7 @@ function monthsHtml(c, chk){
   return h+'</div></details>';
 }
 function paintTimeline(){
-  var el = $('#cdTl'); if(!el) return;
+  var el = $('#cdTl'); if(!el) return; // (suivi retiré de la fiche)
   el.innerHTML = (draft.checkins||[]).length ? draft.checkins.map(function(k){ return '<div><small>'+dShort(k.at)+', '+esc(k.type||'Message')+'</small>'+esc(k.note||'')+'</div>'; }).join('') : '<p class="note" style="margin:0">Aucune interaction enregistrée.</p>';
 }
 function saveClient(){
@@ -1865,8 +1933,7 @@ function saveClient(){
   if(d.pseudo && PLAT.members.length && !PLAT.members.some(function(m){ return normPseudo(m.pseudo)===normPseudo(d.pseudo); })){ toast('Aucun compte DHA avec le pseudo @'+d.pseudo+'. Choisis-le dans la liste.'); var pf = $('#cdPseudo'); if(pf) pf.focus(); return; }
   var dup = d.pseudo && S.clients.filter(function(x){ return x.id!==d.id && normPseudo(x.pseudo)===normPseudo(d.pseudo); })[0];
   if(dup){ toast('@'+d.pseudo+' est déjà relié à '+(dup.name||'un autre client')+'.'); return; }
-  d.price = Number($('#cdPrice').value)||0; d.startAt = fromYmd($('#cdStart').value); d.goal = $('#cdGoal').value; d.demoGoal = $('#cdDemo').value.trim(); d.realGoal = $('#cdReal').value.trim();
-  d.rdv = $('#cdRdv').checked;
+  d.price = Number($('#cdPrice').value)||0; d.startAt = fromYmd($('#cdStart').value); 
   d.payMulti = $('#cdMulti').checked; d.payN = Number($('#cdN').value)||0;
   d.payments = (draft.payments||[]).slice();
   var pend = Number($('#cdPayAmt').value)||0;
@@ -1884,8 +1951,6 @@ function saveClient(){
     mods['x'+mn] = $('#mx'+mn).checked ? ((draft.mods||{})['x'+mn] || now) : null;
   }
   d.mods = mods;
-  var note = $('#cdNote').value.trim();
-  if(note){ d.checkins = [{at:now, type:$('#cdType').value, note:note}].concat(d.checkins||[]); }
   var pseudoChanged = (d.pseudo||'') !== (draft.pseudo||'');
   safe(put('clients', d)).then(function(){ closeDlg(); if(pseudoChanged) loadPlatform(); }).catch(function(){});
 }
@@ -2038,6 +2103,7 @@ document.addEventListener('click', function(ev){
     case 'ai-run': runAI(''); break;
     case 'ai-ask': var qv = ($('#aiQ')||{}).value; if(qv && qv.trim()) runAI(qv.trim()); else if($('#aiQ')) $('#aiQ').focus(); break;
     case 'ai-stop': if(aiCtl) aiCtl.abort(); break;
+    case 'ai-quick': var qq = el.getAttribute('data-q'); if($('#aiQ')) $('#aiQ').value = qq; runAI(qq); break;
     case 'ai-copy': runAI((($('#aiQ')||{}).value||'').trim(), true); break;
   }
 });
