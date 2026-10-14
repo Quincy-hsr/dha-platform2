@@ -592,13 +592,13 @@ function autoLinkClients(){
   var chain = Promise.resolve();
   S.clients.filter(function(c){ return !c.pseudo; }).forEach(function(c){
     var g = guessMember(c).filter(function(m){ return !used[normPseudo(m.pseudo)]; });
-    if(g.length===1){ used[normPseudo(g[0].pseudo)] = 1; linked.push(c.name+' → @'+g[0].pseudo); chain = chain.then(function(){ return put('clients', Object.assign({}, c, {pseudo:g[0].pseudo})); }); }
+    if(g.length===1){ used[normPseudo(g[0].pseudo)] = 1; linked.push({id:c.id, t:c.name+' → @'+g[0].pseudo}); chain = chain.then(function(){ return put('clients', Object.assign({}, c, {pseudo:g[0].pseudo})); }); }
     else manual.push(c.name);
   });
   chain.then(function(){
     loadPlatform();
     openDlg('<div class="dlg-body"><h2 id="dlgTitle">Liaison des clients</h2>'
-      +(linked.length ? '<p><b>'+linked.length+' client'+(linked.length>1?'s':'')+' relié'+(linked.length>1?'s':'')+' :</b></p><div class="tl">'+linked.map(function(t){ return '<div>'+esc(t)+'</div>'; }).join('')+'</div>' : '<p>Aucun client n\'a pu être relié automatiquement.</p>')
+      +(linked.length ? '<p><b>'+linked.length+' client'+(linked.length>1?'s':'')+' relié'+(linked.length>1?'s':'')+' :</b></p><div class="tl">'+linked.map(function(o){ return '<div style="display:flex;justify-content:space-between;gap:8px;align-items:center"><span>'+esc(o.t)+'</span><button type="button" class="iconbtn" data-act="unlink" data-id="'+esc(o.id)+'">Annuler</button></div>'; }).join('')+'</div>' : '<p>Aucun client n\'a pu être relié automatiquement.</p>')
       +(manual.length ? '<p class="sub">À relier à la main (ouvre leur fiche et choisis leur pseudo) : <b>'+manual.map(esc).join(', ')+'</b>. Leur nom ne correspond à aucun compte, ou à plusieurs.</p>' : '')
       +'<p class="note">Vérifie les liaisons : si une est fausse, corrige le pseudo dans la fiche du client.</p></div>'
       +'<div class="dlg-foot"><span></span><div class="r"><button type="button" class="btn primary" data-act="close">OK</button></div></div>');
@@ -1069,7 +1069,7 @@ function paintHome(){
   var tile = function(tab, ic, lbl, val, sub){ return '<button type="button" class="ktile" data-act="tab" data-tab="'+tab+'"><span class="ki" aria-hidden="true">'+ic+'</span><span class="kl">'+lbl+'</span><span class="kv">'+val+'</span><span class="ks">'+sub+'</span></button>'; };
   $('#htiles').innerHTML = tile('prospects','💬','Prospects',fmtN(openP),'en cours')
     + tile('launches','🚀','Lancements programmés',fmtN(lanc.length), proch ? 'prochain le '+dShort(proch.launchAt) : 'aucun à venir')
-    + tile('clients','🎓','Clients',fmtN(actifs), fmtN(S.clients.length)+' au total')
+    + tile('clients','🎓','Clients',fmtN(actifs), (function(){ var r = S.clients.filter(function(c){ return c.status!=='perdu'; }).reduce(function(t,c){ return t+remainingOf(c); },0); return r>0 ? '<b>'+euro(r)+' à encaisser</b>' : fmtN(S.clients.length)+' au total'; })())
     + tile('cand','📝','Candidatures reçues', CAND.ok ? fmtN(CAND.list.length) : '—', nouv ? '<b>'+nouv+' à traiter</b>' : 'tout est traité');
 }
 function openObjectif(){
@@ -1569,12 +1569,20 @@ function paintContent(){
 
 /* ---------- vue : clients ---------- */
 function skelClients(){
-  return '<div class="stack"><div id="linkBanner"></div><div class="toolbar" style="margin:0"><p class="sub">Un prospect passé en « Client » crée sa fiche automatiquement.</p><span style="display:flex;gap:10px"><span id="clexp"></span><button type="button" class="btn primary" data-act="new-client">Nouveau membre</button></span></div><div class="grid" id="cg"></div></div>';
+  return '<div class="stack"><div id="cash"></div><div id="linkBanner"></div><div id="cfilt" style="display:flex;flex-wrap:wrap;gap:8px"></div><div class="toolbar" style="margin:0"><p class="sub">Un prospect passé en « Client » crée sa fiche automatiquement.</p><span style="display:flex;gap:10px"><span id="clexp"></span><button type="button" class="btn primary" data-act="new-client">Nouveau membre</button></span></div><div class="grid" id="cg"></div></div>';
 }
 function paintClients(){
   if(!$('#cg')) return;
   var ce = $('#clexp'); if(ce) ce.innerHTML = dlNs ? '<button type="button" class="btn" data-act="export" data-kind="clients">Exporter en CSV</button>' : '';
-  var list = S.clients.slice().sort(function(a,b){ return (b.startAt||0)-(a.startAt||0); });
+  var owe = S.clients.filter(function(c){ return c.status!=='perdu' && remainingOf(c)>0; }).sort(function(a,b){ return remainingOf(b)-remainingOf(a); });
+  var oweTot = owe.reduce(function(t,c){ return t+remainingOf(c); },0);
+  var cash = $('#cash');
+  if(cash) cash.innerHTML = '<section class="card" style="display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between"><div><span style="display:block;color:var(--muted);font-size:13px;font-weight:600">💶 Reste à encaisser</span><span style="font:700 30px/1.1 var(--f-display)">'+euro(oweTot)+'</span><span class="sub" style="display:block">'+(owe.length?owe.length+' client'+(owe.length>1?'s te doivent':' te doit')+' de l\'argent':'Personne ne te doit d\'argent')+'</span></div>'
+    +(owe.length?'<button type="button" class="btn" data-act="cf" data-v="owe">Voir qui me doit</button>':'')+'</section>';
+  var cf = $('#cfilt');
+  var nUn = S.clients.filter(function(c){ return !c.pseudo; }).length;
+  if(cf) cf.innerHTML = [['all','Tous',S.clients.length],['owe','Me doivent de l\'argent',owe.length],['unlinked','Pas reliés',nUn]].map(function(f){ return '<button type="button" class="chip" data-act="cf" data-v="'+f[0]+'" aria-pressed="'+((S.cliF||'all')===f[0])+'">'+f[1]+'<small>'+f[2]+'</small></button>'; }).join('');
+  var list = S.clients.filter(function(c){ var f = S.cliF||'all'; return f==='all' || (f==='owe' ? (c.status!=='perdu' && remainingOf(c)>0) : !c.pseudo); }).sort(function(a,b){ return (S.cliF==='owe') ? remainingOf(b)-remainingOf(a) : (b.startAt||0)-(a.startAt||0); });
   var unlinked = S.clients.filter(function(c){ return !c.pseudo && (c.status||'actif')!=='perdu'; }).length;
   var lb = $('#linkBanner');
   if(lb) lb.innerHTML = unlinked ? '<div class="callout" style="display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between"><span><strong>'+unlinked+' client'+(unlinked>1?'s':'')+' pas encore relié'+(unlinked>1?'s à leur compte':' à son compte')+'</strong><span class="sub" style="display:block">Relie-les pour que leurs modules « Fait » se cochent tout seuls.</span></span><button type="button" class="btn primary" data-act="auto-link"'+(PLAT.members.length?'':' disabled')+'>Relier automatiquement</button></div>' : '';
@@ -1586,17 +1594,16 @@ function paintClients(){
     var m = memberOf(c), rec = c.pseudo ? (PLAT.recent[normPseudo(c.pseudo)]||[]) : [];
     var plat = '';
     if(!c.pseudo) plat = '<span class="badge">Pas relié</span> <button type="button" class="iconbtn" data-act="open-client" data-id="'+esc(c.id)+'">Relier son compte</button>';
-    else plat = '@'+esc(c.pseudo)+(m ? ' · ⚡ '+fmtN(m.xp||0)+' XP · niveau '+levelOf(m.xp) : '')+(rec[0] ? ' · actif '+ago(new Date(rec[0].created_at).getTime()) : '');
-    var alert = '';
-    var restC = remainingOf(c);
-    if(c.payMulti && c.price>0 && restC>0) alert = 'Reste '+euro(restC);
-    else if(active && Date.now()-lastTouch(c) > 3*DAY) alert = 'À recontacter';
+    else plat = '@'+esc(c.pseudo)+(m ? ' · ⚡ '+fmtN(m.xp||0)+' XP · niveau '+levelOf(m.xp) : (PLAT.members.length?' <span class="badge">Compte introuvable</span>':''))+(rec[0] ? ' · actif '+ago(new Date(rec[0].created_at).getTime()) : '')+' <button type="button" class="iconbtn" data-act="relink" data-id="'+esc(c.id)+'">Changer</button>';
+    var alert = '', restC = remainingOf(c);
+    if(active && Date.now()-lastTouch(c) > 3*DAY) alert = 'À recontacter';
     else { var late = active ? lateInfo(c) : ''; if(late) alert = late; }
+    var money = restC>0 ? '<span class="badge" style="background:var(--leak-bg);color:var(--leak)">💶 Doit encore '+euro(restC)+'</span>' : (c.price>0 ? '<span class="badge ok">Payé</span>' : '');
     var md = modsDoneCount(c);
     return '<div class="card ccard"><div style="display:flex;justify-content:space-between;gap:8px;align-items:flex-start"><h3>'+esc(c.name||'Sans nom')+' <span class="sub" style="font-weight:500;font-size:14px">· '+esc(offer)+'</span></h3><span class="badge'+(active?' ok':'')+'" style="margin:0">'+esc(stLabel)+'</span></div>'
       +'<div class="p-when" style="margin:0">'+plat+'</div>'
       +'<div class="prog"><span>'+md+'/'+MODULES+' modules</span><div class="bar"><i style="width:'+Math.round(md/MODULES*100)+'%"></i></div></div>'
-      +(alert?'<div><span class="badge">'+esc(alert)+'</span></div>':'')
+      +((money||alert)?'<div>'+money+(alert?'<span class="badge">'+esc(alert)+'</span>':'')+'</div>':'')
       +'<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:auto">'+(m?'<button type="button" class="btn small primary" data-act="xp-open" data-id="'+esc(c.id)+'">⚡ Ajouter de l\'XP</button>':'')+'<button type="button" class="btn small" data-act="open-client" data-id="'+esc(c.id)+'">Voir les détails</button></div></div>';
   }).join('');
 }
@@ -1790,7 +1797,7 @@ function openClient(c){
     : '<div class="pinfo" style="display:block"><b>Pas encore relié à son compte.</b> <span class="sub">Choisis son pseudo plus bas pour voir son activité en temps réel.</span></div>';
   openDlg('<div class="dlg-body"><h2 id="dlgTitle">'+(c.name?esc(c.name):'Nouveau membre')+'</h2>'+(c.id && S.clients.some(function(x){ return x.id===c.id; }) ? platBox : '')
     +'<div class="two"><div><label for="cdName">Nom ou pseudo</label><input id="cdName" value="'+esc(c.name||'')+'"></div><div><label for="cdStatus">Statut</label><select id="cdStatus">'+CLIENT_STATUS.map(function(s){return '<option value="'+s[0]+'"'+((c.status||'actif')===s[0]?' selected':'')+'>'+s[1]+'</option>';}).join('')+'</select></div></div>'
-    +'<div><label for="cdPseudo">Pseudo sur la plateforme DHA</label><input id="cdPseudo" list="dhaMembers" value="'+esc(c.pseudo||'')+'" placeholder="'+esc((!c.pseudo && guessMember(c).length===1) ? 'Suggestion : '+guessMember(c)[0].pseudo : 'Choisis son pseudo de membre')+'" autocomplete="off"><p class="note" style="margin-top:6px">Relie la fiche à son compte : la case « Fait » de chaque module se coche toute seule dès qu\'il valide le module sur la plateforme. « Maîtrisé » reste à cocher par toi.</p></div>'
+    +'<div><label for="cdPseudo">Pseudo sur la plateforme DHA</label><input id="cdPseudo" list="dhaMembers" value="'+esc(c.pseudo||'')+'" placeholder="'+esc((!c.pseudo && guessMember(c).length===1) ? 'Suggestion : '+guessMember(c)[0].pseudo : 'Choisis son pseudo de membre')+'" autocomplete="off">'+(c.pseudo?'<button type="button" class="iconbtn" data-act="unlink-f" style="margin-top:6px">✕ Délier ce compte</button>':'')+'<p class="note" style="margin-top:6px">Relie la fiche à son compte : la case « Fait » de chaque module se coche toute seule dès qu\'il valide le module sur la plateforme. « Maîtrisé » reste à cocher par toi.</p></div>'
     +'<div class="two"><div><label for="cdOffer">Formule</label><select id="cdOffer">'+offerOpts(c.offer)+'</select></div><div><label for="cdPrice">Prix de la formule (€)</label><input id="cdPrice" type="number" min="0" inputmode="decimal" value="'+(Number(c.price)||0)+'"></div></div>'
     +chk('cdMulti','Paiement en plusieurs fois', c.payMulti)
     +'<div id="cdPay" class="paybox" style="display:none"><div class="two"><div><label for="cdN">Nombre d\'échéances prévues</label><input id="cdN" type="number" min="0" inputmode="numeric" value="'+(Number(c.payN)||'')+'" placeholder="Ex. 3"></div><div><label for="cdPayAmt">Montant du paiement reçu (€)</label><input id="cdPayAmt" type="number" min="0" inputmode="decimal" placeholder="Ex. 300"></div></div>'
@@ -1855,6 +1862,9 @@ function saveClient(){
   var d = Object.assign({}, draft), now = Date.now();
   d.name = $('#cdName').value.trim() || 'Sans nom'; d.status = $('#cdStatus').value; d.offer = $('#cdOffer').value.trim();
   d.pseudo = ($('#cdPseudo').value||'').trim().replace(/^@+/,'');
+  if(d.pseudo && PLAT.members.length && !PLAT.members.some(function(m){ return normPseudo(m.pseudo)===normPseudo(d.pseudo); })){ toast('Aucun compte DHA avec le pseudo @'+d.pseudo+'. Choisis-le dans la liste.'); var pf = $('#cdPseudo'); if(pf) pf.focus(); return; }
+  var dup = d.pseudo && S.clients.filter(function(x){ return x.id!==d.id && normPseudo(x.pseudo)===normPseudo(d.pseudo); })[0];
+  if(dup){ toast('@'+d.pseudo+' est déjà relié à '+(dup.name||'un autre client')+'.'); return; }
   d.price = Number($('#cdPrice').value)||0; d.startAt = fromYmd($('#cdStart').value); d.goal = $('#cdGoal').value; d.demoGoal = $('#cdDemo').value.trim(); d.realGoal = $('#cdReal').value.trim();
   d.rdv = $('#cdRdv').checked;
   d.payMulti = $('#cdMulti').checked; d.payN = Number($('#cdN').value)||0;
@@ -1940,6 +1950,10 @@ document.addEventListener('click', function(ev){
     case 'xp-open': ev.stopPropagation(); var xc = byId(S.clients); if(xc) openXp(xc); break;
     case 'xp-q': var k = el.getAttribute('data-k'); XPC.q[k] = Math.max(0, (XPC.q[k]||0)+Number(el.getAttribute('data-d'))); $('#xq_'+k).textContent = XPC.q[k]; $('#xpTot').textContent = 'Total : +'+fmtN(xpTotal())+' XP'; break;
     case 'xp-ok': xpValidate(); break;
+    case 'cf': S.cliF = el.getAttribute('data-v'); S.tab = 'clients'; render(); break;
+    case 'relink': var rc = byId(S.clients); if(rc){ openClient(rc); setTimeout(function(){ var f = $('#cdPseudo'); if(f){ f.scrollIntoView({block:'center'}); f.select(); } }, 60); } break;
+    case 'unlink-f': var f2 = $('#cdPseudo'); if(f2){ f2.value = ''; toast('Compte délié : clique sur « Enregistrer » pour valider.'); } break;
+    case 'unlink': var uc = byId(S.clients); if(uc){ var row = el.closest('div'); safe(put('clients', Object.assign({}, uc, {pseudo:''}))).then(function(){ if(row) row.innerHTML = '<span class="sub">Liaison annulée pour '+esc(uc.name||'ce client')+'</span>'; }).catch(function(){}); } break;
     case 'cand-st': var cs = candById(id); if(cs){ var v2 = el.getAttribute('data-v'); safe(patchCandDb(cs,{statut:v2})).then(function(){ openCand(id); toast('Statut : '+CST[v2][0]); }).catch(function(){}); } break;
     case 'cand-save': var cn = candById(id); if(cn){ safe(patchCandDb(cn,{note:($('#cnNote').value||'').trim()||null})).then(function(){ closeDlg(); toast('Note enregistrée'); }).catch(function(){}); } break;
     case 'cand-pros': var cp = candById(id); if(cp) candToProspect(cp); break;
