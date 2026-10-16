@@ -1100,7 +1100,7 @@ window.addEventListener('message', function(ev){ if(ev.data==='dha-cand-maj') lo
 
 /* ---------- vue : candidatures ---------- */
 var CST = {nouvelle:['Nouvelle','#B7791F'], contactee:['Contactée','var(--focus)'], acceptee:['Acceptée','var(--gain)'], refusee:['Refusée','var(--leak)']};
-var CANDF = 'nouvelle';
+var CANDF = 'all';
 function candLink(c){
   var v = String(c.contact_valeur||'').trim(), u = v.replace(/^@+/,'');
   switch(c.contact_canal){
@@ -1120,35 +1120,38 @@ function skelCand(){
 function paintCand(){
   if(!$('#clist')) return;
   var cnt = {all:CAND.list.length};
-  CAND.list.forEach(function(c){ var k = c.statut||'nouvelle'; cnt[k] = (cnt[k]||0)+1; });
-  $('#cchips').innerHTML = [['nouvelle','Nouvelles'],['contactee','Contactées'],['acceptee','Acceptées'],['refusee','Refusées'],['all','Toutes']].map(function(f){
+  CAND.list.forEach(function(c){ var k = c.statut||'nouvelle'; cnt[k] = (cnt[k]||0)+1; if(candProspect(c)) cnt.pros = (cnt.pros||0)+1; });
+  $('#cchips').innerHTML = [['all','Toutes'],['nouvelle','Nouvelles'],['contactee','Contactées'],['pros','En prospect'],['acceptee','Acceptées'],['refusee','Refusées']].map(function(f){
     return '<button type="button" class="chip" data-act="candf" data-v="'+f[0]+'" aria-pressed="'+(CANDF===f[0])+'">'+f[1]+'<small>'+(cnt[f[0]]||0)+'</small></button>';
   }).join('');
   if(!CAND.ok){ $('#clist').innerHTML = '<div class="empty">Chargement des candidatures…</div>'; return; }
-  var list = CAND.list.filter(function(c){ return CANDF==='all' || (c.statut||'nouvelle')===CANDF; });
+  var list = CAND.list.filter(function(c){ return CANDF==='all' || (CANDF==='pros' ? !!candProspect(c) : (c.statut||'nouvelle')===CANDF); });
   $('#clist').innerHTML = list.length ? list.map(function(c){
     var st = CST[c.statut||'nouvelle']||CST.nouvelle, l = candLink(c);
-    return '<article class="prow" style="display:flex;align-items:center;gap:12px;flex-wrap:wrap"><div style="flex:1;min-width:160px"><button type="button" class="p-handle" data-act="cand-det" data-id="'+esc(c.id)+'">'+esc(c.prenom||'?')+(c.age?' · '+c.age+' ans':'')+'</button>'
-      +' <span class="badge" style="color:'+st[1]+';border:1px solid currentColor;background:transparent">'+st[0]+'</span></div>'
+    return '<article class="prow" style="display:flex;align-items:center;gap:12px;flex-wrap:wrap"><div style="flex:1;min-width:160px"><button type="button" class="p-handle" data-act="cand-det" data-id="'+esc(c.id)+'">'+esc(c.prenom||'?')+(c.age?' · '+c.age+' ans':'')+'</button>'+(c.created_at?' <span class="sub" style="font-size:13px">· reçue le '+esc(candWhen(c))+'</span>':'')
+      +' <span class="badge" style="color:'+st[1]+';border:1px solid currentColor;background:transparent">'+st[0]+'</span>'+(candProspect(c)?' <span class="badge ok">✓ En prospect</span>':'')
+      +(c.note?'<div class="sub" style="font-size:13px;margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:520px">📝 '+esc(String(c.note).split('\n')[0])+'</div>':'')+'</div>'
       +'<div class="p-actions" style="margin:0">'+(l?'<a class="btn small primary" href="'+esc(l)+'" target="_blank" rel="noopener">💬 Écrire</a>':'')+'<button type="button" class="btn small" data-act="cand-det" data-id="'+esc(c.id)+'">Voir les détails</button></div></article>';
   }).join('') : '<div class="empty">'+(CAND.list.length?'Aucune candidature ici.':'Aucune candidature pour l\'instant.')+'</div>';
 }
 function openCand(id){
   var c = CAND.list.filter(function(x){ return String(x.id)===String(id); })[0]; if(!c) return;
   var l = candLink(c), pr = candProspect(c);
-  var rows = [['Âge',c.age?c.age+' ans':''],['Contact',(c.contact_canal||'')+' · '+(c.contact_valeur||'')],['Reçue le',c.created_at?dShort(new Date(c.created_at).getTime()):''],['Situation',c.situation],['Business en ligne',c.business_en_ligne],['Formations',c.formations],['Ce qui l\'attire',(c.avantages||[]).join(', ')],['Seul ou en équipe',c.seul_equipe],['Prêt à investir',c.investir],['Déplacements',c.deplacements],['Connu par',(c.source||'')+(c.source_detail?' ('+c.source_detail+')':'')+(c.source_lien?' · lien '+c.source_lien:'')]].filter(function(r){ return r[1]; });
+  var rows = [['Âge',c.age?c.age+' ans':''],['Contact',(c.contact_canal||'')+' · '+(c.contact_valeur||'')],['Candidature reçue le',candWhen(c)],['Situation',c.situation],['Business en ligne',c.business_en_ligne],['Formations',c.formations],['Ce qui l\'attire',(c.avantages||[]).join(', ')],['Seul ou en équipe',c.seul_equipe],['Prêt à investir',c.investir],['Déplacements',c.deplacements],['Connu par',(c.source||'')+(c.source_detail?' ('+c.source_detail+')':'')+(c.source_lien?' · lien '+c.source_lien:'')]].filter(function(r){ return r[1]; });
   openDlg('<div class="dlg-body"><h2 id="dlgTitle">'+esc(c.prenom||'Candidature')+'</h2>'
     +(l?'<a class="btn primary" href="'+esc(l)+'" target="_blank" rel="noopener" style="text-align:center">💬 Écrire sur '+esc(c.contact_canal)+'</a>':'')
     +'<dl class="pinfo">'+rows.map(function(r){ return '<dt>'+r[0]+'</dt><dd>'+esc(r[1])+'</dd>'; }).join('')+'</dl>'
     +'<div><label>Statut</label><div class="seg" role="group" aria-label="Statut">'+Object.keys(CST).map(function(k){ return '<button type="button" data-act="cand-st" data-id="'+esc(c.id)+'" data-v="'+k+'" aria-pressed="'+((c.statut||'nouvelle')===k)+'">'+CST[k][0]+'</button>'; }).join('')+'</div></div>'
-    +'<div><label for="cnNote">Note perso</label><textarea id="cnNote" rows="3" placeholder="Ex. appelé le 14/10, intéressé par le 500€">'+esc(c.note||'')+'</textarea></div></div>'
+    +'<div><label for="cnNote">Ajouter une note</label><textarea id="cnNote" rows="2" placeholder="Ex. appelé, intéressé par le 500€, rappeler vendredi"></textarea></div>'
+    +'<div><label>Historique</label>'+(c.note?'<div class="tl">'+String(c.note).split('\n').filter(Boolean).map(function(l){ return '<div>'+esc(l)+'</div>'; }).join('')+'</div>':'<p class="sub" style="margin:0">Aucune note pour l\'instant.</p>')+'</div></div>'
     +'<div class="dlg-foot">'+(pr?'<span class="sub">✓ Déjà dans tes prospects</span>':'<button type="button" class="btn" data-act="cand-pros" data-id="'+esc(c.id)+'">➜ Passer en prospect</button>')
-    +'<div class="r"><button type="button" class="btn" data-act="close">Fermer</button><button type="button" class="btn primary" data-act="cand-save" data-id="'+esc(c.id)+'">Enregistrer la note</button></div></div>');
+    +'<div class="r"><button type="button" class="btn" data-act="close">Fermer</button><button type="button" class="btn primary" data-act="cand-save" data-id="'+esc(c.id)+'">Ajouter la note</button></div></div>');
 }
 function patchCandDb(c, body){
   return fetch(SUPA_URL+'/rest/v1/candidatures?id=eq.'+encodeURIComponent(c.id), {method:'PATCH', headers:SUPA_H, body:JSON.stringify(body)})
     .then(function(r){ if(!r.ok) throw {code:'http_'+r.status}; Object.assign(c, body); schedule(); });
 }
+function candWhen(c){ if(!c.created_at) return ''; var d = new Date(c.created_at); return d.toLocaleDateString('fr-FR',{day:'numeric',month:'short'})+' à '+('0'+d.getHours()).slice(-2)+'h'+('0'+d.getMinutes()).slice(-2); }
 function candById(id){ return CAND.list.filter(function(x){ return String(x.id)===String(id); })[0]; }
 function candToProspect(c){
   if(candProspect(c)){ toast('Déjà dans tes prospects'); return; }
@@ -1156,9 +1159,9 @@ function candToProspect(c){
   var handle = social ? String(c.contact_valeur||'').replace(/^@+/,'') : String(c.prenom||'candidat').toLowerCase().replace(/\s+/g,'');
   var src = c.source==='Ebook DHA' ? EBOOK : (c.source==='Un ami / un membre' ? 'Recommandation' : 'Autre');
   var at = c.created_at ? new Date(c.created_at).getTime() : Date.now();
-  var note = 'Candidature du '+dShort(at)+' · '+(c.contact_canal||'')+' : '+(c.contact_valeur||'')+(c.age?' · '+c.age+' ans':'')+(c.source?' · connu par '+c.source:'');
+  var note = 'Candidature du '+candWhen(c)+' · '+(c.contact_canal||'')+' : '+(c.contact_valeur||'')+(c.age?' · '+c.age+' ans':'')+(c.source?' · connu par '+c.source:'');
   var o = {id:uid(), handle:handle, prenom:c.prenom||'', platform:(['Instagram','TikTok'].indexOf(c.contact_canal)>-1?c.contact_canal:'Autre'), source:src, variant:'Sans script', status:'reponse', dmAt:at, repliedAt:Date.now(), callAt:null, wonAt:null, lostAt:null, lostStage:null, lostReason:'', notes:note, objectif:'', clientId:null, revenu:null, situation:c.situation||'', ville:'', fromCand:c.id};
-  safe(put('prospects', o)).then(function(){ toast(c.prenom+' ajouté(e) à tes prospects'); closeDlg(); if((c.statut||'nouvelle')==='nouvelle') patchCandDb(c,{statut:'contactee'}).catch(function(){}); }).catch(function(){});
+  safe(put('prospects', o)).then(function(){ toast(c.prenom+' ajouté(e) à tes prospects'); var after = function(){ openCand(c.id); }; if((c.statut||'nouvelle')==='nouvelle') patchCandDb(c,{statut:'contactee'}).then(after, after); else after(); }).catch(function(){});
 }
 
 /* ---------- XP depuis le Cerveau (mêmes actions que l'ancien admin) ---------- */
@@ -2021,7 +2024,10 @@ document.addEventListener('click', function(ev){
     case 'unlink-f': var f2 = $('#cdPseudo'); if(f2){ f2.value = ''; toast('Compte délié : clique sur « Enregistrer » pour valider.'); } break;
     case 'unlink': var uc = byId(S.clients); if(uc){ var row = el.closest('div'); safe(put('clients', Object.assign({}, uc, {pseudo:''}))).then(function(){ if(row) row.innerHTML = '<span class="sub">Liaison annulée pour '+esc(uc.name||'ce client')+'</span>'; }).catch(function(){}); } break;
     case 'cand-st': var cs = candById(id); if(cs){ var v2 = el.getAttribute('data-v'); safe(patchCandDb(cs,{statut:v2})).then(function(){ openCand(id); toast('Statut : '+CST[v2][0]); }).catch(function(){}); } break;
-    case 'cand-save': var cn = candById(id); if(cn){ safe(patchCandDb(cn,{note:($('#cnNote').value||'').trim()||null})).then(function(){ closeDlg(); toast('Note enregistrée'); }).catch(function(){}); } break;
+    case 'cand-save': var cn = candById(id); if(cn){ var nt = ($('#cnNote').value||'').trim(); if(!nt){ toast('Écris ta note.'); break; }
+      var d0 = new Date(), stamp = ('0'+d0.getDate()).slice(-2)+'/'+('0'+(d0.getMonth()+1)).slice(-2)+' '+('0'+d0.getHours()).slice(-2)+'h'+('0'+d0.getMinutes()).slice(-2);
+      var full = stamp+' — '+nt.replace(/\s*\n\s*/g,' ')+(cn.note?'\n'+cn.note:'');
+      safe(patchCandDb(cn,{note:full})).then(function(){ openCand(id); toast('Note ajoutée'); }).catch(function(){}); } break;
     case 'cand-pros': var cp = candById(id); if(cp) candToProspect(cp); break;
     case 'add-dm': S.tab = 'prospects'; render(); setTimeout(function(){ openDmLogDialog(); }, 30); break;
     case 'open-dmlog': openDmLogDialog(); break;
