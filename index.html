@@ -216,6 +216,23 @@
   /* EVENTS */
   .events{padding:90px 40px;}
   .events-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;max-width:1100px;margin:0 auto;}
+  .story-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:1000px;margin:44px auto 0;}
+  .story{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:22px 20px;position:relative;overflow:hidden;}
+  .story::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--blue),var(--cyan),var(--gold));}
+  .story-head{display:flex;align-items:center;gap:12px;margin-bottom:16px;}
+  .story-av{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--cyan));display:flex;align-items:center;justify-content:center;font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:18px;color:#fff;flex-shrink:0;}
+  .story-name{font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:18px;color:var(--white);}
+  .story-tag{font-size:12px;color:var(--cyan);letter-spacing:.5px;}
+  .story-steps{list-style:none;margin:0;padding:0;}
+  .story-steps li{display:flex;gap:10px;padding:7px 0;font-size:15px;line-height:1.35;color:rgba(232,244,255,.85);}
+  .story-steps b{display:block;font-family:'Chakra Petch',sans-serif;font-size:11px;letter-spacing:1.5px;color:var(--dim);font-weight:700;}
+  .story-steps .ok{color:var(--green);font-weight:700;}
+  .story-proof{display:inline-block;margin-top:10px;font-size:13px;color:var(--gold);text-decoration:none;font-family:'Chakra Petch',sans-serif;letter-spacing:.3px;}
+  .story details{margin-top:12px;border-top:1px solid var(--border);padding-top:10px;}
+  .story summary{cursor:pointer;font-size:13px;color:var(--cyan);list-style:none;font-family:'Chakra Petch',sans-serif;letter-spacing:.5px;}
+  .story summary::-webkit-details-marker{display:none;}
+  .story details[open] summary{margin-bottom:8px;}
+  .story details p{font-size:14px;line-height:1.5;color:rgba(232,244,255,.65);margin:0;}
   .avis-gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:1000px;margin:44px auto 0;}
   .avis-item{border-radius:14px;overflow:hidden;border:1px solid var(--border);background:var(--card);transition:transform .3s, border-color .3s;}
   .avis-item:hover{transform:translateY(-4px);border-color:rgba(0,212,255,0.3);}
@@ -296,7 +313,7 @@
   .reveal.visible{opacity:1;transform:translateY(0);}
 
   @media(max-width:900px){
-    .dim-grid,.why-grid,.classes-grid,.eco-grid,.events-grid,.testi-grid,.avis-gallery,.community-gallery{grid-template-columns:1fr;}
+    .dim-grid,.why-grid,.classes-grid,.eco-grid,.events-grid,.testi-grid,.avis-gallery,.story-grid,.community-gallery{grid-template-columns:1fr;}
     .gamif-inner{grid-template-columns:1fr;}
     .pricing-grid{grid-template-columns:1fr 1fr;}
   }
@@ -357,36 +374,12 @@
   <div class="section-title reveal">Ils ont rejoint la DHA</div>
   <p class="section-desc reveal">Des membres réels qui transforment leur vie grâce à l'écosystème.</p>
   <div class="testi-grid">
-    <div class="testi-card reveal">
-      <div class="testi-stars">★★★★★</div>
-      <div class="testi-text">"En 3 mois j'ai appris à trader sérieusement et j'ai généré mes premiers résultats concrets. L'accompagnement est incroyable, rien de comparable sur le marché."</div>
-      <div class="testi-author">
-        <div class="testi-avatar" style="background:rgba(0,212,255,0.2);border:1.5px solid rgba(0,212,255,0.4);color:var(--cyan)">KB</div>
-        <div><div class="testi-name">Karim B.</div><div class="testi-rank" style="color:var(--gold)">Membre Trading</div></div>
-      </div>
-    </div>
-    <div class="testi-card reveal" style="transition-delay:.1s">
-      <div class="testi-stars">★★★★★</div>
-      <div class="testi-text">"Le système de progression m'a maintenu motivé quand j'ai eu envie de lâcher. Les appels 2x/semaine, ça change tout — je ne suis jamais bloqué seul."</div>
-      <div class="testi-author">
-        <div class="testi-avatar" style="background:rgba(157,78,221,0.2);border:1.5px solid rgba(157,78,221,0.4);color:var(--purple)">LD</div>
-        <div><div class="testi-name">Léa D.</div><div class="testi-rank" style="color:var(--cyan)">Membre Trading</div></div>
-      </div>
-    </div>
     <div class="testi-card reveal" style="transition-delay:.2s">
       <div class="testi-stars">★★★★★</div>
       <div class="testi-text">"Ce qui m'a convaincu c'est le cadre. Ce n'est pas 'débrouille-toi', c'est structuré, étape par étape. Et le réseau de membres vaut à lui seul l'accompagnement."</div>
       <div class="testi-author">
         <div class="testi-avatar" style="background:rgba(0,255,136,0.2);border:1.5px solid rgba(0,255,136,0.4);color:var(--green)">AT</div>
         <div><div class="testi-name">Alex T.</div><div class="testi-rank" style="color:var(--cyan)">Membre Trading</div></div>
-      </div>
-    </div>
-    <div class="testi-card reveal">
-      <div class="testi-stars">★★★★★</div>
-      <div class="testi-text">"J'étais scolaire dans mon approche du trading avant, je perdais tout le temps. Avec la méthode et le suivi individuel j'ai enfin compris où étaient mes erreurs."</div>
-      <div class="testi-author">
-        <div class="testi-avatar" style="background:rgba(255,140,0,0.2);border:1.5px solid rgba(255,140,0,0.4);color:var(--orange)">SM</div>
-        <div><div class="testi-name">Sofiane M.</div><div class="testi-rank" style="color:var(--cyan)">Membre Trading</div></div>
       </div>
     </div>
     <div class="testi-card reveal" style="transition-delay:.1s">
@@ -405,28 +398,12 @@
         <div><div class="testi-name">Yanis R.</div><div class="testi-rank" style="color:var(--gold)">Membre Trading</div></div>
       </div>
     </div>
-    <div class="testi-card reveal">
-      <div class="testi-stars">★★★★★</div>
-      <div class="testi-text">"Le module Mindset m'a autant servi que les modules techniques. J'ai arrêté de sauter sur chaque opportunité et j'ai enfin de la discipline dans mon exécution."</div>
-      <div class="testi-author">
-        <div class="testi-avatar" style="background:rgba(157,78,221,0.2);border:1.5px solid rgba(157,78,221,0.4);color:var(--purple)">MB</div>
-        <div><div class="testi-name">Mehdi B.</div><div class="testi-rank" style="color:var(--cyan)">Membre Trading</div></div>
-      </div>
-    </div>
     <div class="testi-card reveal" style="transition-delay:.1s">
       <div class="testi-stars">★★★★★</div>
       <div class="testi-text">"Les rencontres en présentiel ont tout changé pour moi. Mettre des visages sur les pseudos du groupe, ça crée une vraie cohésion, on se motive entre nous."</div>
       <div class="testi-author">
         <div class="testi-avatar" style="background:rgba(0,255,136,0.2);border:1.5px solid rgba(0,255,136,0.4);color:var(--green)">JD</div>
         <div><div class="testi-name">Jade D.</div><div class="testi-rank" style="color:var(--cyan)">Membre Trading</div></div>
-      </div>
-    </div>
-    <div class="testi-card reveal" style="transition-delay:.2s">
-      <div class="testi-stars">★★★★★</div>
-      <div class="testi-text">"Salarié le jour, trader le soir. C'est exigeant mais faisable avec le cadre qu'ils donnent. Mes premiers gains réguliers sont arrivés au bout du 4e mois."</div>
-      <div class="testi-author">
-        <div class="testi-avatar" style="background:rgba(255,140,0,0.2);border:1.5px solid rgba(255,140,0,0.4);color:var(--orange)">TL</div>
-        <div><div class="testi-name">Thomas L.</div><div class="testi-rank" style="color:var(--gold)">Membre Trading</div></div>
       </div>
     </div>
     <div class="testi-card reveal">
@@ -444,8 +421,28 @@
 <section style="padding:90px 40px;background:linear-gradient(180deg,transparent,rgba(0,212,255,0.03),transparent);">
   <div class="section-label reveal">PREUVES</div>
   <div class="section-title reveal">Avis & résultats</div>
-  <p class="section-desc reveal">Des échanges réels avec des membres de la communauté DHA.</p>
-  <div class="avis-gallery">
+  <p class="section-desc reveal">Des parcours réels de membres de la communauté DHA.</p>
+  <div class="story-grid">
+    <div class="story reveal">
+      <div class="story-head"><div class="story-av">N</div><div><div class="story-name">Noah</div><div class="story-tag">Avait des bases, pas de stratégie</div></div></div>
+      <ul class="story-steps"><li><span>🟦</span><div><b>AVANT LA DHA</b>Tradait déjà, mais sans stratégie stable</div></li><li><span>🟨</span><div><b>1 MOIS</b>De charbon en démo pour maîtriser la stratégie</div></li><li><span>🟩</span><div><b>AUJOURD'HUI</b><span class="ok">Challenge prop firm 100k validé ✅</span></div></li></ul>
+      <a class="story-proof" href="#preuves">(📸 preuves en images juste en dessous ↓)</a>
+      <details><summary>Voir son parcours ›</summary><p>Noah avait déjà les bases, mais il lui manquait une stratégie stable. Il a passé un mois à charbonner en démo pour la maîtriser. Dans les semaines qui ont suivi, il a validé un challenge prop firm à hauteur de 100 000 $.</p></details>
+    </div>
+    <div class="story reveal" style="transition-delay:.1s">
+      <div class="story-head"><div class="story-av">L</div><div><div class="story-name">Loïd</div><div class="story-tag">Partait de zéro</div></div></div>
+      <ul class="story-steps"><li><span>🟦</span><div><b>AVANT LA DHA</b>Ne connaissait rien au trading</div></li><li><span>🟨</span><div><b>QUELQUES SEMAINES</b>Premiers résultats : 1 à 3 € par jour</div></li><li><span>🟩</span><div><b>1 MOIS APRÈS</b><span class="ok">16 à 20 € par jour 📈</span></div></li></ul>
+      <a class="story-proof" href="#preuves">(📸 preuves en images juste en dessous ↓)</a>
+      <details><summary>Voir son parcours ›</summary><p>Loïd n'avait jamais touché au trading. Après quelques semaines, il a eu ses premiers résultats, en commençant petit avec 1 à 3 € par jour. Un mois plus tard, il est passé à 16 à 20 € par jour. Aujourd'hui, il continue d'apprendre et d'évoluer.</p></details>
+    </div>
+    <div class="story reveal" style="transition-delay:.2s">
+      <div class="story-head"><div class="story-av">A</div><div><div class="story-name">Akim</div><div class="story-tag">Sur le point d'abandonner</div></div></div>
+      <ul class="story-steps"><li><span>🟦</span><div><b>AVANT LA DHA</b>Avait tout essayé, stagnait</div></li><li><span>🟨</span><div><b>LE DÉCLIC</b>Il rejoint la DHA et se forme</div></li><li><span>🟩</span><div><b>AUJOURD'HUI</b><span class="ok">Il a repris goût au trading, analyses structurées 🔥</span></div></li></ul>
+      <a class="story-proof" href="#preuves">(📸 preuves en images juste en dessous ↓)</a>
+      <details><summary>Voir son parcours ›</summary><p>Akim avait déjà des bases et avait essayé beaucoup de choses en trading, mais il avait l'impression de stagner et était sur le point d'abandonner. Il est tombé sur la DHA, a décidé de la rejoindre et de se former. Aujourd'hui, il a repris goût au trading et ses analyses sont beaucoup plus structurées.</p></details>
+    </div>
+  </div>
+  <div class="avis-gallery" id="preuves" style="scroll-margin-top:90px">
     <div class="avis-item reveal"><img src="avis-1.jpg" alt="Retour d'élève DHA"/></div>
     <div class="avis-item reveal" style="transition-delay:.1s"><img src="avis-2.jpg" alt="Résultat de trading membre DHA"/></div>
     <div class="avis-item reveal" style="transition-delay:.2s"><img src="avis-3.jpg" alt="Retours d'élèves DHA"/></div>
