@@ -1,0 +1,2177 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Cerveau DHA</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+:root{
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+  --bg:#EEF1F5; --surface:#FFFFFF; --ink:#0F1B2D; --on-ink:#FFFFFF; --muted:#566274;
+  --line:#D9DFE7; --soft:#E5EAF0; --gain:#0B8A7A; --gain-bg:#DCF2EE;
+  --leak:#D6343B; --leak-bg:#FCE7E8; --on-leak:#FFFFFF; --focus:#2B6BFF;
+  --f-display:"Bricolage Grotesque","Avenir Next","Segoe UI",system-ui,sans-serif;
+  --f-body:"Instrument Sans","Segoe UI",system-ui,-apple-system,sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0A111E; --surface:#111B2D; --ink:#E9EEF6; --on-ink:#0A111E; --muted:#98A5B8;
+    --line:#22314A; --soft:#1B2A42; --gain:#2DD4BF; --gain-bg:rgba(45,212,191,.14);
+    --leak:#FF6B6B; --leak-bg:rgba(255,107,107,.13); --on-leak:#1A0B0C; --focus:#7FA6FF;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0A111E; --surface:#111B2D; --ink:#E9EEF6; --on-ink:#0A111E; --muted:#98A5B8;
+  --line:#22314A; --soft:#1B2A42; --gain:#2DD4BF; --gain-bg:rgba(45,212,191,.14);
+  --leak:#FF6B6B; --leak-bg:rgba(255,107,107,.13); --on-leak:#1A0B0C; --focus:#7FA6FF;
+  color-scheme:dark;
+}
+html{scroll-padding-top:env(safe-area-inset-top,0px);-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 var(--f-body);-webkit-font-smoothing:antialiased}
+h1,h2,h3{font-family:var(--f-display);margin:0;letter-spacing:-.01em}
+button,input,select,textarea{font:inherit;color:inherit}
+p{margin:0}
+.app{display:grid;grid-template-columns:224px minmax(0,1fr);gap:0;max-width:1280px;margin:0 auto}
+.rail{position:sticky;top:env(safe-area-inset-top,0px);align-self:start;padding:24px 14px;display:flex;flex-direction:column;gap:22px}
+.brand{display:flex;align-items:center;gap:10px;padding:0 10px}
+.brand-mark{font-size:22px;line-height:1}
+.brand-name{font:700 22px var(--f-display);letter-spacing:-.02em}
+.nav{display:flex;flex-direction:column;gap:4px}
+.nav button{display:flex;align-items:center;gap:10px;padding:10px 12px;border:0;border-radius:8px;background:transparent;color:var(--muted);font-weight:500;cursor:pointer;text-align:left}
+.nav .ni{font-size:16px;line-height:1;width:20px;text-align:center}
+.nav .nl{flex:1}
+.nav .ns{display:none}
+.nav .count{margin-left:auto}
+.nav button:hover{background:var(--soft);color:var(--ink)}
+.nav button[aria-current="page"]{background:var(--ink);color:var(--on-ink)}
+.count{font-size:12px;font-weight:600;padding:1px 8px;border-radius:999px;background:var(--soft);color:var(--ink)}
+.nav button[aria-current="page"] .count{background:rgba(127,127,127,.35);color:inherit}
+main{padding:24px 24px 60px;min-width:0}
+.top{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px 16px;margin-bottom:20px}
+.top h1{font-size:clamp(26px,4vw,34px);font-weight:700}
+.top-actions{display:flex;flex-wrap:wrap;align-items:center;gap:10px}
+.sync{display:inline-flex;align-items:center;gap:7px;font-size:13px;color:var(--muted)}
+.sync i{width:8px;height:8px;border-radius:50%;background:var(--muted)}
+.sync.ok i{background:var(--gain)}
+.sync.warn i{background:var(--leak)}
+.btn{font-weight:600;font-size:14px;border-radius:8px;padding:9px 14px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer;white-space:nowrap}
+.btn:hover{border-color:var(--muted)}
+.btn.primary{background:var(--ink);color:var(--on-ink);border-color:var(--ink)}
+.btn.danger{color:var(--leak);border-color:var(--leak);background:transparent}
+.btn.small{padding:6px 10px;font-size:13px}
+.btn[disabled]{opacity:.5;cursor:default}
+:where(button,input,select,textarea,a,summary):focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:8px;background:var(--surface);overflow:hidden}
+.seg button{border:0;background:transparent;padding:8px 12px;font-size:13px;font-weight:600;color:var(--muted);cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--on-ink)}
+.seg button[disabled]{opacity:.4;cursor:default}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px;min-width:0}
+.card h2{font-size:18px;margin-bottom:4px}
+.sub{color:var(--muted);font-size:14px}
+.stack{display:grid;gap:16px}
+.hero{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(250px,1fr);gap:16px;align-items:start}
+.stage{display:grid;gap:8px}
+.stage-top{display:flex;align-items:baseline;justify-content:space-between;gap:12px}
+.stage-label{font-weight:600}
+.stage-n{font:700 clamp(32px,5vw,48px)/1 var(--f-display);letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.bar{height:10px;border-radius:5px;background:var(--soft);overflow:hidden}
+.bar i{display:block;height:100%;background:var(--ink);border-radius:5px}
+.stage.win .bar i{background:var(--gain)}
+.link{display:flex;flex-wrap:wrap;align-items:center;gap:4px 12px;margin:12px 0 12px 12px;padding:8px 12px;border-left:3px solid var(--line);font-size:14px;color:var(--muted)}
+.link .rate{font:600 20px var(--f-display);color:var(--ink);font-variant-numeric:tabular-nums}
+.link.ok{border-left-color:var(--gain)}
+.link.ok .rate{color:var(--gain)}
+.link.leak{border-left-color:var(--leak);background:var(--leak-bg);border-radius:0 10px 10px 0}
+.link.leak .rate{color:var(--leak)}
+.tag{font-size:12px;font-weight:600;padding:2px 9px;border-radius:999px;background:var(--leak);color:var(--on-leak)}
+.kpis{display:grid;gap:0}
+.kpi{display:flex;align-items:baseline;justify-content:space-between;gap:12px;padding:13px 0;border-bottom:1px solid var(--line)}
+.kpi:last-child{border-bottom:0}
+.kpi b{font:700 26px/1 var(--f-display);letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.kpi span{color:var(--muted);font-size:14px}
+.kpi button{all:unset;cursor:pointer;color:var(--muted);font-size:14px;text-decoration:underline;text-underline-offset:3px}
+.kpi button:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+.callout{border-radius:14px;padding:16px 18px;border:1px solid var(--line);background:var(--surface)}
+.callout.leak{border-color:var(--leak);background:var(--leak-bg)}
+.callout.ok{border-color:var(--gain);background:var(--gain-bg)}
+.callout strong{font-family:var(--f-display);font-size:17px}
+.cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:16px}
+.scroll{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:14px;font-variant-numeric:tabular-nums}
+th{font-weight:600;color:var(--muted);text-align:left;padding:8px 10px 8px 0;border-bottom:1px solid var(--line);white-space:nowrap}
+td{padding:9px 10px 9px 0;border-bottom:1px solid var(--line);vertical-align:middle}
+tr:last-child td{border-bottom:0}
+td.num,th.num{text-align:right;padding-right:0;padding-left:10px}
+.mini{display:inline-block;width:56px;height:6px;border-radius:3px;background:var(--soft);vertical-align:middle;margin-right:8px;overflow:hidden}
+.mini i{display:block;height:100%;background:var(--ink)}
+.empty{padding:28px 16px;text-align:center;color:var(--muted)}
+.note{font-size:13px;color:var(--muted);margin-top:10px}
+/* prospects */
+.qa{display:grid;gap:12px;margin-bottom:16px}
+label,.lbl{font-size:13px;font-weight:600;color:var(--muted);display:block;margin-bottom:5px}
+input,select,textarea{width:100%;padding:9px 11px;border:1px solid var(--line);border-radius:8px;background:var(--surface);font-size:16px}
+textarea{resize:vertical;min-height:84px}
+.qa-opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;align-items:end}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 14px}
+.chip{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:6px 13px;font-size:13px;font-weight:600;color:var(--muted);cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--on-ink);border-color:var(--ink)}
+.chip small{font-weight:600;margin-left:5px;opacity:.75}
+.filters{display:grid;gap:10px;margin:4px 0 16px;padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:var(--bg)}
+.frow{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.fbody{display:grid;gap:10px}
+[hidden]{display:none!important}
+.ftoggle{all:unset;cursor:pointer;display:flex;justify-content:space-between;align-items:center;font-weight:600;font-size:14px;color:var(--ink)}
+.ftoggle:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+.fon{display:inline-block;margin-left:6px;font-size:12px;padding:1px 8px;border-radius:999px;background:var(--ink);color:var(--on-ink)}
+.frow .flbl{font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;min-width:74px}
+.frow .chip{padding:5px 11px}
+.fbar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px}
+.fbar select{width:auto;font-size:14px;padding:6px 10px}
+.fcount{font-size:14px;font-weight:600}
+.toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;margin-bottom:12px}
+.toolbar input[type=search]{max-width:280px}
+.plist{display:grid;gap:0}
+.prow{display:grid;grid-template-columns:minmax(150px,1.1fr) auto minmax(110px,.7fr) minmax(0,1.3fr);gap:10px 16px;align-items:center;padding:12px 0;border-bottom:1px solid var(--line)}
+.prow:last-child{border-bottom:0}
+.p-handle{all:unset;cursor:pointer;font-weight:600;font-size:15px;text-decoration:underline;text-decoration-color:var(--line);text-underline-offset:4px}
+.p-handle:hover{text-decoration-color:var(--ink)}
+.p-handle:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+.p-meta{display:block;font-size:13px;color:var(--muted);margin-top:2px}
+.steps{display:inline-flex;gap:4px;flex-wrap:wrap}
+.steps button{font-weight:600;font-size:13px;padding:6px 11px;border-radius:999px;border:1px solid var(--line);background:transparent;color:var(--muted);cursor:pointer}
+.steps button:hover{border-color:var(--ink);color:var(--ink)}
+.steps button.done{background:var(--soft);border-color:transparent;color:var(--ink)}
+.steps button.now{background:var(--ink);border-color:var(--ink);color:var(--on-ink)}
+.steps button.now.lost{background:var(--leak);border-color:var(--leak);color:var(--on-leak)}
+.steps button.now.won{background:var(--gain);border-color:var(--gain);color:#fff}
+.p-when{font-size:13px;color:var(--muted)}
+.p-actions{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:6px}
+.stepwrap{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-bottom:4px}
+.stage-done{font-weight:600;font-size:14px;color:var(--muted)}
+.rev-badge{font-size:11px;font-weight:700;padding:2px 8px;border-radius:999px;border:1px solid var(--line);background:var(--card);color:var(--muted);cursor:pointer;margin-left:6px;white-space:nowrap}
+.rev-badge.sdr{background:var(--gain-bg);color:var(--gain);border-color:transparent}
+.rev-badge.sr{background:var(--leak-bg);color:var(--leak);border-color:transparent}
+.pcadence{display:flex;align-items:center;gap:8px;margin-top:6px;font-size:12px;color:var(--muted)}
+.pcadence .gauge{width:70px}
+.gauge.late i{background:var(--leak)}
+.goals{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:16px}
+.goal{display:grid;gap:14px;align-content:start}
+.goal h2{margin:0}
+.goal-main{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.goal-main b{font:700 clamp(40px,6vw,58px)/1 var(--f-display);letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.goal-main .of{font:600 20px var(--f-display);color:var(--muted)}
+.goal-main .pc{margin-left:auto;font:600 22px var(--f-display);font-variant-numeric:tabular-nums}
+.gauge{position:relative;height:16px;border-radius:8px;background:var(--soft);overflow:hidden}
+.gauge i{display:block;height:100%;border-radius:8px;background:var(--ink)}
+.gauge.done i{background:var(--gain)}
+.gauge .mark{position:absolute;top:0;bottom:0;width:4px;background:var(--focus)}
+.gauge.small{height:10px;border-radius:5px}
+.today-h{display:flex;justify-content:space-between;font-size:14px;margin-bottom:6px}
+.today-h b{font-variant-numeric:tabular-nums}
+.pace{font-size:14px}
+.pace .ok{color:var(--gain);font-weight:600}
+.pace .late{color:var(--leak);font-weight:600}
+.days{display:grid;grid-template-columns:repeat(7,1fr);gap:8px}
+.day{display:grid;gap:4px;justify-items:center;font-size:12px;color:var(--muted)}
+.day b{font-size:13px;color:var(--ink);font-variant-numeric:tabular-nums}
+.day.today span{color:var(--ink);font-weight:700}
+.dbar{position:relative;width:100%;max-width:36px;height:60px;background:var(--soft);border-radius:6px;overflow:hidden;display:flex;align-items:flex-end}
+.dbar i{display:block;width:100%;background:var(--ink);border-radius:5px 5px 0 0}
+.dbar i.hit{background:var(--gain)}
+.dbar .line{position:absolute;left:0;right:0;height:0;border-top:2px dashed var(--muted);opacity:.8;z-index:1}
+.paybox{display:grid;gap:12px;border:1px solid var(--line);border-radius:10px;padding:12px}
+.paysum{font-size:15px;margin:0}
+.tl b{margin-right:8px}
+.checks{display:grid;gap:8px}
+.section{border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+.section summary{cursor:pointer;font-weight:600;font-size:15px}
+.section[open] summary{margin-bottom:10px}
+.months{display:grid;gap:10px}
+.month{border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+.mods summary{cursor:pointer;font-size:13px;font-weight:600;color:var(--muted);margin-top:8px}
+.modlist{display:grid;gap:6px;margin-top:10px}
+.modrow{display:grid;grid-template-columns:84px 1fr 1fr;align-items:center;gap:8px;font-size:14px}
+.modrow .check{font-size:14px}
+.plat{font-weight:600;font-size:14px;margin:2px 0}
+.ccard-wrap{display:grid;gap:10px}
+.ccard-inner{all:unset;cursor:pointer;display:grid;gap:10px;width:100%}
+.launch-cal{justify-self:start}
+.totals{font-size:14px;color:var(--muted)}
+.check{display:flex;align-items:center;gap:10px;font-size:15px;font-weight:500;color:var(--ink);margin:0;cursor:pointer}
+.check input{width:20px;height:20px;padding:0;accent-color:var(--gain);flex:none}
+.logrow{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding:9px 0;border-bottom:1px solid var(--line);font-size:14px}
+.logrow:last-child{border-bottom:0}
+.tl-row{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:9px 0;border-bottom:1px solid var(--line);font-size:14px}
+.tl-row:last-child{border-bottom:0}
+.stage-n-btn{background:none;border:0;padding:0;margin:0;font:inherit;color:inherit;cursor:pointer}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.badge{display:inline-block;font-size:12px;font-weight:600;padding:1px 8px;border-radius:999px;background:var(--leak-bg);color:var(--leak);margin-left:6px}
+.badge.ok{background:var(--gain-bg);color:var(--gain)}
+.p-note{font-size:13px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+/* content */
+.cf{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;align-items:end}
+.cf .wide{grid-column:span 2}
+.crow{padding:14px 0;border-bottom:1px solid var(--line);display:grid;gap:10px}
+.crow:last-child{border-bottom:0}
+.crow-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
+.crow-title{font-weight:600}
+.crow-meta{font-size:13px;color:var(--muted)}
+.nums{display:grid;grid-template-columns:repeat(auto-fit,minmax(100px,1fr));gap:10px}
+.nums input{padding:7px 9px}
+.iconbtn{border:0;background:transparent;color:var(--muted);cursor:pointer;font-size:13px;font-weight:600;padding:4px 6px;border-radius:6px}
+.iconbtn:hover{color:var(--leak)}
+/* clients */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px}
+.ccard{text-align:left;cursor:pointer;display:grid;gap:10px;width:100%}
+.ccard:hover{border-color:var(--muted)}
+.ccard h3{font-size:18px}
+.ccard .goal{font-size:14px;color:var(--muted);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:2.9em}
+.prog{display:flex;align-items:center;gap:10px;font-size:13px;font-weight:600}
+.prog .bar{flex:1}
+.prog .bar i{background:var(--gain)}
+.prog{gap:10px}
+.prog .gauge{flex:1}
+.prog .gauge i{background:var(--ink)}
+.prog .gauge.late i{background:var(--leak)}
+/* dialog */
+dialog{border:1px solid var(--line);border-radius:16px;padding:0;background:var(--surface);color:var(--ink);width:min(560px,calc(100vw - 24px));max-height:calc(100% - 24px)}
+dialog::backdrop{background:rgba(8,14,26,.55)}
+.dlg-body{padding:22px;display:grid;gap:14px;overflow:auto}
+.dlg-body h2{font-size:22px}
+.dlg-foot{display:flex;flex-wrap:wrap;gap:10px;justify-content:space-between;padding:14px 22px;border-top:1px solid var(--line)}
+.dlg-foot .r{display:flex;gap:10px;margin-left:auto}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+input[type=range]{padding:0;border:0;accent-color:var(--gain)}
+.tl{display:grid;gap:10px;max-height:220px;overflow:auto}
+.tl div{border-left:3px solid var(--line);padding:2px 0 2px 12px;font-size:14px}
+.tl small{display:block;color:var(--muted);font-size:12px}
+/* ai */
+.ai-out{margin-top:16px;line-height:1.6;max-width:72ch}
+.ai-out h3{font-size:18px;margin:20px 0 6px}
+.ai-out ul,.ai-out ol{margin:6px 0 10px;padding-left:22px}
+.ai-out li{margin:4px 0}
+.ai-out p{margin:8px 0}
+.thinking{color:var(--muted)}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(24px + env(safe-area-inset-bottom,0px));background:var(--ink);color:var(--on-ink);padding:11px 16px;border-radius:10px;font-size:14px;font-weight:500;display:none;gap:14px;align-items:center;z-index:50;max-width:calc(100vw - 24px)}
+.toast.show{display:flex}
+.toast button{background:transparent;border:0;color:inherit;font-weight:600;text-decoration:underline;cursor:pointer}
+@media (max-width:860px){
+  .app{display:block}
+  .rail{position:fixed;left:0;right:0;bottom:0;top:auto;z-index:20;padding:6px 6px calc(6px + env(safe-area-inset-bottom,0px));background:var(--surface);border-top:1px solid var(--line)}
+  .brand{display:none}
+  .nav{flex-direction:row;gap:2px}
+  .nav button{flex:1;flex-direction:column;justify-content:center;gap:3px;padding:6px 0;font-size:9.5px;text-align:center;min-width:0;position:relative}
+  .nav .ni{font-size:18px;width:auto}
+  .nav .nl{display:none}
+  .nav .ns{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+  .nav .count{position:absolute;top:2px;right:calc(50% - 20px);font-size:9px;padding:0 5px;background:var(--leak);color:var(--on-leak)}
+  main{padding:16px 14px calc(96px + env(safe-area-inset-bottom,0px))}
+  .hero{grid-template-columns:1fr}
+  .prow{grid-template-columns:1fr;gap:8px}
+  .cf .wide{grid-column:span 1}
+  .toast{bottom:calc(84px + env(safe-area-inset-bottom,0px))}
+}
+.gate{position:fixed;inset:0;z-index:100;background:var(--bg);display:flex;align-items:center;justify-content:center;padding:20px}
+.gate form{width:100%;max-width:360px;display:grid;gap:12px}
+.gate h1{font-size:28px}
+.gate .err{color:var(--leak);font-size:14px;min-height:20px}
+.topnav{font-size:13px;font-weight:600;color:var(--muted);text-decoration:none;border:1px solid var(--line);border-radius:8px;padding:8px 12px;background:var(--surface)}
+.topnav:hover{color:var(--ink);border-color:var(--muted)}
+.check input:disabled{opacity:.9}
+.auto-tag{font-size:11px;font-weight:700;padding:1px 7px;border-radius:999px;background:var(--gain-bg);color:var(--gain);margin-left:4px}
+/* ===== ACCUEIL / STATS / ADMIN intégrés ===== */
+.pinfo{display:grid;grid-template-columns:max-content 1fr;gap:6px 14px;margin:0;padding:12px 14px;border:1px solid var(--line);border-radius:10px;background:var(--bg)}
+.pinfo dt{color:var(--muted);font-size:13px}
+.pinfo dd{margin:0;font-size:14px;white-space:pre-wrap;overflow-wrap:anywhere}
+.hello h2{font-size:24px}
+.hello p{color:var(--muted);margin:2px 0 0;text-transform:capitalize}
+.objcard{cursor:pointer;border-color:var(--focus)}
+.objcard:hover{box-shadow:0 0 0 1px var(--focus)}
+.objk{font-size:12px;font-weight:700;letter-spacing:.08em;color:var(--focus);text-transform:uppercase}
+.objt{font:700 21px/1.3 var(--f-display);margin:8px 0 12px}
+.objn{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+.objn b{font:700 40px/1 var(--f-display);font-variant-numeric:tabular-nums}
+.objn .of{color:var(--muted);font-size:16px}
+.objn .pc{margin-left:auto;font:700 18px var(--f-display);color:var(--focus)}
+.objm{color:var(--muted);font-size:14px;margin-top:8px}
+.ktiles{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.ktile{all:unset;box-sizing:border-box;display:block;cursor:pointer;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px}
+.ktile:hover{border-color:var(--muted)}
+.ktile:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+.ktile .ki{font-size:20px}
+.ktile .kl{display:block;color:var(--muted);font-size:13px;font-weight:600;margin:8px 0 2px}
+.ktile .kv{display:block;font:700 34px/1.1 var(--f-display);font-variant-numeric:tabular-nums}
+.ktile .ks{display:block;color:var(--muted);font-size:13px;margin-top:4px}
+.ktile .ks b{color:var(--leak)}
+.statsbtn{width:100%;padding:16px;font-size:15px}
+.skpi{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.skpi .ktile{cursor:default}
+.skpi2{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.skpi2 .ktile{cursor:default;padding:14px 16px}.skpi2 .kv{font-size:24px}
+.custp{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.custp input{width:auto}
+.bars{display:flex;align-items:flex-end;gap:3px;height:160px;border-bottom:1px solid var(--line);margin-top:10px}
+.bars i{flex:1;min-width:2px;background:var(--focus);border-radius:3px 3px 0 0}
+.bars i.z{background:var(--soft);height:2px!important}
+.bxl{display:flex;justify-content:space-between;color:var(--muted);font-size:12px;margin-top:6px}
+.mgoals{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+.embed{width:100%;border:0;border-radius:14px;background:var(--surface);height:calc(100vh - 150px);min-height:520px;display:block}
+@media (max-width:860px){
+  .ktiles{grid-template-columns:1fr 1fr}
+  .skpi,.skpi2{grid-template-columns:1fr 1fr}
+  .skpi .ktile:first-child{grid-column:1/-1}
+  .nav{overflow-x:auto;scrollbar-width:none}
+  .nav::-webkit-scrollbar{display:none}
+  .nav button{flex:0 0 62px}
+  .embed{height:calc(100vh - 200px)}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="rail">
+    <div class="brand"><span class="brand-mark" aria-hidden="true">🧠</span><span class="brand-name">Cerveau</span></div>
+    <nav class="nav" id="nav" aria-label="Sections"></nav>
+  </aside>
+  <main>
+    <header class="top" id="top"></header>
+    <div id="view"></div>
+  </main>
+</div>
+<dialog id="dlg" aria-labelledby="dlgTitle"></dialog>
+<datalist id="dhaMembers"></datalist>
+<div class="gate" id="gate"><form id="gateForm" autocomplete="off"><div style="font-size:34px">🧠</div><h1>Cerveau DHA</h1><p class="sub">Accès réservé. Même mot de passe que l'admin.</p><label for="gatePwd">Mot de passe</label><input id="gatePwd" type="password" inputmode="numeric" autocomplete="current-password"><div class="err" id="gateErr" role="alert"></div><button type="submit" class="btn primary">Ouvrir le Cerveau</button></form></div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function(){
+'use strict';
+
+/* ---------- utilitaires ---------- */
+var $ = function(s, r){ return (r||document).querySelector(s); };
+var esc = function(s){ return String(s==null?'':s).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); };
+var DAY = 864e5;
+var uid = function(){ return Date.now().toString(36) + Math.random().toString(36).slice(2,7); };
+var fmtN = function(n){ return Number(n||0).toLocaleString('fr-FR'); };
+var rate = function(a,b){ return b>0 ? a/b*100 : null; };
+var pct = function(x){ return x==null ? '—' : x.toLocaleString('fr-FR',{maximumFractionDigits:1}) + '\u00a0%'; };
+var euro = function(n){ return Number(n||0).toLocaleString('fr-FR',{maximumFractionDigits:0}) + '\u00a0€'; };
+var pad = function(n){ return (n<10?'0':'') + n; };
+var dtLocal = function(ts){ if(!ts) return ''; var d = new Date(ts); return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())+'T'+pad(d.getHours())+':'+pad(d.getMinutes()); };
+var fromDtLocal = function(v){ if(!v) return null; var t = new Date(v).getTime(); return isNaN(t) ? null : t; };
+function gcalUTC(ts){ return new Date(ts).toISOString().replace(/[-:]/g,'').split('.')[0]+'Z'; }
+function gcalDateOnly(ts){ return ymd(ts).replace(/-/g,''); }
+function gcalLink(title, startTs, endTs, details, allDay){
+  var dates = allDay ? (gcalDateOnly(startTs)+'/'+gcalDateOnly(endTs)) : (gcalUTC(startTs)+'/'+gcalUTC(endTs));
+  return 'https://calendar.google.com/calendar/render?action=TEMPLATE&text='+encodeURIComponent(title)+'&dates='+dates+(details?'&details='+encodeURIComponent(details):'')+'&ctz=Europe/Paris';
+}
+var ymd = function(ts){ var d = new Date(ts); return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate()); };
+var fromYmd = function(v){
+  if(!v) return Date.now();
+  if(v === ymd(Date.now())) return Date.now();
+  var t = new Date(v+'T12:00:00').getTime();
+  return isNaN(t) ? Date.now() : t;
+};
+var dShort = function(ts){ return new Intl.DateTimeFormat('fr-FR',{day:'numeric',month:'short'}).format(new Date(ts)); };
+var ago = function(ts){
+  var d = Math.floor((Date.now()-ts)/DAY);
+  if(d<=0) return "aujourd'hui";
+  if(d===1) return 'hier';
+  return 'il y a '+d+' j';
+};
+var weekStart = function(ts){
+  var d = new Date(ts); d.setHours(0,0,0,0);
+  var wd = (d.getDay()+6)%7; d.setDate(d.getDate()-wd);
+  return d.getTime();
+};
+
+var DEFAULT_TARGETS = {reply:25, call:30, show:80, close:30};
+var DEFAULT_GOALS = {content:15, dm:210, replies:0, calls:0, clients:0};
+var EBOOK = 'Ebook (mot-clé DHA)';
+var SOURCES = [EBOOK,'Like ou abonné de mon contenu','Like ou abonné de la niche','Abonné de mes abonnés','Recommandation','Autre'];
+var DM_SOURCES = SOURCES.slice(1);
+var PLATFORMS = ['Instagram','TikTok','Autre'];
+var CTAS = ['Commente « DHA »','DM « DHA »','Aucun'];
+var CI_TYPES = ['Message','Appel individuel','Appel de groupe','RDV en personne'];
+var ONB = [['access','Accès à la plateforme donné'],['awareness','Fichier « prise de conscience » terminé'],['kickoff','Appel de prise en main fait']];
+var MILES = [['m1','Mois 1 : stratégie maîtrisée'],['m2','Mois 2 : objectif en démo atteint'],['m3','Mois 3 : passage en réel'],['m4','Mois 4 : challenge validé']];
+var STEP_TOTAL = ONB.length + MILES.length;
+var MODULES = 17;
+var MONTH_MODS = {m1:[1,7], m2:[8,12], m3:[13,15], m4:[16,17]};
+var OFFERS = ['Essentiel 180€','Groupe 500€','1:1 750€'];
+var OFFER_INFO = {'Essentiel 180€':{price:180, multi:false, n:0}, 'Groupe 500€':{price:500, multi:true, n:3}, '1:1 750€':{price:750, multi:true, n:3}};
+// Module affiché sur la plateforme → action enregistrée quand le membre le termine (même table que dha-formation.html)
+var MOD_KEYS = {1:'bloc_m1',2:'bloc_m2_b1',3:'bloc_m4',4:'bloc_m16',5:'bloc_m5',6:'bloc_m7_b1',7:'bloc_m8_b1',8:'bloc_m17',9:'bloc_m11_b1',10:'bloc_m12_b1',11:'bloc_m13_b1',12:'bloc_m14_b1',13:'bloc_m18',14:'bloc_m10_b1',15:null,16:'bloc_m6',17:'bloc_m15_b1'};
+var CONTENT_PLATFORMS = ['Instagram','TikTok','Les deux'];
+var METRICS = [['views','Vues'],['saves','Enregistrements'],['leads','Ebooks demandés'],['clients','Clients générés']];
+var pad2 = function(n){ return n<10 ? '0'+n : ''+n; };
+var FORMATS = ['Reel','Carrousel','Story','Post','Live','Autre'];
+var LOST = ['Pas de réponse après relances','Pas intéressé','Budget','Pas le bon moment','Concurrent','Autre'];
+var STAGES = ['dm','reponse','call','held','close'];
+var STAGE_LABEL = {dm:'DM',reponse:'Réponse',call:'Call booké',held:'Call fait',close:'Client',perdu:'Perdu'};
+function nextStage(status){ var i = STAGES.indexOf(status); return (i>=0 && i<STAGES.length-1) ? STAGES[i+1] : null; }
+var SITUATIONS = ['Étudiant(e)','Étudiant(e) en alternance','Salarié(e)','Entrepreneur / indépendant',"En recherche d'emploi",'Autre'];
+var REV_LABEL = {sdr:'Avec revenus', sr:'Sans revenus'};
+var CLIENT_STATUS = [['actif','Actif'],['pause','En pause'],['termine','Terminé'],['perdu','Parti']];
+
+/* ---------- état ---------- */
+var S = {
+  mode:'loading', tab:'home', period:'month', goalPer:'week', statPer:'month', objectif:null,
+  prospects:[], content:[], clients:[], dmlogs:[],
+  targets:Object.assign({}, DEFAULT_TARGETS), goals:Object.assign({}, DEFAULT_GOALS), weekOffset:0,
+  filter:'all', q:'', limit:60, expandedSteps:{},
+  pf:{act:[], stage:[], rev:[], src:[]}, sort:'recent', funnelView:null, pfOpen:(window.innerWidth>860),
+  qa:{platform:'Instagram', source:'Like ou abonné de la niche', variant:'Script A'},
+  ai:{loading:false, text:'', error:'', note:''},
+  error:''
+};
+// Lien direct vers un onglet depuis l'admin : dha-cerveau.html#prospects, #clients, #launches…
+try{ var h0 = location.hash.replace('#',''); if(['perdus','home','objectifs','funnel','prospects','clients','content','launches','stats','cand','membres','brain'].indexOf(h0)>-1) S.tab = h0; }catch(e){}
+var dbh = null, sampleFn = null, dlNs = null, aiCtl = null, skeletonTab = null, raf = 0;
+var local = {prospects:{}, content:{}, clients:{}, dmlogs:{}, settings:{}};
+var LS = 'cerveau-v1', LSQ = 'cerveau-qa';
+
+try{ var q0 = JSON.parse(localStorage.getItem(LSQ)||'null'); if(q0) S.qa = Object.assign(S.qa, q0); }catch(e){}
+try{ var pf0 = JSON.parse(localStorage.getItem('cerveau-pf')||'null'); if(pf0){ S.pf = Object.assign(S.pf, pf0.pf||{}); S.sort = pf0.sort||'recent'; } }catch(e){}
+function savePf(){ try{ localStorage.setItem('cerveau-pf', JSON.stringify({pf:S.pf, sort:S.sort})); }catch(e){} }
+
+/* ---------- stockage ---------- */
+function toList(map){ return Object.keys(map).map(function(id){ return Object.assign({}, map[id], {id:id}); }); }
+function persistLocal(){ try{ localStorage.setItem(LS, JSON.stringify(local)); }catch(e){} }
+function rebuildLocal(){
+  local.dmlogs = local.dmlogs || {}; S.dmlogs = toList(local.dmlogs);
+  S.prospects = toList(local.prospects); S.content = toList(local.content); S.clients = toList(local.clients);
+  S.targets = Object.assign({}, DEFAULT_TARGETS, local.settings.targets||{});
+  S.goals = Object.assign({}, DEFAULT_GOALS, local.settings.goals||{});
+}
+function connectLocal(){
+  S.mode = 'local';
+  try{ var raw = localStorage.getItem(LS); if(raw){ var o = JSON.parse(raw); local = Object.assign(local, o); } }catch(e){}
+  rebuildLocal(); schedule();
+}
+/* ---------- Supabase ---------- */
+var SUPA_URL = 'https://kdetwppxsfoagyndrlzr.supabase.co';
+var SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtkZXR3cHB4c2ZvYWd5bmRybHpyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzcyMzM3NjQsImV4cCI6MjA5MjgwOTc2NH0.OodaFQKEHcncDYdO6uM121NAUbyxD4UxpptSjzzZOi0';
+var SUPA_H = {'apikey':SUPA_KEY, 'Authorization':'Bearer '+SUPA_KEY, 'Content-Type':'application/json'};
+var TABLE = 'cerveau_docs';
+function makeSupaDb(){
+  var subs = {}; // collection -> [{ok, err, docId}]
+  function fetchColl(coll){
+    return fetch(SUPA_URL+'/rest/v1/'+TABLE+'?coll=eq.'+encodeURIComponent(coll)+'&select=id,data', {headers:SUPA_H})
+      .then(function(r){ if(!r.ok) throw {code:'http_'+r.status}; return r.json(); });
+  }
+  function refresh(coll){
+    var ls = subs[coll]; if(!ls || !ls.length) return Promise.resolve();
+    return fetchColl(coll).then(function(rows){
+      ls.forEach(function(l){
+        if(l.docId){ var row = rows.filter(function(r){ return r.id===l.docId; })[0]; l.ok({exists:!!row, data:function(){ return row ? (row.data||{}) : {}; }}); }
+        else l.ok({docs:rows.map(function(r){ return {id:r.id, data:function(){ return r.data||{}; }}; })});
+      });
+    }).catch(function(e){ ls.forEach(function(l){ if(l.err) l.err(e); }); });
+  }
+  function sub(coll, docId, ok, err){ (subs[coll] = subs[coll] || []).push({ok:ok, err:err, docId:docId}); refresh(coll); }
+  function upsert(coll, id, data){
+    return fetch(SUPA_URL+'/rest/v1/'+TABLE+'?on_conflict=coll,id', {method:'POST', headers:Object.assign({'Prefer':'resolution=merge-duplicates,return=minimal'}, SUPA_H), body:JSON.stringify({coll:coll, id:id, data:data, updated_at:new Date().toISOString()})})
+      .then(function(r){ if(!r.ok) throw {code:'http_'+r.status}; return refresh(coll); });
+  }
+  function remove(coll, id){
+    return fetch(SUPA_URL+'/rest/v1/'+TABLE+'?coll=eq.'+encodeURIComponent(coll)+'&id=eq.'+encodeURIComponent(id), {method:'DELETE', headers:SUPA_H})
+      .then(function(r){ if(!r.ok) throw {code:'http_'+r.status}; return refresh(coll); });
+  }
+  // Synchronisation : recharge toutes les 15 s et quand on revient sur l'onglet (téléphone ↔ ordi)
+  function refreshAll(){ Object.keys(subs).forEach(refresh); }
+  setInterval(function(){ if(document.visibilityState==='visible') refreshAll(); }, 15000);
+  document.addEventListener('visibilitychange', function(){ if(document.visibilityState==='visible') refreshAll(); });
+  return {
+    collection:function(name){ return {
+      onSnapshot:function(ok, err){ sub(name, null, ok, err); },
+      doc:function(id){ return {set:function(d){ return upsert(name, id, d); }, delete:function(){ return remove(name, id); }}; }
+    }; },
+    doc:function(path){ var p = path.split('/'); return {
+      onSnapshot:function(ok, err){ sub(p[0], p[1], ok, err); },
+      set:function(d){ return upsert(p[0], p[1], d); }
+    }; }
+  };
+}
+
+/* ---------- lien avec la plateforme DHA : modules faits ---------- */
+var PLAT = {members:[], done:{}, loaded:false, recent:{}};
+function memberOf(c){ if(!c || !c.pseudo) return null; var k = normPseudo(c.pseudo); return PLAT.members.filter(function(m){ return normPseudo(m.pseudo)===k; })[0] || null; }
+function levelOf(xp){ return Math.min(10, Math.floor((Number(xp)||0)/500)+1); }
+function normPseudo(p){ return String(p||'').trim().replace(/^@+/,'').toLowerCase(); }
+function loadPlatform(){
+  return fetch(SUPA_URL+'/rest/v1/membres?select=id,pseudo,prenom,nom,plan,xp&or=(plan.is.null,plan.neq.demo)', {headers:SUPA_H})
+    .then(function(r){ return r.ok ? r.json() : []; })
+    .then(function(ms){
+      PLAT.members = Array.isArray(ms) ? ms : [];
+      if(S.tab==='clients') schedule();
+      var dl = document.getElementById('dhaMembers');
+      if(dl) dl.innerHTML = PLAT.members.map(function(m){ return '<option value="'+esc(m.pseudo)+'">'+esc([m.prenom,m.nom].filter(Boolean).join(' '))+'</option>'; }).join('');
+      var linked = S.clients.map(function(c){ return c.pseudo; }).filter(Boolean);
+      if(!linked.length){ PLAT.loaded = true; return; }
+      var keys = Object.keys(MOD_KEYS).map(function(k){ return MOD_KEYS[k]; }).filter(Boolean);
+      var who = linked.map(function(p){ return '"'+String(p).replace(/"/g,'')+'"'; }).join(',');
+      return fetch(SUPA_URL+'/rest/v1/xp_historique?membre_pseudo=in.('+encodeURIComponent(who)+')&action_key=in.('+keys.join(',')+')&select=membre_pseudo,action_key,created_at', {headers:SUPA_H})
+        .then(function(r){ if(!r.ok) throw new Error('xp '+r.status); return r.json(); })
+        .then(function(rows){
+          var done = {};
+          (Array.isArray(rows)?rows:[]).forEach(function(r){
+            var k = normPseudo(r.membre_pseudo); done[k] = done[k] || {};
+            var t = new Date(r.created_at).getTime();
+            if(!done[k][r.action_key] || t<done[k][r.action_key]) done[k][r.action_key] = t;
+          });
+          PLAT.done = done; PLAT.loaded = true; syncModules();
+          // Activité récente sur la plateforme (tout ce qui rapporte de l'XP)
+          return fetch(SUPA_URL+'/rest/v1/xp_historique?membre_pseudo=in.('+encodeURIComponent(who)+')&select=membre_pseudo,xp_gagne,raison,created_at&order=created_at.desc&limit=400', {headers:SUPA_H})
+            .then(function(r){ return r.ok ? r.json() : []; })
+            .then(function(rows){
+              var rec = {};
+              (Array.isArray(rows)?rows:[]).forEach(function(r){ var k = normPseudo(r.membre_pseudo); (rec[k] = rec[k] || []).push(r); });
+              PLAT.recent = rec; if(S.tab==='clients') schedule();
+            });
+        });
+    }).catch(function(){});
+}
+function autoDone(c, n){ var key = MOD_KEYS[n]; if(!c.pseudo || !key) return null; return ((PLAT.done[normPseudo(c.pseudo)]||{})[key]) || null; }
+function isAutoMod(c, n){ return !!(c && c.pseudo && MOD_KEYS[n]); }
+var syncing = {};
+function syncModules(){
+  if(!PLAT.loaded || !dbh) return;
+  S.clients.forEach(function(c){
+    if(!c.pseudo || syncing[c.id]) return;
+    // Client relié : la case « Fait » suit exactement la plateforme (modules validés = cochés, les autres = décochés)
+    var mods = Object.assign({}, c.mods||{}), changed = false;
+    for(var n=1;n<=MODULES;n++){
+      if(!MOD_KEYS[n]) continue;
+      var t = autoDone(c, n);
+      if(t && !mods['v'+n]){ mods['v'+n] = t; changed = true; }
+      else if(!t && mods['v'+n]){ mods['v'+n] = null; changed = true; }
+    }
+    if(!changed) return;
+    syncing[c.id] = 1;
+    put('clients', Object.assign({}, c, {mods:mods})).then(function(){ delete syncing[c.id]; }, function(){ delete syncing[c.id]; });
+  });
+}
+var syncT = 0;
+function queueSync(){ clearTimeout(syncT); syncT = setTimeout(function(){ migrateOffers(); syncModules(); }, 400); }
+// Anciennes formules Basic / Premium → nouvelles formules (une seule fois)
+var migrating = {};
+function migrateOffers(){
+  if(!dbh) return;
+  S.clients.forEach(function(c){
+    if(migrating[c.id]) return;
+    var o = c.offer, n = null;
+    if(o==='Basic') n = 'Essentiel 180€';
+    else if(o==='Premium') n = (Number(c.price)||0)>=750 ? '1:1 750€' : 'Groupe 500€';
+    if(!n) return;
+    migrating[c.id] = 1;
+    put('clients', Object.assign({}, c, {offer:n})).then(function(){ delete migrating[c.id]; }, function(){ delete migrating[c.id]; });
+  });
+}
+function normName(t){ return String(t||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/^@+/,'').replace(/[\s._\-]+/g,''); }
+// Trouve le compte de la plateforme qui correspond à une fiche client (pseudo, prénom ou prénom + nom)
+function guessMember(c){
+  var k = normName(c.name); if(!k) return [];
+  return PLAT.members.filter(function(m){
+    return normName(m.pseudo)===k || normName(m.prenom)===k || normName((m.prenom||'')+(m.nom||''))===k;
+  });
+}
+function autoLinkClients(){
+  var used = {}; S.clients.forEach(function(c){ if(c.pseudo) used[normPseudo(c.pseudo)] = 1; });
+  var linked = [], manual = [];
+  var chain = Promise.resolve();
+  S.clients.filter(function(c){ return !c.pseudo; }).forEach(function(c){
+    var g = guessMember(c).filter(function(m){ return !used[normPseudo(m.pseudo)]; });
+    if(g.length===1){ used[normPseudo(g[0].pseudo)] = 1; linked.push({id:c.id, t:c.name+' → @'+g[0].pseudo}); chain = chain.then(function(){ return put('clients', Object.assign({}, c, {pseudo:g[0].pseudo})); }); }
+    else manual.push(c.name);
+  });
+  chain.then(function(){
+    loadPlatform();
+    openDlg('<div class="dlg-body"><h2 id="dlgTitle">Liaison des clients</h2>'
+      +(linked.length ? '<p><b>'+linked.length+' client'+(linked.length>1?'s':'')+' relié'+(linked.length>1?'s':'')+' :</b></p><div class="tl">'+linked.map(function(o){ return '<div style="display:flex;justify-content:space-between;gap:8px;align-items:center"><span>'+esc(o.t)+'</span><button type="button" class="iconbtn" data-act="unlink" data-id="'+esc(o.id)+'">Annuler</button></div>'; }).join('')+'</div>' : '<p>Aucun client n\'a pu être relié automatiquement.</p>')
+      +(manual.length ? '<p class="sub">À relier à la main (ouvre leur fiche et choisis leur pseudo) : <b>'+manual.map(esc).join(', ')+'</b>. Leur nom ne correspond à aucun compte, ou à plusieurs.</p>' : '')
+      +'<p class="note">Vérifie les liaisons : si une est fausse, corrige le pseudo dans la fiche du client.</p></div>'
+      +'<div class="dlg-foot"><span></span><div class="r"><button type="button" class="btn primary" data-act="close">OK</button></div></div>');
+  }).catch(function(e){ toast(errCopy(e)); });
+}
+
+function connectCloud(db){
+  S.mode = 'cloud'; dbh = db;
+  ['prospects','content','clients','dmlogs'].forEach(function(name){
+    db.collection(name).onSnapshot(function(snap){
+      S[name] = snap.docs.map(function(d){ return Object.assign({}, d.data(), {id:d.id}); });
+      S.error = ''; schedule();
+      if(name==='clients'){ migrateOffers(); if(!PLAT.loaded) loadPlatform(); else queueSync(); }
+    }, function(err){ S.error = 'Lecture impossible ('+(err&&err.code||'erreur')+')'; schedule(); });
+  });
+  db.doc('settings/targets').onSnapshot(function(snap){
+    S.targets = Object.assign({}, DEFAULT_TARGETS, snap.exists ? snap.data() : {}); schedule();
+  }, function(){});
+  db.doc('settings/goals').onSnapshot(function(snap){
+    S.goals = Object.assign({}, DEFAULT_GOALS, snap.exists ? snap.data() : {}); schedule();
+  }, function(){});
+  db.doc('admin/objectif').onSnapshot(function(snap){
+    S.objectif = snap.exists ? snap.data() : null; schedule();
+  }, function(){});
+  schedule();
+}
+function clean(o){ return JSON.parse(JSON.stringify(o)); }
+function put(coll, obj){
+  var id = obj.id, data = clean(Object.assign({}, obj)); delete data.id;
+  if(dbh) return dbh.collection(coll).doc(id).set(data);
+  local[coll][id] = data; persistLocal(); rebuildLocal(); schedule();
+  return Promise.resolve();
+}
+function del(coll, id){
+  if(dbh) return dbh.collection(coll).doc(id).delete();
+  delete local[coll][id]; persistLocal(); rebuildLocal(); schedule();
+  return Promise.resolve();
+}
+function saveGoals(g){
+  if(dbh) return dbh.doc('settings/goals').set(clean(g));
+  local.settings.goals = g; persistLocal(); rebuildLocal(); schedule();
+  return Promise.resolve();
+}
+function saveTargets(t){
+  if(dbh) return dbh.doc('settings/targets').set(clean(t));
+  local.settings.targets = t; persistLocal(); rebuildLocal(); schedule();
+  return Promise.resolve();
+}
+function errCopy(e){
+  var c = e && e.code;
+  if(c==='quota_exceeded') return 'Limite de fiches atteinte. Exporte en CSV puis supprime les plus anciennes.';
+  if(c==='invalid_argument') return "Enregistrement refusé : tu n'as pas les droits d'écriture sur ces données.";
+  if(c==='resource_exhausted') return 'Trop d’opérations d’un coup. Réessaie dans quelques secondes.';
+  if(c==='http_404') return 'Table cerveau_docs introuvable : lance le script SQL dans Supabase.';
+  if(c && String(c).indexOf('http_')===0) return 'Supabase a refusé l\'enregistrement ('+String(c).slice(5)+'). Vérifie que le projet n\'est pas en pause.';
+  return "L'enregistrement a échoué. Réessaie.";
+}
+function safe(p){ return Promise.resolve(p).catch(function(e){ toast(errCopy(e)); throw e; }); }
+
+/* ---------- calculs ---------- */
+function monthStart(ts){ var d = new Date(ts); d.setDate(1); d.setHours(0,0,0,0); return d.getTime(); }
+function dayStart(ts){ var d = new Date(ts); d.setHours(0,0,0,0); return d.getTime(); }
+function since(){
+  var now = Date.now();
+  if(S.period==='today') return dayStart(now);
+  if(S.period==='week') return weekStart(now);
+  if(S.period==='month') return monthStart(now);
+  if(S.period==='lastmonth') return monthStart(monthStart(now)-1);
+  return 0;
+}
+function until(){ return S.period==='lastmonth' ? monthStart(Date.now()) : Infinity; }
+function prospectsIn(){ var s = since(), u = until(); return S.prospects.filter(function(p){ var v = p.dmAt||0; return v>=s && v<u; }); }
+function platParts(c){
+  var mk = function(name, o){ return {platform:name, views:Number(o.views)||0, saves:Number(o.saves)||0, leads:Number(o.leads)||0, clients:Number(o.clients)||0}; };
+  if(c.platform==='Les deux') return [mk('Instagram', c.ig||{}), mk('TikTok', c.tt||{})];
+  return [mk(c.platform, c)];
+}
+function allLogs(){
+  var v = [];
+  S.content.forEach(function(c){ platParts(c).forEach(function(pt,i){ if(pt.leads>0) v.push({id:'ebook-'+c.id+'-'+i, count:pt.leads, date:c.date, source:EBOOK, variant:'Envoi ebook', platform:pt.platform, virtual:true}); }); });
+  return S.dmlogs.concat(v);
+}
+function logsIn(){ var s = since(), u = until(); return allLogs().filter(function(l){ var v = l.date||0; return v>=s && v<u; }); }
+function monthOf(c){ return Math.floor((Date.now()-(c.startAt||Date.now()))/(30*DAY))+1; }
+function stepsDone(c){ var n = 0; ONB.forEach(function(k){ if((c.onb||{})[k[0]]) n++; }); MILES.forEach(function(k){ if((c.mil||{})[k[0]]) n++; }); return n; }
+function paidOf(c){ return c.payMulti ? (c.payments||[]).reduce(function(t,x){ return t+(Number(x.amount)||0); },0) : (Number(c.price)||0); }
+function remainingOf(c){ return Math.max(0, (Number(c.price)||0) - paidOf(c)); }
+function modsDoneCount(c){ var n = 0, m = c.mods||{}; for(var i=1;i<=MODULES;i++){ if(isAutoMod(c,i) ? autoDone(c,i) : m['v'+i]) n++; } return n; }
+function modsMastered(c){ var n = 0, m = c.mods||{}; for(var i=1;i<=MODULES;i++){ if(m['x'+i]) n++; } return n; }
+function lastTouch(c){ var l = (c.checkins||[])[0]; return (l && l.at) || c.startAt || Date.now(); }
+function lateInfo(c){
+  var m = monthOf(c), mil = c.mil||{}, onb = c.onb||{};
+  if(Date.now()-(c.startAt||Date.now()) > 7*DAY && !onb.awareness) return 'Prise de conscience non terminée';
+  for(var i=1;i<=4;i++){ if(m>i && !mil['m'+i]) return 'En retard sur le mois '+i; }
+  return '';
+}
+function contentIn(){ var s = since(), u = until(); return S.content.filter(function(c){ var v = c.date||0; return v>=s && v<u; }); }
+function sumLogs(logs){ return logs.reduce(function(t,l){ return t + (Number(l.count)||0); }, 0); }
+function funnelOf(list, logs){
+  return {
+    sent: sumLogs(logs||[]) + list.filter(function(p){return !p.repliedAt;}).length,
+    replied:list.filter(function(p){return p.repliedAt;}).length,
+    call:list.filter(function(p){return p.callAt;}).length,
+    held:list.filter(function(p){return p.heldAt || p.wonAt;}).length,
+    won:list.filter(function(p){return p.wonAt;}).length
+  };
+}
+function reachedIdx(p){ return p.wonAt?4 : p.heldAt?3 : p.callAt?2 : p.repliedAt?1 : 0; }
+function needsFollowUp(p){
+  if(p.status==='perdu' || p.status==='close') return false;
+  if(p.relance) return true;
+  return p.status==='reponse' && (Date.now()-(p.lastRelanceAt||p.repliedAt||p.dmAt||0)) >= 3*DAY;
+}
+var PERIOD_LABEL = {today:"aujourd'hui", week:'cette semaine', month:'ce mois-ci', lastmonth:'le mois dernier', all:'depuis le début'};
+function periodLabel(){ return PERIOD_LABEL[S.period] || 'sur la période'; }
+
+function analyse(){
+  var list = prospectsIn(), logs = logsIn(), f = funnelOf(list, logs), t = S.targets;
+  var steps = [
+    {k:'replied', label:'Taux de réponse', n:f.replied, from:f.sent, target:t.reply, what:'des DM reçoivent une réponse'},
+    {k:'call', label:'Réponse vers call', n:f.call, from:f.replied, target:t.call, what:'des réponses débouchent sur un call'},
+    {k:'held', label:'Calls réalisés', n:f.held, from:f.call, target:t.show, what:'des calls bookés ont bien lieu'},
+    {k:'won', label:'Call réalisé vers client', n:f.won, from:f.held, target:t.close, what:'des calls réalisés se transforment en client'}
+  ].map(function(s){ s.rate = rate(s.n, s.from); return s; });
+  var weak = null;
+  steps.forEach(function(s){
+    if(s.from>=5 && s.rate!=null && s.target>0){
+      var r = s.rate/s.target;
+      if(r<1 && (!weak || r<weak.r)) weak = Object.assign({}, s, {r:r});
+    }
+  });
+  var gain = null;
+  if(weak && steps.every(function(s){return s.rate!=null;})){
+    var sim = f.sent;
+    steps.forEach(function(s){ sim *= (s.k===weak.k ? s.target : s.rate)/100; });
+    gain = sim - f.won;
+  }
+  return {list:list, logs:logs, f:f, steps:steps, weak:weak, gain:gain};
+}
+
+function groupBy(list, logs, keyFn){
+  var m = {};
+  var get = function(k){ k = k || 'Non renseigné'; return m[k] = m[k] || {k:k, sent:0, replied:0, call:0, held:0, won:0}; };
+  logs.forEach(function(l){ get(keyFn(l)).sent += Number(l.count)||0; });
+  list.forEach(function(p){ var o = get(keyFn(p)); if(!p.repliedAt) o.sent++; if(p.repliedAt) o.replied++; if(p.callAt) o.call++; if(p.heldAt||p.wonAt) o.held++; if(p.wonAt) o.won++; });
+  return Object.keys(m).map(function(k){ return m[k]; }).sort(function(a,b){ return b.sent-a.sent; });
+}
+
+/* ---------- rendu : coquille ---------- */
+function schedule(){ if(raf) return; raf = requestAnimationFrame(function(){ raf = 0; render(); }); }
+
+var TABS = {
+  home:'Accueil', perdus:'Prospects perdus', stats:'Mes stats', cand:'Candidatures', membres:'Parrainages & comptes de la plateforme',
+  funnel:'Entonnoir', content:'Contenu', prospects:'Prospects', launches:'Lancements programmés', clients:'Membres', objectifs:'Objectifs', brain:'Analyse IA'
+};
+
+var NAV_TABS = ['home','objectifs','prospects','launches','clients','cand','content','brain'];
+var NAV_ICON = {perdus:'🚫', home:'🏠', stats:'📊', cand:'📝', membres:'👥', objectifs:'🎯', funnel:'📉', prospects:'💬', clients:'🎓', content:'🎬', launches:'🚀', brain:'🤖'};
+var NAV_SHORT = {perdus:'Perdus', home:'Accueil', stats:'Stats', cand:'Candid.', membres:'Membres', objectifs:'Objectifs', funnel:'Entonnoir', prospects:'Prospects', clients:'Membres', content:'Contenu', launches:'Lancements', brain:'IA'};
+function paintNav(){
+  $('#nav').innerHTML = NAV_TABS.map(function(k){
+    var n = k==='prospects' ? S.prospects.filter(function(p){ return needsFollowUp(p) || prospectDue(p); }).length : k==='cand' ? CAND.list.filter(function(c){ return (c.statut||'nouvelle')==='nouvelle'; }).length : 0;
+    return '<button type="button" data-act="tab" data-tab="'+k+'"'+(S.tab===k?' aria-current="page"':'')+'><span class="ni" aria-hidden="true">'+NAV_ICON[k]+'</span><span class="nl">'+(k==='launches'?'Lancements':TABS[k])+'</span><span class="ns">'+NAV_SHORT[k]+'</span>'+(n?'<span class="count" title="À contacter ou à relancer">'+n+'</span>':'')+'</button>';
+  }).join('');
+}
+
+function paintTop(){
+  var syncCls = S.error ? 'warn' : (S.mode==='cloud' ? 'ok' : '');
+  var syncTxt = S.error ? S.error : S.mode==='cloud' ? 'Synchronisé (téléphone et ordi)' : 'Connexion…';
+  var h = '<h1>'+TABS[S.tab]+'</h1><div class="top-actions"><span class="sync '+syncCls+'"><i></i>'+esc(syncTxt)+'</span>';
+  if(S.tab==='funnel' || S.tab==='brain'){
+    h += '<div class="seg" role="group" aria-label="Période">'+[['today',"Aujourd'hui"],['week','Cette semaine'],['month','Ce mois-ci'],['lastmonth','Mois dernier'],['all','Total']].map(function(p){
+      return '<button type="button" data-act="period" data-v="'+p[0]+'" aria-pressed="'+(S.period===p[0])+'">'+p[1]+'</button>';
+    }).join('')+'</div>';
+  }
+  if(S.tab==='funnel') h += '<button type="button" class="btn" data-act="targets">Taux cibles</button>';
+  if(S.tab==='objectifs') h += '<button type="button" class="btn" data-act="goals">Modifier mes objectifs</button>';
+  h += '</div>';
+  $('#top').innerHTML = h;
+}
+
+function render(){
+  paintNav(); paintTop();
+  var v = $('#view');
+  if(S.mode==='loading'){ v.innerHTML = '<div class="empty">Chargement de tes données…</div>'; skeletonTab = null; return; }
+  if(skeletonTab !== S.tab){
+    v.innerHTML = SKEL[S.tab](); skeletonTab = S.tab;
+    if(S.tab==='prospects') initProspectsForm();
+    if(S.tab==='content') initContentForm();
+    if(S.tab==='brain') paintAIForm();
+  }
+  PAINT[S.tab]();
+}
+
+/* ---------- vue : entonnoir ---------- */
+function skelFunnel(){
+  return '<div class="stack"><div class="hero"><section class="card" id="funnel" aria-label="Entonnoir de conversion"></section><section class="card" id="kpis" aria-label="Chiffres clés"></section></div>'
+    +'<div id="leak"></div><div class="cols" id="insights"></div><section class="card" id="members"></section><section class="card" id="modules"></section><section class="card" id="weeks"></section></div>';
+}
+function paintFunnel(){
+  if(!$('#funnel')) return;
+  var a = analyse(), f = a.f, max = Math.max(f.sent,1);
+  var stages = [['DM envoyés',f.sent],['Réponses',f.replied],['Calls bookés',f.call],['Calls réalisés',f.held],['Clients closés',f.won]];
+  var stageKeys = [null,'replied','call','held','won'];
+  var h = '<h2>Où tu perds du monde</h2><p class="sub" style="margin-bottom:18px">DM et ebooks envoyés '+periodLabel()+', puis suivis jusqu\'au client.</p>';
+  stages.forEach(function(s,i){
+    var w = s[1]>0 ? Math.max(2, s[1]/max*100) : 0;
+    var key = stageKeys[i];
+    var numHtml = key==='won' ? '<button type="button" class="stage-n stage-n-btn" data-act="tab" data-tab="clients">'+fmtN(s[1])+'</button>' : (key ? '<button type="button" class="stage-n stage-n-btn" data-act="goto-stage" data-stage="'+key+'">'+fmtN(s[1])+'</button>' : '<span class="stage-n">'+fmtN(s[1])+'</span>');
+    h += '<div class="stage'+(i===4?' win':'')+'"><div class="stage-top"><span class="stage-label">'+s[0]+'</span>'+numHtml+'</div><div class="bar"><i style="width:'+w+'%"></i></div></div>';
+    if(i<4){
+      var st = a.steps[i], isWeak = a.weak && a.weak.k===st.k;
+      var cls = isWeak ? 'leak' : (st.rate!=null && st.target>0 && st.rate>=st.target ? 'ok' : '');
+      h += '<div class="link '+cls+'"><span class="rate">'+pct(st.rate)+'</span><span>'+esc(st.label)+', objectif '+pct(st.target)+'</span>'+(isWeak?'<span class="tag">Fuite principale</span>':'')+(st.from>0&&st.from<20?'<span>échantillon faible ('+st.from+')</span>':'')+'</div>';
+    }
+  });
+  $('#funnel').innerHTML = h;
+
+  var contents = contentIn(), views = contents.reduce(function(s,c){return s+(Number(c.views)||0);},0);
+  var s0 = since(), u0 = until();
+  var ca = S.clients.filter(function(c){ var v = c.startAt||0; return v>=s0 && v<u0; }).reduce(function(s,c){return s+(Number(c.price)||0);},0);
+  var restAll = S.clients.filter(function(c){ return c.status!=='perdu'; }).reduce(function(t,c){ return t+remainingOf(c); },0);
+  var activeN = S.clients.filter(function(c){ return (c.status||'actif')==='actif'; }).length;
+  var relance = S.prospects.filter(needsFollowUp).length;
+  var launchN = S.prospects.filter(function(p){ return p.launchAt; }).length;
+  var contentRow = '<div class="kpi"><span>Contenus publiés</span><button type="button" data-act="tab" data-tab="content"><b>'+fmtN(contents.length)+'</b></button></div>';
+  var openProspectsN = S.prospects.filter(function(p){ return p.status!=='close'; }).length;
+  var prospectsRow = '<div class="kpi"><span>Prospects</span>'+(openProspectsN?'<button type="button" data-act="all-prospects"><b>'+fmtN(openProspectsN)+'</b></button>':'<b>0</b>')+'</div>';
+  var relRow = '<div class="kpi"><span>À relancer</span>'+(relance?'<button type="button" data-act="goto-relance"><b>'+relance+'</b></button>':'<b>0</b>')+'</div>';
+  var launchRow = '<div class="kpi"><span>Lancement prévu</span>'+(launchN?'<button type="button" data-act="tab" data-tab="launches"><b>'+fmtN(launchN)+'</b></button>':'<b>0</b>')+'</div>';
+  var restRow = '<div class="kpi"><span>Reste à encaisser</span>'+(restAll>0?'<button type="button" data-act="debtors"><b>'+euro(restAll)+'</b></button>':'<b>'+euro(restAll)+'</b>')+'</div>';
+  var activeRow = '<div class="kpi"><span>Clients actifs</span>'+(activeN?'<button type="button" data-act="tab" data-tab="clients"><b>'+fmtN(activeN)+'</b></button>':'<b>0</b>')+'</div>';
+  var gp = weekGoalsPct();
+  var goalsRow = '<div class="kpi"><span>Objectifs (semaine)</span><button type="button" data-act="tab" data-tab="objectifs"><b>'+(gp==null?'—':gp+'\u00a0%')+'</b></button></div>';
+  $('#kpis').innerHTML = '<h2>Chiffres clés</h2><div class="kpis">'
+    +contentRow
+    +kpi('Vues cumulées', fmtN(views))
+    +kpi('Ebooks demandés', fmtN(contents.reduce(function(t,c){return t+(Number(c.leads)||0);},0)))
+    +prospectsRow
+    +relRow
+    +launchRow
+    +kpi('CA signé', euro(ca))
+    +restRow
+    +activeRow
+    +goalsRow
+    +'</div>';
+
+  var l = '';
+  if(f.sent<10){
+    l = '<div class="callout"><strong>Il manque des données</strong><p class="sub" style="margin-top:4px">Enregistre au moins 10 DM envoyés sur la période pour que le Cerveau repère ta fuite principale. Tu en as '+f.sent+'.</p></div>';
+  }else if(a.weak){
+    var w2 = a.weak;
+    l = '<div class="callout leak"><strong>Ta fuite principale : '+esc(w2.label.toLowerCase())+'</strong><p style="margin-top:4px">'+pct(w2.rate)+' '+esc(w2.what)+', pour un objectif de '+pct(w2.target)+'.'
+      +(a.gain!=null && a.gain>=0.3 ? ' Si ce taux atteignait l\'objectif, tu signerais environ '+(a.gain>=1?Math.round(a.gain):a.gain.toLocaleString('fr-FR',{maximumFractionDigits:1}))+' client(s) de plus sur la même période.' : '')
+      +'</p></div>';
+  }else{
+    l = '<div class="callout ok"><strong>Tous tes taux atteignent leurs objectifs</strong><p style="margin-top:4px" class="sub">Monte tes objectifs ou augmente ton volume de DM pour continuer à progresser.</p></div>';
+  }
+  $('#leak').innerHTML = l;
+
+  var by = function(title, rows){
+    if(!rows.length) return '';
+    return '<section class="card"><h2>'+title+'</h2><div class="scroll"><table><thead><tr><th>Nom</th><th class="num">DM</th><th class="num">Réponses</th><th class="num">Calls bookés</th><th class="num">Calls faits</th><th class="num">Clients</th></tr></thead><tbody>'
+      + rows.map(function(r){
+          var rr = rate(r.replied, r.sent);
+          return '<tr><td>'+esc(r.k)+'</td><td class="num">'+r.sent+'</td><td class="num"><span class="mini"><i style="width:'+Math.min(100,rr||0)+'%"></i></span>'+pct(rr)+'</td><td class="num">'+r.call+'</td><td class="num">'+r.held+'</td><td class="num">'+r.won+'</td></tr>';
+        }).join('')+'</tbody></table></div></section>';
+  };
+  var contentBy = function(title, keyFn, expand){
+    var m = {};
+    contents.forEach(function(c0){ (expand ? platParts(c0) : [c0]).forEach(function(c){ var k = keyFn(c)||'Non renseigné'; var o = m[k] = m[k]||{k:k,posts:0,views:0,leads:0}; o.posts++; o.views+=Number(c.views)||0; o.leads+=Number(c.leads)||0; }); });
+    var rws = Object.keys(m).map(function(k){return m[k];}).sort(function(x,y){return y.leads-x.leads;});
+    if(!rws.length) return '';
+    return '<section class="card"><h2>'+title+'</h2><div class="scroll"><table><thead><tr><th>Nom</th><th class="num">Posts</th><th class="num">Vues</th><th class="num">Ebooks</th><th class="num">Ebooks pour 1 000 vues</th></tr></thead><tbody>'
+      + rws.map(function(r){ return '<tr><td>'+esc(r.k)+'</td><td class="num">'+r.posts+'</td><td class="num">'+fmtN(r.views)+'</td><td class="num">'+r.leads+'</td><td class="num">'+(r.views>0?(r.leads/r.views*1000).toLocaleString('fr-FR',{maximumFractionDigits:1}):'—')+'</td></tr>'; }).join('')
+      + '</tbody></table></div></section>';
+  };
+  var fmt = contentBy('Formats de contenu', function(c){return c.format;}) + contentBy('Appel à l\'action', function(c){return c.cta;}) + contentBy('Plateforme', function(c){return c.platform;}, true);
+  $('#insights').innerHTML = by('Résultats selon la source', groupBy(a.list, a.logs, function(p){return p.source;}))
+    + by('Résultats selon le script', groupBy(a.list, a.logs, function(p){return p.variant;})) + fmt;
+
+  var cohort = S.clients.filter(function(c){ var v = c.startAt||0; return v>=s0 && v<u0; });
+  var mrows = [['Membres entrés',cohort.length]].concat(ONB.map(function(k){ return [k[1], cohort.filter(function(c){return (c.onb||{})[k[0]];}).length]; })).concat(MILES.map(function(k){ return [k[1], cohort.filter(function(c){return (c.mil||{})[k[0]];}).length]; })).concat([['Partis',cohort.filter(function(c){return c.status==='perdu';}).length]]);
+  $('#members').innerHTML = '<h2>Parcours des membres</h2><p class="sub" style="margin-bottom:10px">Combien de membres franchissent chaque étape, pour les clients entrés '+periodLabel()+'. C\'est ici que tu vois où ils décrochent après la vente.</p>'
+    + (cohort.length ? '<div class="scroll"><table><thead><tr><th>Étape</th><th class="num">Membres</th><th class="num">Part des membres entrés</th></tr></thead><tbody>'+mrows.map(function(r){ var pc = rate(r[1],cohort.length); return '<tr><td>'+esc(r[0])+'</td><td class="num">'+r[1]+'</td><td class="num"><span class="mini"><i style="width:'+Math.min(100,pc||0)+'%"></i></span>'+pct(pc)+'</td></tr>'; }).join('')+'</tbody></table></div>' : '<div class="empty" style="padding:14px">Aucun membre sur la période. Passe un prospect en « Client » pour démarrer son parcours.</div>');
+
+  var mr = '';
+  for(var mn=1; mn<=MODULES; mn++){
+    var vc = cohort.filter(function(c){ return (c.mods||{})['v'+mn]; }).length, xc = cohort.filter(function(c){ return (c.mods||{})['x'+mn]; }).length, pcx = rate(xc, cohort.length);
+    mr += '<tr><td>Module '+pad2(mn)+'</td><td class="num">'+vc+'</td><td class="num"><span class="mini"><i style="width:'+Math.min(100,pcx||0)+'%"></i></span>'+xc+' ('+pct(pcx)+')</td></tr>';
+  }
+  $('#modules').innerHTML = '<h2>Avancement par module</h2><p class="sub" style="margin-bottom:10px">Si le nombre de membres qui maîtrisent un module chute d\'un coup, c\'est lui qui bloque ta progression.</p>'
+    + (cohort.length ? '<div class="scroll"><table><thead><tr><th>Module</th><th class="num">Fait</th><th class="num">Maîtrisé</th></tr></thead><tbody>'+mr+'</tbody></table></div>' : '<div class="empty" style="padding:14px">Les modules apparaissent dès que tu as des membres.</div>');
+
+  var wk = weekStart(Date.now()), rows = '';
+  for(var i=0;i<8;i++){
+    var s = wk - i*7*DAY, e = s + 7*DAY;
+    var ps = S.prospects.filter(function(p){ return p.dmAt>=s && p.dmAt<e; });
+    var ff = funnelOf(ps, allLogs().filter(function(l){ return l.date>=s && l.date<e; }));
+    var cs = S.content.filter(function(c){ return c.date>=s && c.date<e; });
+    var vv = cs.reduce(function(t,c){return t+(Number(c.views)||0);},0);
+    rows += '<tr><td>'+dShort(s)+'</td><td class="num">'+cs.length+'</td><td class="num">'+fmtN(vv)+'</td><td class="num">'+ff.sent+'</td><td class="num">'+pct(rate(ff.replied,ff.sent))+'</td><td class="num">'+ff.call+'</td><td class="num">'+ff.held+'</td><td class="num">'+ff.won+'</td></tr>';
+  }
+  $('#weeks').innerHTML = '<h2>Semaine par semaine</h2><p class="sub" style="margin-bottom:10px">Chaque ligne commence le lundi indiqué. Une réponse compte dans la semaine où le DM est parti (la date du DM que tu indiques en la saisissant).</p><div class="scroll"><table><thead><tr><th>Semaine du</th><th class="num">Contenus</th><th class="num">Vues</th><th class="num">DM</th><th class="num">Taux de réponse</th><th class="num">Calls bookés</th><th class="num">Calls faits</th><th class="num">Clients</th></tr></thead><tbody>'+rows+'</tbody></table></div>';
+}
+function kpi(label, val){ return '<div class="kpi"><span>'+label+'</span><b>'+val+'</b></div>'; }
+
+/* ---------- vue : objectifs ---------- */
+var GOAL_DEFS = [
+  {k:'clients', label:'Clients signés', short:'clients', note:''},
+  {k:'content', label:'Contenus publiés', short:'contenus', note:''},
+  {k:'dm', label:'DM envoyés', short:'DM', note:'hors ebooks'},
+  {k:'held', label:'Calls faits', short:'calls faits', note:''}
+];
+var DAYS_FR = ['lun.','mar.','mer.','jeu.','ven.','sam.','dim.'];
+function goalCount(k, a, b){
+  var inr = function(t){ return t>=a && t<b; };
+  if(k==='content') return S.content.filter(function(c){ return inr(c.date||0); }).length;
+  if(k==='dm') return sumLogs(S.dmlogs.filter(function(l){ return inr(l.date||0); }));
+  if(k==='held') return S.prospects.filter(function(p){ return p.heldAt && inr(p.heldAt); }).length;
+  if(k==='clients') return S.clients.filter(function(c){ return c.startAt && inr(c.startAt); }).length;
+}
+function dayTs(ws, i){ var d = new Date(ws); d.setDate(d.getDate()+i); return d.getTime(); }
+function weekGoalsPct(){
+  var defs = GOAL_DEFS.filter(function(g){ return Number(S.goals[g.k])>0; });
+  if(!defs.length) return null;
+  var ws = weekStart(Date.now()), sum = 0;
+  defs.forEach(function(g){
+    var t = Number(S.goals[g.k]), total = 0;
+    for(var j=0;j<7;j++){ total += goalCount(g.k, dayTs(ws,j), dayTs(ws,j+1)); }
+    sum += Math.min(100, total/t*100);
+  });
+  return Math.round(sum/defs.length);
+}
+function skelLaunches(){
+  return '<div class="stack"><div class="grid" id="lg"></div></div>';
+}
+function paintLaunches(){
+  if(!$('#lg')) return;
+  var list = S.prospects.filter(function(p){ return p.launchAt && p.status!=='close' && p.status!=='perdu'; }).sort(function(a,b){ return a.launchAt-b.launchAt; });
+  if(!list.length){ $('#lg').innerHTML = '<div class="card empty" style="grid-column:1/-1">Aucun lancement programmé. Ajoute une date de lancement depuis la fiche détaillée d\'un prospect.</div>'; return; }
+  $('#lg').innerHTML = list.map(function(p){
+    var stLabel = STAGE_LABEL[p.status]||p.status;
+    return '<div class="card ccard-wrap"><button type="button" class="ccard-inner" data-act="details-p" data-id="'+esc(p.id)+'"><div style="display:flex;justify-content:space-between;gap:8px;align-items:flex-start"><h3>@'+esc(p.handle)+'</h3><span class="badge'+(p.status==='close'?' ok':'')+'" style="margin:0">'+esc(stLabel)+'</span></div>'
+      +'<div class="prog">'+launchGauge(p)+'<span>'+esc(prospectLaunchLabel(p))+'</span></div>'
+      +'<div class="p-when">Lancement prévu le '+dShort(p.launchAt)+'</div></button>'
+      +'<a class="btn small launch-cal" href="'+esc(gcalLink('Lancement de @'+p.handle+' (DHA)', p.launchAt, p.launchAt+DAY, p.objectif||'', true))+'" target="_blank" rel="noopener">Ajouter au calendrier</a></div>';
+  }).join('');
+}
+function skelGoals(){
+  return '<div class="stack"><div class="seg" role="group" aria-label="Période" id="gper"></div><div class="toolbar" style="margin:0" id="gnav"></div><div class="goals" id="goals"></div><p class="note" id="gnote"></p></div>';
+}
+var GPER = [['week','Cette semaine'],['lweek','Semaine dernière'],['month','Ce mois-ci'],['lmonth','Mois dernier']];
+function paintGoals(){
+  if(!$('#goals')) return;
+  $('#gper').innerHTML = GPER.map(function(p){ return '<button type="button" data-act="gper" data-v="'+p[0]+'" aria-pressed="'+(S.goalPer===p[0])+'">'+p[1]+'</button>'; }).join('');
+  if(S.goalPer==='month' || S.goalPer==='lmonth'){ paintGoalsMonth(); return; }
+  var d0 = new Date(weekStart(Date.now())); d0.setDate(d0.getDate()+7*S.weekOffset);
+  var ws = d0.getTime(), now = Date.now(), cur = S.weekOffset===0, todayIdx = 0, i;
+  if(cur){ for(i=0;i<7;i++){ if(now>=dayTs(ws,i) && now<dayTs(ws,i+1)) todayIdx = i; } }
+  $('#gnav').innerHTML = '<div class="seg" role="group" aria-label="Changer de semaine"><button type="button" data-act="week-prev">Semaine précédente</button><button type="button" data-act="week-next"'+(cur?' disabled':'')+'>Semaine suivante</button></div>'
+    +'<span class="sub">'+(cur?'Cette semaine, du ':'Semaine du ')+dShort(ws)+' au '+dShort(dayTs(ws,6))+'</span>';
+  var defs = GOAL_DEFS.filter(function(g){ return Number(S.goals[g.k])>0; });
+  if(!defs.length){
+    $('#goals').innerHTML = '<div class="card empty" style="grid-column:1/-1">Aucun objectif défini. Clique sur « Modifier mes objectifs » pour en fixer un.</div>';
+    $('#gnote').textContent = ''; return;
+  }
+  $('#goals').innerHTML = defs.map(function(g){
+    var t = Number(S.goals[g.k]), counts = [], total = 0, n;
+    for(var j=0;j<7;j++){ n = goalCount(g.k, dayTs(ws,j), dayTs(ws,j+1)); counts.push(n); total += n; }
+    var pc = Math.round(total/t*100), done = total>=t, daily = t>=7 ? Math.round(t/7) : 0;
+    var mark = (cur && !done) ? '<em class="mark" style="left:calc('+((todayIdx+1)/7*100)+'% - 2px)"></em>' : '';
+    var pace;
+    if(done){
+      pace = '<span class="ok">Objectif de la semaine atteint.</span>'+(total>t?' Tu l\'as dépassé de '+fmtN(total-t)+'.':'');
+    }else if(cur){
+      var expected = t*todayIdx/7, late = expected-total, remaining = t-total, left = 7-todayIdx;
+      pace = (late>0.5 ? '<span class="late">En retard de '+fmtN(Math.ceil(late))+' '+g.short+'.</span>' : '<span class="ok">Dans le rythme.</span>')
+        +' Il reste '+fmtN(remaining)+' '+g.short+' à faire en '+left+' jour'+(left>1?'s':'')+', soit environ '+fmtN(Math.ceil(remaining/left))+' par jour.';
+    }else{
+      pace = '<span class="late">Objectif manqué.</span> Tu as réalisé '+pc+' % de l\'objectif.';
+    }
+    var today = '';
+    if(cur && daily>0){
+      var tn = counts[todayIdx], tp = Math.min(100, Math.round(tn/daily*100));
+      today = '<div><div class="today-h"><span>Aujourd\'hui</span><b>'+fmtN(tn)+' / '+fmtN(daily)+'</b></div><div class="gauge small'+(tn>=daily?' done':'')+'" role="progressbar" aria-label="Aujourd\'hui, '+esc(g.label)+'" aria-valuemin="0" aria-valuemax="'+daily+'" aria-valuenow="'+tn+'"><i style="width:'+tp+'%"></i></div></div>';
+    }
+    var maxc = Math.max(1, Math.max.apply(null, counts));
+    var cols = counts.map(function(c, k){
+      var future = cur && k>todayIdx;
+      var h = daily ? Math.min(100, c/(daily*1.5)*100) : c/maxc*100;
+      return '<div class="day'+(k===todayIdx && cur?' today':'')+'"><div class="dbar">'+(daily?'<span class="line" style="bottom:66.7%"></span>':'')+'<i class="'+(daily && c>=daily?'hit':'')+'" style="height:'+(future?0:h)+'%"></i></div><b>'+c+'</b><span>'+DAYS_FR[k]+'</span></div>';
+    }).join('');
+    return '<section class="card goal"><div><h2>'+esc(g.label)+'</h2><p class="sub">Objectif : '+fmtN(t)+' par semaine'+(daily?', environ '+daily+' par jour':'')+(g.note?' ('+g.note+')':'')+'</p></div>'
+      +'<div class="goal-main"><b>'+fmtN(total)+'</b><span class="of">/ '+fmtN(t)+'</span><span class="pc">'+pc+'&nbsp;%</span></div>'
+      +'<div class="gauge'+(done?' done':'')+'" role="progressbar" aria-label="Semaine, '+esc(g.label)+'" aria-valuemin="0" aria-valuemax="'+t+'" aria-valuenow="'+total+'"><i style="width:'+Math.min(100,pc)+'%"></i>'+mark+'</div>'
+      +'<p class="pace">'+pace+'</p>'+today+'<div class="days">'+cols+'</div></section>';
+  }).join('');
+  $('#gnote').textContent = (cur ? 'Le trait bleu sur la jauge marque où tu devrais en être à la fin d\'aujourd\'hui. ' : '')+'L\'objectif par jour est l\'objectif de la semaine divisé par 7. Les DM comptés sont ceux de l\'onglet Prospects, hors ebooks. Chaque entrée de l\'onglet Contenu compte pour un contenu.';
+}
+function paintGoalsMonth(){
+  var n = new Date(), a, b;
+  if(S.goalPer==='month'){ a = new Date(n.getFullYear(), n.getMonth(), 1); b = new Date(n.getFullYear(), n.getMonth()+1, 1); }
+  else { a = new Date(n.getFullYear(), n.getMonth()-1, 1); b = new Date(n.getFullYear(), n.getMonth(), 1); }
+  a = a.getTime(); b = b.getTime();
+  var jours = Math.round((b-a)/DAY), now = Date.now(), cur = now>=a && now<b, ecoule = cur ? (now-a)/(b-a) : 1;
+  $('#gnav').innerHTML = '<span class="sub">Du '+dShort(a)+' au '+dShort(b-1)+' · objectif du mois = objectif de la semaine × '+(jours/7).toLocaleString('fr-FR',{maximumFractionDigits:1})+'</span>';
+  var defs = GOAL_DEFS.filter(function(g){ return Number(S.goals[g.k])>0; });
+  if(!defs.length){ $('#goals').innerHTML = '<div class="card empty" style="grid-column:1/-1">Aucun objectif défini. Clique sur « Modifier mes objectifs » pour en fixer un.</div>'; $('#gnote').textContent=''; return; }
+  $('#goals').innerHTML = defs.map(function(g){
+    var t = Math.round(Number(S.goals[g.k])*jours/7), total = goalCount(g.k, a, b), pc = Math.round(total/t*100), done = total>=t, pace;
+    if(done) pace = '<span class="ok">Objectif du mois atteint.</span>'+(total>t?' Dépassé de '+fmtN(total-t)+'.':'');
+    else if(cur){ var late = Math.ceil(t*ecoule-total), left = Math.max(1, Math.ceil((b-now)/DAY));
+      pace = (late>0 ? '<span class="late">En retard de '+fmtN(late)+' '+g.short+'.</span>' : '<span class="ok">Dans le rythme.</span>')+' Il reste '+fmtN(t-total)+' '+g.short+' en '+left+' jour'+(left>1?'s':'')+'.'; }
+    else pace = '<span class="late">Objectif manqué.</span> Tu as réalisé '+pc+' % de l\'objectif.';
+    return '<section class="card goal"><div><h2>'+esc(g.label)+'</h2><p class="sub">Objectif : '+fmtN(t)+' sur le mois</p></div>'
+      +'<div class="goal-main"><b>'+fmtN(total)+'</b><span class="of">/ '+fmtN(t)+'</span><span class="pc">'+pc+'&nbsp;%</span></div>'
+      +'<div class="gauge'+(done?' done':'')+'" role="progressbar" aria-label="Mois, '+esc(g.label)+'" aria-valuemin="0" aria-valuemax="'+t+'" aria-valuenow="'+total+'"><i style="width:'+Math.min(100,pc)+'%"></i></div>'
+      +'<p class="pace">'+pace+'</p></section>';
+  }).join('');
+  $('#gnote').textContent = 'Les chiffres viennent de tes onglets Prospects, Clients et Contenu.';
+}
+
+/* ---------- vue : accueil ---------- */
+var CAND = {list:[], ok:false};
+function loadCand(){
+  return fetch(SUPA_URL+'/rest/v1/candidatures?select=*&order=created_at.desc', {headers:SUPA_H})
+    .then(function(r){ return r.ok ? r.json() : []; })
+    .then(function(d){ CAND.list = Array.isArray(d) ? d : []; CAND.ok = true; schedule(); })
+    .catch(function(){});
+}
+function ymdToTs(v, fin){ return new Date(v+(fin?'T23:59:59':'T00:00:00')).getTime(); }
+function objDefaut(){ var n = new Date(); return {titre:'Signer 10 clients ce mois-ci', type:'clients', cible:10, valeur:0, debut:ymd(new Date(n.getFullYear(),n.getMonth(),1).getTime()), fin:ymd(new Date(n.getFullYear(),n.getMonth()+1,0).getTime()), defaut:true}; }
+var OBJ_TYPES = [['clients','Clients signés'],['cand','Candidatures reçues'],['dm','DM envoyés'],['content','Contenus publiés'],['held','Calls faits'],['manuel','Je mets à jour moi-même']];
+var OBJ_UNIT = {clients:'clients signés', cand:'candidatures', dm:'DM envoyés', content:'contenus', held:'calls faits', manuel:''};
+function objValeur(o){
+  var a = ymdToTs(o.debut), b = ymdToTs(o.fin, true)+1;
+  if(o.type==='cand') return CAND.list.filter(function(c){ var t = new Date(c.created_at).getTime(); return t>=a && t<b; }).length;
+  if(o.type==='manuel') return Number(o.valeur)||0;
+  return goalCount(o.type, a, b) || 0;
+}
+function skelHome(){
+  return '<div class="stack"><div class="hello"><h2>Salut Quincy 👋</h2><p id="hdate"></p></div>'
+    +'<section class="card objcard" id="hobj" data-act="tab" data-tab="objectifs" aria-label="Objectif du moment"></section>'
+    +'<div class="ktiles" id="htiles"></div>'
+    +'<button type="button" class="btn statsbtn" data-act="tab" data-tab="stats">📊 Voir mes stats →</button></div>';
+}
+function paintHome(){
+  if(!$('#hobj')) return;
+  $('#hdate').textContent = new Date().toLocaleDateString('fr-FR',{weekday:'long', day:'numeric', month:'long'});
+  var o = S.objectif || objDefaut(), v = objValeur(o), c = Math.max(1, Number(o.cible)||1), pc = Math.round(v/c*100);
+  var fin = ymdToTs(o.fin, true), reste = Math.ceil((fin-Date.now())/DAY), m = 'Du '+dShort(ymdToTs(o.debut))+' au '+dShort(fin)+' · ';
+  if(v>=c) m += '<span class="ok">Objectif atteint 🔥</span>';
+  else if(reste<0) m += '<span class="late">Terminé</span>, il manquait '+fmtN(c-v);
+  else m += 'il reste <b>'+fmtN(c-v)+'</b> en <b>'+reste+' jour'+(reste>1?'s':'')+'</b>';
+  if(o.defaut) m += ' · exemple : clique sur « Modifier » pour mettre le tien';
+  $('#hobj').innerHTML = '<div style="display:flex;justify-content:space-between;align-items:center;gap:10px"><span class="objk">🎯 Objectif du moment</span><button type="button" class="btn small" data-act="obj-edit">Modifier</button></div>'
+    +'<div class="objt">'+esc(o.titre||'Mon objectif')+'</div>'
+    +'<div class="objn"><b>'+fmtN(v)+'</b><span class="of">/ '+fmtN(c)+(OBJ_UNIT[o.type]?' '+OBJ_UNIT[o.type]:'')+'</span><span class="pc">'+pc+'&nbsp;%</span></div>'
+    +'<div class="gauge'+(v>=c?' done':'')+'" role="progressbar" aria-label="Progression de l\'objectif" aria-valuemin="0" aria-valuemax="'+c+'" aria-valuenow="'+v+'" style="margin-top:12px"><i style="width:'+Math.min(100,pc)+'%"></i></div>'
+    +'<div class="objm">'+m+'</div><button type="button" class="btn small" data-act="tab" data-tab="objectifs" style="margin-top:12px">Voir tous mes objectifs →</button>';
+  var openP = S.prospects.filter(function(p){ return p.status!=='close' && p.status!=='perdu'; }).length;
+  var lanc = S.prospects.filter(function(p){ return p.launchAt && p.status!=='close' && p.status!=='perdu'; });
+  var proch = lanc.filter(function(p){ return p.launchAt>=Date.now()-DAY; }).sort(function(a,b){ return a.launchAt-b.launchAt; })[0];
+  var actifs = S.clients.filter(function(c){ return (c.status||'actif')==='actif'; }).length;
+  var nouv = CAND.list.filter(function(c){ return (c.statut||'nouvelle')==='nouvelle'; }).length;
+  var tile = function(tab, ic, lbl, val, sub){ return '<button type="button" class="ktile" data-act="tab" data-tab="'+tab+'"><span class="ki" aria-hidden="true">'+ic+'</span><span class="kl">'+lbl+'</span><span class="kv">'+val+'</span><span class="ks">'+sub+'</span></button>'; };
+  $('#htiles').innerHTML = tile('prospects','💬','Prospects',fmtN(openP),'en cours')
+    + tile('launches','🚀','Lancements programmés',fmtN(lanc.length), proch ? 'prochain le '+dShort(proch.launchAt) : 'aucun à venir')
+    + tile('clients','🎓','Membres',fmtN(actifs), (function(){ var r = S.clients.filter(function(c){ return c.status!=='perdu'; }).reduce(function(t,c){ return t+remainingOf(c); },0); return r>0 ? '<b>'+euro(r)+' à encaisser</b>' : fmtN(S.clients.length)+' au total'; })())
+    + tile('cand','📝','Candidatures reçues', CAND.ok ? fmtN(CAND.list.length) : '—', nouv ? '<b>'+nouv+' à traiter</b>' : 'tout est traité');
+}
+function openObjectif(){
+  var o = S.objectif || objDefaut();
+  openDlg('<div class="dlg-body"><h2 id="dlgTitle">Mon objectif du moment</h2>'
+    +'<div><label for="obT">Mon objectif</label><input id="obT" maxlength="80" value="'+esc(o.defaut?'':(o.titre||''))+'" placeholder="Ex : '+esc(objDefaut().titre)+'"></div>'
+    +'<div><label for="obType">Ce qui fait avancer la jauge</label><select id="obType">'+OBJ_TYPES.map(function(t){ return '<option value="'+t[0]+'"'+(o.type===t[0]?' selected':'')+'>'+t[1]+'</option>'; }).join('')+'</select></div>'
+    +'<div class="two"><div><label for="obC">Objectif à atteindre</label><input id="obC" type="number" min="1" inputmode="numeric" value="'+(o.cible||'')+'"></div><div id="obVw"'+(o.type==='manuel'?'':' hidden')+'><label for="obV">J\'en suis à</label><input id="obV" type="number" min="0" inputmode="numeric" value="'+(Number(o.valeur)||0)+'"></div></div>'
+    +'<div class="two"><div><label for="obD">Du</label><input id="obD" type="date" value="'+esc(o.debut)+'"></div><div><label for="obF">Au</label><input id="obF" type="date" value="'+esc(o.fin)+'"></div></div></div>'
+    +'<div class="dlg-foot"><span></span><div class="r"><button type="button" class="btn" data-act="close">Annuler</button><button type="button" class="btn primary" data-act="save-obj">Enregistrer</button></div></div>');
+  $('#obType').onchange = function(){ $('#obVw').hidden = this.value!=='manuel'; };
+}
+function saveObjectif(){
+  var o = {titre:$('#obT').value.trim(), type:$('#obType').value, cible:Math.floor(Number($('#obC').value)||0), valeur:Math.floor(Number($('#obV').value)||0), debut:$('#obD').value, fin:$('#obF').value};
+  if(!o.titre){ toast('Écris ton objectif.'); return; }
+  if(o.cible<1){ toast('Indique le chiffre à atteindre.'); return; }
+  if(!o.debut || !o.fin || o.fin<o.debut){ toast('Vérifie les dates.'); return; }
+  var p = dbh ? dbh.doc('admin/objectif').set(o) : Promise.resolve();
+  if(!dbh){ S.objectif = o; schedule(); }
+  safe(p).then(function(){ S.objectif = o; closeDlg(); schedule(); toast('Objectif enregistré'); }).catch(function(){});
+}
+
+loadCand(); setInterval(function(){ if(document.visibilityState==='visible') loadCand(); }, 60000);
+document.addEventListener('change', function(ev){
+  var t = ev.target; if(!t) return;
+  if(t.id==='sA' || t.id==='sB'){ STAT_RANGE[t.id==='sA'?'a':'b'] = t.value; schedule(); }
+});
+window.addEventListener('message', function(ev){ if(ev.data==='dha-cand-maj') loadCand(); });
+
+/* ---------- vue : candidatures ---------- */
+var CST = {nouvelle:['Nouvelle','#B7791F'], contactee:['Contactée','var(--focus)'], acceptee:['Acceptée','var(--gain)'], refusee:['Refusée','var(--leak)']};
+var CANDF = 'all';
+function candLink(c){
+  var v = String(c.contact_valeur||'').trim(), u = v.replace(/^@+/,'');
+  switch(c.contact_canal){
+    case 'WhatsApp': var d = v.replace(/\D/g,''); if(/^0\d{9}$/.test(d)) d = '33'+d.slice(1); return 'https://wa.me/'+d;
+    case 'Téléphone': return 'tel:'+v.replace(/[^\d+]/g,'');
+    case 'Instagram': return 'https://instagram.com/'+encodeURIComponent(u);
+    case 'TikTok': return 'https://www.tiktok.com/@'+encodeURIComponent(u);
+    case 'Snapchat': return 'https://www.snapchat.com/add/'+encodeURIComponent(u);
+    case 'Email': return 'mailto:'+v;
+  }
+  return '';
+}
+function candProspect(c){ return S.prospects.filter(function(p){ return p.fromCand===c.id; })[0]; }
+function skelCand(){
+  return '<div class="stack"><section class="card"><div id="cchips" style="display:flex;flex-wrap:wrap;gap:8px;margin:0 0 6px"></div><div class="plist" id="clist"></div></section></div>';
+}
+function paintCand(){
+  if(!$('#clist')) return;
+  var cnt = {all:CAND.list.length};
+  CAND.list.forEach(function(c){ var k = c.statut||'nouvelle'; cnt[k] = (cnt[k]||0)+1; if(candProspect(c)) cnt.pros = (cnt.pros||0)+1; });
+  $('#cchips').innerHTML = [['all','Toutes'],['nouvelle','Nouvelles'],['contactee','Contactées'],['pros','En prospect'],['acceptee','Acceptées'],['refusee','Refusées']].map(function(f){
+    return '<button type="button" class="chip" data-act="candf" data-v="'+f[0]+'" aria-pressed="'+(CANDF===f[0])+'">'+f[1]+'<small>'+(cnt[f[0]]||0)+'</small></button>';
+  }).join('');
+  if(!CAND.ok){ $('#clist').innerHTML = '<div class="empty">Chargement des candidatures…</div>'; return; }
+  var list = CAND.list.filter(function(c){ return CANDF==='all' || (CANDF==='pros' ? !!candProspect(c) : (c.statut||'nouvelle')===CANDF); });
+  $('#clist').innerHTML = list.length ? list.map(function(c){
+    var st = CST[c.statut||'nouvelle']||CST.nouvelle, l = candLink(c);
+    return '<article class="prow" style="display:flex;align-items:center;gap:12px;flex-wrap:wrap"><div style="flex:1;min-width:160px"><button type="button" class="p-handle" data-act="cand-det" data-id="'+esc(c.id)+'">'+esc(c.prenom||'?')+(c.age?' · '+c.age+' ans':'')+'</button>'+(c.created_at?' <span class="sub" style="font-size:13px">· reçue le '+esc(candWhen(c))+'</span>':'')
+      +' <span class="badge" style="color:'+st[1]+';border:1px solid currentColor;background:transparent">'+st[0]+'</span>'+(candProspect(c)?' <span class="badge ok">✓ En prospect</span>':'')
+      +(c.note?'<div class="sub" style="font-size:13px;margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:520px">📝 '+esc(String(c.note).split('\n')[0])+'</div>':'')+'</div>'
+      +'<div class="p-actions" style="margin:0">'+(l?'<a class="btn small primary" href="'+esc(l)+'" target="_blank" rel="noopener">💬 Écrire</a>':'')+'<button type="button" class="btn small" data-act="cand-det" data-id="'+esc(c.id)+'">Voir les détails</button></div></article>';
+  }).join('') : '<div class="empty">'+(CAND.list.length?'Aucune candidature ici.':'Aucune candidature pour l\'instant.')+'</div>';
+}
+function openCand(id){
+  var c = CAND.list.filter(function(x){ return String(x.id)===String(id); })[0]; if(!c) return;
+  var l = candLink(c), pr = candProspect(c);
+  var rows = [['Âge',c.age?c.age+' ans':''],['Contact',(c.contact_canal||'')+' · '+(c.contact_valeur||'')],['Candidature reçue le',candWhen(c)],['Situation',c.situation],['Business en ligne',c.business_en_ligne],['Formations',c.formations],['Ce qui l\'attire',(c.avantages||[]).join(', ')],['Seul ou en équipe',c.seul_equipe],['Prêt à investir',c.investir],['Déplacements',c.deplacements],['Connu par',(c.source||'')+(c.source_detail?' ('+c.source_detail+')':'')+(c.source_lien?' · lien '+c.source_lien:'')]].filter(function(r){ return r[1]; });
+  openDlg('<div class="dlg-body"><h2 id="dlgTitle">'+esc(c.prenom||'Candidature')+'</h2>'
+    +(l?'<a class="btn primary" href="'+esc(l)+'" target="_blank" rel="noopener" style="text-align:center">💬 Écrire sur '+esc(c.contact_canal)+'</a>':'')
+    +'<dl class="pinfo">'+rows.map(function(r){ return '<dt>'+r[0]+'</dt><dd>'+esc(r[1])+'</dd>'; }).join('')+'</dl>'
+    +'<div><label>Statut</label><div class="seg" role="group" aria-label="Statut">'+Object.keys(CST).map(function(k){ return '<button type="button" data-act="cand-st" data-id="'+esc(c.id)+'" data-v="'+k+'" aria-pressed="'+((c.statut||'nouvelle')===k)+'">'+CST[k][0]+'</button>'; }).join('')+'</div></div>'
+    +'<div><label for="cnNote">Ajouter une note</label><textarea id="cnNote" rows="2" placeholder="Ex. appelé, intéressé par le 500€, rappeler vendredi"></textarea></div>'
+    +'<div><label>Historique</label>'+(c.note?'<div class="tl">'+String(c.note).split('\n').filter(Boolean).map(function(l){ return '<div>'+esc(l)+'</div>'; }).join('')+'</div>':'<p class="sub" style="margin:0">Aucune note pour l\'instant.</p>')+'</div></div>'
+    +'<div class="dlg-foot">'+(pr?'<span class="sub">✓ Déjà dans tes prospects</span>':'<button type="button" class="btn" data-act="cand-pros" data-id="'+esc(c.id)+'">➜ Passer en prospect</button>')
+    +'<div class="r"><button type="button" class="btn" data-act="close">Fermer</button><button type="button" class="btn primary" data-act="cand-save" data-id="'+esc(c.id)+'">Ajouter la note</button></div></div>');
+}
+function patchCandDb(c, body){
+  return fetch(SUPA_URL+'/rest/v1/candidatures?id=eq.'+encodeURIComponent(c.id), {method:'PATCH', headers:SUPA_H, body:JSON.stringify(body)})
+    .then(function(r){ if(!r.ok) throw {code:'http_'+r.status}; Object.assign(c, body); schedule(); });
+}
+function candWhen(c){ if(!c.created_at) return ''; var d = new Date(c.created_at); return d.toLocaleDateString('fr-FR',{day:'numeric',month:'short'})+' à '+('0'+d.getHours()).slice(-2)+'h'+('0'+d.getMinutes()).slice(-2); }
+function candById(id){ return CAND.list.filter(function(x){ return String(x.id)===String(id); })[0]; }
+function candToProspect(c){
+  if(candProspect(c)){ toast('Déjà dans tes prospects'); return; }
+  var social = ['Instagram','TikTok','Snapchat'].indexOf(c.contact_canal)>-1;
+  var handle = social ? String(c.contact_valeur||'').replace(/^@+/,'') : String(c.prenom||'candidat').toLowerCase().replace(/\s+/g,'');
+  var src = c.source==='Ebook DHA' ? EBOOK : (c.source==='Un ami / un membre' ? 'Recommandation' : 'Autre');
+  var at = c.created_at ? new Date(c.created_at).getTime() : Date.now();
+  var note = 'Candidature du '+candWhen(c)+' · '+(c.contact_canal||'')+' : '+(c.contact_valeur||'')+(c.age?' · '+c.age+' ans':'')+(c.source?' · connu par '+c.source:'');
+  var o = {id:uid(), handle:handle, prenom:c.prenom||'', platform:(['Instagram','TikTok'].indexOf(c.contact_canal)>-1?c.contact_canal:'Autre'), source:src, variant:'Sans script', status:'reponse', dmAt:at, repliedAt:Date.now(), callAt:null, wonAt:null, lostAt:null, lostStage:null, lostReason:'', notes:note, objectif:'', clientId:null, revenu:null, situation:c.situation||'', ville:'', fromCand:c.id};
+  safe(put('prospects', o)).then(function(){ toast(c.prenom+' ajouté(e) à tes prospects'); var after = function(){ openCand(c.id); }; if((c.statut||'nouvelle')==='nouvelle') patchCandDb(c,{statut:'contactee'}).then(after, after); else after(); }).catch(function(){});
+}
+
+/* ---------- XP depuis le Cerveau (mêmes actions que l'ancien admin) ---------- */
+var XP_ACTIONS = [
+  {k:'an',i:'📈',l:'Analyse envoyée au mentor',x:50},{k:'gr',i:'✍️',l:'Message dans le groupe',x:10},
+  {k:'li',i:'📺',l:'Participer à un live',x:100},{k:'me',i:'📞',l:'Appel mentor',x:75},{k:'fi',i:'🗓️',l:'Fidélité mensuelle',x:100},
+  {k:'pa',i:'🤝',l:'Parrainer un ami',x:250},{k:'tp',i:'💰',l:'Take Profit validé',x:200},{k:'qg',i:'🏢',l:'Venir au QG',x:250},
+  {k:'ev',i:'🎉',l:'Venir à un événement',x:300},{k:'mo',i:'📚',l:'Finir un module',x:50},{k:'co',i:'🔌',l:'Connexion quotidienne',x:10}
+];
+var XPC = {};
+function openXp(c){
+  var m = memberOf(c); if(!m){ toast('Relie d\'abord ce client à son compte.'); return; }
+  XPC = {clientId:c.id, q:{}};
+  openDlg('<div class="dlg-body"><h2 id="dlgTitle">⚡ XP pour @'+esc(m.pseudo)+'</h2><p class="sub" style="margin:0">Actuellement '+fmtN(m.xp||0)+' XP · niveau '+levelOf(m.xp)+'. Choisis les actions, puis valide.</p>'
+    +'<div class="tl" id="xpList">'+XP_ACTIONS.map(function(a){ return '<div style="display:flex;align-items:center;gap:10px;justify-content:space-between"><span>'+a.i+' '+esc(a.l)+' <span class="sub">+'+a.x+' XP</span></span><span style="display:flex;align-items:center;gap:6px"><button type="button" class="btn small" data-act="xp-q" data-k="'+a.k+'" data-d="-1" aria-label="Retirer">−</button><b id="xq_'+a.k+'" style="min-width:18px;text-align:center">0</b><button type="button" class="btn small" data-act="xp-q" data-k="'+a.k+'" data-d="1" aria-label="Ajouter">+</button></span></div>'; }).join('')+'</div>'
+    +'<div><label for="xpNote">Message pour le membre (facultatif)</label><input id="xpNote" maxlength="280" placeholder="Ex. Super appel, continue comme ça 🔥"></div>'
+    +'<p class="note" id="xpTot" style="margin:0">Total : +0 XP</p></div>'
+    +'<div class="dlg-foot"><span></span><div class="r"><button type="button" class="btn" data-act="close">Annuler</button><button type="button" class="btn primary" data-act="xp-ok">Valider</button></div></div>');
+}
+function xpTotal(){ return XP_ACTIONS.reduce(function(t,a){ return t + a.x*(XPC.q[a.k]||0); },0); }
+function xpValidate(){
+  var c = S.clients.filter(function(x){ return x.id===XPC.clientId; })[0], m = memberOf(c); if(!m) return;
+  var tot = xpTotal(); if(!tot){ toast('Choisis au moins une action.'); return; }
+  var lignes = []; XP_ACTIONS.forEach(function(a){ for(var n=0;n<(XPC.q[a.k]||0);n++) lignes.push(a.i+' '+a.l+' (+'+a.x+' XP)'); });
+  var note = ($('#xpNote').value||'').trim().replace(/\s*·\s*/g,' - ');
+  var raison = lignes.join(' · ')+(note?' · 📝 '+note:'');
+  var nv = (Number(m.xp)||0)+tot, btn = $('[data-act="xp-ok"]'); if(btn) btn.disabled = true;
+  fetch(SUPA_URL+'/rest/v1/membres?id=eq.'+encodeURIComponent(m.id), {method:'PATCH', headers:SUPA_H, body:JSON.stringify({xp:nv})})
+    .then(function(r){ if(!r.ok) throw {code:'http_'+r.status}; m.xp = nv;
+      return fetch(SUPA_URL+'/rest/v1/xp_historique', {method:'POST', headers:SUPA_H, body:JSON.stringify({membre_pseudo:m.pseudo, xp_gagne:tot, raison:raison})}); })
+    .then(function(){ closeDlg(); toast('+'+fmtN(tot)+' XP pour @'+m.pseudo); loadPlatform(); schedule(); })
+    .catch(function(e){ if(btn) btn.disabled = false; toast(errCopy(e)); });
+}
+
+/* ---------- vue : prospects perdus ---------- */
+function skelLost(){
+  return '<div class="stack"><button type="button" class="btn small" data-act="tab" data-tab="prospects" style="align-self:flex-start">← Retour aux prospects</button><section class="card"><p class="sub" style="margin:0 0 6px">Les prospects marqués « Perdu » sortent de la liste Prospects et arrivent ici. Pour en relancer un, clique sur « Modifier l\'étape » et choisis l\'étape où il en est.</p><div class="plist" id="lostlist"></div></section></div>';
+}
+function paintLost(){
+  if(!$('#lostlist')) return;
+  var list = S.prospects.filter(function(p){ return p.status==='perdu'; }).sort(function(a,b){ return (b.lostAt||0)-(a.lostAt||0); });
+  $('#lostlist').innerHTML = list.length ? list.map(function(p){
+    var why = '<div class="p-note"><b>Perdu</b>'+(p.lostAt?' le '+dShort(p.lostAt):'')+(p.lostReason?' · '+esc(p.lostReason):'')+'</div>';
+    return prow(p).replace('</article>', why+'</article>');
+  }).join('') : '<div class="empty">Aucun prospect perdu.</div>';
+}
+
+/* ---------- vue : stats ---------- */
+var SPER = [['day',"Aujourd'hui"],['week','Cette semaine'],['month','Ce mois-ci'],['year','Cette année'],['custom','📅 Choisir une période']];
+var STAT_RANGE = {a:'', b:''};
+function statBornes(){
+  var n = new Date(), a, b;
+  if(S.statPer==='day'){ a = new Date(n.getFullYear(),n.getMonth(),n.getDate()); b = new Date(a.getTime()); b.setDate(b.getDate()+1); }
+  else if(S.statPer==='week'){ a = new Date(weekStart(Date.now())); b = new Date(a.getTime()); b.setDate(b.getDate()+7); }
+  else if(S.statPer==='month'){ a = new Date(n.getFullYear(),n.getMonth(),1); b = new Date(n.getFullYear(),n.getMonth()+1,1); }
+  else if(S.statPer==='year'){ a = new Date(n.getFullYear(),0,1); b = new Date(n.getFullYear()+1,0,1); }
+  else { a = new Date(ymdToTs(STAT_RANGE.a||ymd(new Date(n.getFullYear(),n.getMonth(),1).getTime()))); b = new Date(ymdToTs(STAT_RANGE.b||ymd(Date.now()))); b.setDate(b.getDate()+1); }
+  return [a.getTime(), b.getTime()];
+}
+function encaisse(a, b){
+  var inr = function(t){ t = Number(t)||0; return t>=a && t<b; }, tot = 0;
+  S.clients.forEach(function(c){
+    if(c.payMulti) (c.payments||[]).forEach(function(x){ if(inr(x.at)) tot += Number(x.amount)||0; });
+    else if(inr(c.startAt)) tot += Number(c.price)||0;
+  });
+  return tot;
+}
+function eur(n){ return fmtN(Math.round(n)||0)+'\u00a0€'; }
+function skelStats(){
+  return '<div class="stack"><div class="seg" role="group" aria-label="Période" id="sper"></div>'
+    +'<div class="custp" id="scust" hidden><label for="sA">Du</label><input type="date" id="sA"><label for="sB">au</label><input type="date" id="sB"></div>'
+    +'<p class="sub" id="spd" style="margin:0"></p>'
+    +'<div class="skpi" id="skpi"></div><div class="skpi2" id="skpi2"></div>'
+    +'<section class="card" id="schart"><h2 id="scht">Chiffre d\'affaires encaissé</h2><div class="bars" id="sbars"></div><div class="bxl"><span id="sl0"></span><span id="sl1"></span></div></section></div>';
+}
+function paintStats(){
+  if(!$('#skpi')) return;
+  $('#sper').innerHTML = SPER.map(function(p){ return '<button type="button" data-act="sper" data-v="'+p[0]+'" aria-pressed="'+(S.statPer===p[0])+'">'+p[1]+'</button>'; }).join('');
+  $('#scust').hidden = S.statPer!=='custom';
+  if(S.statPer==='custom'){ var n0 = new Date(); if(!STAT_RANGE.a) STAT_RANGE.a = ymd(new Date(n0.getFullYear(),n0.getMonth(),1).getTime()); if(!STAT_RANGE.b) STAT_RANGE.b = ymd(Date.now()); if(document.activeElement!==$('#sA')) $('#sA').value = STAT_RANGE.a; if(document.activeElement!==$('#sB')) $('#sB').value = STAT_RANGE.b; }
+  var bb = statBornes(), a = bb[0], b = bb[1], inr = function(t){ t = Number(t)||0; return t>=a && t<b; };
+  var fl = function(t){ return new Date(t).toLocaleDateString('fr-FR',{day:'numeric', month:'long', year:'numeric'}); };
+  $('#spd').textContent = S.statPer==='day' ? "Aujourd'hui, "+fl(a) : 'Du '+fl(a)+' au '+fl(b-1);
+  var cts = S.content.filter(function(c){ return inr(c.date); }), vues = cts.reduce(function(t,c){ return t+(Number(c.views)||0); },0);
+  var cls = S.clients.filter(function(c){ return inr(c.startAt); }), offres = {};
+  cls.forEach(function(c){ var o = c.offer||'Autre'; offres[o] = (offres[o]||0)+1; });
+  var ca = encaisse(a,b), signe = cls.reduce(function(t,c){ return t+(Number(c.price)||0); },0);
+  var tile = function(ic, lbl, val, sub){ return '<div class="ktile">'+(ic?'<span class="ki" aria-hidden="true">'+ic+'</span>':'')+'<span class="kl">'+lbl+'</span><span class="kv">'+val+'</span>'+(sub!=null?'<span class="ks">'+sub+'</span>':'')+'</div>'; };
+  $('#skpi').innerHTML = tile('🎬','Contenus partagés',fmtN(cts.length), vues?fmtN(vues)+' vues':'&nbsp;')
+    + tile('🎓','Clients signés',fmtN(cls.length), Object.keys(offres).map(function(o){ return offres[o]+' × '+esc(o); }).join(' · ')||'&nbsp;')
+    + tile('💶',"Chiffre d'affaires",eur(ca),'encaissé · '+eur(signe)+' signés');
+  var dm = sumLogs(S.dmlogs.filter(function(l){ return inr(l.date); }));
+  var calls = S.prospects.filter(function(p){ return inr(p.heldAt); }).length;
+  var cn = CAND.list.filter(function(c){ return inr(new Date(c.created_at).getTime()); }).length;
+  $('#skpi2').innerHTML = tile('','DM envoyés',fmtN(dm)) + tile('','Calls faits',fmtN(calls)) + tile('','Candidatures',CAND.ok?fmtN(cn):'—');
+  var jours = Math.round((b-a)/DAY);
+  if(S.statPer==='day'){ $('#schart').hidden = true; return; }
+  $('#schart').hidden = false;
+  var parMois = jours>62, pts = [], t = new Date(a);
+  while(t.getTime()<b){ var n2 = new Date(t.getTime()); if(parMois) n2.setMonth(n2.getMonth()+1); else n2.setDate(n2.getDate()+1); pts.push({a:t.getTime(), v:encaisse(t.getTime(), Math.min(n2.getTime(), b))}); t = n2; }
+  var mx = Math.max.apply(null, pts.map(function(p){ return p.v; }).concat([1]));
+  $('#scht').textContent = "Chiffre d'affaires encaissé, par "+(parMois?'mois':'jour');
+  $('#sbars').innerHTML = pts.map(function(p){ var l = parMois ? new Date(p.a).toLocaleDateString('fr-FR',{month:'long'}) : dShort(p.a); return '<i class="'+(p.v?'':'z')+'" style="height:'+(p.v/mx*100)+'%" title="'+esc(l)+' : '+eur(p.v)+'"></i>'; }).join('');
+  var f2 = function(t){ return parMois ? new Date(t).toLocaleDateString('fr-FR',{month:'short'}) : dShort(t); };
+  $('#sl0').textContent = f2(pts[0].a); $('#sl1').textContent = f2(pts[pts.length-1].a);
+}
+
+/* ---------- vues : candidatures et membres (page admin intégrée) ---------- */
+function skelEmbed(){
+  return '<iframe class="embed" title="'+esc(TABS[S.tab])+'" src="dha-admin.html?embed=membres"></iframe>';
+}
+
+function openGoals(){
+  var g = S.goals;
+  openDlg('<div class="dlg-body"><h2 id="dlgTitle">Mes objectifs de la semaine</h2><p class="sub">Indique combien tu vises par semaine. L\'objectif par jour est calculé en divisant par 7.</p>'
+    +GOAL_DEFS.map(function(d){ return '<div><label for="gl_'+d.k+'">'+d.label+' par semaine'+(d.note?' ('+d.note+')':'')+'</label><input id="gl_'+d.k+'" type="number" min="0" inputmode="numeric" value="'+(Number(g[d.k])||0)+'"></div>'; }).join('')+'</div>'
+    +'<div class="dlg-foot"><span></span><div class="r"><button type="button" class="btn" data-act="close">Annuler</button><button type="button" class="btn primary" data-act="save-g">Enregistrer</button></div></div>');
+}
+
+/* ---------- vue : prospects ---------- */
+function opts(list, sel){ return list.map(function(o){ return '<option'+(o===sel?' selected':'')+'>'+esc(o)+'</option>'; }).join(''); }
+function skelProspects(){
+  return '<div class="stack"><section class="card"><div class="toolbar" style="margin:0"><input type="search" id="pq" placeholder="Rechercher un pseudo ou une note" aria-label="Rechercher un prospect">'
+    +'<span style="display:flex;gap:10px;flex-wrap:wrap;align-items:center"><button type="button" class="btn primary" data-act="open-reply">Ajouter un prospect</button><span id="pexp"></span></span></div>'
+    +'<div id="pbanner"></div><div class="filters" id="pchips"></div><div class="plist" id="plist"></div></section></div>';
+}
+function initProspectsForm(){
+  var pq = $('#pq'); if(pq) pq.value = S.q;
+}
+function openDmLogDialog(){
+  openDlg('<div class="dlg-body"><h2 id="dlgTitle">DM à froid envoyés</h2><p class="sub">Note seulement le nombre. Le pseudo viendra quand quelqu\'un répond. Les ebooks sont comptés automatiquement depuis l\'onglet Contenu.</p>'
+    +'<div><label for="dlCount">Nombre de DM</label><input id="dlCount" type="number" min="1" inputmode="numeric" placeholder="Ex. 30"></div>'
+    +'<div><label for="dlPlat">Plateforme</label><select id="dlPlat">'+opts(PLATFORMS,S.qa.platform)+'</select></div>'
+    +'<div><label for="dlSrc">Source</label><select id="dlSrc">'+opts(DM_SOURCES,S.qa.source)+'</select></div>'
+    +'<div><label for="dlDate">Date</label><input type="date" id="dlDate"></div>'
+    +'<p class="note" id="dlHint" style="margin:0"></p></div>'
+    +'<div class="dlg-foot"><span></span><div class="r"><button type="button" class="btn" data-act="close">Fermer</button><button type="button" class="btn primary" data-act="submit-dmlog">Ajouter les DM</button></div></div>');
+  $('#dlDate').value = ymd(Date.now());
+  $('#dlCount').focus();
+}
+function openReplyDialog(){
+  openDlg('<div class="dlg-body"><h2 id="dlgTitle">Ajouter un prospect</h2>'
+    +'<div class="two"><div><label for="qaPrenom">Prénom</label><input id="qaPrenom" autocomplete="off" placeholder="Ex. Lucas"></div><div><label for="qaHandles">Pseudo</label><input id="qaHandles" autocomplete="off" placeholder="@pseudo"></div></div>'
+    +'<div class="two"><div><label for="qaPlat">Réseau</label><select id="qaPlat">'+opts(PLATFORMS,S.qa.platform)+'</select></div><div><label for="qaVille">Ville</label><input id="qaVille" autocomplete="off" placeholder="Ex. Sarcelles"></div></div>'
+    +'<div class="two"><div><label for="qaSit">Situation</label><select id="qaSit"><option value="">Non renseignée</option>'+opts(SITUATIONS,'')+'</select></div><div><label for="qaRev">Revenus</label><select id="qaRev"><option value="">Non renseigné</option><option value="sdr">Avec revenus</option><option value="sr">Sans revenus</option></select></div></div>'
+    +'<div><label for="qaObj">Son objectif</label><input id="qaObj" placeholder="Ex. Générer un complément de revenu en 6 mois"></div>'
+    +'<div><label for="qaNotes">Note (facultatif)</label><textarea id="qaNotes" rows="3" placeholder="Tout ce que tu veux retenir : contexte, objections, prochaine étape…"></textarea></div>'
+    +'<details><summary class="sub" style="cursor:pointer">Plus d\'options (source, date du 1er contact)</summary><div class="two" style="margin-top:10px"><div><label for="qaSrc">Source</label><select id="qaSrc">'+opts(SOURCES,S.qa.source)+'</select></div><div><label for="qaDate">Date du 1er contact</label><input type="date" id="qaDate"></div></div></details>'
+    +'<p class="note" id="qaHint" style="margin:0"></p></div>'
+    +'<div class="dlg-foot"><span></span><div class="r"><button type="button" class="btn" data-act="close">Annuler</button><button type="button" class="btn primary" data-act="submit-reply">Ajouter le prospect</button></div></div>');
+  $('#qaDate').value = ymd(Date.now());
+  $('#qaPrenom').focus();
+}
+function rememberQa(o){
+  S.qa = {platform:o.platform, source:o.source, variant:o.variant};
+  try{ localStorage.setItem(LSQ, JSON.stringify(S.qa)); }catch(e){}
+}
+function submitDmLog(){
+  var count = Math.floor(Number($('#dlCount').value)||0);
+  if(count<1){ $('#dlHint').textContent = 'Indique combien de DM tu as envoyés.'; $('#dlCount').focus(); return; }
+  var o = {id:uid(), count:count, platform:$('#dlPlat').value, source:$('#dlSrc').value, variant:'Sans script', date:fromYmd($('#dlDate').value)};
+  rememberQa(o); $('#dlHint').textContent = ''; $('#dlCount').value = '';
+  safe(put('dmlogs', o)).then(function(){ toast(count+' DM ajouté'+(count>1?'s':'')); var ct = $('#dlCount'); if(ct) ct.focus(); }).catch(function(){});
+}
+function parseHandles(txt){
+  var seen = {}, out = [];
+  txt.split(/[\n,;]+/).forEach(function(raw){
+    var h = raw.trim().replace(/^https?:\/\/(www\.)?(instagram|tiktok)\.com\/@?/i,'').replace(/[\/?].*$/,'').replace(/^@+/,'').trim();
+    if(h && !seen[h.toLowerCase()]){ seen[h.toLowerCase()] = 1; out.push(h); }
+  });
+  return out;
+}
+function submitReplies(){
+  var handles = parseHandles($('#qaHandles').value);
+  if(!handles.length){ $('#qaHint').textContent = 'Indique son pseudo.'; $('#qaHandles').focus(); return; }
+  var platform = $('#qaPlat').value, source = $('#qaSrc').value, variant = 'Sans script';
+  var revenu = $('#qaRev').value || null, objectif = ($('#qaObj').value||'').trim(), notesIn = $('#qaNotes').value || '';
+  var prenom = ($('#qaPrenom').value||'').trim(), ville = ($('#qaVille').value||'').trim(), situation = $('#qaSit').value || '';
+  var at = fromYmd($('#qaDate').value), now = Date.now();
+  rememberQa({platform:platform, source:source, variant:variant});
+  var exist = {}; S.prospects.forEach(function(p){ exist[(p.platform||'')+'|'+String(p.handle).toLowerCase()] = 1; });
+  var fresh = handles.filter(function(h){ return !exist[platform+'|'+h.toLowerCase()]; });
+  var skipped = handles.length - fresh.length;
+  var items = fresh.map(function(h){
+    return {id:uid(), handle:h, platform:platform, source:source, variant:variant, status:'reponse', dmAt:at, repliedAt:now, callAt:null, wonAt:null, lostAt:null, lostStage:null, lostReason:'', notes:notesIn, objectif:objectif, clientId:null, revenu:revenu, prenom:prenom, ville:ville, situation:situation};
+  });
+  $('#qaHint').textContent = '';
+  var btn = $('[data-act="submit-reply"]'); if(btn) btn.disabled = true;
+  var chain = Promise.resolve();
+  for(var i=0;i<items.length;i+=5){
+    (function(chunk){ chain = chain.then(function(){ return Promise.all(chunk.map(function(o){ return put('prospects',o); })); }); })(items.slice(i,i+5));
+  }
+  chain.then(function(){
+    if(btn) btn.disabled = false;
+    toast(items.length===1 ? '@'+items[0].handle+' ajouté' : items.length+' prospects ajoutés'+(skipped?' ('+skipped+' déjà dans la liste)':''));
+    closeDlg();
+  }).catch(function(e){ if(btn) btn.disabled = false; toast(errCopy(e)); });
+}
+function paintDmLogs(){
+  var el = $('#dmlist'); if(!el) return;
+  var now = Date.now(), t0 = new Date(); t0.setHours(0,0,0,0);
+  var today = sumLogs(S.dmlogs.filter(function(l){ return l.date>=t0.getTime(); }));
+  var week = sumLogs(S.dmlogs.filter(function(l){ return l.date>=weekStart(now); }));
+  $('#dmTotals').textContent = "DM envoyés (hors ebooks) : "+fmtN(today)+" aujourd'hui, "+fmtN(week)+" cette semaine.";
+  var list = S.dmlogs.slice().sort(function(a,b){ return (b.date||0)-(a.date||0); }).slice(0,8);
+  el.innerHTML = list.length ? list.map(function(l){
+    return '<div class="logrow"><span><b>'+fmtN(l.count)+' DM</b>, '+esc(l.variant||'Sans script')+', '+esc(l.source||'')+', '+esc(l.platform||'')+'</span><span>'+dShort(l.date)+' <button type="button" class="iconbtn" data-act="del-log" data-id="'+esc(l.id)+'">Supprimer</button></span></div>';
+  }).join('') : '<div class="empty" style="padding:14px">Aucun envoi noté. Ajoute le nombre de DM que tu viens d\'envoyer.</div>';
+}
+function paintProspects(){
+  if(!$('#plist')) return;
+  var dl = $('#variants');
+  if(dl){ var vs = {}; S.prospects.concat(S.dmlogs).forEach(function(p){ if(p.variant) vs[p.variant]=1; }); dl.innerHTML = Object.keys(vs).map(function(v){ return '<option value="'+esc(v)+'">'; }).join(''); }
+  var pe = $('#pexp'); if(pe) pe.innerHTML = dlNs ? '<button type="button" class="btn small" data-act="export" data-kind="prospects">Exporter en CSV</button>' : '';
+  var openProspects = S.prospects.filter(function(p){ return p.status!=='close' && p.status!=='perdu'; });
+  // Filtres : plusieurs choix possibles. Dans un même groupe = OU, entre les groupes = ET.
+  var GROUPS = [
+    ['act','À faire',[['contact','À contacter'],['relance','À relancer']]],
+    ['stage','Étape',[['reponse','Répondu'],['call','Call booké'],['held','Call fait']]],
+    ['rev','Revenus',[['sdr','Avec revenus'],['sr','Sans revenus'],['none','Non renseigné']]],
+    ['src','Source',SOURCES.map(function(x){ return [x, x===EBOOK?'Ebook':x.replace('Like ou abonné de ','Like/abo ')]; })]
+  ];
+  var test = {
+    act:function(p,v){ return v==='contact' ? prospectDue(p) : needsFollowUp(p); },
+    stage:function(p,v){ return p.status===v; },
+    rev:function(p,v){ return v==='none' ? !p.revenu : p.revenu===v; },
+    src:function(p,v){ return p.source===v; }
+  };
+  var q = S.q.trim().toLowerCase();
+  function matches(p, skip){
+    if(S.funnelView){ var fld = {replied:'repliedAt',call:'callAt',held:'heldAt',won:'wonAt'}[S.funnelView]; if(fld && !p[fld]) return false; }
+    for(var g in S.pf){ if(g===skip) continue; var vals = S.pf[g]||[]; if(vals.length && !vals.some(function(v){ return test[g](p,v); })) return false; }
+    if(q && [p.handle,p.prenom,p.ville,p.notes,p.objectif].join(' ').toLowerCase().indexOf(q)<0) return false;
+    return true;
+  }
+  var active = Object.keys(S.pf).reduce(function(t,g){ return t+(S.pf[g]||[]).length; },0);
+  var STAGE_VIEW_LABEL = {replied:'Réponses obtenues', call:'Calls bookés', held:'Calls réalisés'};
+  var h = '<button type="button" class="ftoggle" data-act="pf-toggle" aria-expanded="'+S.pfOpen+'"><span>⚙️ Filtres'+(active?' <b class="fon">'+active+' actif'+(active>1?'s':'')+'</b>':'')+'</span><span aria-hidden="true">'+(S.pfOpen?'▲':'▼')+'</span></button>';
+  h += '<div class="fbody"'+(S.pfOpen?'':' hidden')+'>'+GROUPS.map(function(G){
+    return '<div class="frow"><span class="flbl">'+G[1]+'</span>'+G[2].map(function(o){
+      var on = (S.pf[G[0]]||[]).indexOf(o[0])>=0;
+      var n = openProspects.filter(function(p){ return matches(p, G[0]) && test[G[0]](p, o[0]); }).length;
+      return '<button type="button" class="chip" data-act="pf" data-g="'+G[0]+'" data-v="'+esc(o[0])+'" aria-pressed="'+on+'">'+esc(o[1])+'<small>'+n+'</small></button>';
+    }).join('')+'</div>';
+  }).join('')+'</div>';
+  var list = openProspects.filter(function(p){ return matches(p, null); });
+  var nLost = S.prospects.filter(function(p){ return p.status==='perdu'; }).length;
+  h += '<div class="fbar"><span class="fcount">'+list.length+' prospect'+(list.length>1?'s':'')+(active||S.funnelView?' avec ces filtres':'')+'</span><span style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">'+(nLost?'<button type="button" class="iconbtn" data-act="tab" data-tab="perdus">🚫 Voir les perdus ('+nLost+')</button>':'')
+    +(active?'<button type="button" class="iconbtn" data-act="pf-clear">Effacer les filtres</button>':'')
+    +'<label for="psort" class="sr">Trier</label><select id="psort">'+[['recent','Plus récents d\'abord'],['old','Plus anciens d\'abord'],['launch','Lancement le plus proche'],['touch','Sans contact depuis le plus longtemps']].map(function(o){ return '<option value="'+o[0]+'"'+(S.sort===o[0]?' selected':'')+'>'+o[1]+'</option>'; }).join('')+'</select></span></div>';
+  $('#pchips').innerHTML = h;
+  var pb = $('#pbanner');
+  if(pb) pb.innerHTML = S.funnelView ? '<div class="note" style="margin-bottom:10px">Vue depuis l\'entonnoir : <b>'+esc(STAGE_VIEW_LABEL[S.funnelView]||'')+'</b>. <button type="button" class="iconbtn" data-act="funnel-off">Revenir à tous les prospects</button></div>' : '';
+  var addedAt = function(p){ return p.repliedAt || p.dmAt || 0; };
+  list.sort(function(a,b){
+    if(S.sort==='old') return addedAt(a)-addedAt(b);
+    if(S.sort==='launch'){ var al = a.launchAt||Infinity, bl = b.launchAt||Infinity; if(al!==bl) return al-bl; return addedAt(b)-addedAt(a); }
+    if(S.sort==='touch') return prospectLastTouch(a)-prospectLastTouch(b);
+    return addedAt(b)-addedAt(a);
+  });
+  if(!list.length){
+    $('#plist').innerHTML = '<div class="empty">'+(S.prospects.length ? 'Aucun prospect ne correspond à ce filtre.' : 'Aucun prospect pour le moment. Quand quelqu\'un répond à un DM, ajoute son pseudo ci-dessus.')+'</div>';
+    return;
+  }
+  var shown = list.slice(0, S.limit);
+  $('#plist').innerHTML = shown.map(prow).join('') + (list.length>shown.length ? '<div style="padding-top:14px;text-align:center"><button type="button" class="btn" data-act="more">Afficher '+Math.min(60,list.length-shown.length)+' de plus</button></div>' : '');
+}
+function prow(p){
+  var lost = p.status==='perdu', ri = reachedIdx(p);
+  var btns = STAGES.map(function(s,i){
+    if(i===0) return '';
+    var cls = '';
+    if(lost) cls = i<=ri ? 'done' : '';
+    else cls = i<ri ? 'done' : i===ri ? 'now'+(i===4?' won':'') : '';
+    return '<button type="button" class="'+cls+'" data-act="stage" data-id="'+esc(p.id)+'" data-stage="'+s+'" aria-pressed="'+(!lost&&i===ri)+'">'+STAGE_LABEL[s]+'</button>';
+  }).join('') + '<button type="button" class="'+(lost?'now lost':'')+'" data-act="stage" data-id="'+esc(p.id)+'" data-stage="perdu" aria-pressed="'+lost+'">Perdu</button>';
+  var meta = [p.platform, p.ville, p.situation, p.source, p.dmAt?'1er contact le '+dShort(p.dmAt):''].filter(Boolean).map(esc).join(', ');
+  var revLabel = REV_LABEL[p.revenu] || 'Revenus ?';
+  var revCls = 'rev-badge'+(p.revenu==='sdr'?' sdr':p.revenu==='sr'?' sr':'');
+  var revBtn = '<button type="button" class="'+revCls+'" data-act="cycle-rev" data-id="'+esc(p.id)+'" title="Source de revenus : clique pour changer">'+revLabel+'</button>';
+  var fu = needsFollowUp(p);
+  var relInner = (p.status==='perdu' || p.status==='close') ? '' : '<button type="button" class="btn small" data-act="relance" data-id="'+esc(p.id)+'">'+(fu?'Relancé':'À relancer')+'</button>';
+  var relBtn = '<div class="p-actions">'+relInner+'<button type="button" class="btn small" data-act="details-p" data-id="'+esc(p.id)+'">Voir les détails</button><button type="button" class="iconbtn" data-act="del-p" data-id="'+esc(p.id)+'">Supprimer</button></div>';
+  var due = prospectDue(p), active = prospectActive(p), left = prospectCadenceLeft(p);
+  var cadence = '';
+  if(p.launchAt){
+    cadence = '<div class="pcadence">'+launchGauge(p)+'<span>'+esc(prospectLaunchLabel(p))+'</span></div>';
+  }else if(active){
+    cadence = '<div class="pcadence"><div class="gauge small'+(due?' late':'')+'"><i style="width:'+Math.max(0,Math.min(100,left/7*100))+'%"></i></div><span>'+(due?'À contacter aujourd\'hui':'Prochain contact dans '+left+' j')+'</span></div>';
+  }
+  var when = (fu?'<span class="badge">À relancer</span>':'') + (due?'<span class="badge">À contacter</span>':'') + (p.clientId && p.status==='close'?'<span class="badge ok">Fiche client</span>':'') + relBtn;
+  var ns = p.status==='perdu' ? null : nextStage(p.status);
+  var expanded = !!S.expandedSteps[p.id];
+  var quickStep = '<div class="stepwrap">'
+    + (ns ? '<button type="button" class="btn primary small" data-act="stage" data-id="'+esc(p.id)+'" data-stage="'+ns+'">'+esc(STAGE_LABEL[ns])+'</button>' : '<span class="stage-done">'+esc(STAGE_LABEL[p.status])+'</span>')
+    + (p.status!=='perdu' && p.status!=='close' ? '<button type="button" class="iconbtn" data-act="stage" data-id="'+esc(p.id)+'" data-stage="perdu">Perdu</button>' : '')
+    + '<button type="button" class="iconbtn" data-act="toggle-steps" data-id="'+esc(p.id)+'">'+(expanded?'Masquer les étapes':'Modifier l\'étape')+'</button></div>';
+  var stepsBlock = expanded ? '<div class="steps" role="group" aria-label="Étape de @'+esc(p.handle)+'">'+btns+'</div>' : '';
+  return '<article class="prow"><div><button type="button" class="p-handle" data-act="edit-p" data-id="'+esc(p.id)+'">'+(p.prenom?esc(p.prenom)+' · ':'')+'@'+esc(p.handle)+'</button>'+revBtn+'</div>'
+    +quickStep+stepsBlock+'<div class="p-when">'+when+'</div></article>';
+}
+function setStage(p, stage){
+  var now = Date.now(), n = Object.assign({}, p);
+  n.relance = false;
+  if(stage==='perdu'){
+    n.lostStage = p.status==='perdu' ? p.lostStage : STAGES[reachedIdx(p)];
+    n.status = 'perdu'; n.lostAt = now;
+  }else{
+    var i = STAGES.indexOf(stage);
+    n.repliedAt = i>=1 ? (p.repliedAt||now) : null;
+    n.callAt = i>=2 ? (p.callAt||now) : null;
+    n.heldAt = i>=3 ? (p.heldAt||now) : null;
+    n.wonAt = i>=4 ? (p.wonAt||now) : null;
+    n.status = stage; n.lostAt = null; n.lostStage = null;
+  }
+  return n;
+}
+function deleteProspect(id){
+  var p = S.prospects.filter(function(x){ return x.id===id; })[0]; if(!p) return;
+  var cl = p.clientId ? S.clients.filter(function(x){ return x.id===p.clientId; })[0] : null;
+  del('prospects', id).then(function(){ return (cl && isEmptyClient(cl)) ? del('clients', cl.id) : null; })
+    .then(function(){ toast('@'+p.handle+' supprimé'); }).catch(function(e){ toast(errCopy(e)); });
+}
+function prospectLastTouch(p){ var l = (p.interactions||[])[0]; return (l&&l.at) || p.repliedAt || p.dmAt || Date.now(); }
+function prospectActive(p){ return p.status!=='perdu' && p.status!=='close'; }
+function prospectCadenceLeft(p){ return 7 - Math.floor((Date.now()-prospectLastTouch(p))/DAY); }
+function prospectDue(p){ return prospectActive(p) && prospectCadenceLeft(p)<=0; }
+function prospectLaunchLeft(p){ return Math.ceil((p.launchAt-Date.now())/DAY); }
+function prospectLaunchPct(p){
+  var start = p.repliedAt || p.dmAt || Date.now(), total = p.launchAt-start;
+  if(total<=0) return 100;
+  return Math.max(0, Math.min(100, (Date.now()-start)/total*100));
+}
+function prospectLaunchUrgent(p){ return prospectLaunchLeft(p)<=2; }
+function prospectLaunchLabel(p){
+  var l = prospectLaunchLeft(p);
+  if(l<0) return 'Lancement prévu il y a '+Math.abs(l)+' j';
+  if(l===0) return 'Lancement aujourd\'hui';
+  return 'Lancement dans '+l+' j';
+}
+function launchGauge(p){
+  var lu = prospectLaunchUrgent(p);
+  return '<div class="gauge small'+(lu?' late':'')+'"><i style="width:'+prospectLaunchPct(p)+'%"></i></div>';
+}
+function hasVals(o){ return Object.keys(o||{}).some(function(k){ return o[k]; }); }
+function isEmptyClient(c){
+  return !c.offer && !(Number(c.price)>0) && !c.goal && !c.demoGoal && !c.realGoal && !(c.checkins||[]).length && !hasVals(c.onb) && !hasVals(c.mil) && !hasVals(c.mods);
+}
+function changeStage(id, stage){
+  var p = S.prospects.filter(function(x){return x.id===id;})[0]; if(!p) return;
+  var n = setStage(p, stage), newClient = null;
+  var idx = STAGES.indexOf(stage), dropId = null;
+  var hasFiche = p.clientId && S.clients.some(function(x){ return x.id===p.clientId; });
+  if(p.clientId && idx>=0 && idx<4){
+    var cl = S.clients.filter(function(x){ return x.id===p.clientId; })[0];
+    if(!cl){ n.clientId = null; }
+    else if(isEmptyClient(cl)){ dropId = cl.id; n.clientId = null; }
+  }
+  if(stage==='close' && !hasFiche){
+    var mm = PLAT.members.filter(function(m){ return normPseudo(m.pseudo)===normPseudo(p.handle); });
+    newClient = {id:uid(), name:p.prenom||p.handle, pseudo:(mm.length===1?mm[0].pseudo:''), prospectId:p.id, startAt:Date.now(), status:'actif', goal:'', offer:'', price:0, checkins:[], onb:{}, mil:{}, demoGoal:'', rdv:false};
+    n.clientId = newClient.id;
+  }
+  var chain = newClient ? put('clients', newClient) : Promise.resolve();
+  chain.then(function(){ return put('prospects', n); }).then(function(){ return dropId ? del('clients', dropId) : null; }).then(function(){
+    if(newClient){ toast('Client créé. Complète sa fiche.'); openClient(newClient); }
+    else if(dropId){ toast('Fiche client vide supprimée.'); }
+  }).catch(function(e){ toast(errCopy(e)); });
+}
+
+/* ---------- vue : contenu ---------- */
+function skelContent(){
+  return '<div class="stack"><form class="card" id="cf" autocomplete="off"><h2>Noter un contenu publié</h2><p class="sub" style="margin-bottom:14px">Ajoute le post, puis complète ses chiffres dans la liste. Les ebooks demandés comptent automatiquement comme DM envoyés dans ton entonnoir.</p><div class="cf">'
+    +'<div><label for="cfDate">Date</label><input type="date" id="cfDate"></div>'
+    +'<div><label for="cfPlat">Plateforme</label><select id="cfPlat">'+opts(CONTENT_PLATFORMS,'Instagram')+'</select></div>'
+    +'<div><label for="cfFmt">Format</label><select id="cfFmt">'+opts(FORMATS,'Reel')+'</select></div>'
+    +'<div><label for="cfCta">Appel à l\'action</label><select id="cfCta">'+opts(CTAS,CTAS[0])+'</select></div>'
+    +'<div class="wide"><label for="cfHook">Accroche ou sujet</label><input id="cfHook" placeholder="Ex. 3 erreurs qui te font perdre ton compte"></div>'
+    +'<button type="submit" class="btn primary">Ajouter le contenu</button></div></form>'
+    +'<section class="card"><div class="toolbar"><h2 style="margin:0">Tes contenus</h2><span id="cexp"></span></div><div id="cl"></div></section></div>';
+}
+function initContentForm(){
+  $('#cfDate').value = ymd(Date.now());
+  $('#cf').addEventListener('submit', function(ev){
+    ev.preventDefault();
+    var o = {id:uid(), date:fromYmd($('#cfDate').value), platform:$('#cfPlat').value, format:$('#cfFmt').value, cta:$('#cfCta').value, hook:$('#cfHook').value.trim(), views:0, saves:0, leads:0, clients:0};
+    if(o.platform==='Les deux'){ o.ig = {views:0, saves:0, leads:0, clients:0}; o.tt = {views:0, saves:0, leads:0, clients:0}; }
+    $('#cfHook').value = '';
+    safe(put('content', o)).then(function(){ toast('Contenu ajouté'); }).catch(function(){});
+  });
+}
+function paintContent(){
+  if(!$('#cl')) return;
+  var ce = $('#cexp'); if(ce) ce.innerHTML = dlNs ? '<button type="button" class="btn small" data-act="export" data-kind="content">Exporter en CSV</button>' : '';
+  var list = S.content.slice().sort(function(a,b){ return (b.date||0)-(a.date||0); });
+  if(!list.length){ $('#cl').innerHTML = '<div class="empty">Aucun contenu noté. Ajoute ton dernier post ci-dessus pour suivre ce qu\'il rapporte.</div>'; return; }
+  var fld = function(c, path, label, val){ return '<div><label>'+label+'<input type="number" min="0" inputmode="numeric" value="'+(Number(val)||0)+'" data-act="num" data-id="'+esc(c.id)+'" data-field="'+path+'"></label></div>'; };
+  $('#cl').innerHTML = list.slice(0,80).map(function(c){
+    var body;
+    if(c.platform==='Les deux'){
+      var blk = function(pref, label){ return '<div class="plat">'+label+'</div><div class="nums">'+METRICS.map(function(m){ return fld(c, pref+'.'+m[0], m[1], (c[pref]||{})[m[0]]); }).join('')+'</div>'; };
+      body = blk('ig','Instagram')+blk('tt','TikTok')+'<div class="totals"><b>Total</b> : '+METRICS.map(function(m){ return fmtN(c[m[0]])+' '+m[1].toLowerCase(); }).join(', ')+'</div>';
+    }else{
+      body = '<div class="nums">'+METRICS.map(function(m){ return fld(c, m[0], m[1], c[m[0]]); }).join('')+'</div>';
+    }
+    return '<article class="crow"><div class="crow-head"><div><div class="crow-title">'+esc(c.hook||'Sans titre')+'</div><div class="crow-meta">'+dShort(c.date)+', '+esc(c.platform||'')+', '+esc(c.format||'')+(c.cta?', '+esc(c.cta):'')+'</div></div><button type="button" class="iconbtn" data-act="del-c" data-id="'+esc(c.id)+'">Supprimer</button></div>'+body+'</article>';
+  }).join('');
+}
+
+/* ---------- vue : clients ---------- */
+function skelClients(){
+  return '<div class="stack"><div id="cash"></div><div id="linkBanner"></div><div id="cfilt" style="display:flex;flex-wrap:wrap;gap:8px"></div><div class="toolbar" style="margin:0"><p class="sub">Un prospect passé en « Client » crée sa fiche automatiquement.</p><span style="display:flex;gap:10px;flex-wrap:wrap"><button type="button" class="btn" data-act="tab" data-tab="membres">🤝 Parrainages &amp; comptes</button><span id="clexp"></span><button type="button" class="btn primary" data-act="new-client">Nouveau membre</button></span></div><div class="grid" id="cg"></div></div>';
+}
+function paintClients(){
+  if(!$('#cg')) return;
+  var ce = $('#clexp'); if(ce) ce.innerHTML = dlNs ? '<button type="button" class="btn" data-act="export" data-kind="clients">Exporter en CSV</button>' : '';
+  var owe = S.clients.filter(function(c){ return c.status!=='perdu' && remainingOf(c)>0; }).sort(function(a,b){ return remainingOf(b)-remainingOf(a); });
+  var oweTot = owe.reduce(function(t,c){ return t+remainingOf(c); },0);
+  var cash = $('#cash');
+  if(cash) cash.innerHTML = '<section class="card" style="display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between"><div><span style="display:block;color:var(--muted);font-size:13px;font-weight:600">💶 Reste à encaisser</span><span style="font:700 30px/1.1 var(--f-display)">'+euro(oweTot)+'</span><span class="sub" style="display:block">'+(owe.length?owe.length+' client'+(owe.length>1?'s te doivent':' te doit')+' de l\'argent':'Personne ne te doit d\'argent')+'</span></div>'
+    +(owe.length?'<button type="button" class="btn" data-act="cf" data-v="owe">Voir qui me doit</button>':'')+'</section>';
+  var cf = $('#cfilt');
+  var nUn = S.clients.filter(function(c){ return !c.pseudo; }).length;
+  if(cf) cf.innerHTML = [['all','Tous',S.clients.length],['owe','Me doivent de l\'argent',owe.length],['unlinked','Pas reliés',nUn]].map(function(f){ return '<button type="button" class="chip" data-act="cf" data-v="'+f[0]+'" aria-pressed="'+((S.cliF||'all')===f[0])+'">'+f[1]+'<small>'+f[2]+'</small></button>'; }).join('');
+  var list = S.clients.filter(function(c){ var f = S.cliF||'all'; return f==='all' || (f==='owe' ? (c.status!=='perdu' && remainingOf(c)>0) : !c.pseudo); }).sort(function(a,b){ return (S.cliF==='owe') ? remainingOf(b)-remainingOf(a) : (b.startAt||0)-(a.startAt||0); });
+  var unlinked = S.clients.filter(function(c){ return !c.pseudo && (c.status||'actif')!=='perdu'; }).length;
+  var lb = $('#linkBanner');
+  if(lb) lb.innerHTML = unlinked ? '<div class="callout" style="display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between"><span><strong>'+unlinked+' client'+(unlinked>1?'s':'')+' pas encore relié'+(unlinked>1?'s à leur compte':' à son compte')+'</strong><span class="sub" style="display:block">Relie-les pour que leurs modules « Fait » se cochent tout seuls.</span></span><button type="button" class="btn primary" data-act="auto-link"'+(PLAT.members.length?'':' disabled')+'>Relier automatiquement</button></div>' : '';
+  if(!list.length){ $('#cg').innerHTML = '<div class="card empty" style="grid-column:1/-1">Aucun membre pour le moment. Passe un prospect en « Client » pour créer sa fiche.</div>'; return; }
+  $('#cg').innerHTML = list.map(function(c){
+    var st = c.status||'actif', active = st==='actif';
+    var stLabel = (CLIENT_STATUS.filter(function(x){return x[0]===st;})[0]||[0,'Actif'])[1];
+    var offer = String(c.offer||'').replace(/\s*\d+\s*€/,'') || 'Formule ?';
+    var m = memberOf(c), rec = c.pseudo ? (PLAT.recent[normPseudo(c.pseudo)]||[]) : [];
+    var plat = '';
+    if(!c.pseudo) plat = '<span class="badge">Pas relié</span> <button type="button" class="iconbtn" data-act="open-client" data-id="'+esc(c.id)+'">Relier son compte</button>';
+    else plat = '@'+esc(c.pseudo)+(m ? ' · ⚡ '+fmtN(m.xp||0)+' XP · niveau '+levelOf(m.xp) : (PLAT.members.length?' <span class="badge">Compte introuvable</span>':''))+(rec[0] ? ' · actif '+ago(new Date(rec[0].created_at).getTime()) : '')+' <button type="button" class="iconbtn" data-act="relink" data-id="'+esc(c.id)+'">Changer</button>';
+    var alert = '', restC = remainingOf(c);
+    { var late = active ? lateInfo(c) : ''; if(late) alert = late; }
+    var money = restC>0 ? '<span class="badge" style="background:var(--leak-bg);color:var(--leak)">💶 Doit encore '+euro(restC)+'</span>' : (c.price>0 ? '<span class="badge ok">Payé</span>' : '');
+    var md = modsDoneCount(c);
+    return '<div class="card ccard"><div style="display:flex;justify-content:space-between;gap:8px;align-items:flex-start"><h3>'+esc(c.name||'Sans nom')+' <span class="sub" style="font-weight:500;font-size:14px">· '+esc(offer)+'</span></h3><span class="badge'+(active?' ok':'')+'" style="margin:0">'+esc(stLabel)+'</span></div>'
+      +'<div class="p-when" style="margin:0">'+plat+'</div>'
+      +'<div class="prog"><span>'+md+'/'+MODULES+' modules</span><div class="bar"><i style="width:'+Math.round(md/MODULES*100)+'%"></i></div></div>'
+      +((money||alert)?'<div>'+money+(alert?'<span class="badge">'+esc(alert)+'</span>':'')+'</div>':'')
+      +'<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:auto">'+(m?'<button type="button" class="btn small primary" data-act="xp-open" data-id="'+esc(c.id)+'">⚡ Ajouter de l\'XP</button>':'')+'<button type="button" class="btn small" data-act="open-client" data-id="'+esc(c.id)+'">Voir les détails</button></div></div>';
+  }).join('');
+}
+
+/* ---------- vue : analyse IA ---------- */
+function skelBrain(){
+  return '<div class="stack"><section class="card"><h2>Ce que disent tes chiffres</h2><p class="sub" style="max-width:64ch">Pose ta question ou clique sur un exemple : la réponse est calculée directement à partir de tes prospects, membres, contenus et objectifs. La période (en haut) s\'applique à l\'entonnoir et aux sources.</p><div id="aiForm" style="margin-top:16px"></div><div class="ai-out" id="aiOut" aria-live="polite"></div></section></div>';
+}
+function paintAIForm(){
+  var el = $('#aiForm'); if(!el) return;
+  if(!sampleFn){
+    var QS = ['Où est ma fuite ?','Qui je dois relancer ?','Quelle source marche le mieux ?','Qui me doit de l\'argent ?','Où j\'en suis de mes objectifs ?','Combien j\'ai encaissé ?'];
+    el.innerHTML = '<div style="display:flex;gap:10px;flex-wrap:wrap"><input id="aiQ" style="flex:1;min-width:220px" placeholder="Pose ta question, ex. où est ma fuite ?" aria-label="Question sur tes chiffres"><button type="button" class="btn primary" data-act="ai-ask">Demander</button></div>'
+      +'<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px">'+QS.map(function(q){ return '<button type="button" class="chip" data-act="ai-quick" data-q="'+esc(q)+'">'+esc(q)+'</button>'; }).join('')+'</div>';
+    paintAI();
+    return;
+  }
+  el.innerHTML = '<div style="display:flex;flex-wrap:wrap;gap:10px"><button type="button" class="btn primary" data-act="ai-run" id="aiRun">Analyser mon entonnoir</button><button type="button" class="btn" data-act="ai-stop" id="aiStop" style="display:none">Arrêter</button></div>'
+    +'<div style="display:flex;gap:10px;margin-top:14px;flex-wrap:wrap"><input id="aiQ" style="flex:1;min-width:220px" placeholder="Pose une question sur tes chiffres" aria-label="Question sur tes chiffres"><button type="button" class="btn" data-act="ai-ask">Demander</button></div>';
+  paintAI();
+}
+function paintAI(){
+  var out = $('#aiOut'); if(!out) return;
+  var run = $('#aiRun'), stop = $('#aiStop');
+  if(run) run.disabled = S.ai.loading; if(stop) stop.style.display = S.ai.loading ? '' : 'none';
+  if(S.ai.text) out.innerHTML = md(S.ai.text) + (S.ai.note?'<p class="note">'+esc(S.ai.note)+'</p>':'');
+  else if(S.ai.loading) out.innerHTML = '<p class="thinking">Claude analyse tes chiffres…</p>';
+  else if(S.ai.error) out.innerHTML = '<p>'+esc(S.ai.error)+'</p>';
+  else out.innerHTML = '';
+}
+function md(t){
+  var lines = esc(t).split('\n'), out = '', list = null;
+  var close = function(){ if(list){ out += '</'+list+'>'; list = null; } };
+  var inl = function(s){ return s.replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>'); };
+  lines.forEach(function(raw){
+    var l = raw.replace(/\s+$/,''), m;
+    if((m = l.match(/^#{1,4}\s+(.*)$/))){ close(); out += '<h3>'+inl(m[1])+'</h3>'; }
+    else if((m = l.match(/^\s*[-*]\s+(.*)$/))){ if(list!=='ul'){ close(); out += '<ul>'; list='ul'; } out += '<li>'+inl(m[1])+'</li>'; }
+    else if((m = l.match(/^\s*\d+[.)]\s+(.*)$/))){ if(list!=='ol'){ close(); out += '<ol>'; list='ol'; } out += '<li>'+inl(m[1])+'</li>'; }
+    else if(!l.trim()){ close(); }
+    else { close(); out += '<p>'+inl(l)+'</p>'; }
+  });
+  close(); return out;
+}
+function buildStats(){
+  var a = analyse(), f = a.f, t = S.targets, s0 = since(), u0 = until();
+  var g = function(rows){ return rows.map(function(r){ return {nom:r.k, dm:r.sent, reponses:r.replied, calls_bookes:r.call, calls_realises:r.held, clients:r.won}; }); };
+  var contents = contentIn();
+  var fm = {};
+  contents.forEach(function(c){ var k=c.format||'Autre'; var o = fm[k]=fm[k]||{format:k,posts:0,vues:0,leads:0,clients:0}; o.posts++; o.vues+=Number(c.views)||0; o.leads+=Number(c.leads)||0; o.clients+=Number(c.clients)||0; });
+  var lost = {};
+  a.list.forEach(function(p){ if(p.status==='perdu'){ var k = p.lostReason||'Non précisé'; lost[k]=(lost[k]||0)+1; } });
+  var act = S.clients.filter(function(c){ return (c.status||'actif')==='actif'; });
+  var weeks = [], wk = weekStart(Date.now());
+  for(var i=7;i>=0;i--){ var s=wk-i*7*DAY, e=s+7*DAY, ff = funnelOf(S.prospects.filter(function(p){return p.dmAt>=s&&p.dmAt<e;}), allLogs().filter(function(l){return l.date>=s&&l.date<e;})); weeks.push({semaine_du:ymd(s), dm:ff.sent, reponses:ff.replied, calls_bookes:ff.call, calls_realises:ff.held, clients:ff.won, posts:S.content.filter(function(c){return c.date>=s&&c.date<e;}).length}); }
+  return {
+    periode: periodLabel(),
+    objectifs_pct:{reponse:t.reply, reponse_vers_call:t.call, call_booke_vers_realise:t.show, call_realise_vers_client:t.close},
+    entonnoir:{dm_envoyes:f.sent, reponses:f.replied, calls_bookes:f.call, calls_realises:f.held, clients:f.won},
+    taux_pct:{reponse:a.steps[0].rate, reponse_vers_call:a.steps[1].rate, call_booke_vers_realise:a.steps[2].rate, call_realise_vers_client:a.steps[3].rate, dm_vers_client:rate(f.won,f.sent)},
+    fuite_principale: a.weak ? a.weak.label : null,
+    par_source:g(groupBy(a.list,a.logs,function(p){return p.source;})),
+    par_script:g(groupBy(a.list,a.logs,function(p){return p.variant;})),
+    par_plateforme:g(groupBy(a.list,a.logs,function(p){return p.platform;})),
+    contenu_note:'leads = ebooks demandés via le mot-clé DHA',
+    contenu:{posts:contents.length, vues:contents.reduce(function(s,c){return s+(Number(c.views)||0);},0), leads:contents.reduce(function(s,c){return s+(Number(c.leads)||0);},0), par_format:Object.keys(fm).map(function(k){return fm[k];}), par_cta:(function(){ var m={}; contents.forEach(function(c){ var k=c.cta||'Non renseigné'; var o=m[k]=m[k]||{cta:k,posts:0,vues:0,ebooks:0}; o.posts++; o.vues+=Number(c.views)||0; o.ebooks+=Number(c.leads)||0; }); return Object.keys(m).map(function(k){return m[k];}); })(), par_plateforme:(function(){ var m={}; contents.forEach(function(c0){ platParts(c0).forEach(function(c){ var k=c.platform||'Non renseigné'; var o=m[k]=m[k]||{plateforme:k,posts:0,vues:0,ebooks:0}; o.posts++; o.vues+=Number(c.views)||0; o.ebooks+=Number(c.leads)||0; }); }); return Object.keys(m).map(function(k){return m[k];}); })()},
+    raisons_de_perte:Object.keys(lost).map(function(k){return {raison:k, n:lost[k]};}),
+    reponses_a_relancer:S.prospects.filter(needsFollowUp).length,
+    clients:{actifs:act.length, ca_signe_periode:S.clients.filter(function(c){var v=c.startAt||0; return v>=s0 && v<u0;}).reduce(function(t,c){return t+(Number(c.price)||0);},0), etapes_validees_moyenne_sur_7: act.length?Math.round(act.reduce(function(t,c){return t+stepsDone(c);},0)/act.length*10)/10:null, sans_interaction_depuis_3j: act.filter(function(c){ return Date.now()-lastTouch(c)>3*DAY; }).length, en_retard: act.filter(function(c){ return lateInfo(c); }).length, partis: S.clients.filter(function(c){return c.status==='perdu';}).length, reste_a_encaisser: S.clients.filter(function(c){return c.status!=='perdu';}).reduce(function(t,c){return t+remainingOf(c);},0)},
+    parcours_membres:(function(){ var co = S.clients.filter(function(c){var v=c.startAt||0; return v>=s0 && v<u0;}); var o = {entres:co.length}; ONB.forEach(function(k){ o[k[0]] = co.filter(function(c){return (c.onb||{})[k[0]];}).length; }); MILES.forEach(function(k){ o[k[0]] = co.filter(function(c){return (c.mil||{})[k[0]];}).length; }); o.modules_maitrises_par_numero = []; for(var mn=1; mn<=MODULES; mn++){ (function(mn){ o.modules_maitrises_par_numero.push(co.filter(function(c){return (c.mods||{})['x'+mn];}).length); })(mn); } return o; })(),
+    interactions_30j:(function(){ var o = {}; S.clients.forEach(function(c){ (c.checkins||[]).forEach(function(k){ if(Date.now()-k.at<=30*DAY){ var t = k.type||'Message'; o[t] = (o[t]||0)+1; } }); }); return o; })(),
+    semaines:weeks
+  };
+}
+function runAI(question, copyOnly){
+  if(!sampleFn && !copyOnly){ S.ai = {loading:false, text:localAnswer(question||'fuite'), error:'', note:''}; paintAI(); return; }
+  if(S.ai.loading) return;
+  var stats = buildStats();
+  var prompt = "Tu es un analyste growth spécialisé dans les business de coaching et de formation qui vendent via Instagram, TikTok et les messages privés. Contexte : je vends l'accès à la DHA (formation trading et coaching sur 4 mois). Acquisition : (1) mes vidéos Instagram et TikTok invitent à commenter ou envoyer « DHA » en DM pour recevoir un ebook gratuit, puis je discute avec ces personnes ; (2) je contacte les gens qui likent ou s'abonnent à mon contenu ; (3) je fais du DM à froid auprès de likes et abonnés de comptes de ma niche (mindset, business, trading), ou des abonnés de mes abonnés, avec des scripts différents. Objectif : un appel, un closing, puis l'entrée dans la DHA. Après la vente : accès plateforme, fichier « prise de conscience », appel de prise en main, messages quotidiens, appels de groupe mardi et jeudi, puis parcours : mois 1 maîtrise de la stratégie, mois 2 objectif en démo, mois 3 passage en réel, mois 4 validation d'un challenge. Voici les données agrégées (pourcentages en points, échantillons parfois petits). Analyse aussi le parcours des membres après la vente (activation, décrochage) et les sources d'acquisition, pas seulement l'entonnoir de vente.\n\n"
+    + (question ? "Question précise : " + question + "\n\nRéponds d'abord à cette question, en t'appuyant sur les données, puis ajoute au maximum 2 remarques utiles.\n\n"
+      : "Fais une analyse en français, en tutoyant, concrète et sans blabla, avec exactement ces sections en titres :\n## Diagnostic\n(2 à 3 phrases : où est la fuite principale, chiffrée)\n## Ce que disent les chiffres\n(3 à 5 puces ; dis clairement quand un échantillon est trop petit (moins de 20) pour conclure)\n## 3 tests à lancer cette semaine\n(pour chaque test : hypothèse, ce que je change, la métrique et le seuil pour décider)\n## Données à tracker en plus\n\n")
+    + "Règles : n'invente aucun chiffre absent des données ; si les données sont insuffisantes, dis-le et dis combien de DM il faut encore envoyer.\n\nDONNÉES :\n" + JSON.stringify(stats);
+  if(copyOnly){ copyText(prompt); return; }
+  S.ai = {loading:true, text:'', error:'', note:''}; paintAI();
+  aiCtl = new AbortController();
+  sampleFn(prompt, {signal:aiCtl.signal, cache:false, onText:function(u){ S.ai.text = u.text; paintAI(); }})
+    .then(function(r){ S.ai.text = r.text; S.ai.loading = false; if(r.truncated) S.ai.note = "Réponse coupée : pose une question plus ciblée pour la suite."; paintAI(); })
+    .catch(function(e){
+      S.ai.loading = false;
+      if(e && e.text) S.ai.text = e.text; else if(e && e.code==='cancelled') { /* arrêt volontaire */ }
+      var c = e && e.code;
+      if(c==='not_granted') S.ai.error = "Autorisation refusée. Relance l'analyse et accepte la demande.";
+      else if(c==='rate_limited') S.ai.error = "Limite d'usage atteinte. Réessaie dans quelques minutes.";
+      else if(c!=='cancelled') S.ai.error = "L'analyse a échoué. Réessaie.";
+      paintAI();
+    });
+}
+
+/* ---------- réponses calculées sur tes chiffres (sans connexion à une IA) ---------- */
+function nrm(t){ return String(t||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase(); }
+function localAnswer(q){
+  var t = nrm(q), per = periodLabel(), out = [];
+  var has = function(){ for(var i=0;i<arguments.length;i++) if(t.indexOf(arguments[i])>-1) return true; return false; };
+  var who = function(p){ return (p.prenom?p.prenom+' (@'+p.handle+')':'@'+p.handle); };
+  if(has('fuite','bloque','perd','faible','probleme','entonnoir','conversion','taux')){
+    var a = analyse(), f = a.f;
+    out.push('## Ta fuite principale ('+per+')');
+    if(a.weak){
+      out.push('**'+a.weak.label+'** : '+pct(a.weak.rate)+' '+a.weak.what+', alors que ton objectif est '+pct(a.weak.target)+'.');
+      if(a.gain!=null && a.gain>=0.3) out.push('Si tu atteignais l\'objectif sur cette étape, tu signerais environ **'+(a.gain>=1?Math.round(a.gain):a.gain.toLocaleString('fr-FR',{maximumFractionDigits:1}))+' client(s) de plus**.');
+    } else if(f.sent<5) out.push('Pas encore assez de données : il faut au moins 5 DM sur la période pour repérer une fuite. Tu en as '+fmtN(f.sent)+'.');
+    else out.push('Aucune fuite nette : toutes les étapes avec assez de données atteignent leur objectif. Augmente le volume de DM pour aller plus loin.');
+    out.push('', '**Ton entonnoir** : '+fmtN(f.sent)+' DM → '+fmtN(f.replied)+' réponses → '+fmtN(f.call)+' calls bookés → '+fmtN(f.held)+' calls faits → '+fmtN(f.won)+' clients.');
+    a.steps.forEach(function(s2){ out.push('- '+s2.label+' : '+(s2.rate==null?'pas de données':pct(s2.rate))+' (objectif '+pct(s2.target)+')'); });
+  }
+  else if(has('relanc','contacter','rappeler','suivre')){
+    var rel = S.prospects.filter(needsFollowUp), due = S.prospects.filter(function(p){ return prospectDue(p) && !needsFollowUp(p); });
+    out.push('## À relancer : '+rel.length);
+    rel.slice(0,15).forEach(function(p){ out.push('- '+who(p)+' · '+STAGE_LABEL[p.status]); });
+    out.push('', '## À contacter : '+due.length);
+    due.slice(0,15).forEach(function(p){ out.push('- '+who(p)+' · '+STAGE_LABEL[p.status]); });
+    if(!rel.length && !due.length) out.push('Personne à relancer pour l\'instant 👌');
+  }
+  else if(has('source','marche','meilleur','script','canal','insta','tiktok','ebook')){
+    var bySrc = groupBy(prospectsIn(), logsIn(), function(x){ return x.source; }).filter(function(g){ return g.sent+g.replied>0; });
+    out.push('## Tes sources ('+per+')');
+    if(!bySrc.length) out.push('Pas encore de données sur la période.');
+    bySrc.forEach(function(g){ var base = g.sent+g.replied; out.push('- **'+g.k+'** : '+fmtN(base)+' contacts, '+fmtN(g.replied)+' réponses ('+(rate(g.replied,base)==null?'—':pct(rate(g.replied,base)))+'), '+fmtN(g.won)+' client(s)'); });
+    var best = bySrc.filter(function(g){ return g.sent+g.replied>=10; }).sort(function(a2,b2){ return (b2.won/(b2.sent+b2.replied))-(a2.won/(a2.sent+a2.replied)) || b2.replied-a2.replied; })[0];
+    if(best) out.push('', 'Celle qui rapporte le plus : **'+best.k+'**.');
+  }
+  else if(has('doit','argent','encaisser','paye','reste','impaye')){
+    var owe = S.clients.filter(function(c){ return c.status!=='perdu' && remainingOf(c)>0; }).sort(function(a2,b2){ return remainingOf(b2)-remainingOf(a2); });
+    out.push('## Reste à encaisser : '+euro(owe.reduce(function(x,c){ return x+remainingOf(c); },0)));
+    owe.forEach(function(c){ out.push('- '+(c.name||'?')+' doit encore **'+euro(remainingOf(c))+'**'); });
+    if(!owe.length) out.push('Personne ne te doit d\'argent ✅');
+  }
+  else if(has('encaiss','chiffre','ca ','ca?','gagne','revenu','vente')){
+    var n = new Date(), a0 = new Date(n.getFullYear(), n.getMonth(), 1).getTime(), b0 = new Date(n.getFullYear(), n.getMonth()+1, 1).getTime();
+    var cls = S.clients.filter(function(c){ return c.startAt>=a0 && c.startAt<b0; });
+    out.push('## Ce mois-ci');
+    out.push('- Encaissé : **'+euro(encaisse(a0,b0))+'**');
+    out.push('- Signé : '+euro(cls.reduce(function(x,c){ return x+(Number(c.price)||0); },0))+' ('+cls.length+' client'+(cls.length>1?'s':'')+')');
+  }
+  else if(has('objectif','rythme','retard','semaine')){
+    var ws = weekStart(Date.now()), we = ws+7*DAY, defs = GOAL_DEFS.filter(function(g){ return Number(S.goals[g.k])>0; });
+    out.push('## Tes objectifs de la semaine');
+    if(!defs.length) out.push('Aucun objectif fixé. Va dans Objectifs → « Modifier mes objectifs ».');
+    defs.forEach(function(g){ var tg = Number(S.goals[g.k]), v = goalCount(g.k, ws, we); out.push('- '+g.label+' : **'+fmtN(v)+' / '+fmtN(tg)+'** ('+Math.round(v/tg*100)+' %)'+(v>=tg?' ✅':'')); });
+  }
+  else if(has('candidat')){
+    var nv = CAND.list.filter(function(c){ return (c.statut||'nouvelle')==='nouvelle'; });
+    out.push('## Candidatures : '+CAND.list.length+' au total, '+nv.length+' à traiter');
+    nv.slice(0,10).forEach(function(c){ out.push('- '+(c.prenom||'?')+(c.age?' · '+c.age+' ans':'')+' · '+(c.contact_canal||'')); });
+  }
+  else if(has('contenu','post','video','reel','vue')){
+    var cts = S.content.slice().sort(function(a2,b2){ return (Number(b2.views)||0)-(Number(a2.views)||0); });
+    out.push('## Tes contenus : '+cts.length);
+    cts.slice(0,5).forEach(function(c){ out.push('- '+(c.title||c.format||'Contenu')+' · '+fmtN(Number(c.views)||0)+' vues · '+dShort(c.date||0)); });
+  }
+  else if(has('lancement')){
+    var la = S.prospects.filter(function(p){ return p.launchAt && p.status!=='close' && p.status!=='perdu'; }).sort(function(a2,b2){ return a2.launchAt-b2.launchAt; });
+    out.push('## Lancements à venir : '+la.length);
+    la.forEach(function(p){ out.push('- '+who(p)+' · '+dShort(p.launchAt)); });
+  }
+  else {
+    out.push("Je réponds à partir de tes chiffres. Je comprends les questions sur : **ta fuite**, **qui relancer**, **tes sources**, **qui te doit de l'argent**, **ce que tu as encaissé**, **tes objectifs**, **tes candidatures**, **tes contenus** et **tes lancements**.");
+    out.push('Essaie par exemple : « Où est ma fuite ? »');
+  }
+  return out.join('\n');
+}
+
+/* ---------- dialogues ---------- */
+var dlg = $('#dlg');
+function openDlg(html){ dlg.innerHTML = html; if(!dlg.open) dlg.showModal(); }
+function closeDlg(){ if(dlg.open) dlg.close(); }
+dlg.addEventListener('click', function(ev){ if(ev.target===dlg) closeDlg(); });
+dlg.addEventListener('input', function(ev){
+  var t = ev.target; if(!t) return;
+  if(t.id==='cdPrice' || t.id==='cdN') paintPay();
+  if(t.id==='pdLaunch' || t.id==='pdCallAt' || t.id==='pdObj') refreshProspectCalLinks();
+});
+dlg.addEventListener('change', function(ev){
+  var t = ev.target, m; if(!t || !t.id) return;
+  if(t.id==='cdMulti') paintPay();
+  if(t.id==='cdOffer' && OFFER_INFO[t.value]){ var oi = OFFER_INFO[t.value]; $('#cdPrice').value = oi.price; $('#cdMulti').checked = oi.multi; if(oi.n) $('#cdN').value = oi.n; paintPay(); }
+  if((m = t.id.match(/^mx(\d+)$/)) && t.checked){ var v = $('#mv'+m[1]); if(v && !v.disabled) v.checked = true; }
+  if((m = t.id.match(/^mv(\d+)$/)) && !t.checked){ var x = $('#mx'+m[1]); if(x) x.checked = false; }
+});
+
+var draft = null;
+function openProspect(p, focusNotes){
+  draft = Object.assign({}, p);
+  openDlg('<div class="dlg-body"><h2 id="dlgTitle">@'+esc(p.handle)+'</h2>'
+    +'<div class="two"><div><label for="pdPrenom">Prénom</label><input id="pdPrenom" value="'+esc(p.prenom||'')+'"></div><div><label for="pdHandle">Pseudo</label><input id="pdHandle" value="'+esc(p.handle)+'"></div></div>'
+    +'<div class="two"><div><label for="pdPlat">Réseau</label><select id="pdPlat">'+opts(PLATFORMS,p.platform)+'</select></div><div><label for="pdVille">Ville</label><input id="pdVille" value="'+esc(p.ville||'')+'"></div></div>'
+    +'<div class="two"><div><label for="pdSit">Situation</label><select id="pdSit"><option value="">Non renseignée</option>'+opts(SITUATIONS,p.situation||'')+'</select></div><div><label for="pdRev">Revenus</label><select id="pdRev"><option value="">Non renseigné</option><option value="sdr"'+(p.revenu==='sdr'?' selected':'')+'>Avec revenus</option><option value="sr"'+(p.revenu==='sr'?' selected':'')+'>Sans revenus</option></select></div></div>'
+    +'<div><label for="pdObj2">Son objectif</label><input id="pdObj2" value="'+esc(p.objectif||'')+'"></div>'
+    +'<div><label for="pdSrc">Source</label><select id="pdSrc">'+opts(SOURCES,p.source)+'</select></div>'
+    +'<div><label for="pdLost">Raison de la perte (si perdu)</label><select id="pdLost"><option value="">Non précisée</option>'+opts(LOST,p.lostReason)+'</select></div>'
+    +'<div><label for="pdNotes">Note</label><textarea id="pdNotes" rows="4">'+esc(p.notes||'')+'</textarea></div></div>'
+    +'<div class="dlg-foot"><button type="button" class="btn danger" data-act="del-arm" data-kind="p">Supprimer</button><div class="r"><button type="button" class="btn" data-act="details-p" data-id="'+esc(p.id)+'">Voir les détails</button><button type="button" class="btn" data-act="close">Annuler</button><button type="button" class="btn primary" data-act="save-p">Enregistrer</button></div></div>');
+  if(focusNotes){ var ta = $('#pdNotes'); if(ta) setTimeout(function(){ ta.focus(); ta.setSelectionRange(ta.value.length, ta.value.length); }, 20); }
+}
+function saveProspect(){
+  var d = Object.assign({}, draft);
+  d.handle = $('#pdHandle').value.trim().replace(/^@+/,'') || d.handle; d.platform = $('#pdPlat').value; d.source = $('#pdSrc').value;
+  d.lostReason = $('#pdLost').value; d.notes = $('#pdNotes').value;
+  d.prenom = $('#pdPrenom').value.trim(); d.ville = $('#pdVille').value.trim(); d.situation = $('#pdSit').value; d.revenu = $('#pdRev').value || null; d.objectif = $('#pdObj2').value.trim();
+  safe(put('prospects', d)).then(closeDlg).catch(function(){});
+}
+function openProspectDetails(id){
+  var p = S.prospects.filter(function(x){ return x.id===id; })[0]; if(!p) return;
+  draft = Object.assign({}, p, {interactions:(p.interactions||[]).slice()});
+  var active = prospectActive(p), due = prospectDue(p), left = prospectCadenceLeft(p), lt = prospectLastTouch(p);
+  var gauge;
+  if(p.launchAt){
+    var lu = prospectLaunchUrgent(p);
+    gauge = '<div><div class="today-h"><span>Lancement prévu</span><b>'+esc(prospectLaunchLabel(p))+'</b></div><div class="gauge small'+(lu?' late':'')+'"><i style="width:'+prospectLaunchPct(p)+'%"></i></div><p class="note" style="margin:6px 0 0">'+dShort(p.launchAt)+'. Retire la date de lancement pour revenir au rappel hebdomadaire.</p></div>';
+  }else if(active){
+    gauge = '<div><div class="today-h"><span>Prochain contact</span><b>'+(due?'À contacter maintenant':'dans '+left+' j')+'</b></div><div class="gauge small'+(due?' late':'')+'"><i style="width:'+Math.max(0,Math.min(100,left/7*100))+'%"></i></div><p class="note" style="margin:6px 0 0">Dernier contact '+ago(lt)+'. Un message ou un appel par semaine minimum pour ne pas oublier @'+esc(p.handle)+'.</p></div>';
+  }else{
+    gauge = '<p class="note">'+(p.status==='close'?'C\'est un client, suis-le depuis sa fiche client.':'Prospect perdu, plus de rappel de contact.')+'</p>';
+  }
+  var info = [['Prénom',p.prenom],['Réseau',p.platform],['Ville',p.ville],['Situation',p.situation],['Revenus',REV_LABEL[p.revenu]||'Non renseigné'],['Source',p.source],['1er contact',p.dmAt?dShort(p.dmAt):''],['Réponse',p.repliedAt?ago(p.repliedAt):'']].filter(function(r){ return r[1]; });
+  var infoH = '<dl class="pinfo">'+info.map(function(r){ return '<dt>'+r[0]+'</dt><dd>'+esc(r[1])+'</dd>'; }).join('')+'</dl>';
+  openDlg('<div class="dlg-body"><h2 id="dlgTitle">'+(p.prenom?esc(p.prenom)+' · ':'')+'@'+esc(p.handle)+'</h2>'+infoH+gauge
+    +'<div><label for="pdObj">Objectif</label><input id="pdObj" value="'+esc(p.objectif||'')+'" placeholder="Ex. Passer un challenge en 3 mois"></div>'
+    +'<div><label for="pdSit">Note</label><textarea id="pdSit" rows="3" placeholder="Contexte, objections, où il en est">'+esc(p.notes||'')+'</textarea></div>'
+    +'<div><label for="pdLaunch">Date de lancement prévue</label><input id="pdLaunch" type="date" value="'+(p.launchAt?ymd(p.launchAt):'')+'"><div id="pdLaunchLink" style="margin-top:8px"></div></div>'
+    +(active ? '<div><label for="pdCallAt">Prochain call prévu (date et heure)</label><input id="pdCallAt" type="datetime-local" value="'+dtLocal(p.callScheduledAt)+'"><div id="pdCallLink" style="margin-top:8px"></div></div>' : '')
+    +'<div><label for="pdIType">Nouveau suivi</label><div style="display:flex;gap:10px;flex-wrap:wrap"><select id="pdIType" style="width:auto">'+opts(CI_TYPES,'Message')+'</select><input id="pdINote" style="flex:1;min-width:160px" placeholder="Note (optionnelle)"><button type="button" class="btn" data-act="add-pint">Ajouter</button></div></div>'
+    +'<div class="tl" id="pdTl"></div></div>'
+    +'<div class="dlg-foot"><button type="button" class="btn danger" data-act="del-arm" data-kind="p">Supprimer</button><div class="r"><button type="button" class="btn" data-act="close">Annuler</button><button type="button" class="btn primary" data-act="save-pd">Enregistrer</button></div></div>');
+  paintPTimeline(); refreshProspectCalLinks();
+}
+function refreshProspectCalLinks(){
+  var lk = $('#pdLaunchLink');
+  if(lk){
+    var lv = $('#pdLaunch').value, lts = lv ? fromYmd(lv) : null;
+    lk.innerHTML = lts ? '<a class="btn small" href="'+esc(gcalLink('Lancement de @'+draft.handle+' (DHA)', lts, lts+DAY, draft.objectif||'', true))+'" target="_blank" rel="noopener">Ajouter au calendrier</a>' : '';
+  }
+  var ck = $('#pdCallLink');
+  if(ck){
+    var cv = $('#pdCallAt').value, cts = fromDtLocal(cv);
+    ck.innerHTML = cts ? '<a class="btn small" href="'+esc(gcalLink('Call avec @'+draft.handle+' (DHA)', cts, cts+45*60000, draft.objectif||'', false))+'" target="_blank" rel="noopener">Ajouter au calendrier</a>' : '';
+  }
+}
+function paintPTimeline(){
+  var el = $('#pdTl'); if(!el) return;
+  el.innerHTML = (draft.interactions||[]).length ? draft.interactions.map(function(k){ return '<div><small>'+dShort(k.at)+', '+esc(k.type||'Message')+'</small>'+esc(k.note||'')+'</div>'; }).join('') : '<p class="note" style="margin:0">Aucun suivi enregistré.</p>';
+}
+function saveProspectDetails(){
+  var d = Object.assign({}, draft);
+  d.objectif = $('#pdObj').value.trim(); d.notes = $('#pdSit').value; d.launchAt = $('#pdLaunch').value ? fromYmd($('#pdLaunch').value) : null;
+  var cae = $('#pdCallAt'); if(cae) d.callScheduledAt = fromDtLocal(cae.value);
+  d.interactions = draft.interactions||[];
+  safe(put('prospects', d)).then(closeDlg).catch(function(){});
+}
+function openClient(c){
+  draft = Object.assign({}, c, {checkins:(c.checkins||[]).slice(), onb:Object.assign({}, c.onb||{}), mil:Object.assign({}, c.mil||{}), mods:Object.assign({}, c.mods||{}), payments:(c.payments||[]).slice()});
+  var chk = function(id, label, on){ return '<label class="check"><input type="checkbox" id="'+id+'"'+(on?' checked':'')+'>'+label+'</label>'; };
+  var pm = memberOf(c), prec = c.pseudo ? (PLAT.recent[normPseudo(c.pseudo)]||[]) : [];
+  var platBox = pm ? '<div class="pinfo" style="display:block"><div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap"><b>Sur la plateforme : @'+esc(pm.pseudo)+'</b><span>⚡ '+fmtN(pm.xp||0)+' XP · niveau '+levelOf(pm.xp)+'</span></div>'
+    +(prec.length ? '<div class="tl" style="margin-top:8px">'+prec.slice(0,8).map(function(r){ return '<div><b>+'+fmtN(r.xp_gagne||0)+' XP</b> · '+esc(String(r.raison||'').split(' · ')[0])+' <span class="sub">('+ago(new Date(r.created_at).getTime())+')</span></div>'; }).join('')+'</div>' : '<p class="sub" style="margin:6px 0 0">Aucune activité pour l\'instant.</p>')
+    +'<button type="button" class="btn small primary" data-act="xp-open" data-id="'+esc(c.id)+'" style="margin-top:10px">⚡ Ajouter de l\'XP</button></div>'
+    : '<div class="pinfo" style="display:block"><b>Pas encore relié à son compte.</b> <span class="sub">Choisis son pseudo plus bas pour voir son activité en temps réel.</span></div>';
+  openDlg('<div class="dlg-body"><h2 id="dlgTitle">'+(c.name?esc(c.name):'Nouveau membre')+'</h2>'+(c.id && S.clients.some(function(x){ return x.id===c.id; }) ? platBox : '')
+    +'<div class="two"><div><label for="cdName">Nom ou pseudo</label><input id="cdName" value="'+esc(c.name||'')+'"></div><div><label for="cdStatus">Statut</label><select id="cdStatus">'+CLIENT_STATUS.map(function(s){return '<option value="'+s[0]+'"'+((c.status||'actif')===s[0]?' selected':'')+'>'+s[1]+'</option>';}).join('')+'</select></div></div>'
+    +'<div><label for="cdPseudo">Pseudo sur la plateforme DHA</label><input id="cdPseudo" list="dhaMembers" value="'+esc(c.pseudo||'')+'" placeholder="'+esc((!c.pseudo && guessMember(c).length===1) ? 'Suggestion : '+guessMember(c)[0].pseudo : 'Choisis son pseudo de membre')+'" autocomplete="off">'+(c.pseudo?'<button type="button" class="iconbtn" data-act="unlink-f" style="margin-top:6px">✕ Délier ce compte</button>':'')+'<p class="note" style="margin-top:6px">Relie la fiche à son compte : la case « Fait » de chaque module se coche toute seule dès qu\'il valide le module sur la plateforme. « Maîtrisé » reste à cocher par toi.</p></div>'
+    +'<div class="two"><div><label for="cdOffer">Formule</label><select id="cdOffer">'+offerOpts(c.offer)+'</select></div><div><label for="cdPrice">Prix de la formule (€)</label><input id="cdPrice" type="number" min="0" inputmode="decimal" value="'+(Number(c.price)||0)+'"></div></div>'
+    +chk('cdMulti','Paiement en plusieurs fois', c.payMulti)
+    +'<div id="cdPay" class="paybox" style="display:none"><div class="two"><div><label for="cdN">Nombre d\'échéances prévues</label><input id="cdN" type="number" min="0" inputmode="numeric" value="'+(Number(c.payN)||'')+'" placeholder="Ex. 3"></div><div><label for="cdPayAmt">Montant du paiement reçu (€)</label><input id="cdPayAmt" type="number" min="0" inputmode="decimal" placeholder="Ex. 300"></div></div>'
+    +'<div class="two"><div><label for="cdPayDate">Date du paiement</label><input id="cdPayDate" type="date"></div><div style="align-self:end"><button type="button" class="btn" data-act="add-pay" style="width:100%">Ajouter le paiement</button></div></div>'
+    +'<p class="paysum" id="cdPaySum"></p><div class="tl" id="cdPayList"></div></div>'
+    +'<div><label for="cdStart">Date d\'entrée dans la DHA</label><input id="cdStart" type="date" value="'+ymd(c.startAt||Date.now())+'"></div>'
+    +'<details class="section"><summary>Prise en main ('+ONB.filter(function(k){ return (draft.onb||{})[k[0]]; }).length+'/'+ONB.length+')</summary><div class="checks">'+ONB.map(function(k){ return chk('ob_'+k[0], k[1], (draft.onb||{})[k[0]]); }).join('')+'</div></details>'
+    +monthsHtml(draft, chk)
+    +'</div><div class="dlg-foot"><button type="button" class="btn danger" data-act="del-arm" data-kind="c">Supprimer</button><div class="r"><button type="button" class="btn" data-act="close">Annuler</button><button type="button" class="btn primary" data-act="save-c">Enregistrer</button></div></div>');
+  paintTimeline();
+  $('#cdPayDate').value = ymd(Date.now()); paintPay();
+}
+function paintPay(){
+  var box = $('#cdPay'); if(!box) return;
+  var multi = $('#cdMulti').checked;
+  box.style.display = multi ? 'grid' : 'none';
+  if(!multi) return;
+  var price = Number($('#cdPrice').value)||0, list = draft.payments||[];
+  var paid = list.reduce(function(t,x){ return t+(Number(x.amount)||0); },0), rest = Math.max(0, price-paid), n = Number($('#cdN').value)||0;
+  $('#cdPaySum').innerHTML = 'Déjà payé : <b>'+euro(paid)+'</b>, reste à payer : <b>'+euro(rest)+'</b>'+(price>0 && paid>price ? ' (le total payé dépasse le prix)' : '')+(n>0 && price>0 ? '<br><span class="sub">'+n+' échéances de '+euro(price/n)+' environ.</span>' : '');
+  $('#cdPayList').innerHTML = list.length ? list.map(function(x,i){ return '<div><small>'+dShort(x.at)+'</small><b>'+euro(x.amount)+'</b> <button type="button" class="iconbtn" data-act="del-pay" data-i="'+i+'">Retirer</button></div>'; }).join('') : '<p class="note" style="margin:0">Aucun paiement enregistré.</p>';
+}
+function offerOpts(v){
+  var list = OFFERS.concat(v && OFFERS.indexOf(v)<0 ? [v] : []);
+  return '<option value="">Non choisie</option>'+list.map(function(o){ return '<option'+(o===v?' selected':'')+'>'+esc(o)+'</option>'; }).join('');
+}
+function monthsHtml(c, chk){
+  var cur = monthOf(c), mods = c.mods||{};
+  var totalMast = 0, mn; for(mn=1; mn<=MODULES; mn++){ if(mods['x'+mn]) totalMast++; }
+  var h = '<details class="section"><summary>Parcours des 4 mois ('+totalMast+'/'+MODULES+' modules maîtrisés)</summary><div class="months">';
+  MILES.forEach(function(k, mi){
+    h += '<div class="month">'+chk('mi_'+k[0], k[1], (c.mil||{})[k[0]]);
+    var r = MONTH_MODS[k[0]];
+    if(r){
+      var mast = 0, n;
+      for(n=r[0]; n<=r[1]; n++){ if(mods['x'+n]) mast++; }
+      h += '<details class="mods"'+(cur===mi+1?' open':'')+'><summary>Modules '+pad2(r[0])+' à '+pad2(r[1])+' : '+mast+'/'+(r[1]-r[0]+1)+' maîtrisés</summary><div class="modlist">';
+      for(n=r[0]; n<=r[1]; n++){
+        var auto = isAutoMod(c, n), fait = auto ? autoDone(c, n) : mods['v'+n];
+        var faitHtml = auto
+          ? '<label class="check" title="Se coche tout seul quand le module est validé sur la plateforme"><input type="checkbox" id="mv'+n+'" disabled'+(fait?' checked':'')+'>Fait<span class="auto-tag">AUTO</span></label>'
+          : chk('mv'+n,'Fait',mods['v'+n]);
+        h += '<div class="modrow"><span>Module '+pad2(n)+'</span>'+faitHtml+chk('mx'+n,'Maîtrisé',mods['x'+n])+'</div>';
+      }
+      h += '</div></details>';
+    }
+    h += '</div>';
+  });
+  return h+'</div></details>';
+}
+function paintTimeline(){
+  var el = $('#cdTl'); if(!el) return; // (suivi retiré de la fiche)
+  el.innerHTML = (draft.checkins||[]).length ? draft.checkins.map(function(k){ return '<div><small>'+dShort(k.at)+', '+esc(k.type||'Message')+'</small>'+esc(k.note||'')+'</div>'; }).join('') : '<p class="note" style="margin:0">Aucune interaction enregistrée.</p>';
+}
+function saveClient(){
+  var d = Object.assign({}, draft), now = Date.now();
+  d.name = $('#cdName').value.trim() || 'Sans nom'; d.status = $('#cdStatus').value; d.offer = $('#cdOffer').value.trim();
+  d.pseudo = ($('#cdPseudo').value||'').trim().replace(/^@+/,'');
+  if(d.pseudo && PLAT.members.length && !PLAT.members.some(function(m){ return normPseudo(m.pseudo)===normPseudo(d.pseudo); })){ toast('Aucun compte DHA avec le pseudo @'+d.pseudo+'. Choisis-le dans la liste.'); var pf = $('#cdPseudo'); if(pf) pf.focus(); return; }
+  var dup = d.pseudo && S.clients.filter(function(x){ return x.id!==d.id && normPseudo(x.pseudo)===normPseudo(d.pseudo); })[0];
+  if(dup){ toast('@'+d.pseudo+' est déjà relié à '+(dup.name||'un autre client')+'.'); return; }
+  d.price = Number($('#cdPrice').value)||0; d.startAt = fromYmd($('#cdStart').value); 
+  d.payMulti = $('#cdMulti').checked; d.payN = Number($('#cdN').value)||0;
+  d.payments = (draft.payments||[]).slice();
+  var pend = Number($('#cdPayAmt').value)||0;
+  if(d.payMulti && pend>0) d.payments.unshift({at:fromYmd($('#cdPayDate').value), amount:pend});
+  d.payments.sort(function(a,b){ return b.at-a.at; });
+  var onb = {}, mil = {};
+  ONB.forEach(function(k){ onb[k[0]] = $('#ob_'+k[0]).checked ? ((draft.onb||{})[k[0]] || now) : null; });
+  MILES.forEach(function(k){ mil[k[0]] = $('#mi_'+k[0]).checked ? ((draft.mil||{})[k[0]] || now) : null; });
+  d.onb = onb; d.mil = mil;
+  var mods = {};
+  for(var mn=1; mn<=MODULES; mn++){
+    var mvEl = $('#mv'+mn);
+    if(mvEl.disabled) mods['v'+mn] = autoDone(Object.assign({}, draft, {pseudo:d.pseudo}), mn) || null;
+    else mods['v'+mn] = mvEl.checked ? ((draft.mods||{})['v'+mn] || now) : null;
+    mods['x'+mn] = $('#mx'+mn).checked ? ((draft.mods||{})['x'+mn] || now) : null;
+  }
+  d.mods = mods;
+  var pseudoChanged = (d.pseudo||'') !== (draft.pseudo||'');
+  safe(put('clients', d)).then(function(){ closeDlg(); if(pseudoChanged) loadPlatform(); }).catch(function(){});
+}
+function openDebtors(){
+  var list = S.clients.filter(function(c){ return c.status!=='perdu' && remainingOf(c)>0; }).sort(function(a,b){ return remainingOf(b)-remainingOf(a); });
+  var rows = list.length ? list.map(function(c){ return '<div class="tl-row"><button type="button" class="btn small" data-act="open-client-from-debt" data-id="'+esc(c.id)+'">'+esc(c.name||'Sans nom')+'</button><span>'+euro(remainingOf(c))+' sur '+euro(c.price)+'</span></div>'; }).join('') : '<p class="note" style="margin:0">Personne ne te doit d\'argent pour l\'instant.</p>';
+  openDlg('<div class="dlg-body"><h2 id="dlgTitle">Clients qui te doivent de l\'argent</h2><div class="tl">'+rows+'</div></div><div class="dlg-foot"><span></span><div class="r"><button type="button" class="btn" data-act="close">Fermer</button></div></div>');
+}
+function openTargets(){
+  var t = S.targets;
+  openDlg('<div class="dlg-body"><h2 id="dlgTitle">Objectifs de conversion</h2><p class="sub">Le Cerveau compare tes taux à ces objectifs pour trouver ta fuite principale. Ajuste-les selon ton marché.</p>'
+    +'<div><label for="tgR">Taux de réponse aux DM (%)</label><input id="tgR" type="number" min="1" max="100" value="'+t.reply+'"></div>'
+    +'<div><label for="tgC">Réponses qui débouchent sur un call (%)</label><input id="tgC" type="number" min="1" max="100" value="'+t.call+'"></div>'
+    +'<div><label for="tgS">Calls bookés qui ont bien lieu (%)</label><input id="tgS" type="number" min="1" max="100" value="'+t.show+'"></div>'
+    +'<div><label for="tgW">Calls réalisés qui deviennent clients (%)</label><input id="tgW" type="number" min="1" max="100" value="'+t.close+'"></div></div>'
+    +'<div class="dlg-foot"><span></span><div class="r"><button type="button" class="btn" data-act="close">Annuler</button><button type="button" class="btn primary" data-act="save-t">Enregistrer</button></div></div>');
+}
+
+/* ---------- export ---------- */
+function toCSV(rows, cols){
+  var q = function(v){ v = v==null?'':String(v); return /[";\n\r]/.test(v) ? '"'+v.replace(/"/g,'""')+'"' : v; };
+  return '\uFEFF' + [cols.map(function(c){return q(c[0]);}).join(';')].concat(rows.map(function(r){ return cols.map(function(c){ return q(c[1](r)); }).join(';'); })).join('\r\n');
+}
+var d2 = function(ts){ return ts ? ymd(ts) : ''; };
+function exportCsv(kind){
+  if(!dlNs) return;
+  var csv;
+  if(kind==='prospects') csv = toCSV(S.prospects, [['Pseudo',function(p){return p.handle;}],['Plateforme',function(p){return p.platform;}],['Source',function(p){return p.source;}],['Script',function(p){return p.variant;}],['Statut',function(p){return p.status;}],['DM envoyé le',function(p){return d2(p.dmAt);}],['Réponse le',function(p){return d2(p.repliedAt);}],['Call booké le',function(p){return d2(p.callAt);}],['Call fait le',function(p){return d2(p.heldAt);}],['Client le',function(p){return d2(p.wonAt);}],['Perdu le',function(p){return d2(p.lostAt);}],['Raison de la perte',function(p){return p.lostReason;}],['Notes',function(p){return p.notes;}]]);
+  else if(kind==='content') csv = toCSV(S.content, [['Date',function(c){return d2(c.date);}],['Plateforme',function(c){return c.platform;}],['Format',function(c){return c.format;}],['Accroche',function(c){return c.hook;}],['Vues',function(c){return c.views;}],['Enregistrements',function(c){return c.saves;}],['Ebooks demandés',function(c){return c.leads;}],['Appel à l\'action',function(c){return c.cta;}],['Vues Instagram',function(c){return c.platform==='Les deux'?(c.ig||{}).views:'';}],['Vues TikTok',function(c){return c.platform==='Les deux'?(c.tt||{}).views:'';}],['Ebooks Instagram',function(c){return c.platform==='Les deux'?(c.ig||{}).leads:'';}],['Ebooks TikTok',function(c){return c.platform==='Les deux'?(c.tt||{}).leads:'';}],['Clients',function(c){return c.clients;}]]);
+  else csv = toCSV(S.clients, [['Nom',function(c){return c.name;}],['Statut',function(c){return c.status;}],['Offre',function(c){return c.offer;}],['Prix',function(c){return c.price;}],['Paiement en plusieurs fois',function(c){return c.payMulti?'oui':'non';}],['Déjà payé',function(c){return paidOf(c);}],['Reste à payer',function(c){return remainingOf(c);}],['Début',function(c){return d2(c.startAt);}],['Étapes validées (sur '+STEP_TOTAL+')',function(c){return stepsDone(c);}],['Objectif',function(c){return c.goal;}],['Check-ins',function(c){return (c.checkins||[]).length;}]]);
+  dlNs.save({filename:'cerveau-'+kind+'-'+ymd(Date.now())+'.csv', data:csv}).then(function(){ toast('Export enregistré'); }).catch(function(e){ if(!e || e.code!=='declined') toast("L'export a échoué."); });
+}
+
+function copyText(txt){
+  var done = function(){ toast('Chiffres copiés. Colle-les dans une conversation avec Claude.'); };
+  var fallback = function(){ var b = $('#aiCopyBox'); if(!b) return; b.value = txt; b.classList.remove('sr'); b.select(); try{ document.execCommand('copy'); done(); }catch(e){ toast('Sélectionne le texte et copie-le.'); } };
+  try{ navigator.clipboard.writeText(txt).then(done, fallback); }catch(e){ fallback(); }
+}
+
+/* ---------- toast ---------- */
+var toastT = 0;
+function toast(msg){
+  var t = $('#toast'); t.textContent = msg; t.classList.add('show');
+  clearTimeout(toastT); toastT = setTimeout(function(){ t.classList.remove('show'); }, 3800);
+}
+
+/* ---------- événements ---------- */
+var armT = 0;
+document.addEventListener('click', function(ev){
+  var el = ev.target.closest('[data-act]'); if(!el) return;
+  var act = el.getAttribute('data-act'), id = el.getAttribute('data-id');
+  var byId = function(list){ return list.filter(function(x){ return x.id===id; })[0]; };
+  switch(act){
+    case 'tab': S.tab = el.getAttribute('data-tab'); render(); window.scrollTo(0,0); break;
+    case 'period': S.period = el.getAttribute('data-v'); render(); break;
+    case 'gper': S.goalPer = el.getAttribute('data-v'); S.weekOffset = S.goalPer==='lweek' ? -1 : 0; render(); break;
+    case 'sper': S.statPer = el.getAttribute('data-v'); render(); break;
+    case 'obj-edit': ev.stopPropagation(); openObjectif(); return;
+    case 'save-obj': saveObjectif(); break;
+    case 'candf': CANDF = el.getAttribute('data-v'); schedule(); break;
+    case 'cand-det': openCand(id); break;
+    case 'xp-open': ev.stopPropagation(); var xc = byId(S.clients); if(xc) openXp(xc); break;
+    case 'xp-q': var k = el.getAttribute('data-k'); XPC.q[k] = Math.max(0, (XPC.q[k]||0)+Number(el.getAttribute('data-d'))); $('#xq_'+k).textContent = XPC.q[k]; $('#xpTot').textContent = 'Total : +'+fmtN(xpTotal())+' XP'; break;
+    case 'xp-ok': xpValidate(); break;
+    case 'cf': S.cliF = el.getAttribute('data-v'); S.tab = 'clients'; render(); break;
+    case 'relink': var rc = byId(S.clients); if(rc){ openClient(rc); setTimeout(function(){ var f = $('#cdPseudo'); if(f){ f.scrollIntoView({block:'center'}); f.select(); } }, 60); } break;
+    case 'unlink-f': var f2 = $('#cdPseudo'); if(f2){ f2.value = ''; toast('Compte délié : clique sur « Enregistrer » pour valider.'); } break;
+    case 'unlink': var uc = byId(S.clients); if(uc){ var row = el.closest('div'); safe(put('clients', Object.assign({}, uc, {pseudo:''}))).then(function(){ if(row) row.innerHTML = '<span class="sub">Liaison annulée pour '+esc(uc.name||'ce client')+'</span>'; }).catch(function(){}); } break;
+    case 'cand-st': var cs = candById(id); if(cs){ var v2 = el.getAttribute('data-v'); safe(patchCandDb(cs,{statut:v2})).then(function(){ openCand(id); toast('Statut : '+CST[v2][0]); }).catch(function(){}); } break;
+    case 'cand-save': var cn = candById(id); if(cn){ var nt = ($('#cnNote').value||'').trim(); if(!nt){ toast('Écris ta note.'); break; }
+      var d0 = new Date(), stamp = ('0'+d0.getDate()).slice(-2)+'/'+('0'+(d0.getMonth()+1)).slice(-2)+' '+('0'+d0.getHours()).slice(-2)+'h'+('0'+d0.getMinutes()).slice(-2);
+      var full = stamp+' — '+nt.replace(/\s*\n\s*/g,' ')+(cn.note?'\n'+cn.note:'');
+      safe(patchCandDb(cn,{note:full})).then(function(){ openCand(id); toast('Note ajoutée'); }).catch(function(){}); } break;
+    case 'cand-pros': var cp = candById(id); if(cp) candToProspect(cp); break;
+    case 'add-dm': S.tab = 'prospects'; render(); setTimeout(function(){ openDmLogDialog(); }, 30); break;
+    case 'open-dmlog': openDmLogDialog(); break;
+    case 'open-reply': openReplyDialog(); break;
+    case 'submit-dmlog': submitDmLog(); break;
+    case 'submit-reply': submitReplies(); break;
+    case 'del-log': if(el.getAttribute('data-armed')){ safe(del('dmlogs', id)).catch(function(){}); } else { el.setAttribute('data-armed','1'); el.textContent = 'Confirmer'; clearTimeout(armT); armT = setTimeout(function(){ el.removeAttribute('data-armed'); el.textContent = 'Supprimer'; }, 4000); } break;
+    case 'goto-relance': S.tab = 'prospects'; S.pf = {act:['relance'], stage:[], rev:[], src:[]}; S.funnelView = null; savePf(); S.limit = 60; render(); break;
+    case 'goto-stage': S.tab = 'prospects'; S.funnelView = el.getAttribute('data-stage'); S.limit = 60; render(); break;
+    case 'all-prospects': S.tab = 'prospects'; S.funnelView = null; S.limit = 60; render(); break;
+    case 'pf':
+      var g = el.getAttribute('data-g'), v = el.getAttribute('data-v'), arr = (S.pf[g]||[]).slice(), i0 = arr.indexOf(v);
+      if(i0>=0) arr.splice(i0,1); else arr.push(v);
+      S.pf[g] = arr; S.limit = 60; savePf(); paintProspects(); break;
+    case 'pf-toggle': S.pfOpen = !S.pfOpen; paintProspects(); break;
+    case 'pf-clear': S.pf = {act:[], stage:[], rev:[], src:[]}; S.limit = 60; savePf(); paintProspects(); break;
+    case 'funnel-off': S.funnelView = null; paintProspects(); break;
+    case 'debtors': openDebtors(); break;
+    case 'open-client-from-debt': var dc = S.clients.filter(function(x){ return x.id===id; })[0]; if(dc) openClient(dc); break;
+    case 'filter': S.filter = el.getAttribute('data-f'); S.limit = 60; paintProspects(); break;
+    case 'more': S.limit += 60; paintProspects(); break;
+    case 'stage': changeStage(id, el.getAttribute('data-stage')); break;
+    case 'cycle-rev':
+      var rp2 = byId(S.prospects); if(!rp2) break;
+      var revOrder = [null,'sdr','sr'], curRev = revOrder.indexOf(rp2.revenu||null), nextRev = revOrder[(curRev+1)%revOrder.length];
+      safe(put('prospects', Object.assign({}, rp2, {revenu:nextRev}))).catch(function(){});
+      break;
+    case 'toggle-steps': S.expandedSteps[id] = !S.expandedSteps[id]; paintProspects(); break;
+    case 'del-p':
+      if(el.getAttribute('data-armed')){ deleteProspect(id); }
+      else { el.setAttribute('data-armed','1'); el.textContent = 'Confirmer'; clearTimeout(armT); armT = setTimeout(function(){ el.removeAttribute('data-armed'); el.textContent = 'Supprimer'; }, 4000); }
+      break;
+    case 'relance':
+      var rp = byId(S.prospects); if(!rp) break;
+      var rq = Object.assign({}, rp), was = needsFollowUp(rp);
+      if(was){ rq.relance = false; rq.lastRelanceAt = Date.now(); } else { rq.relance = true; }
+      safe(put('prospects', rq)).then(function(){ toast(was ? 'Marqué comme relancé' : 'Marqué à relancer'); }).catch(function(){});
+      break;
+    case 'edit-p': var p = byId(S.prospects); if(p) openProspect(p, el.getAttribute('data-act')==='edit-p' && el.closest('.p-actions')); break;
+    case 'details-p': openProspectDetails(id); break;
+    case 'add-pint':
+      var pin = $('#pdINote').value.trim();
+      draft.interactions = [{at:Date.now(), type:$('#pdIType').value, note:pin}].concat(draft.interactions||[]);
+      $('#pdINote').value = ''; paintPTimeline(); break;
+    case 'save-pd': saveProspectDetails(); break;
+    case 'save-p': saveProspect(); break;
+    case 'del-c': if(el.getAttribute('data-armed')){ safe(del('content', id)).catch(function(){}); } else { el.setAttribute('data-armed','1'); el.textContent = 'Confirmer'; clearTimeout(armT); armT = setTimeout(function(){ el.removeAttribute('data-armed'); el.textContent = 'Supprimer'; }, 4000); } break;
+    case 'del-arm':
+      if(el.getAttribute('data-armed')){
+        var kind = el.getAttribute('data-kind');
+        safe(del(kind==='p'?'prospects':'clients', draft.id)).then(closeDlg).catch(function(){});
+      }else{ el.setAttribute('data-armed','1'); el.textContent = 'Confirmer la suppression'; clearTimeout(armT); armT = setTimeout(function(){ el.removeAttribute('data-armed'); el.textContent = 'Supprimer'; }, 4000); }
+      break;
+    case 'close': closeDlg(); break;
+    case 'new-client': openClient({id:uid(), name:'', status:'actif', price:0, goal:'', offer:'', startAt:Date.now(), checkins:[], onb:{}, mil:{}, demoGoal:'', rdv:false, prospectId:null}); break;
+    case 'open-client': var c = byId(S.clients); if(c) openClient(c); break;
+    case 'add-checkin':
+      var note = $('#cdNote').value.trim();
+      draft.checkins = [{at:Date.now(), type:$('#cdType').value, note:note}].concat(draft.checkins||[]);
+      $('#cdNote').value = ''; paintTimeline(); break;
+    case 'add-pay':
+      var amt = Number($('#cdPayAmt').value)||0;
+      if(amt<=0){ $('#cdPayAmt').focus(); break; }
+      draft.payments = (draft.payments||[]).concat([{at:fromYmd($('#cdPayDate').value), amount:amt}]).sort(function(a,b){ return b.at-a.at; });
+      $('#cdPayAmt').value = ''; paintPay(); break;
+    case 'del-pay': (draft.payments||[]).splice(Number(el.getAttribute('data-i')),1); paintPay(); break;
+    case 'save-c': saveClient(); break;
+    case 'auto-link': autoLinkClients(); break;
+    case 'week-prev': S.weekOffset--; paintGoals(); break;
+    case 'week-next': if(S.weekOffset<0){ S.weekOffset++; paintGoals(); } break;
+    case 'goals': openGoals(); break;
+    case 'save-g':
+      var ng = {}; GOAL_DEFS.forEach(function(d){ ng[d.k] = Math.max(0, Math.floor(Number($('#gl_'+d.k).value)||0)); });
+      safe(saveGoals(ng)).then(closeDlg).catch(function(){}); break;
+    case 'targets': openTargets(); break;
+    case 'save-t':
+      var t = {reply:Number($('#tgR').value)||DEFAULT_TARGETS.reply, call:Number($('#tgC').value)||DEFAULT_TARGETS.call, show:Number($('#tgS').value)||DEFAULT_TARGETS.show, close:Number($('#tgW').value)||DEFAULT_TARGETS.close};
+      safe(saveTargets(t)).then(closeDlg).catch(function(){}); break;
+    case 'export': exportCsv(el.getAttribute('data-kind')); break;
+    case 'ai-run': runAI(''); break;
+    case 'ai-ask': var qv = ($('#aiQ')||{}).value; if(qv && qv.trim()) runAI(qv.trim()); else if($('#aiQ')) $('#aiQ').focus(); break;
+    case 'ai-stop': if(aiCtl) aiCtl.abort(); break;
+    case 'ai-quick': var qq = el.getAttribute('data-q'); if($('#aiQ')) $('#aiQ').value = qq; runAI(qq); break;
+    case 'ai-copy': runAI((($('#aiQ')||{}).value||'').trim(), true); break;
+  }
+});
+document.addEventListener('change', function(ev){
+  var el = ev.target;
+  if(el && el.id==='psort'){ S.sort = el.value; S.limit = 60; savePf(); paintProspects(); return; }
+  if(el.getAttribute && el.getAttribute('data-act')==='num'){
+    var c = S.content.filter(function(x){ return x.id===el.getAttribute('data-id'); })[0]; if(!c) return;
+    var o = Object.assign({}, c), path = el.getAttribute('data-field'), val = Math.max(0, Number(el.value)||0);
+    if(path.indexOf('.')>0){
+      var pr = path.split('.'), sub = Object.assign({}, o[pr[0]]); sub[pr[1]] = val; o[pr[0]] = sub;
+      METRICS.forEach(function(m){ o[m[0]] = (Number((o.ig||{})[m[0]])||0) + (Number((o.tt||{})[m[0]])||0); });
+    }else{ o[path] = val; }
+    safe(put('content', o)).catch(function(){});
+  }
+});
+document.addEventListener('input', function(ev){
+  if(ev.target && ev.target.id==='pq'){ S.q = ev.target.value; S.limit = 60; paintProspects(); }
+  if(ev.target && ev.target.id==='aiQ'){ /* rien */ }
+});
+document.addEventListener('keydown', function(ev){
+  if(ev.key==='Enter' && ev.target && ev.target.id==='aiQ'){ ev.preventDefault(); var v = ev.target.value.trim(); if(sampleFn){ if(v) runAI(v); } else runAI(v, true); }
+  if(ev.key==='Enter' && ev.target && ev.target.id==='cdPayAmt'){ ev.preventDefault(); var pb = $('[data-act="add-pay"]'); if(pb) pb.click(); }
+  if(ev.key==='Enter' && ev.target && ev.target.id==='cdNote'){ ev.preventDefault(); var b = $('[data-act="add-checkin"]'); if(b) b.click(); }
+});
+
+/* ---------- démarrage ---------- */
+var SKEL = {cand:skelCand, perdus:skelLost, home:skelHome, stats:skelStats, membres:skelEmbed, funnel:skelFunnel, objectifs:skelGoals, launches:skelLaunches, prospects:skelProspects, content:skelContent, clients:skelClients, brain:skelBrain};
+var PAINT = {cand:paintCand, perdus:paintLost, home:paintHome, stats:paintStats, membres:function(){}, funnel:paintFunnel, objectifs:paintGoals, launches:paintLaunches, prospects:paintProspects, content:paintContent, clients:paintClients, brain:function(){}};
+
+function use(name){
+  try{ if(window.claude && typeof window.claude.use==='function') return Promise.resolve(window.claude.use(name)).catch(function(){ return null; }); }catch(e){}
+  return Promise.resolve(null);
+}
+// Export CSV : téléchargement direct depuis le navigateur
+dlNs = {save:function(o){
+  var url = URL.createObjectURL(new Blob([o.data], {type:'text/csv;charset=utf-8'}));
+  var a = document.createElement('a'); a.href = url; a.download = o.filename; document.body.appendChild(a); a.click();
+  setTimeout(function(){ URL.revokeObjectURL(url); a.remove(); }, 1000);
+  return Promise.resolve();
+}};
+var PASS = '050876';
+function start(){
+  $('#gate').remove();
+  render();
+  connectCloud(makeSupaDb());
+  setInterval(loadPlatform, 60000);
+}
+// Plus de mot de passe (comme l'admin) : le Cerveau s'ouvre directement
+var okSession = true;
+if(okSession) start();
+else {
+  $('#gatePwd').focus();
+  $('#gateForm').addEventListener('submit', function(ev){
+    ev.preventDefault();
+    if($('#gatePwd').value===PASS){ try{ sessionStorage.setItem('dha_admin','1'); }catch(e){} start(); }
+    else { $('#gateErr').textContent = 'Mot de passe incorrect.'; $('#gatePwd').select(); }
+  });
+}
+})();
+</script>
+</body>
+</html>
