@@ -108,7 +108,7 @@ footer{text-align:center;font-family:'Chakra Petch',sans-serif;font-size:11px;le
       <div class="kicker">CANDIDATURE</div>
       <h1>Tu veux rejoindre la <em>Digital Hustler Academy</em> ?</h1>
       <p class="lead">On ne prend pas tout le monde : on cherche des personnes motivées, prêtes à apprendre et à avancer avec un groupe. Réponds honnêtement, il n'y a pas de mauvaise réponse. Je lis chaque candidature moi-même et je te recontacte personnellement.</p>
-      <div class="facts"><span>⏱ 2 MINUTES</span><span>📝 11 QUESTIONS</span><span>🔒 RÉPONSES CONFIDENTIELLES</span></div>
+      <div class="facts"><span>⏱ 2 MINUTES</span><span>📝 12 QUESTIONS</span><span>🔒 RÉPONSES CONFIDENTIELLES</span></div>
       <div class="nav"><button class="btn" data-next>COMMENCER MA CANDIDATURE →</button></div>
     </section>
 
@@ -128,6 +128,17 @@ footer{text-align:center;font-family:'Chakra Petch',sans-serif;font-size:11px;le
       <p class="sub">&nbsp;</p>
       <input class="field" id="f-age" type="number" inputmode="numeric" min="17" max="99" placeholder="Ex : 22">
       <div class="err" id="e-age"></div>
+      <div class="nav"><button class="back" data-back aria-label="Question précédente">←</button><button class="btn" data-next>SUIVANT →</button></div>
+      <div class="enter">ou appuie sur Entrée ↵</div>
+    </section>
+
+    <!-- 2b -->
+    <section class="step" data-id="lieu" data-q>
+      <h2>Tu viens d'où ?</h2>
+      <p class="sub">Ta ville et ton pays.</p>
+      <input class="field" id="f-ville" type="text" autocomplete="address-level2" maxlength="60" placeholder="Ta ville">
+      <input class="field" id="f-pays" type="text" autocomplete="country-name" maxlength="60" placeholder="Ton pays" value="France" style="margin-top:12px">
+      <div class="err" id="e-lieu"></div>
       <div class="nav"><button class="back" data-back aria-label="Question précédente">←</button><button class="btn" data-next>SUIVANT →</button></div>
       <div class="enter">ou appuie sur Entrée ↵</div>
     </section>
@@ -282,7 +293,7 @@ footer{text-align:center;font-family:'Chakra Petch',sans-serif;font-size:11px;le
   var steps=[].slice.call(document.querySelectorAll('.step'));
   var qs=steps.filter(function(s){return s.hasAttribute('data-q');});
   var cur=0, envoye=false;
-  var R={prenom:'',age:null,situation:'',business_en_ligne:'',formations:'',avantages:[],seul_equipe:'',investir:'',deplacements:'',contact_canal:'',contact_valeur:'',source:'',source_detail:''};
+  var R={prenom:'',age:null,ville:'',pays:'',situation:'',business_en_ligne:'',formations:'',avantages:[],seul_equipe:'',investir:'',deplacements:'',contact_canal:'',contact_valeur:'',source:'',source_detail:''};
 
   // Lien partagé : ?src=ebook / ?src=insta… (pour savoir d'où vient la candidature)
   var params=new URLSearchParams(location.search);
@@ -327,6 +338,13 @@ footer{text-align:center;font-family:'Chakra Petch',sans-serif;font-size:11px;le
       if(!a||a>99){err('age','Indique un âge valide.');return false;}
       if(a<17){err('age','Désolé, il faut avoir au moins 17 ans pour candidater à la DHA.');return false;}
       R.age=a; err('age'); return true;
+    }
+    if(id==='lieu'){
+      var cap=function(x){return x.replace(/(^|[\s-])\S/g,function(m){return m.toUpperCase();});};
+      var vi=document.getElementById('f-ville').value.trim(), pa=document.getElementById('f-pays').value.trim();
+      if(vi.length<2){err('lieu','Indique ta ville 🙂');return false;}
+      if(pa.length<2){err('lieu','Indique ton pays.');return false;}
+      R.ville=cap(vi); R.pays=cap(pa); err('lieu'); return true;
     }
     if(id==='avantages'){
       if(!R.avantages.length){err('avantages','Choisis au moins une réponse.');return false;}
@@ -424,7 +442,7 @@ footer{text-align:center;font-family:'Chakra Petch',sans-serif;font-size:11px;le
     var b=document.getElementById('send'); b.disabled=true; b.textContent='ENVOI…';
     R.source_detail=document.getElementById('f-source').value.trim();
     var row={
-      prenom:R.prenom, age:R.age, situation:R.situation, business_en_ligne:R.business_en_ligne,
+      prenom:R.prenom, age:R.age, ville:R.ville, pays:R.pays, situation:R.situation, business_en_ligne:R.business_en_ligne,
       formations:R.formations, avantages:R.avantages, seul_equipe:R.seul_equipe, investir:R.investir,
       deplacements:R.deplacements, contact_canal:R.contact_canal, contact_valeur:R.contact_valeur,
       source:R.source, source_detail:R.source_detail||null, source_lien:SRC||null
@@ -437,7 +455,7 @@ footer{text-align:center;font-family:'Chakra Petch',sans-serif;font-size:11px;le
           fetch(FORMSPREE,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({
             _subject:'🔥 Nouvelle candidature DHA — '+R.prenom+' ('+R.age+' ans)',
             sujet:'Nouvelle candidature DHA',
-            prenom:R.prenom, age:R.age, situation:R.situation,
+            prenom:R.prenom, age:R.age, lieu:R.ville+', '+R.pays, situation:R.situation,
             contact:R.contact_canal+' : '+R.contact_valeur,
             business_en_ligne:R.business_en_ligne, formations:R.formations,
             attire_par:R.avantages.join(', '), seul_ou_equipe:R.seul_equipe,
