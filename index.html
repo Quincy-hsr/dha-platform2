@@ -215,16 +215,6 @@
   .plat-gallery{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;max-width:1100px;margin:40px auto 0;}
   .plat-item{border-radius:14px;overflow:hidden;border:1px solid var(--border);background:var(--card);}
   .plat-item img{width:100%;height:auto;display:block;}
-  .plat-item{cursor:zoom-in;position:relative;}
-  .plat-zoom{font-style:normal;position:absolute;top:10px;right:10px;padding:5px 10px;border-radius:99px;background:rgba(5,9,20,0.75);border:1px solid rgba(0,212,255,0.35);color:var(--cyan);font-size:12px;font-family:'Chakra Petch',sans-serif;pointer-events:none;}
-  @media(max-width:700px){.plat-gallery{grid-template-columns:1fr;gap:14px;margin-left:-24px;margin-right:-24px;}.plat-item{border-radius:10px;}}
-  .plat-lb{position:fixed;inset:0;z-index:3000;background:#03060e;display:flex;flex-direction:column;}
-  .plat-lb-top{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 16px;color:var(--white);font-family:'Chakra Petch',sans-serif;font-size:14px;}
-  .plat-lb-top button{background:rgba(255,255,255,0.08);border:1px solid var(--border);color:var(--white);border-radius:10px;padding:8px 14px;font-size:15px;cursor:pointer;}
-  .plat-lb-img{flex:1;overflow:auto;-webkit-overflow-scrolling:touch;display:flex;align-items:center;}
-  .plat-lb-img img{display:block;margin:auto;max-width:none;width:min(1100px,240vw);height:auto;}
-  @media(min-width:1101px){.plat-lb-img img{width:auto;max-width:95vw;max-height:85vh;}}
-  .plat-lb-hint{text-align:center;color:var(--dim);font-size:13px;padding:8px 16px 14px;}
   .plat-item span{display:block;padding:10px 14px;font-family:'Rajdhani',sans-serif;font-size:14px;letter-spacing:1px;color:var(--dim);text-align:center;}
   .perk-card{max-width:1000px;margin:0 auto;background:var(--card);border:1px solid rgba(255,215,0,0.25);border-radius:20px;padding:36px;box-shadow:0 0 50px rgba(255,215,0,0.06);}
   .perk-tag{display:inline-block;font-family:'Chakra Petch',sans-serif;font-size:11px;letter-spacing:2px;color:var(--gold);border:1px solid rgba(255,215,0,0.4);border-radius:20px;padding:5px 12px;margin-bottom:14px;}
@@ -662,12 +652,12 @@
   <div class="section-title reveal">Regarde l'intérieur de la plateforme</div>
   <p class="section-desc reveal">Pour te faire une vraie idée de ce qui t'attend à l'intérieur — pseudo, XP, modules, vidéos, cours illustrés, quiz et questions — voilà à quoi ressemble ta plateforme.</p>
   <div class="plat-gallery">
-    <div class="plat-item reveal"><img src="plateforme-1.jpg" alt="Dashboard : pseudo, XP, niveau et quêtes du jour" loading="lazy" onerror="this.parentNode.style.display='none'"><em class="plat-zoom">🔍 Agrandir</em><span>Dashboard : pseudo, XP, niveau et quêtes du jour</span></div>
-    <div class="plat-item reveal"><img src="plateforme-2.jpg" alt="Formation : tous les modules et ta progression" loading="lazy" onerror="this.parentNode.style.display='none'"><em class="plat-zoom">🔍 Agrandir</em><span>Formation : tous les modules et ta progression</span></div>
-    <div class="plat-item reveal"><img src="plateforme-3.jpg" alt="Vidéo de formation dans chaque module" loading="lazy" onerror="this.parentNode.style.display='none'"><em class="plat-zoom">🔍 Agrandir</em><span>Vidéo de formation dans chaque module</span></div>
-    <div class="plat-item reveal"><img src="plateforme-4.jpg" alt="Cours illustrés avec exemples concrets" loading="lazy" onerror="this.parentNode.style.display='none'"><em class="plat-zoom">🔍 Agrandir</em><span>Cours illustrés avec exemples concrets</span></div>
-    <div class="plat-item reveal"><img src="plateforme-5.jpg" alt="Mini quiz pour valider tes acquis" loading="lazy" onerror="this.parentNode.style.display='none'"><em class="plat-zoom">🔍 Agrandir</em><span>Mini quiz pour valider tes acquis</span></div>
-    <div class="plat-item reveal"><img src="plateforme-6.jpg" alt="Une question ? Pose-la directement" loading="lazy" onerror="this.parentNode.style.display='none'"><em class="plat-zoom">🔍 Agrandir</em><span>Une question ? Pose-la directement</span></div>
+    <div class="plat-item reveal"><img src="plateforme-1.jpg" alt="Dashboard : pseudo, XP, niveau et quêtes du jour" loading="lazy" onerror="this.parentNode.style.display='none'"><span>Dashboard : pseudo, XP, niveau et quêtes du jour</span></div>
+    <div class="plat-item reveal"><img src="plateforme-2.jpg" alt="Formation : tous les modules et ta progression" loading="lazy" onerror="this.parentNode.style.display='none'"><span>Formation : tous les modules et ta progression</span></div>
+    <div class="plat-item reveal"><img src="plateforme-3.jpg" alt="Vidéo de formation dans chaque module" loading="lazy" onerror="this.parentNode.style.display='none'"><span>Vidéo de formation dans chaque module</span></div>
+    <div class="plat-item reveal"><img src="plateforme-4.jpg" alt="Cours illustrés avec exemples concrets" loading="lazy" onerror="this.parentNode.style.display='none'"><span>Cours illustrés avec exemples concrets</span></div>
+    <div class="plat-item reveal"><img src="plateforme-5.jpg" alt="Mini quiz pour valider tes acquis" loading="lazy" onerror="this.parentNode.style.display='none'"><span>Mini quiz pour valider tes acquis</span></div>
+    <div class="plat-item reveal"><img src="plateforme-6.jpg" alt="Une question ? Pose-la directement" loading="lazy" onerror="this.parentNode.style.display='none'"><span>Une question ? Pose-la directement</span></div>
   </div>
 </section>
 
@@ -960,28 +950,6 @@ document.querySelectorAll('.flip').forEach(function(f){
     (on?f.querySelector('.back-btn'):f.querySelector('.face:not(.back) .flip-btn')).focus({preventScroll:true});
   });});
 });
-</script>
-<script>
-(function(){
-  document.querySelectorAll('.plat-item').forEach(function(it){
-    it.setAttribute('role','button');it.setAttribute('tabindex','0');
-    function ouvrir(){
-      var img=it.querySelector('img'),cap=(it.querySelector('span')||{}).textContent||'';
-      var ov=document.createElement('div');ov.className='plat-lb';ov.setAttribute('role','dialog');ov.setAttribute('aria-label',cap);
-      ov.innerHTML='<div class="plat-lb-top"><span></span><button type="button" aria-label="Fermer">✕ Fermer</button></div><div class="plat-lb-img"><img alt=""></div><div class="plat-lb-hint">Fais glisser pour voir toute l\'image · tourne ton téléphone pour la voir en grand</div>';
-      ov.querySelector('span').textContent=cap;var im=ov.querySelector('.plat-lb-img img');im.src=img.src;im.alt=img.alt;
-      function fermer(){ov.remove();document.body.style.overflow='';document.removeEventListener('keydown',esc);it.focus({preventScroll:true});}
-      function esc(e){if(e.key==='Escape')fermer();}
-      ov.querySelector('button').onclick=fermer;
-      ov.addEventListener('click',function(e){if(e.target===ov||e.target.classList.contains('plat-lb-img'))fermer();});
-      document.addEventListener('keydown',esc);document.body.style.overflow='hidden';document.body.appendChild(ov);
-      var zone=ov.querySelector('.plat-lb-img');im.onload=function(){zone.scrollLeft=0;};
-      ov.querySelector('button').focus();
-    }
-    it.addEventListener('click',ouvrir);
-    it.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();ouvrir();}});
-  });
-})();
 </script>
 </body>
 </html>
