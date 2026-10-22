@@ -734,29 +734,6 @@ const SUPABASE_URL = 'https://kdetwppxsfoagyndrlzr.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtkZXR3cHB4c2ZvYWd5bmRybHpyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzcyMzM3NjQsImV4cCI6MjA5MjgwOTc2NH0.OodaFQKEHcncDYdO6uM121NAUbyxD4UxpptSjzzZOi0';
 
 
-// BREVO CONFIG
-const BREVO_KEY = atob('eGtleXNpYi03MjMxNDRlZjczMmFjNDRjNGZiYTIyNGM0YTMzMmJkYWFkMDI1YTZkYzQ3YzgwM2NiMjUxZDBmYzZiMmI5MzYxLWc2WGFSVHo5QVNjcmtaTEM=');
-
-async function addToBrevo(prenom, nom, email) {
-  try {
-    // Créer ou mettre à jour le contact
-    await fetch('https://api.brevo.com/v3/contacts', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'api-key': BREVO_KEY
-      },
-      body: JSON.stringify({
-        email: email,
-        attributes: { PRENOM: prenom, NOM: nom },
-        listIds: [5],
-        updateEnabled: true
-      })
-    });
-  } catch(e) {
-    console.log('Brevo error:', e);
-  }
-}
 
 function showLockedClasse() {
   alert('🔒 Cette classe n\'est pas encore disponible.\n\nPour le moment seul le Trading est accessible.\nLes autres domaines arrivent très bientôt ! 🔥');
@@ -912,8 +889,6 @@ async function goStep3() {
 
     // Commission du parrain : plus de calcul automatique, Quincy la valide dans l'admin (mensualité par mensualité)
 
-    // Brevo — ajout contact liste
-    addToBrevo(userData.prenom, userData.nom, userData.email);
 
     // EmailJS — isolé dans son propre try/catch pour ne pas bloquer l'inscription
     try {
