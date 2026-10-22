@@ -346,7 +346,7 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
 
       <!-- QUIZ -->
       <div class="quiz-section">
-        <div class="quiz-header"><div style="font-size:24px;">🧠</div><div class="quiz-title">MINI QUIZ — Bloc 1</div><div class="quiz-xp">+25 XP MAX</div></div>
+        <div class="quiz-header"><div style="font-size:24px;">🧠</div><div class="quiz-title">MINI QUIZ — Bloc 1</div><div class="quiz-xp">+50 XP MAX</div></div>
 
         <div class="quiz-question" id="q1">
           <div class="quiz-q-num">QUESTION 1 / 10</div>
@@ -576,7 +576,7 @@ function submitQuiz(){
   document.getElementById('quiz-score').textContent=score+'/10';
   document.getElementById('quiz-text').textContent=score===10?'Parfait ! Tu as tout compris ! 🔥':score>=6?'Bon travail ! Relis les points manqués.':'Continue à apprendre — relis le bloc.';
   document.getElementById('quiz-xp-text').textContent='+'+xpEarned+' XP gagnés !';
-  if(window.dhaQuizRetake){dhaQuizRetakeReward('quiz_m1');}else if(xpEarned>0)awardXP('quiz_m1',xpEarned,'🧠 Quiz Module 1 ('+score+'/5)');
+  if(window.dhaQuizRetake){dhaQuizRetakeReward('quiz_m1');}else if(xpEarned>0)awardXP('quiz_m1',xpEarned,'🧠 Quiz Module 1 ('+score+'/10)');
 }
 
 function sendQuestion(){

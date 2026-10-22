@@ -212,9 +212,10 @@
 
 
   /* PLATEFORME + AVANTAGES */
-  .plat-gallery{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;max-width:1100px;margin:40px auto 0;}
+  .plat-gallery{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;align-items:start;max-width:1100px;margin:40px auto 0;}
   .plat-item{border-radius:14px;overflow:hidden;border:1px solid var(--border);background:var(--card);}
   .plat-item img{width:100%;height:auto;display:block;}
+  @media(max-width:700px){.plat-gallery{grid-template-columns:1fr;}}
   .plat-item span{display:block;padding:10px 14px;font-family:'Rajdhani',sans-serif;font-size:14px;letter-spacing:1px;color:var(--dim);text-align:center;}
   .perk-card{max-width:1000px;margin:0 auto;background:var(--card);border:1px solid rgba(255,215,0,0.25);border-radius:20px;padding:36px;box-shadow:0 0 50px rgba(255,215,0,0.06);}
   .perk-tag{display:inline-block;font-family:'Chakra Petch',sans-serif;font-size:11px;letter-spacing:2px;color:var(--gold);border:1px solid rgba(255,215,0,0.4);border-radius:20px;padding:5px 12px;margin-bottom:14px;}
