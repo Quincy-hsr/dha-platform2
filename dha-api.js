@@ -97,7 +97,7 @@
       ov.innerHTML = '<form style="width:100%;max-width:360px;background:#0a1228;border:1px solid rgba(30,100,255,.3);border-radius:16px;padding:26px;color:#E8F4FF">' +
         '<div style="font-size:28px;margin-bottom:8px">🔒</div><h2 style="margin:0 0 6px;font-size:20px">Code admin</h2>' +
         '<p style="margin:0 0 16px;font-size:14px;color:rgba(232,244,255,.6)">Entre ton code une seule fois sur cet appareil.</p>' +
-        '<input type="password" autocomplete="current-password" style="width:100%;box-sizing:border-box;padding:13px 14px;border-radius:10px;border:1px solid rgba(30,100,255,.35);background:#050914;color:#fff;font-size:16px" placeholder="dha-xxxx-xxxx-xxxx">' +
+        '<input type="password" autocomplete="current-password" style="width:100%;box-sizing:border-box;padding:13px 14px;border-radius:10px;border:1px solid rgba(30,100,255,.35);background:#050914;color:#fff;font-size:16px" placeholder="Ton code admin">' +
         '<div class="e" style="color:#FF4466;font-size:13px;min-height:18px;margin:8px 0"></div>' +
         '<button style="width:100%;padding:13px;border:0;border-radius:10px;background:linear-gradient(90deg,#1E64FF,#00D4FF);color:#fff;font-weight:700;font-size:15px;cursor:pointer">Entrer</button></form>';
       document.body.appendChild(ov);
@@ -107,7 +107,7 @@
         ev.preventDefault();
         var k = inp.value.trim(); if (!k) return;
         rpc('dha_admin_check', { p_key: k }).then(function (ok2) {
-          if (!ok2) { e.textContent = 'Code incorrect.'; return; }
+          if (!ok2) { e.textContent = 'Code incorrect (après 10 erreurs, accès bloqué 15 min).'; return; }
           try { localStorage.setItem(CLE_ADMIN, k); } catch (x) {}
           ov.remove(); cb();
         }).catch(function () { e.textContent = 'Connexion impossible, réessaie.'; });
