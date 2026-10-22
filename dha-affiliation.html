@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
+<script src="dha-api.js"></script>
 <script src="dha-demo.js"></script>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -420,11 +421,7 @@ async function signContrat(){
   const dateStr=now.toLocaleDateString('fr-FR',{day:'2-digit',month:'2-digit',year:'numeric'})+' à '+now.getHours()+'h'+String(now.getMinutes()).padStart(2,'0');
   const signData={contrat_signe:true,contrat_date:now.toISOString(),contrat_nom:name};
   try{
-    await fetch(SUPABASE_URL+'/rest/v1/membres?email=eq.'+encodeURIComponent(member.email).replace(/\./g,'%2E'),{
-      method:'PATCH',
-      headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY},
-      body:JSON.stringify(signData)
-    });
+    await DHA.rpc('dha_update_moi',{p_token:await DHA.token(),p:signData});
   }catch(e){}
   member.contrat_signe=true;
   member.contrat_date=now.toISOString();
@@ -449,10 +446,7 @@ async function loadAffilie(){
   const COMM={'180':[36],'500':[33,33,34],'750':[50,50,50]};
   const NOMS={'180':'ESSENTIEL 180€','500':'GROUPE 500€','750':'1:1 750€'};
   try{
-    const res=await fetch(SUPABASE_URL+'/rest/v1/membres?parraine_par=eq.'+encodeURIComponent(member.pseudo||'')+'&or=(plan.is.null,plan.neq.demo)&select=*&order=date_inscription.desc',{
-      headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY}
-    });
-    const data=await res.json();
+    const data=await DHA.rpc('dha_filleuls',{p_token:await DHA.token()});
     const list=document.getElementById('affilies-list');
     if(!Array.isArray(data)||data.length===0){
       list.innerHTML='<div class="no-affili">Tu n\'as pas encore de filleuls. Partage ton lien ! 🔥</div>';
@@ -497,11 +491,7 @@ function saveRib(){
 
 async function saveRibToSupabase(val){
   try{
-    await fetch(SUPABASE_URL+'/rest/v1/membres?email=eq.'+encodeURIComponent(member.email).replace(/\./g,'%2E'),{
-      method:'PATCH',
-      headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY},
-      body:JSON.stringify({rib:val})
-    });
+    await DHA.rpc('dha_update_moi',{p_token:await DHA.token(),p:{rib:val}});
   }catch(e){}
   member.rib=val;
   localStorage.setItem('dha_member',JSON.stringify(member));
@@ -525,11 +515,7 @@ function editRib(){
 async function deleteRib(){
   if(!confirm('Supprimer ton RIB ?'))return;
   try{
-    await fetch(SUPABASE_URL+'/rest/v1/membres?email=eq.'+encodeURIComponent(member.email).replace(/\./g,'%2E'),{
-      method:'PATCH',
-      headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY},
-      body:JSON.stringify({rib:null})
-    });
+    await DHA.rpc('dha_update_moi',{p_token:await DHA.token(),p:{rib:null}});
   }catch(e){}
   member.rib=null;
   localStorage.setItem('dha_member',JSON.stringify(member));
@@ -550,10 +536,7 @@ async function init(){
   document.getElementById('affili-link').textContent=affiliLink;
 
   try{
-    const res=await fetch(SUPABASE_URL+'/rest/v1/membres?email=eq.'+encodeURIComponent(member.email).replace(/\./g,'%2E')+'&select=*',{
-      headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY}
-    });
-    const data=await res.json();
+    const d0=await DHA.me();const data=d0?[d0]:[];
     if(data&&data.length>0){
       member.nb_affilies=data[0].nb_affilies||0;
       member.statut_affiliation=data[0].statut_affiliation||'membre_simple';

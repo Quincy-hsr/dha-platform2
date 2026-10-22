@@ -202,21 +202,16 @@
 
   /* ---------- données ---------- */
   async function charger(depuis) {
-    var url = URL_ + '/rest/v1/xp_historique?membre_pseudo=eq.' + encodeURIComponent(pseudo) +
-      (depuis ? '&created_at=gt.' + encodeURIComponent(depuis) : '') + '&order=created_at.desc&limit=100';
-    var r = await fetch(url, { headers: HDR });
-    if (!r.ok) throw new Error('courrier ' + r.status);
-    var d = await r.json();
+    var d = await DHA.historique({ since: depuis || null, limit: 100 });
+    if (depuis) d = d.filter(function (e) { return e.created_at > depuis; });
     return Array.isArray(d) ? d : [];
   }
 
   // Met à jour l'XP affiché (barre, niveau, cinématique de level up) quand un gain arrive de l'extérieur
   async function rafraichirXP() {
     try {
-      var m = moi(); if (!m.email) return;
-      var r = await fetch(URL_ + '/rest/v1/membres?email=eq.' + encodeURIComponent(m.email) + '&select=xp', { headers: HDR });
-      var d = await r.json();
-      if (!Array.isArray(d) || !d[0] || d[0].xp == null) return;
+      var me = await DHA.me(); if (!me || me.xp == null) return;
+      var d = [me];
       if (typeof member !== 'undefined' && member && member.xp !== d[0].xp) {
         member.xp = d[0].xp;
         if (typeof getLevelFromXP === 'function') member.level = getLevelFromXP(member.xp);

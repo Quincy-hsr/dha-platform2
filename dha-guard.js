@@ -16,7 +16,7 @@
   }
 
   function couperAcces() {
-    try { localStorage.removeItem('dha_member'); } catch (e) {}
+    try { localStorage.removeItem('dha_member'); localStorage.removeItem('dha_token'); } catch (e) {}
     window.location.replace(PAGE_CONNEXION + '?acces=retire');
   }
 
@@ -36,21 +36,12 @@
   document.documentElement.style.visibility = 'hidden';
   setTimeout(afficherPage, 4000); // sécurité : on affiche quoi qu'il arrive au bout de 4 s
 
-  async function interrogerSupabase(colonnes) {
-    const url = SUPABASE_URL + '/rest/v1/membres?email=eq.' +
-      encodeURIComponent(local.email) + '&select=' + colonnes;
-    return fetch(url, { headers: { apikey: SUPABASE_KEY, Authorization: 'Bearer ' + SUPABASE_KEY } });
-  }
 
   // Renvoie true si le membre a toujours accès, false sinon
   async function verifierAcces() {
     try {
-      let res = await interrogerSupabase('email,actif');
-      if (!res.ok) res = await interrogerSupabase('email'); // si la colonne "actif" n'existe pas encore
-      if (!res.ok) { afficherPage(); return true; }         // souci réseau/serveur : on ne vire personne
-
-      const data = await res.json();
-      const membre = Array.isArray(data) ? data[0] : null;
+      if (!window.DHA) { afficherPage(); return true; }
+      const membre = await DHA.me();
 
       if (!membre || membre.actif === false) {
         couperAcces();

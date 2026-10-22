@@ -96,9 +96,7 @@
       var m = JSON.parse(localStorage.getItem('dha_member') || '{}');
       var cle = cleQuizPage;
       if (!m.pseudo || !cle) return;
-      var r = await fetch(SUPABASE_URL + '/rest/v1/xp_historique?membre_pseudo=eq.' + encodeURIComponent(m.pseudo) + '&action_key=eq.' + cle + '_refait&select=action_key',
-        { headers: { apikey: SUPABASE_KEY, Authorization: 'Bearer ' + SUPABASE_KEY } });
-      var d = await r.json();
+      var d = await DHA.historique({ keys: [cle + '_refait'] });
       if (Array.isArray(d) && d.length) completedActions.add(cle + '_refait');
     } catch (e) {}
   })();

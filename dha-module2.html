@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
+<script src="dha-api.js"></script>
 <script src="dha-demo.js"></script>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -398,10 +399,7 @@ let completedActions=new Set();
 function todayISO(){return new Date().toISOString().split('T')[0];}
 async function loadCompletedActions(pseudo,keys){
   try{
-    const res=await fetch(SUPABASE_URL+'/rest/v1/xp_historique?membre_pseudo=eq.'+encodeURIComponent(pseudo)+'&action_key=in.('+keys.join(',')+')&select=action_key',{
-      headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY}
-    });
-    const data=await res.json();
+    const data=await DHA.historique({keys:keys});
     (data||[]).forEach(r=>completedActions.add(r.action_key));
   }catch(e){}
 }
@@ -418,28 +416,11 @@ async function awardXP(actionKey,amount,raison){
   flash.style.cssText='position:fixed;top:40%;left:60%;transform:translate(-50%,-50%);font-family:Orbitron,sans-serif;font-size:36px;font-weight:900;color:#FFD700;text-shadow:0 0 30px rgba(255,215,0,0.8);z-index:9999;pointer-events:none;animation:xp-pop .9s ease forwards;';
   document.body.appendChild(flash);setTimeout(()=>flash.remove(),900);
   try{
-    const H={'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY,'Prefer':'return=representation'};
-    const patcher=(filtre,body)=>fetch(SUPABASE_URL+'/rest/v1/membres?'+filtre,{method:'PATCH',headers:H,body:JSON.stringify(body)});
-    const parEmail='email=eq.'+encodeURIComponent(member.email);
-    let res=await patcher(parEmail,{xp:member.xp,xp_semaine:member.xp_semaine});
-    // Si la colonne xp_semaine n'existe pas en base, on sauvegarde au moins l'XP
-    if(!res.ok)res=await patcher(parEmail,{xp:member.xp});
-    let rows=res.ok?await res.json():null;
-    // Aucun membre trouvé par email : on réessaie avec l'identifiant du membre
-    if(res.ok&&(!rows||!rows.length)&&member.id){
-      res=await patcher('id=eq.'+encodeURIComponent(String(member.id)),{xp:member.xp});
-      rows=res.ok?await res.json():null;
-    }
-    if(!res.ok||!rows||!rows.length){
-      console.error('Echec sauvegarde XP:',res.status,res.ok?'aucune ligne mise a jour':await res.text());
-      showSaveError();
-    }
-    const postRes=await fetch(SUPABASE_URL+'/rest/v1/xp_historique',{
-      method:'POST',
-      headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY},
-      body:JSON.stringify({membre_pseudo:member.pseudo||'guest',xp_gagne:amount,raison:raison,action_key:actionKey})
-    });
-    if(!postRes.ok)console.error('Echec POST xp_historique:',postRes.status,await postRes.text());
+    const r=await DHA.award(actionKey,amount,raison);
+    if(r&&typeof r.xp==='number'){
+      member.xp=r.xp;localStorage.setItem('dha_member',JSON.stringify(member));
+      const tb=document.getElementById('topbar-xp');if(tb)tb.textContent=member.xp+' XP';
+    }else if(!(r&&r.deja)){console.error('XP non enregistrée :',r);showSaveError();}
   }catch(e){console.error('Erreur reseau awardXP:',e);showSaveError();}
   return true;
 }
@@ -531,10 +512,7 @@ async function init(){
   document.getElementById('topbar-xp').textContent=(member.xp||0)+' XP';
   if(member.avatar){document.getElementById('sb-avatar').innerHTML='<img src="'+member.avatar+'" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"/>';}
   try{
-    const res=await fetch(SUPABASE_URL+'/rest/v1/membres?email=eq.'+encodeURIComponent(member.email).replace(/\./g,'%2E')+'&select=*',{
-      headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY}
-    });
-    const data=await res.json();
+    const d0=await DHA.me();const data=d0?[d0]:[];
     if(data&&data.length>0){
       member.xp=data[0].xp||member.xp;
       member.xp_semaine=data[0].xp_semaine||member.xp_semaine;

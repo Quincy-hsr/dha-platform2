@@ -336,6 +336,7 @@ input[type=range]{padding:0;border:0;accent-color:var(--gain)}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
+<script src="dha-api.js"></script>
 </head>
 <body>
 <div class="app">
@@ -467,8 +468,8 @@ var TABLE = 'cerveau_docs';
 function makeSupaDb(){
   var subs = {}; // collection -> [{ok, err, docId}]
   function fetchColl(coll){
-    return fetch(SUPA_URL+'/rest/v1/'+TABLE+'?coll=eq.'+encodeURIComponent(coll)+'&select=id,data', {headers:SUPA_H})
-      .then(function(r){ if(!r.ok) throw {code:'http_'+r.status}; return r.json(); });
+    return DHA.admin('dha_admin_docs', {p_colls:[coll]})
+      .then(function(rows){ return (rows||[]).map(function(r){ return {id:r.id, data:r.data}; }); }, function(e){ throw {code:'http_'+(e.status||0)}; });
   }
   function refresh(coll){
     var ls = subs[coll]; if(!ls || !ls.length) return Promise.resolve();
@@ -481,12 +482,12 @@ function makeSupaDb(){
   }
   function sub(coll, docId, ok, err){ (subs[coll] = subs[coll] || []).push({ok:ok, err:err, docId:docId}); refresh(coll); }
   function upsert(coll, id, data){
-    return fetch(SUPA_URL+'/rest/v1/'+TABLE+'?on_conflict=coll,id', {method:'POST', headers:Object.assign({'Prefer':'resolution=merge-duplicates,return=minimal'}, SUPA_H), body:JSON.stringify({coll:coll, id:id, data:data, updated_at:new Date().toISOString()})})
-      .then(function(r){ if(!r.ok) throw {code:'http_'+r.status}; return refresh(coll); });
+    return DHA.admin('dha_admin_doc_put', {p_rows:[{coll:coll, id:id, data:data, updated_at:new Date().toISOString()}]})
+      .then(function(){ return refresh(coll); }, function(e){ throw {code:'http_'+(e.status||0)}; });
   }
   function remove(coll, id){
-    return fetch(SUPA_URL+'/rest/v1/'+TABLE+'?coll=eq.'+encodeURIComponent(coll)+'&id=eq.'+encodeURIComponent(id), {method:'DELETE', headers:SUPA_H})
-      .then(function(r){ if(!r.ok) throw {code:'http_'+r.status}; return refresh(coll); });
+    return DHA.admin('dha_admin_doc_del', {p_coll:coll, p_id:id})
+      .then(function(){ return refresh(coll); }, function(e){ throw {code:'http_'+(e.status||0)}; });
   }
   // Synchronisation : recharge toutes les 15 s et quand on revient sur l'onglet (téléphone ↔ ordi)
   function refreshAll(){ Object.keys(subs).forEach(refresh); }
@@ -510,20 +511,19 @@ function memberOf(c){ if(!c || !c.pseudo) return null; var k = normPseudo(c.pseu
 function levelOf(xp){ xp=Number(xp)||0; var l=1; while(l<100){ var n=l; if(xp < n*200+15*n*(n-1)/2) break; l++; } return l; }
 function normPseudo(p){ return String(p||'').trim().replace(/^@+/,'').toLowerCase(); }
 function loadPlatform(){
-  return fetch(SUPA_URL+'/rest/v1/membres?select=id,pseudo,prenom,nom,plan,xp&or=(plan.is.null,plan.neq.demo)', {headers:SUPA_H})
-    .then(function(r){ return r.ok ? r.json() : []; })
+  return DHA.admin('dha_admin_membres')
     .then(function(ms){
-      PLAT.members = Array.isArray(ms) ? ms : [];
+      PLAT.members = (Array.isArray(ms) ? ms : []).filter(function(m){ return m.plan!=='demo'; });
       if(S.tab==='clients') schedule();
       var dl = document.getElementById('dhaMembers');
       if(dl) dl.innerHTML = PLAT.members.map(function(m){ return '<option value="'+esc(m.pseudo)+'">'+esc([m.prenom,m.nom].filter(Boolean).join(' '))+'</option>'; }).join('');
       var linked = S.clients.map(function(c){ return c.pseudo; }).filter(Boolean);
       if(!linked.length){ PLAT.loaded = true; return; }
       var keys = Object.keys(MOD_KEYS).map(function(k){ return MOD_KEYS[k]; }).filter(Boolean);
-      var who = linked.map(function(p){ return '"'+String(p).replace(/"/g,'')+'"'; }).join(',');
-      return fetch(SUPA_URL+'/rest/v1/xp_historique?membre_pseudo=in.('+encodeURIComponent(who)+')&action_key=in.('+keys.join(',')+')&select=membre_pseudo,action_key,created_at', {headers:SUPA_H})
-        .then(function(r){ if(!r.ok) throw new Error('xp '+r.status); return r.json(); })
-        .then(function(rows){
+      return DHA.admin('dha_admin_historique', {p_pseudos:linked})
+        .then(function(all){
+          all = Array.isArray(all) ? all : [];
+          var rows = all.filter(function(r){ return keys.indexOf(r.action_key)>=0; });
           var done = {};
           (Array.isArray(rows)?rows:[]).forEach(function(r){
             var k = normPseudo(r.membre_pseudo); done[k] = done[k] || {};
@@ -532,13 +532,9 @@ function loadPlatform(){
           });
           PLAT.done = done; PLAT.loaded = true; syncModules();
           // Activité récente sur la plateforme (tout ce qui rapporte de l'XP)
-          return fetch(SUPA_URL+'/rest/v1/xp_historique?membre_pseudo=in.('+encodeURIComponent(who)+')&select=membre_pseudo,xp_gagne,raison,created_at&order=created_at.desc&limit=400', {headers:SUPA_H})
-            .then(function(r){ return r.ok ? r.json() : []; })
-            .then(function(rows){
-              var rec = {};
-              (Array.isArray(rows)?rows:[]).forEach(function(r){ var k = normPseudo(r.membre_pseudo); (rec[k] = rec[k] || []).push(r); });
-              PLAT.recent = rec; if(S.tab==='clients') schedule();
-            });
+          var rec = {};
+          all.slice(0,400).forEach(function(r){ var k = normPseudo(r.membre_pseudo); (rec[k] = rec[k] || []).push(r); });
+          PLAT.recent = rec; if(S.tab==='clients') schedule();
         });
     }).catch(function(){});
 }
@@ -1025,8 +1021,8 @@ function paintGoalsMonth(){
 /* ---------- vue : accueil ---------- */
 var CAND = {list:[], ok:false};
 function loadCand(){
-  return fetch(SUPA_URL+'/rest/v1/candidatures?select=*&order=created_at.desc', {headers:SUPA_H})
-    .then(function(r){ return r.ok ? r.json() : []; })
+  if(!DHA.adminKey()) return Promise.resolve();
+  return DHA.admin('dha_admin_candidatures')
     .then(function(d){ CAND.list = Array.isArray(d) ? d : []; CAND.ok = true; schedule(); })
     .catch(function(){});
 }
@@ -1148,8 +1144,8 @@ function openCand(id){
     +'<div class="r"><button type="button" class="btn" data-act="close">Fermer</button><button type="button" class="btn primary" data-act="cand-save" data-id="'+esc(c.id)+'">Ajouter la note</button></div></div>');
 }
 function patchCandDb(c, body){
-  return fetch(SUPA_URL+'/rest/v1/candidatures?id=eq.'+encodeURIComponent(c.id), {method:'PATCH', headers:SUPA_H, body:JSON.stringify(body)})
-    .then(function(r){ if(!r.ok) throw {code:'http_'+r.status}; Object.assign(c, body); schedule(); });
+  return DHA.admin('dha_admin_update_candidature', {p_id:c.id, p:body})
+    .then(function(){ Object.assign(c, body); schedule(); }, function(e){ throw {code:'http_'+(e.status||0)}; });
 }
 function candWhen(c){ if(!c.created_at) return ''; var d = new Date(c.created_at); return d.toLocaleDateString('fr-FR',{day:'numeric',month:'short'})+' à '+('0'+d.getHours()).slice(-2)+'h'+('0'+d.getMinutes()).slice(-2); }
 function candById(id){ return CAND.list.filter(function(x){ return String(x.id)===String(id); })[0]; }
@@ -1194,10 +1190,9 @@ function xpValidate(){
   var lignes = []; XP_ACTIONS.forEach(function(a){ for(var n=0;n<(XPC.q[a.k]||0);n++) lignes.push(a.i+' '+a.l+' (+'+a.x+' XP)'); });
   var note = ($('#xpNote').value||'').trim().replace(/\s*·\s*/g,' - ');
   var raison = lignes.join(' · ')+(note?' · 📝 '+note:'');
-  var nv = (Number(m.xp)||0)+tot, btn = $('[data-act="xp-ok"]'); if(btn) btn.disabled = true;
-  fetch(SUPA_URL+'/rest/v1/membres?id=eq.'+encodeURIComponent(m.id), {method:'PATCH', headers:SUPA_H, body:JSON.stringify({xp:nv})})
-    .then(function(r){ if(!r.ok) throw {code:'http_'+r.status}; m.xp = nv;
-      return fetch(SUPA_URL+'/rest/v1/xp_historique', {method:'POST', headers:SUPA_H, body:JSON.stringify({membre_pseudo:m.pseudo, xp_gagne:tot, raison:raison, action_key:'man-'+XP_ACTIONS.filter(function(a){ return XPC.q[a.k]>0; }).map(function(a){ return a.k; }).join('-')+'-'+Date.now()})}); })
+  var btn = $('[data-act="xp-ok"]'); if(btn) btn.disabled = true;
+  DHA.admin('dha_admin_add_xp', {p_id:m.id, p_amount:tot, p_raison:raison, p_action_key:'man-'+XP_ACTIONS.filter(function(a){ return XPC.q[a.k]>0; }).map(function(a){ return a.k; }).join('-')+'-'+Date.now()})
+    .then(function(nv){ m.xp = nv; }, function(e){ throw {code:'http_'+(e.status||0)}; })
     .then(function(){ closeDlg(); toast('+'+fmtN(tot)+' XP pour @'+m.pseudo); loadPlatform(); schedule(); })
     .catch(function(e){ if(btn) btn.disabled = false; toast(errCopy(e)); });
 }
@@ -2164,11 +2159,12 @@ function start(){
   $('#gate').remove();
   render();
   connectCloud(makeSupaDb());
+  loadCand();
   setInterval(loadPlatform, 60000);
 }
 // Plus de mot de passe (comme l'admin) : le Cerveau s'ouvre directement
 var okSession = true;
-if(okSession) start();
+if(okSession) DHA.adminGate(start);
 else {
   $('#gatePwd').focus();
   $('#gateForm').addEventListener('submit', function(ev){

@@ -502,6 +502,7 @@ body {
 .demo-error.show{display:block;}
 .btn-demo{background:linear-gradient(90deg,#FFD700,#FFB800)!important;color:#050914!important;box-shadow:0 6px 30px rgba(255,215,0,0.25)!important;}
 </style>
+<script src="dha-api.js"></script>
 </head>
 <body>
 
@@ -591,7 +592,7 @@ function code(n){const c='abcdefghjkmnpqrstuvwxyz23456789';let s='';const r=cryp
 function normContact(c){return c.toLowerCase().replace(/[\s.\-()]/g,'');}
 
 function entrer(membre){
-  try{localStorage.setItem('dha_member',JSON.stringify(membre));}catch(e){}
+  DHA.save(membre);
   document.getElementById('loading-bar').style.width='100%';
   setTimeout(()=>{location.href='dha-dashboard.html';},400);
 }
@@ -612,30 +613,9 @@ document.getElementById('demo-form').addEventListener('submit',async function(ev
   btn.disabled=true;btn.textContent='CHARGEMENT...';
   document.getElementById('loading-bar').style.width='60%';
   try{
-    // Pseudo déjà pris ? Si c'est sa propre démo (même contact), on le reconnecte
-    const r=await fetch(SUPABASE_URL+'/rest/v1/membres?pseudo=eq.'+encodeURIComponent(pseudo)+'&select=*',{headers:H});
-    const exist=r.ok?await r.json():[];
-    if(Array.isArray(exist)&&exist.length){
-      const m=exist[0];
-      if(m.plan==='demo'&&normContact(m.telephone||'')===normContact(contact)&&m.actif!==false){entrer(m);return;}
-      throw new Error('pseudo');
-    }
-    const membre={
-      prenom,nom,pseudo,
-      email:'demo-'+code(10)+'@demo.dha',   // identifiant interne, l'inscrit ne le voit jamais
-      password:code(16),                    // pas utilisé : la démo se fait sans mot de passe
-      telephone:contact,
-      pays:'',ville:'',
-      classe:'trading',
-      xp:10,level:1,rang:'NEW HUSTLER',
-      statut:'membre',
-      plan:'demo',
-      parraine_par:refParam
-    };
-    const ins=await fetch(SUPABASE_URL+'/rest/v1/membres',{method:'POST',headers:Object.assign({'Prefer':'return=representation'},H),body:JSON.stringify(membre)});
-    const data=await ins.json().catch(()=>null);
-    if(!ins.ok){const msg=(data&&(data.message||data.details))||'';throw new Error(/pseudo/i.test(msg)?'pseudo':msg||('Erreur '+ins.status));}
-    entrer(Array.isArray(data)&&data[0]?data[0]:membre);
+    const r=await DHA.rpc('dha_demo',{p:{prenom,nom,pseudo,contact,parraine_par:refParam}});
+    if(!r||!r.token)throw new Error((r&&r.erreur)||'demo');
+    entrer(Object.assign({},r.membre,{token:r.token}));
   }catch(err){
     btn.disabled=false;btn.textContent='🎮 ACCÉDER À LA DÉMO →';
     document.getElementById('loading-bar').style.width='0%';

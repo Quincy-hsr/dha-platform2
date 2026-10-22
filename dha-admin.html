@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
+<script src="dha-api.js"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>DHA — Admin</title>
@@ -525,8 +526,7 @@ function unlock(){
 
 function load(){
   document.getElementById('mlist').innerHTML='<div class="loader">Chargement...</div>';
-  fetch(SUPA+'/rest/v1/membres?select=*&order=xp.desc',{headers:H})
-    .then(function(r){return r.json();})
+  DHA.admin('dha_admin_membres')
     .then(function(d){
       if(!Array.isArray(d))throw 0;
       members=d;
@@ -559,8 +559,7 @@ function isoD(d){return d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2)+'-'
 function objDefaut(){var m=moisBornes();return {titre:'Signer 10 clients ce mois-ci',type:'clients',cible:10,valeur:0,debut:isoD(m[0]),fin:isoD(m[1]),defaut:true};}
 function loadHome(){
   var hd=document.getElementById('hdate');if(hd)hd.textContent=new Date().toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'});
-  fetch(SUPA+'/rest/v1/cerveau_docs?coll=in.(prospects,clients,content,dmlogs,settings,admin)&select=coll,id,data',{headers:H})
-    .then(function(r){if(!r.ok)throw r.status;return r.json();})
+  DHA.admin('dha_admin_docs',{p_colls:['prospects','clients','content','dmlogs','settings','admin']})
     .then(function(rows){
       CV.prospects=[];CV.clients=[];CV.content=[];CV.dmlogs=[];CV.goals={};CV.obj=null;
       rows.forEach(function(r){var d=r.data||{};
@@ -688,8 +687,8 @@ document.getElementById('g-ok').onclick=function(){
   var ng=Object.assign({},CV.goals);
   GDEFS.forEach(function(d){ng[d.k]=Math.max(0,parseInt(document.getElementById('g-'+d.k).value,10)||0);});
   var btn=this;btn.disabled=true;
-  fetch(SUPA+'/rest/v1/cerveau_docs?on_conflict=coll,id',{method:'POST',headers:Object.assign({'Prefer':'resolution=merge-duplicates,return=minimal'},H),body:JSON.stringify({coll:'settings',id:'goals',data:ng,updated_at:new Date().toISOString()})})
-    .then(function(r){if(!r.ok)throw r.status;CV.goals=ng;renderObjs();document.getElementById('gdlg').style.display='none';toast('Objectifs enregistrés ✓','ok');})
+  DHA.admin('dha_admin_doc_put',{p_rows:[{coll:'settings',id:'goals',data:ng,updated_at:new Date().toISOString()}]})
+    .then(function(){CV.goals=ng;renderObjs();document.getElementById('gdlg').style.display='none';toast('Objectifs enregistrés ✓','ok');})
     .catch(function(e){toast('Erreur Supabase: '+e,'err');})
     .then(function(){btn.disabled=false;});
 };
@@ -701,8 +700,8 @@ document.getElementById('o-ok').onclick=function(){
   if(!o.cible||o.cible<1){toast('Indique un chiffre à atteindre','err');return;}
   if(!o.debut||!o.fin||o.fin<o.debut){toast('Vérifie les dates','err');return;}
   var btn=this;btn.disabled=true;
-  fetch(SUPA+'/rest/v1/cerveau_docs?on_conflict=coll,id',{method:'POST',headers:Object.assign({'Prefer':'resolution=merge-duplicates,return=minimal'},H),body:JSON.stringify({coll:'admin',id:'objectif',data:o,updated_at:new Date().toISOString()})})
-    .then(function(r){if(!r.ok)throw r.status;CV.obj=o;renderHome();document.getElementById('objdlg').style.display='none';toast('Objectif enregistré ✓','ok');})
+  DHA.admin('dha_admin_doc_put',{p_rows:[{coll:'admin',id:'objectif',data:o,updated_at:new Date().toISOString()}]})
+    .then(function(){CV.obj=o;renderHome();document.getElementById('objdlg').style.display='none';toast('Objectif enregistré ✓','ok');})
     .catch(function(e){toast('Erreur Supabase: '+e,'err');})
     .then(function(){btn.disabled=false;});
 };
@@ -828,8 +827,7 @@ var cands=[];
 var CST={nouvelle:{l:'🆕 Nouvelle',c:'#FFD700'},contactee:{l:'📨 Contactée',c:'#00d4ff'},acceptee:{l:'✅ Acceptée',c:'#00e676'},refusee:{l:'✕ Refusée',c:'#ff4455'}};
 function esc(v){return String(v==null?'':v).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
 function loadCand(){
-  fetch(SUPA+'/rest/v1/candidatures?select=*&order=created_at.desc',{headers:H})
-    .then(function(r){return r.json();})
+  DHA.admin('dha_admin_candidatures')
     .then(function(d){
       if(!Array.isArray(d))throw 0;
       cands=d;majCnb();renderHome();if(CUR==='stats')renderStats();
@@ -889,8 +887,8 @@ function renderCand(){
   el.innerHTML=h;
 }
 function patchCand(id,body,cb){
-  fetch(SUPA+'/rest/v1/candidatures?id=eq.'+id,{method:'PATCH',headers:H,body:JSON.stringify(body)})
-    .then(function(r){if(!r.ok)throw r.status;cb&&cb();})
+  DHA.admin('dha_admin_update_candidature',{p_id:id,p:body})
+    .then(function(){cb&&cb();})
     .catch(function(e){toast('Erreur Supabase: '+e,'err');});
 }
 function getCand(id){for(var i=0;i<cands.length;i++)if(String(cands[i].id)===String(id))return cands[i];return null;}
@@ -1207,26 +1205,18 @@ function confirmer(id){
       }
     }
     var raison=lignes.join(' · ')+(note?' · 📝 '+note:'');
-    patch(id,{xp:nv},function(){
-      var m2=getMember(id);if(m2)m2.xp=nv;
+    DHA.admin('dha_admin_add_xp',{p_id:id,p_amount:total,p_raison:raison,p_action_key:'man-'+Object.keys(p).filter(function(k){return p[k]>0;}).join('-')+'-'+Date.now()}).then(function(nvSrv){
+      nv=nvSrv;var m2=getMember(id);if(m2)m2.xp=nv;
       document.getElementById('bxp-'+id).textContent=nv.toLocaleString()+' XP';
       stats(members);resetPan(id);
-      // Insert dans xp_historique
-      fetch(SUPA+'/rest/v1/xp_historique',{
-        method:'POST',
-        headers:H,
-        body:JSON.stringify({membre_pseudo:pseudo,xp_gagne:total,raison:raison,action_key:'man-'+Object.keys(p).filter(function(k){return p[k]>0;}).join('-')+'-'+Date.now()})
-      }).then(function(r){
-        if(!r.ok) r.text().then(function(t){console.error('Historique error:',t);});
-      }).catch(function(e){console.error('Historique error:',e);});
       toast('+'+total+' XP appliqués ✓','ok');
-    });
+    }).catch(function(e){toast('Erreur Supabase: '+(e.message||e),'err');});
   };
 }
 
 function patch(id,body,cb){
-  fetch(SUPA+'/rest/v1/membres?id=eq.'+id,{method:'PATCH',headers:H,body:JSON.stringify(body)})
-    .then(function(r){if(!r.ok)throw r.status;cb();})
+  DHA.admin('dha_admin_update_membre',{p_id:id,p:body})
+    .then(function(){cb();})
     .catch(function(e){toast('Erreur Supabase: '+e,'err');});
 }
 
@@ -1240,8 +1230,7 @@ function toast(msg,type){
 // Démarrage (tout est défini à ce stade)
 showView(EMBED||(location.hash||'').replace('#','')||'home');
 document.getElementById('lock').style.display='none';
-load();
-setInterval(load,60000);
+DHA.adminGate(function(){load();setInterval(load,60000);});
 </script>
 </body>
 </html>

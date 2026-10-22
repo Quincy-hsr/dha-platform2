@@ -195,16 +195,12 @@
   (function rafraichir() {
     var m = getMembre();
     if (!m || !m.email) return;
-    fetch(SUPABASE_URL + '/rest/v1/membres?email=eq.' + encodeURIComponent(m.email) + '&select=plan', {
-      headers: { apikey: SUPABASE_KEY, Authorization: 'Bearer ' + SUPABASE_KEY }
-    }).then(function (r) { return r.ok ? r.json() : null; })
-      .then(function (d) {
-        if (!Array.isArray(d) || !d[0]) return;
-        var plan = d[0].plan || null;
+    if (!window.DHA) return;
+    DHA.me().then(function (d) {
+        if (!d) return;
+        var plan = d.plan || null;
         var avant = m.plan || null;
         if (plan === avant) return;
-        m.plan = plan;
-        try { localStorage.setItem('dha_member', JSON.stringify(m)); } catch (e) {}
         // Changement de statut → on recharge pour appliquer / retirer le verrou
         location.reload();
       }).catch(function () {});

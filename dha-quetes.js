@@ -26,8 +26,6 @@
   ];
 
   function M() { return (typeof member !== 'undefined' && member) ? member : null; }
-  var H = function () { return { apikey: SUPABASE_KEY, Authorization: 'Bearer ' + SUPABASE_KEY }; };
-  var JSONH = function () { var h = H(); h['Content-Type'] = 'application/json'; return h; };
 
   function jourLocal(d) { d = d || new Date(); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); }
   function minuitLocal() { var d = new Date(); d.setHours(0, 0, 0, 0); return d; }
@@ -86,37 +84,31 @@
   var st = document.createElement('style'); st.textContent = css; document.head.appendChild(st);
 
   /* ---------- données ---------- */
-  async function lireJour(pseudo) {
-    var depuis = minuitLocal().toISOString();
-    var r = await fetch(SUPABASE_URL + '/rest/v1/xp_historique?membre_pseudo=eq.' + encodeURIComponent(pseudo) + '&created_at=gte.' + encodeURIComponent(depuis) + '&select=action_key', { headers: H() });
-    var d = r.ok ? await r.json() : [];
+  async function lireJour() {
+    var d = await DHA.historique({ since: minuitLocal().toISOString(), limit: 500 });
     var s = new Set(); (d || []).forEach(function (x) { if (x.action_key) s.add(x.action_key); });
     return s;
   }
-  async function formationFinie(pseudo) {
+  async function formationFinie() {
     try {
-      var r = await fetch(SUPABASE_URL + '/rest/v1/xp_historique?membre_pseudo=eq.' + encodeURIComponent(pseudo) + '&action_key=in.(' + MODULES.join(',') + ')&select=action_key', { headers: H() });
-      var d = r.ok ? await r.json() : [];
+      var d = await DHA.historique({ keys: MODULES });
       return new Set((d || []).map(function (x) { return x.action_key; })).size >= NB_MODULES;
     } catch (e) { return false; }
   }
 
-  // Enregistre l'XP (membres.xp + historique), puis anime la barre du dashboard
+  // Le serveur vérifie l'action, enregistre l'XP et l'historique ; on anime la barre du dashboard
   async function crediter(xp, raison, cle) {
     if (!M() || etat.cles.has(cle)) return false;
     etat.cles.add(cle);
     try {
-      // XP à jour depuis la base pour ne rien écraser
-      var r = await fetch(SUPABASE_URL + '/rest/v1/membres?email=eq.' + encodeURIComponent(member.email) + '&select=id,xp', { headers: H() });
-      var d = r.ok ? await r.json() : [];
-      var base = d && d[0] ? (Number(d[0].xp) || 0) : (member.xp || 0);
-      var filtre = d && d[0] && d[0].id != null ? 'id=eq.' + encodeURIComponent(d[0].id) : 'email=eq.' + encodeURIComponent(member.email);
-      var p = await fetch(SUPABASE_URL + '/rest/v1/membres?' + filtre, { method: 'PATCH', headers: JSONH(), body: JSON.stringify({ xp: base + xp }) });
-      if (!p.ok) throw new Error('patch ' + p.status);
-      await fetch(SUPABASE_URL + '/rest/v1/xp_historique', { method: 'POST', headers: JSONH(), body: JSON.stringify({ membre_pseudo: member.pseudo || 'guest', xp_gagne: xp, raison: raison, action_key: cle }) });
-      member.xp = base;
-      if (typeof updateXP === 'function') updateXP(xp); else member.xp = base + xp;
-      return true;
+      var r = await DHA.award(cle, xp, raison);
+      if (r && r.ok) {
+        member.xp = r.xp - r.gagne;
+        if (typeof updateXP === 'function') updateXP(r.gagne); else member.xp = r.xp;
+        return true;
+      }
+      if (r && r.deja) return true;
+      etat.cles.delete(cle); return false;
     } catch (e) { etat.cles.delete(cle); console.error('Quêtes : XP non enregistrée', e); return false; }
   }
 
@@ -187,9 +179,9 @@
       var jour = jourLocal();
       if (etat.jour !== jour) {
         etat.jour = jour;
-        etat.quetes = tirer(pseudo, jour, await formationFinie(pseudo));
+        etat.quetes = tirer(pseudo, jour, await formationFinie());
       }
-      var cles = await lireJour(pseudo);
+      var cles = await lireJour();
       cles.forEach(function (c) { etat.cles.add(c); });
 
       // Connexion quotidienne (+10 XP), à chaque nouveau jour
@@ -216,17 +208,13 @@
     etat.enCours = false;
   }
 
-  // +150 XP pour chaque ami parrainé (hors comptes démo), une seule fois par filleul
+  // +150 XP pour chaque ami parrainé (hors comptes démo) — calculé par le serveur
   var parrainVu = false;
   async function parrainage() {
-    if (parrainVu || !M() || !member.pseudo) return; parrainVu = true;
+    if (parrainVu || !M()) return; parrainVu = true;
     try {
-      var r = await fetch(SUPABASE_URL + '/rest/v1/membres?parraine_par=eq.' + encodeURIComponent(member.pseudo) + '&or=(plan.is.null,plan.neq.demo)&select=pseudo', { headers: H() });
-      var d = r.ok ? await r.json() : []; if (!d.length) return;
-      var cles = d.map(function (f) { return 'parrainage_' + String(f.pseudo || '').replace(/[^A-Za-z0-9_.]/g, ''); });
-      var r2 = await fetch(SUPABASE_URL + '/rest/v1/xp_historique?membre_pseudo=eq.' + encodeURIComponent(member.pseudo) + '&action_key=in.(' + cles.map(encodeURIComponent).join(',') + ')&select=action_key', { headers: H() });
-      var deja = new Set(((r2.ok ? await r2.json() : []) || []).map(function (x) { return x.action_key; }));
-      for (var i = 0; i < d.length; i++) if (!deja.has(cles[i])) await crediter(XP_PARRAIN, '🤝 Ami parrainé : @' + d[i].pseudo, cles[i]);
+      var n = await DHA.rpc('dha_parrainages', { p_token: await DHA.token() });
+      if (n > 0) { var d = await DHA.me(); if (d && typeof updateXP === 'function') { var gain = d.xp - (member.xp || 0); if (gain > 0) updateXP(gain); } }
     } catch (e) { }
   }
 
