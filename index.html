@@ -108,6 +108,19 @@
   .dim-text{font-size:15px;color:var(--dim);line-height:1.65;}
 
   .problem{padding:90px 40px 60px;}
+  .flip-in{display:grid;height:100%;}
+  .flip .face{grid-area:1/1;display:flex;flex-direction:column;transition:opacity .45s ease,transform .45s ease,visibility .45s;}
+  .flip .face.back{opacity:0;visibility:hidden;transform:scale(.96);background:linear-gradient(180deg,rgba(0,255,136,0.07),var(--card) 60%);}
+  .flip.on .face.back{opacity:1;visibility:visible;transform:none;}
+  .flip.on .face:not(.back){opacity:0;visibility:hidden;transform:scale(.96);}
+  .flip .dim-card:hover{transform:none;}
+  .flip-btn{margin-top:auto;align-self:flex-start;margin-top:20px;padding:10px 16px;border-radius:10px;border:1px solid rgba(0,255,136,0.4);background:rgba(0,255,136,0.1);color:var(--green);font-family:'Chakra Petch',sans-serif;font-size:14px;font-weight:600;cursor:pointer;transition:background .2s;}
+  .flip-btn:hover{background:rgba(0,255,136,0.18);}
+  .flip-btn.back-btn{border-color:var(--border);background:transparent;color:var(--dim);}
+  .flip .dim-text{flex:1;}
+  .flip .dim-tag,.flip .dim-icon{align-self:flex-start;}
+  @media(prefers-reduced-motion:reduce){.flip .face{transition:none;}}
+
   .solution{padding:60px 40px 90px;background:linear-gradient(180deg,transparent,rgba(0,255,136,0.02),transparent);}
 
   /* BRIDGE / POSITIONING */
@@ -341,7 +354,7 @@
 <nav>
   <div class="nav-logo">DHA</div>
   <div class="nav-links">
-    <a href="#probleme">LE CONSTAT</a>
+    <a href="#probleme">TRANSFORMATION</a>
     <a href="#methode">LA MÉTHODE</a>
     <a href="#formations">FORMATIONS</a>
     <a href="#affiliation">COMMUNAUTÉ</a>
@@ -455,56 +468,65 @@
   </div>
 </section>
 
-<!-- PROBLEM -->
+<!-- CONSTATS & TRANSFORMATION -->
 <section class="problem" id="probleme">
-  <div class="section-label reveal">LE CONSTAT</div>
+  <div class="section-label reveal">CONSTATS ET TRANSFORMATION</div>
   <div class="section-title reveal">Tu reconnais cette vie ?</div>
-  <p class="section-desc reveal">Avant de parler de solution, regardons les choses en face. Ça se joue sur trois plans.</p>
+  <p class="section-desc reveal">Ça se joue sur trois plans. Clique sur « Grâce au trading » pour voir ce qui change.</p>
   <div class="dim-grid">
-    <div class="dim-card pain reveal">
-      <div class="dim-tag pain">ÉMOTIONNEL</div>
-      <div class="dim-icon">🔒</div>
-      <div class="dim-title">Prisonnier de ton CDI</div>
-      <div class="dim-text">Tu comptes les jours avant le week-end. L'impression de passer à côté de ta vie pendant que d'autres construisent la leur. La fatigue s'accumule, et le dimanche soir pèse plus lourd que le lundi matin.</div>
+    <div class="flip reveal">
+      <div class="flip-in">
+        <div class="dim-card pain face">
+          <div class="dim-tag pain">ÉMOTIONNEL</div>
+          <div class="dim-icon">🔒</div>
+          <div class="dim-title">Prisonnier de ton CDI</div>
+          <div class="dim-text">Tu comptes les jours avant le week-end. L'impression de passer à côté de ta vie pendant que d'autres construisent la leur. La fatigue s'accumule, et le dimanche soir pèse plus lourd que le lundi matin.</div>
+          <button type="button" class="flip-btn" aria-label="Voir la transformation : Liberté et paix">Grâce au trading →</button>
+        </div>
+        <div class="dim-card gain face back" aria-hidden="true">
+          <div class="dim-tag gain">ÉMOTIONNEL · APRÈS</div>
+          <div class="dim-icon">🕊️</div>
+          <div class="dim-title">Liberté et paix</div>
+          <div class="dim-text">Tu apprends, tu progresses, tu reprends le contrôle de ton temps. Le plaisir revient parce que tu construis quelque chose qui t'appartient vraiment.</div>
+          <button type="button" class="flip-btn back-btn" tabindex="-1">← Avant</button>
+        </div>
+      </div>
     </div>
-    <div class="dim-card pain reveal" style="transition-delay:.1s">
-      <div class="dim-tag pain">FINANCIER</div>
-      <div class="dim-icon">💸</div>
-      <div class="dim-title">Ton argent file sans jamais rester</div>
-      <div class="dim-text">Le salaire tombe, il repart aussi vite. Rien de côté, rien d'investi. Tu sais que ça devrait changer, mais tu ne sais pas par où commencer ni comment t'y prendre.</div>
+    <div class="flip reveal" style="transition-delay:.1s">
+      <div class="flip-in">
+        <div class="dim-card pain face">
+          <div class="dim-tag pain">FINANCIER</div>
+          <div class="dim-icon">💸</div>
+          <div class="dim-title">Ton argent file sans jamais rester</div>
+          <div class="dim-text">Le salaire tombe, il repart aussi vite. Rien de côté, rien d'investi. Tu sais que ça devrait changer, mais tu ne sais pas par où commencer ni comment t'y prendre.</div>
+          <button type="button" class="flip-btn" aria-label="Voir la transformation : De l'épargne à l'investissement">Grâce au trading →</button>
+        </div>
+        <div class="dim-card gain face back" aria-hidden="true">
+          <div class="dim-tag gain">FINANCIER · APRÈS</div>
+          <div class="dim-icon">📈</div>
+          <div class="dim-title">De l'épargne à l'investissement</div>
+          <div class="dim-text">Tu apprends à gérer ton argent, à en mettre de côté, et à le faire grandir grâce à une compétence que tu maîtrises toi-même — pas un intermédiaire.</div>
+          <button type="button" class="flip-btn back-btn" tabindex="-1">← Avant</button>
+        </div>
+      </div>
     </div>
-    <div class="dim-card pain reveal" style="transition-delay:.2s">
-      <div class="dim-tag pain">IDENTITAIRE</div>
-      <div class="dim-icon">🪞</div>
-      <div class="dim-title">L'impression de n'être bon à rien</div>
-      <div class="dim-text">Une vie lambda, sans rien de concret à montrer. Difficile de faire plaisir à tes proches comme tu le voudrais. Au fond, tu n'es pas encore le modèle de réussite que tu aimerais être pour eux.</div>
-    </div>
-  </div>
-</section>
-
-<!-- SOLUTION -->
-<section class="solution">
-  <div class="section-label reveal">LA TRANSFORMATION</div>
-  <div class="section-title reveal">Ce que tu gagnes réellement</div>
-  <p class="section-desc reveal">Les trois mêmes dimensions, dans l'autre sens.</p>
-  <div class="dim-grid">
-    <div class="dim-card gain reveal">
-      <div class="dim-tag gain">ÉMOTIONNEL</div>
-      <div class="dim-icon">🕊️</div>
-      <div class="dim-title">Liberté et paix</div>
-      <div class="dim-text">Tu apprends, tu progresses, tu reprends le contrôle de ton temps. Le plaisir revient parce que tu construis quelque chose qui t'appartient vraiment.</div>
-    </div>
-    <div class="dim-card gain reveal" style="transition-delay:.1s">
-      <div class="dim-tag gain">FINANCIER</div>
-      <div class="dim-icon">📈</div>
-      <div class="dim-title">De l'épargne à l'investissement</div>
-      <div class="dim-text">Tu apprends à gérer ton argent, à en mettre de côté, et à le faire grandir grâce à une compétence que tu maîtrises toi-même — pas un intermédiaire.</div>
-    </div>
-    <div class="dim-card gain reveal" style="transition-delay:.2s">
-      <div class="dim-tag gain">IDENTITAIRE</div>
-      <div class="dim-icon">🚀</div>
-      <div class="dim-title">Un modèle pour tes proches</div>
-      <div class="dim-text">Tu deviens l'investisseur compétent que tu voulais être. Tu peux enfin faire plaisir à ceux que tu aimes, et inspirer par l'exemple plutôt que par les mots.</div>
+    <div class="flip reveal" style="transition-delay:.2s">
+      <div class="flip-in">
+        <div class="dim-card pain face">
+          <div class="dim-tag pain">IDENTITAIRE</div>
+          <div class="dim-icon">🪞</div>
+          <div class="dim-title">L'impression de n'être bon à rien</div>
+          <div class="dim-text">Une vie lambda, sans rien de concret à montrer. Difficile de faire plaisir à tes proches comme tu le voudrais. Au fond, tu n'es pas encore le modèle de réussite que tu aimerais être pour eux.</div>
+          <button type="button" class="flip-btn" aria-label="Voir la transformation : Un modèle pour tes proches">Grâce au trading →</button>
+        </div>
+        <div class="dim-card gain face back" aria-hidden="true">
+          <div class="dim-tag gain">IDENTITAIRE · APRÈS</div>
+          <div class="dim-icon">🚀</div>
+          <div class="dim-title">Un modèle pour tes proches</div>
+          <div class="dim-text">Tu deviens l'investisseur compétent que tu voulais être. Tu peux enfin faire plaisir à ceux que tu aimes, et inspirer par l'exemple plutôt que par les mots.</div>
+          <button type="button" class="flip-btn back-btn" tabindex="-1">← Avant</button>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -956,5 +978,15 @@ if(location.hash.length>1){
 }
 </script>
 
+<script>
+document.querySelectorAll('.flip').forEach(function(f){
+  f.querySelectorAll('.flip-btn').forEach(function(b){b.addEventListener('click',function(){
+    var on=f.classList.toggle('on');
+    f.querySelector('.face:not(.back)').setAttribute('aria-hidden',on);f.querySelector('.face.back').setAttribute('aria-hidden',!on);
+    f.querySelector('.face:not(.back) .flip-btn').tabIndex=on?-1:0;f.querySelector('.back-btn').tabIndex=on?0:-1;
+    (on?f.querySelector('.back-btn'):f.querySelector('.face:not(.back) .flip-btn')).focus({preventScroll:true});
+  });});
+});
+</script>
 </body>
 </html>
