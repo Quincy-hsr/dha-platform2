@@ -189,6 +189,7 @@
   .cg-wide .community-item img{aspect-ratio:4/3;}
   @media(max-width:900px){.cg-5,.cg-4{grid-template-columns:repeat(3,1fr);}}
   @media(max-width:900px){.community-gallery.cg-wide{grid-template-columns:1fr 1fr;gap:10px;}}
+  @media(max-width:600px){.community-gallery.cg-mob{grid-template-columns:1fr 1fr;gap:10px;}.cg-mob .community-item img{aspect-ratio:4/3;}.cg-mob .community-item:last-child:nth-child(odd){grid-column:1/-1;}.cg-mob .community-item:last-child:nth-child(odd) img{aspect-ratio:16/9;}}
   @media(max-width:600px){.cg-5,.cg-4{grid-template-columns:1fr 1fr;}}
   .eco-card{padding:28px 24px;border-radius:16px;background:var(--card);border:1px solid var(--border);text-align:center;transition:all .3s;position:relative;overflow:hidden;}
   .eco-card:hover{transform:translateY(-4px);}
@@ -714,26 +715,26 @@
   </div>
 
   <div class="community-gallery-label">📞 EN APPEL</div>
-  <div class="community-gallery">
-    <div class="community-item reveal"><img src="call-1.jpg" alt="Live trading en appel de groupe"/></div>
-    <div class="community-item reveal" style="transition-delay:.1s"><img src="call-2.jpg" alt="Appel de groupe DHA"/></div>
-    <div class="community-item reveal" style="transition-delay:.2s"><img src="call-3.jpg" alt="Live en équipe Hustler"/></div>
+  <div class="community-gallery cg-mob">
+    <div class="community-item reveal"><img src="call-1.jpg" alt="Live trading en appel de groupe" loading="lazy"/></div>
+    <div class="community-item reveal" style="transition-delay:.1s"><img src="call-2.jpg" alt="Appel de groupe DHA" loading="lazy"/></div>
+    <div class="community-item reveal" style="transition-delay:.2s"><img src="call-3.jpg" alt="Live en équipe Hustler" loading="lazy"/></div>
   </div>
 
   <div class="community-gallery-label">🤝 EN PRÉSENTIEL</div>
-  <div class="community-gallery">
-    <div class="community-item reveal"><img src="meetup-1.jpg" alt="Rencontre Hustlers en présentiel"/></div>
-    <div class="community-item reveal" style="transition-delay:.1s"><img src="meetup-2.jpg" alt="Membres DHA réunis en présentiel"/></div>
-    <div class="community-item reveal" style="transition-delay:.2s"><img src="meetup-3.jpg" alt="Moment convivial entre membres DHA"/></div>
+  <div class="community-gallery cg-mob">
+    <div class="community-item reveal"><img src="meetup-1.jpg" alt="Rencontre Hustlers en présentiel" loading="lazy"/></div>
+    <div class="community-item reveal" style="transition-delay:.1s"><img src="meetup-2.jpg" alt="Membres DHA réunis en présentiel" loading="lazy"/></div>
+    <div class="community-item reveal" style="transition-delay:.2s"><img src="meetup-3.jpg" alt="Moment convivial entre membres DHA" loading="lazy"/></div>
   </div>
 
   <div class="community-gallery-label">📅 SUIVI PERSONNALISÉ</div>
-  <div class="community-gallery cg-5" style="max-width:1100px;">
-    <div class="community-item reveal"><img src="suivi-1.jpg" alt="Accompagnement trading personnalisé DHA"/></div>
-    <div class="community-item reveal" style="transition-delay:.1s"><img src="suivi-2.jpg" alt="Appel de suivi individuel DHA"/></div>
-    <div class="community-item reveal" style="transition-delay:.2s"><img src="suivi-3.jpg" alt="Accompagnement trading en direct DHA"/></div>
-    <div class="community-item reveal" style="transition-delay:.1s"><img src="suivi-4.jpg" alt="Accompagnement et suivi de membre DHA"/></div>
-    <div class="community-item reveal" style="transition-delay:.2s"><img src="suivi-5.jpg" alt="Organisation d'appel de suivi DHA"/></div>
+  <div class="community-gallery cg-5 cg-mob" style="max-width:1100px;">
+    <div class="community-item reveal"><img src="suivi-1.jpg" alt="Accompagnement trading personnalisé DHA" loading="lazy"/></div>
+    <div class="community-item reveal" style="transition-delay:.1s"><img src="suivi-2.jpg" alt="Appel de suivi individuel DHA" loading="lazy"/></div>
+    <div class="community-item reveal" style="transition-delay:.2s"><img src="suivi-3.jpg" alt="Accompagnement trading en direct DHA" loading="lazy"/></div>
+    <div class="community-item reveal" style="transition-delay:.1s"><img src="suivi-4.jpg" alt="Accompagnement et suivi de membre DHA" loading="lazy"/></div>
+    <div class="community-item reveal" style="transition-delay:.2s"><img src="suivi-5.jpg" alt="Organisation d'appel de suivi DHA" loading="lazy"/></div>
   </div>
 
   <div class="community-gallery-label">🏎️ SORTIE EN ÉQUIPE AU SPEED PARK</div>
