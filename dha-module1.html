@@ -345,7 +345,7 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
 
       <!-- QUIZ -->
       <div class="quiz-section">
-        <div class="quiz-header"><div style="font-size:24px;">🧠</div><div class="quiz-title">MINI QUIZ — Bloc 1</div><div class="quiz-xp">+50 XP MAX</div></div>
+        <div class="quiz-header"><div style="font-size:24px;">🧠</div><div class="quiz-title">MINI QUIZ — Bloc 1</div><div class="quiz-xp">+25 XP MAX</div></div>
 
         <div class="quiz-question" id="q1">
           <div class="quiz-q-num">QUESTION 1 / 10</div>
@@ -609,12 +609,12 @@ function sendQuestion(){
 // ── Niveaux + cinématique de level up (mêmes règles que le dashboard) ──
 const LU_RANGS=[
   {min:0,    max:4999,  name:'NEW HUSTLER',icon:'🎮',color:'rgba(200,200,200,0.6)'},
-  {min:5000, max:14999, name:'HUSTLER',    icon:'⚡',color:'#1E64FF'},
-  {min:15000,max:21999, name:'PRO HUSTLER',icon:'🚀',color:'#00D4FF'},
-  {min:22000,max:29999, name:'AMBASSADEUR',icon:'👑',color:'#FFD700'},
-  {min:30000,max:999999,name:'LEGEND',     icon:'💎',color:'#9D4EDD'}
+  {min:5000, max:15499, name:'HUSTLER',    icon:'⚡',color:'#1E64FF'},
+  {min:15500,max:29999, name:'PRO HUSTLER',icon:'🚀',color:'#00D4FF'},
+  {min:30000,max:59999, name:'AMBASSADEUR',icon:'👑',color:'#FFD700'},
+  {min:60000,max:999999,name:'LEGEND',     icon:'💎',color:'#9D4EDD'}
 ];
-function luXPForLevel(l){if(l<=1)return 0;if(l<=10)return (l-1)*500;if(l<=25)return 5000+(l-10)*667;if(l<=50)return 15000+(l-25)*280;return 22000+(l-50)*160;}
+function luXPForLevel(l){if(l<=1)return 0;const n=l-1;return n*200+15*n*(n-1)/2;}
 function luLevel(xp){for(let l=100;l>=1;l--){if(xp>=luXPForLevel(l))return l;}return 1;}
 function luCheck(){
   if(!window.DHALevelUp||!member)return;
@@ -637,9 +637,8 @@ async function completeBloc(){
   }
   document.getElementById('complete-btn').textContent='✅ MODULE 1 TERMINÉ !';
   document.getElementById('complete-btn').disabled=true;
-  await awardXP('bloc_m1',100,'📚 Bloc terminé — Module 1');
-  await awardXP('quete_bloc_'+todayISO(),50,'📚 Finir un module (quête du jour)');
-  // Module 1 terminé = passage direct au niveau 2 (500 XP), pour tout le monde
+  await awardXP('bloc_m1',40,'📚 Bloc terminé — Module 1');
+  // Module 1 terminé = passage direct au niveau 2 (200 XP), pour tout le monde
   const manque=luXPForLevel(2)-(member.xp||0);
   if(manque>0){
     await new Promise(r=>setTimeout(r,900));

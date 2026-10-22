@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<script src="dha-demo.js"></script>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>DHA — Leaderboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600;700&display=swap" rel="stylesheet"/>
+<style>
+:root{--bg:#050914;--card:#080e1f;--blue:#1E64FF;--cyan:#00D4FF;--gold:#FFD700;--green:#00FF88;--red:#FF4466;--purple:#9D4EDD;--white:#E8F4FF;--dim:rgba(232,244,255,0.45);--border:rgba(30,100,255,0.15);--sidebar-w:240px;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-height:100vh;display:flex;}
+.bg-grid{position:fixed;inset:0;z-index:0;background-image:linear-gradient(rgba(30,100,255,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(30,100,255,0.03) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;}
+.sidebar{position:fixed;left:0;top:0;bottom:0;width:var(--sidebar-w);background:rgba(8,14,31,0.97);border-right:1px solid var(--border);display:flex;flex-direction:column;z-index:100;padding:24px 0;}
+.sidebar-logo{padding:0 24px 24px;border-bottom:1px solid var(--border);margin-bottom:16px;}
+.sidebar-logo-text{font-family:'Orbitron',sans-serif;font-size:28px;font-weight:900;letter-spacing:4px;color:var(--white);text-shadow:0 0 20px rgba(30,100,255,0.6);}
+.sidebar-logo-sub{font-family:'Orbitron',sans-serif;font-size:6px;letter-spacing:3px;color:rgba(0,212,255,0.5);margin-top:2px;}
+.sidebar-section{padding:8px 24px 4px;font-family:'Orbitron',sans-serif;font-size:7px;letter-spacing:3px;color:rgba(255,255,255,0.2);margin-top:8px;}
+.nav-item{display:flex;align-items:center;gap:12px;padding:11px 24px;cursor:pointer;transition:all .2s;font-size:13px;color:var(--dim);text-decoration:none;}
+.nav-item:hover{background:rgba(30,100,255,0.08);color:var(--white);}
+.nav-item.active{background:rgba(30,100,255,0.12);color:var(--cyan);border-right:2px solid var(--cyan);}
+.nav-icon{font-size:16px;width:20px;text-align:center;flex-shrink:0;}
+.sidebar-bottom{margin-top:auto;padding:16px 24px;border-top:1px solid var(--border);}
+.sidebar-member{display:flex;align-items:center;gap:12px;}
+.sidebar-avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--cyan));display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;overflow:hidden;}
+.sidebar-member-name{font-family:'Orbitron',sans-serif;font-size:10px;font-weight:900;color:var(--white);}
+.sidebar-member-rang{font-size:10px;color:var(--dim);margin-top:2px;}
+.main{margin-left:var(--sidebar-w);flex:1;padding:32px;position:relative;z-index:1;}
+.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:32px;}
+.topbar-title{font-family:'Orbitron',sans-serif;font-size:20px;font-weight:900;color:var(--white);letter-spacing:2px;}
+.topbar-title span{color:var(--gold);}
+.xp-pill{display:flex;align-items:center;gap:8px;padding:8px 16px;border-radius:99px;background:rgba(255,215,0,0.1);border:1px solid rgba(255,215,0,0.25);}
+.xp-pill-val{font-family:'Orbitron',sans-serif;font-size:12px;font-weight:900;color:var(--gold);}
+.lb-card{background:var(--card);border:1px solid var(--border);border-radius:20px;overflow:hidden;margin-bottom:24px;}
+.lb-header{padding:20px 24px;border-bottom:1px solid rgba(255,255,255,0.05);display:flex;align-items:center;justify-content:space-between;}
+.lb-header-title{font-family:'Orbitron',sans-serif;font-size:12px;font-weight:900;color:var(--white);letter-spacing:1px;}
+.lb-cols{display:grid;grid-template-columns:48px 90px 110px 1fr 90px 80px;gap:8px;padding:10px 24px;font-family:'Orbitron',sans-serif;font-size:8px;letter-spacing:2px;color:rgba(232,244,255,0.25);border-bottom:1px solid rgba(255,255,255,0.04);}
+.lb-item{display:grid;grid-template-columns:48px 90px 110px 1fr 90px 80px;gap:8px;padding:14px 24px;border-bottom:1px solid rgba(255,255,255,0.04);align-items:center;transition:background .2s;}
+.lb-item:hover{background:rgba(255,255,255,0.02);}
+.lb-item:last-child{border-bottom:none;}
+.lb-item.me{background:rgba(0,212,255,0.06);border-left:3px solid var(--cyan);}
+.lb-rank{font-family:'Orbitron',sans-serif;font-size:14px;font-weight:900;text-align:center;}
+.lb-pack{display:inline-flex;align-items:center;padding:3px 8px;border-radius:99px;font-family:'Orbitron',sans-serif;font-size:8px;font-weight:900;letter-spacing:1px;}
+.lb-pack.pro{background:rgba(255,215,0,0.15);color:var(--gold);border:1px solid rgba(255,215,0,0.35);}
+.lb-pack.medium{background:rgba(0,212,255,0.1);color:var(--cyan);border:1px solid rgba(0,212,255,0.25);}
+.lb-pack.base{background:rgba(232,244,255,0.06);color:rgba(232,244,255,0.75);border:1px solid rgba(232,244,255,0.18);}
+.lb-rang-badge{display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:99px;font-family:'Orbitron',sans-serif;font-size:8px;font-weight:900;}
+.lb-pseudo{font-family:'Orbitron',sans-serif;font-size:11px;font-weight:900;color:var(--white);display:flex;align-items:center;gap:8px;}
+.lb-me-tag{padding:2px 8px;border-radius:99px;background:rgba(0,212,255,0.2);font-size:8px;color:var(--cyan);letter-spacing:1px;}
+.lb-xp{font-family:'Orbitron',sans-serif;font-size:13px;font-weight:900;color:var(--gold);text-align:right;}
+.lb-modules{font-family:'Orbitron',sans-serif;font-size:11px;color:var(--dim);text-align:right;}
+.loading{text-align:center;padding:40px;font-family:'Orbitron',sans-serif;font-size:10px;letter-spacing:2px;color:var(--dim);}
+.legend{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:20px;}
+.legend-item{display:flex;align-items:center;gap:8px;font-family:'Orbitron',sans-serif;font-size:8px;letter-spacing:1px;color:var(--dim);}
+@media(max-width:768px){
+  .sidebar{display:none;}
+  .main{margin-left:0;padding:16px;}
+  .lb-cols{display:none;}
+  .lb-item{grid-template-columns:36px 1fr auto;gap:6px;}
+  .lb-pack,.lb-rang-badge,.lb-modules{display:none;}
+}
+
+/* ── MOBILE MENU ── */
+.hamburger{display:none;position:fixed;top:14px;left:14px;z-index:500;width:42px;height:42px;border-radius:10px;background:rgba(8,14,31,0.95);border:1px solid rgba(30,100,255,0.3);cursor:pointer;align-items:center;justify-content:center;flex-direction:column;gap:5px;}
+.hamburger span{display:block;width:20px;height:2px;background:var(--cyan);border-radius:2px;transition:all .3s;}
+.sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:150;backdrop-filter:blur(4px);}
+.sidebar-overlay.show{display:block;}
+@media(max-width:768px){
+  .hamburger{display:flex;}
+  .sidebar{transform:translateX(-100%);transition:transform .3s ease;z-index:200;}
+  .sidebar.open{transform:translateX(0);}
+  .main{margin-left:0 !important;padding:16px;padding-top:70px;}
+}
+</style>
+</head><body>
+<div class="bg-grid"></div>
+<button class="hamburger" onclick="toggleSidebar()" id="hamburger-btn">
+  <span></span><span></span><span></span>
+</button>
+<div class="sidebar-overlay" id="sidebar-overlay" onclick="closeSidebar()"></div>
+
+<aside class="sidebar">
+  <div class="sidebar-logo"><div class="sidebar-logo-text">DHA</div><div class="sidebar-logo-sub">DIGITAL HUSTLER ACADEMY</div></div>
+  <div class="sidebar-section">MAIN</div>
+  <a class="nav-item" href="dha-dashboard.html"><span class="nav-icon">🎮</span> Dashboard</a>
+  <div class="sidebar-section">LEARN</div>
+  <a class="nav-item" href="dha-formation.html"><span class="nav-icon">📈</span> Formation Trading</a>
+  <a class="nav-item" href="dha-mindset.html"><span class="nav-icon">🧠</span> Mindset</a>
+  <div class="sidebar-section">NETWORK</div>
+  <a class="nav-item" href="dha-squad.html"><span class="nav-icon">👥</span> Mon Squad</a>
+  <a class="nav-item active" href="dha-leaderboard.html"><span class="nav-icon">🏆</span> Leaderboard</a>
+  <div class="sidebar-section">EARN</div>
+  <a class="nav-item" href="dha-affiliation.html"><span class="nav-icon">💰</span> Recommandation</a>
+  <div class="sidebar-section">TOOLS</div>
+  <a class="nav-item" href="dha-mentor.html"><span class="nav-icon">📞</span> Appel Mentor</a>
+  <div class="sidebar-bottom">
+    <div class="sidebar-member">
+      <div class="sidebar-avatar" id="sb-avatar">📈</div>
+      <div><div class="sidebar-member-name" id="sb-pseudo">HUSTLER</div><div class="sidebar-member-rang" id="sb-rang">NEW HUSTLER</div></div>
+    </div>
+  </div>
+</aside>
+
+<main class="main">
+  <div class="topbar">
+    <div><div class="topbar-title">LEADER<span>BOARD</span></div><div style="font-size:12px;color:var(--dim);margin-top:2px;">Classement de tous les membres DHA</div></div>
+    <div class="xp-pill"><span>⚡</span><span class="xp-pill-val" id="topbar-xp">0 XP</span></div>
+  </div>
+
+  <!-- LÉGENDE -->
+  <div class="legend">
+    <div class="legend-item"><span style="display:inline-flex;padding:3px 8px;border-radius:99px;font-size:8px;font-family:Orbitron,sans-serif;background:rgba(255,215,0,0.15);color:var(--gold);border:1px solid rgba(255,215,0,0.35);">💎 1:1</span> Accompagnement 1:1</div>
+    <div class="legend-item"><span style="display:inline-flex;padding:3px 8px;border-radius:99px;font-size:8px;font-family:Orbitron,sans-serif;background:rgba(0,212,255,0.1);color:var(--cyan);border:1px solid rgba(0,212,255,0.25);">⚡ GROUPE</span> Accompagnement en groupe</div>
+    <div class="legend-item"><span style="display:inline-flex;padding:3px 8px;border-radius:99px;font-size:8px;font-family:Orbitron,sans-serif;background:rgba(232,244,255,0.06);color:rgba(232,244,255,0.75);border:1px solid rgba(232,244,255,0.18);">📘 ESSENTIEL</span> Formation</div>
+    <div class="legend-item"><span style="padding:2px 8px;border-radius:99px;background:rgba(0,212,255,0.2);color:var(--cyan);font-size:8px;font-family:Orbitron,sans-serif;">← TOI</span> Ta position</div>
+  </div>
+
+  <!-- CLASSEMENT -->
+  <div class="lb-card">
+    <div class="lb-header">
+      <div class="lb-header-title">📊 CLASSEMENT COMPLET</div>
+      <div style="font-family:'Orbitron',sans-serif;font-size:8px;letter-spacing:1px;color:var(--dim);" id="total-membres">— membres</div>
+    </div>
+    <div class="lb-cols">
+      <div>#</div>
+      <div>PACK</div>
+      <div>RANG</div>
+      <div>PSEUDO</div>
+      <div style="text-align:right;">XP</div>
+      <div style="text-align:right;">MODULES</div>
+    </div>
+    <div id="lb-list"><div class="loading">Chargement...</div></div>
+  </div>
+</main>
+
+<script>
+const SUPABASE_URL='https://kdetwppxsfoagyndrlzr.supabase.co';
+const SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtkZXR3cHB4c2ZvYWd5bmRybHpyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzcyMzM3NjQsImV4cCI6MjA5MjgwOTc2NH0.OodaFQKEHcncDYdO6uM121NAUbyxD4UxpptSjzzZOi0';
+let member=null;
+
+const RANGS=[
+  {min:0,    max:4999,  name:'NEW HUSTLER',icon:'🎮',color:'rgba(200,200,200,0.6)'},
+  {min:5000, max:15499, name:'HUSTLER',    icon:'⚡',color:'#1E64FF'},
+  {min:15500,max:29999, name:'PRO HUSTLER',icon:'🚀',color:'#00D4FF'},
+  {min:30000,max:59999, name:'AMBASSADEUR',icon:'👑',color:'#FFD700'},
+  {min:60000,max:999999,name:'LEGEND',     icon:'💎',color:'#9D4EDD'}
+];
+function getRang(xp){return RANGS.find(r=>xp>=r.min&&xp<=r.max)||RANGS[0];}
+
+function getScore(m){
+  const packScore=m.pack==='pro'?1000000:0;
+  const rangScore=m.xp||0;
+  return packScore+rangScore;
+}
+
+async function loadLeaderboard(){
+  try{
+const res=await fetch(SUPABASE_URL+'/rest/v1/membres?select=pseudo,xp,pack&or=(plan.is.null,plan.neq.demo)',{
+  headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY}
+});     const data=await res.json();
+    if(!data||!Array.isArray(data)){
+      document.getElementById('lb-list').innerHTML='<div class="loading">Erreur de chargement. Réessaie.</div>';
+      return;
+    }
+
+    // Trier : Pro d'abord puis par XP
+    data.sort((a,b)=>getScore(b)-getScore(a));
+    document.getElementById('total-membres').textContent=data.length+' membres';
+
+    const rankColors=['var(--gold)','rgba(192,192,192,0.8)','rgba(205,127,50,0.8)'];
+    const rankIcons=['🥇','🥈','🥉'];
+    const list=document.getElementById('lb-list');
+    list.innerHTML='';
+
+    data.forEach((m,i)=>{
+      const rang=getRang(m.xp||0);
+      const isMe=member&&m.pseudo===member.pseudo;
+      const pk=String(m.pack||'');
+      const packB=pk==='750'||pk==='pro'?['pro','💎 1:1']:pk==='500'?['medium','⚡ GROUPE']:pk==='180'?['base','📘 ESSENTIEL']:['base','MEMBRE'];
+      const rankColor=i<3?rankColors[i]:'var(--dim)';
+      const rankDisplay=i<3?rankIcons[i]:(i+1);
+
+      list.innerHTML+=`
+        <div class="lb-item ${isMe?'me':''}">
+          <div class="lb-rank" style="color:${rankColor};">${rankDisplay}</div>
+          <div>
+            <span class="lb-pack ${packB[0]}">${packB[1]}</span>
+          </div>
+          <div>
+            <span class="lb-rang-badge" style="background:${rang.color}22;color:${rang.color};border:1px solid ${rang.color}44;">
+              ${rang.icon} ${rang.name}
+            </span>
+          </div>
+          <div class="lb-pseudo">
+            @${m.pseudo||'---'}
+            ${isMe?'<span class="lb-me-tag">← TOI</span>':''}
+          </div>
+          <div class="lb-xp">${(m.xp||0).toLocaleString()} XP</div>
+          <div class="lb-modules">—</div>
+        </div>`;
+    });
+
+  }catch(e){
+    document.getElementById('lb-list').innerHTML='<div class="loading">Erreur de chargement. Réessaie.</div>';
+  }
+}
+
+function init(){
+  const stored=localStorage.getItem('dha_member');
+  if(!stored){window.location.href='dha-connexion.html';return;}
+  member=JSON.parse(stored);
+  document.getElementById('sb-pseudo').textContent=('@'+(member.pseudo||'HUSTLER')).toUpperCase();
+  document.getElementById('topbar-xp').textContent=(member.xp||0)+' XP';
+  if(member.avatar){document.getElementById('sb-avatar').innerHTML='<img src="'+member.avatar+'" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"/>';}
+  loadLeaderboard();
+  setInterval(loadLeaderboard,30000);
+}
+
+init();
+
+function toggleSidebar(){
+  const s=document.querySelector('.sidebar');
+  const o=document.getElementById('sidebar-overlay');
+  s.classList.toggle('open');
+  o.classList.toggle('show');
+}
+function closeSidebar(){
+  document.querySelector('.sidebar').classList.remove('open');
+  document.getElementById('sidebar-overlay').classList.remove('show');
+}
+// Ferme la sidebar quand on clique un lien nav
+document.querySelectorAll('.nav-item').forEach(a=>a.addEventListener('click',closeSidebar));
+
+</script>
+<script src="dha-mobile-menu.js"></script>
+</body>
+</html>
