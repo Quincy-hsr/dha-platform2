@@ -186,7 +186,9 @@
   .community-item img{width:100%;height:100%;object-fit:cover;display:block;aspect-ratio:3/4;}
   .cg-5{grid-template-columns:repeat(5,1fr);}
   .cg-4{grid-template-columns:repeat(4,1fr);}
+  .cg-wide .community-item img{aspect-ratio:4/3;}
   @media(max-width:900px){.cg-5,.cg-4{grid-template-columns:repeat(3,1fr);}}
+  @media(max-width:900px){.community-gallery.cg-wide{grid-template-columns:1fr 1fr;gap:10px;}}
   @media(max-width:600px){.cg-5,.cg-4{grid-template-columns:1fr 1fr;}}
   .eco-card{padding:28px 24px;border-radius:16px;background:var(--card);border:1px solid var(--border);text-align:center;transition:all .3s;position:relative;overflow:hidden;}
   .eco-card:hover{transform:translateY(-4px);}
@@ -732,6 +734,14 @@
     <div class="community-item reveal" style="transition-delay:.2s"><img src="suivi-3.jpg" alt="Accompagnement trading en direct DHA"/></div>
     <div class="community-item reveal" style="transition-delay:.1s"><img src="suivi-4.jpg" alt="Accompagnement et suivi de membre DHA"/></div>
     <div class="community-item reveal" style="transition-delay:.2s"><img src="suivi-5.jpg" alt="Organisation d'appel de suivi DHA"/></div>
+  </div>
+
+  <div class="community-gallery-label">🏎️ SORTIE EN ÉQUIPE AU SPEED PARK</div>
+  <div class="community-gallery cg-4 cg-wide" style="max-width:1100px;">
+    <div class="community-item reveal"><img src="sortie-1.jpg" alt="Karting entre membres DHA au Speed Park" loading="lazy"/></div>
+    <div class="community-item reveal" style="transition-delay:.1s"><img src="sortie-2.jpg" alt="Bowling entre membres DHA au Speed Park" loading="lazy"/></div>
+    <div class="community-item reveal" style="transition-delay:.2s"><img src="sortie-3.jpg" alt="Air hockey entre membres DHA au Speed Park" loading="lazy"/></div>
+    <div class="community-item reveal" style="transition-delay:.3s"><img src="sortie-4.jpg" alt="Jeux d'arcade basket entre membres DHA au Speed Park" loading="lazy"/></div>
   </div>
 
   <div class="community-gallery-label">🏡 SÉMINAIRE EN VILLA (3 JOURS)</div>
