@@ -468,17 +468,15 @@ var confCb=null;
 var toastT;
 
 var ACTIONS=[
-  {k:'co',i:'🔌',l:'Connexion quotidienne',x:10},
-  {k:'mo',i:'📚',l:'Finir un module',x:50},
-  {k:'di',i:'✍️',l:'Message dans le groupe',x:10},
-  {k:'an',i:'📈',l:'Analyse envoyée au mentor',x:50},
-  {k:'li',i:'📺',l:'Participer à un live',x:100},
-  {k:'me',i:'📞',l:'Appel mentor',x:75},
-  {k:'fi',i:'🗓️',l:'Fidélité mensuelle',x:100},
-  {k:'pa',i:'🤝',l:'Parrainer un ami',x:250},
-  {k:'tp',i:'💰',l:'Take Profit validé',x:200},
-  {k:'qg',i:'🏢',l:'Venir au QG',x:250},
-  {k:'ev',i:'🎉',l:'Venir à un événement',x:300}
+  {k:'se',i:'🎤',l:"Venir à un séminaire",x:500},
+  {k:'so',i:'🎉',l:"Sortie / événement en équipe (QG)",x:400},
+  {k:'me',i:'📞',l:"Appel mentor",x:300},
+  {k:'ex',i:'🎯',l:"Preuve d'exercice",x:200},
+  {k:'an',i:'📈',l:"Analyse trading envoyée",x:100},
+  {k:'gr',i:'✍️',l:"Message / image dans le groupe",x:10},
+  {k:'ag',i:'👥',l:"Appel de groupe",x:75},
+  {k:'ga',i:'💰',l:"Gain en trading",x:60},
+  {k:'pc',i:'🧠',l:"Vidéo Prise de conscience",x:50}
 ];
 
 var RANGS={'recommandation':{n1:20,n2:0}};
@@ -1217,7 +1215,7 @@ function confirmer(id){
       fetch(SUPA+'/rest/v1/xp_historique',{
         method:'POST',
         headers:H,
-        body:JSON.stringify({membre_pseudo:pseudo,xp_gagne:total,raison:raison})
+        body:JSON.stringify({membre_pseudo:pseudo,xp_gagne:total,raison:raison,action_key:'man-'+Object.keys(p).filter(function(k){return p[k]>0;}).join('-')+'-'+Date.now()})
       }).then(function(r){
         if(!r.ok) r.text().then(function(t){console.error('Historique error:',t);});
       }).catch(function(e){console.error('Historique error:',e);});

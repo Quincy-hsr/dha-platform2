@@ -140,10 +140,10 @@ let member=null;
 
 const RANGS=[
   {min:0,    max:4999,  name:'NEW HUSTLER',icon:'🎮',color:'rgba(200,200,200,0.6)'},
-  {min:5000, max:14999, name:'HUSTLER',    icon:'⚡',color:'#1E64FF'},
-  {min:15000,max:21999, name:'PRO HUSTLER',icon:'🚀',color:'#00D4FF'},
-  {min:22000,max:29999, name:'AMBASSADEUR',icon:'👑',color:'#FFD700'},
-  {min:30000,max:999999,name:'LEGEND',     icon:'💎',color:'#9D4EDD'}
+  {min:5000, max:15499, name:'HUSTLER',    icon:'⚡',color:'#1E64FF'},
+  {min:15500,max:29999, name:'PRO HUSTLER',icon:'🚀',color:'#00D4FF'},
+  {min:30000,max:59999, name:'AMBASSADEUR',icon:'👑',color:'#FFD700'},
+  {min:60000,max:999999,name:'LEGEND',     icon:'💎',color:'#9D4EDD'}
 ];
 function getRang(xp){return RANGS.find(r=>xp>=r.min&&xp<=r.max)||RANGS[0];}
 

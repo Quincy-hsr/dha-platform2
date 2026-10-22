@@ -490,8 +490,7 @@ async function completeBloc(){
   if(completedActions.has('bloc_m9_b1')){alert('Tu as déjà terminé ce module ! 💪');return;}
   document.getElementById('complete-btn').textContent='✅ BLOC 1 TERMINÉ !';
   document.getElementById('complete-btn').disabled=true;
-  await awardXP('bloc_m9_b1',25,'📚 Bloc terminé — Module 8');
-  await awardXP('quete_bloc_'+todayISO(),50,'📚 Finir un module (quête du jour)');
+  await awardXP('bloc_m9_b1',40,'📚 Bloc terminé — Module 8');
   setTimeout(()=>{window.location.href='dha-formation.html';},1500);
 }
 

@@ -507,7 +507,7 @@ function makeSupaDb(){
 /* ---------- lien avec la plateforme DHA : modules faits ---------- */
 var PLAT = {members:[], done:{}, loaded:false, recent:{}};
 function memberOf(c){ if(!c || !c.pseudo) return null; var k = normPseudo(c.pseudo); return PLAT.members.filter(function(m){ return normPseudo(m.pseudo)===k; })[0] || null; }
-function levelOf(xp){ return Math.min(10, Math.floor((Number(xp)||0)/500)+1); }
+function levelOf(xp){ xp=Number(xp)||0; var l=1; while(l<100){ var n=l; if(xp < n*200+15*n*(n-1)/2) break; l++; } return l; }
 function normPseudo(p){ return String(p||'').trim().replace(/^@+/,'').toLowerCase(); }
 function loadPlatform(){
   return fetch(SUPA_URL+'/rest/v1/membres?select=id,pseudo,prenom,nom,plan,xp&or=(plan.is.null,plan.neq.demo)', {headers:SUPA_H})
@@ -1164,12 +1164,18 @@ function candToProspect(c){
   safe(put('prospects', o)).then(function(){ toast(c.prenom+' ajouté(e) à tes prospects'); var after = function(){ openCand(c.id); }; if((c.statut||'nouvelle')==='nouvelle') patchCandDb(c,{statut:'contactee'}).then(after, after); else after(); }).catch(function(){});
 }
 
-/* ---------- XP depuis le Cerveau (mêmes actions que l'ancien admin) ---------- */
+/* ---------- XP depuis le Cerveau (la clé man-… coche les quêtes du jour du membre) ---------- */
+/* Ordre = importance. Parrainage, connexion et modules sont crédités automatiquement par la plateforme. */
 var XP_ACTIONS = [
-  {k:'an',i:'📈',l:'Analyse envoyée au mentor',x:50},{k:'gr',i:'✍️',l:'Message dans le groupe',x:10},
-  {k:'li',i:'📺',l:'Participer à un live',x:100},{k:'me',i:'📞',l:'Appel mentor',x:75},{k:'fi',i:'🗓️',l:'Fidélité mensuelle',x:100},
-  {k:'pa',i:'🤝',l:'Parrainer un ami',x:250},{k:'tp',i:'💰',l:'Take Profit validé',x:200},{k:'qg',i:'🏢',l:'Venir au QG',x:250},
-  {k:'ev',i:'🎉',l:'Venir à un événement',x:300},{k:'mo',i:'📚',l:'Finir un module',x:50},{k:'co',i:'🔌',l:'Connexion quotidienne',x:10}
+  {k:'se',i:'🎤',l:"Venir à un séminaire",x:500},
+  {k:'so',i:'🎉',l:"Sortie / événement en équipe (QG)",x:400},
+  {k:'me',i:'📞',l:"Appel mentor",x:300},
+  {k:'ex',i:'🎯',l:"Preuve d'exercice",x:200},
+  {k:'an',i:'📈',l:"Analyse trading envoyée",x:100},
+  {k:'gr',i:'✍️',l:"Message / image dans le groupe",x:10},
+  {k:'ag',i:'👥',l:"Appel de groupe",x:75},
+  {k:'ga',i:'💰',l:"Gain en trading",x:60},
+  {k:'pc',i:'🧠',l:"Vidéo Prise de conscience",x:50}
 ];
 var XPC = {};
 function openXp(c){
@@ -1191,7 +1197,7 @@ function xpValidate(){
   var nv = (Number(m.xp)||0)+tot, btn = $('[data-act="xp-ok"]'); if(btn) btn.disabled = true;
   fetch(SUPA_URL+'/rest/v1/membres?id=eq.'+encodeURIComponent(m.id), {method:'PATCH', headers:SUPA_H, body:JSON.stringify({xp:nv})})
     .then(function(r){ if(!r.ok) throw {code:'http_'+r.status}; m.xp = nv;
-      return fetch(SUPA_URL+'/rest/v1/xp_historique', {method:'POST', headers:SUPA_H, body:JSON.stringify({membre_pseudo:m.pseudo, xp_gagne:tot, raison:raison})}); })
+      return fetch(SUPA_URL+'/rest/v1/xp_historique', {method:'POST', headers:SUPA_H, body:JSON.stringify({membre_pseudo:m.pseudo, xp_gagne:tot, raison:raison, action_key:'man-'+XP_ACTIONS.filter(function(a){ return XPC.q[a.k]>0; }).map(function(a){ return a.k; }).join('-')+'-'+Date.now()})}); })
     .then(function(){ closeDlg(); toast('+'+fmtN(tot)+' XP pour @'+m.pseudo); loadPlatform(); schedule(); })
     .catch(function(e){ if(btn) btn.disabled = false; toast(errCopy(e)); });
 }

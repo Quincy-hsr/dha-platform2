@@ -212,7 +212,6 @@ function init(){
   const member=JSON.parse(stored);
   document.getElementById('sb-pseudo').textContent=('@'+(member.pseudo||'HUSTLER')).toUpperCase();
   if(member.avatar){document.getElementById('sb-avatar').innerHTML='<img src="'+member.avatar+'" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"/>';}
-  awardQueteChatIfNeeded(member);
 }
 init();
 

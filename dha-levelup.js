@@ -201,7 +201,7 @@
       const r = { name: 'HUSTLER', icon: '⚡', color: '#1E64FF', min: 5000 };
       queue.push(type === 'rang'
         ? { type: 'rang', rang: r, avantages: [{ icon: '✈️', titre: 'Vols Business & First jusqu\'à -70%' }] }
-        : { type: 'level', from: 9, to: 10, xp: 4500, nextRang: r });
+        : { type: 'level', from: 9, to: 10, xp: 2340, nextRang: r });
       playNext();
     }
   };
