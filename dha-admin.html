@@ -977,6 +977,7 @@ function render(data){
     h+='</div><span class="ch" id="ch-'+id+'">▾</span></div>';
 
     h+='<div class="md" id="md-'+id+'" style="display:none">';
+    if(m.plan!=='demo')h+='<button class="bg" data-pwr="'+id+'" style="margin-bottom:14px">🔑 Nouveau mot de passe</button>';
     // Compte démo : simple info (s'il paie, il se réinscrit normalement)
     if(m.plan==='demo'){
       h+='<div class="stitle">Compte démo</div>';
@@ -1121,6 +1122,9 @@ document.addEventListener('click',function(e){
     });
     return;
   }
+
+  var pwr=t.closest('[data-pwr]');
+  if(pwr){var mp=getMember(pwr.getAttribute('data-pwr'));if(mp)DHA.resetPasswordUI(mp);return;}
 
   // Tout verser
   var verBtn=t.closest('[data-ver]');

@@ -1873,7 +1873,7 @@ function openClient(c){
   var pm = memberOf(c), prec = c.pseudo ? (PLAT.recent[normPseudo(c.pseudo)]||[]) : [];
   var platBox = pm ? '<div class="pinfo" style="display:block"><div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap"><b>Sur la plateforme : @'+esc(pm.pseudo)+'</b><span>⚡ '+fmtN(pm.xp||0)+' XP · niveau '+levelOf(pm.xp)+'</span></div>'
     +(prec.length ? '<div class="tl" style="margin-top:8px">'+prec.slice(0,8).map(function(r){ return '<div><b>+'+fmtN(r.xp_gagne||0)+' XP</b> · '+esc(String(r.raison||'').split(' · ')[0])+' <span class="sub">('+ago(new Date(r.created_at).getTime())+')</span></div>'; }).join('')+'</div>' : '<p class="sub" style="margin:6px 0 0">Aucune activité pour l\'instant.</p>')
-    +'<button type="button" class="btn small primary" data-act="xp-open" data-id="'+esc(c.id)+'" style="margin-top:10px">⚡ Ajouter de l\'XP</button></div>'
+    +'<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px"><button type="button" class="btn small primary" data-act="xp-open" data-id="'+esc(c.id)+'">⚡ Ajouter de l\'XP</button><button type="button" class="btn small" data-act="pw-reset" data-id="'+esc(c.id)+'">🔑 Nouveau mot de passe</button></div></div>'
     : '<div class="pinfo" style="display:block"><b>Pas encore relié à son compte.</b> <span class="sub">Choisis son pseudo plus bas pour voir son activité en temps réel.</span></div>';
   openDlg('<div class="dlg-body"><h2 id="dlgTitle">'+(c.name?esc(c.name):'Nouveau membre')+'</h2>'+(c.id && S.clients.some(function(x){ return x.id===c.id; }) ? platBox : '')
     +'<div class="two"><div><label for="cdName">Nom ou pseudo</label><input id="cdName" value="'+esc(c.name||'')+'"></div><div><label for="cdStatus">Statut</label><select id="cdStatus">'+CLIENT_STATUS.map(function(s){return '<option value="'+s[0]+'"'+((c.status||'actif')===s[0]?' selected':'')+'>'+s[1]+'</option>';}).join('')+'</select></div></div>'
@@ -2019,6 +2019,7 @@ document.addEventListener('click', function(ev){
     case 'candf': CANDF = el.getAttribute('data-v'); schedule(); break;
     case 'cand-det': openCand(id); break;
     case 'xp-open': ev.stopPropagation(); var xc = byId(S.clients); if(xc) openXp(xc); break;
+    case 'pw-reset': ev.stopPropagation(); var pc = byId(S.clients), pmm = pc && memberOf(pc); if(pmm) DHA.resetPasswordUI(pmm); break;
     case 'xp-q': var k = el.getAttribute('data-k'); XPC.q[k] = Math.max(0, (XPC.q[k]||0)+Number(el.getAttribute('data-d'))); $('#xq_'+k).textContent = XPC.q[k]; $('#xpTot').textContent = 'Total : +'+fmtN(xpTotal())+' XP'; break;
     case 'xp-ok': xpValidate(); break;
     case 'cf': S.cliF = el.getAttribute('data-v'); S.tab = 'clients'; render(); break;
