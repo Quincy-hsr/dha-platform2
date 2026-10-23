@@ -608,8 +608,8 @@ body {
         <select class="form-select" id="offre">
           <option value="">Sélectionne ton offre</option>
           <option value="180">Essentiel — 180€ (paiement unique)</option>
-          <option value="500">Accompagnement en groupe — 500€ (3 × 160€)</option>
-          <option value="750">Accompagnement 1:1 — 750€ (3 × 250€)</option>
+          <option value="500">Accompagnement en groupe — 500€</option>
+          <option value="750">Accompagnement 1:1 — 750€</option>
         </select>
       </div>
 
@@ -903,7 +903,7 @@ async function goStep3() {
       const cleNotif = 'dha_notif_ceo_' + (userData.email || '').toLowerCase();
       let dejaNotifie = false;
       try { dejaNotifie = !!localStorage.getItem(cleNotif); localStorage.setItem(cleNotif, '1'); } catch(e) {}
-      const packLabels = { '180': 'Essentiel (180€)', '500': 'Accompagnement en groupe (500€ — 3 × 160€)', '750': 'Accompagnement 1:1 (750€ — 3 × 250€)' };
+      const packLabels = { '180': 'Essentiel (180€)', '500': 'Accompagnement en groupe (500€)', '750': 'Accompagnement 1:1 (750€)' };
       const classeLabels = { trading:'Trading 📈', ugc:'UGC Creator 🎬', marketing:'Marketing Digital 🚀', ecommerce:'E-Commerce 🛒' };
       if(!dejaNotifie) emailjs.send('service_4wng58y', 'template_5zg1ys4', {
         prenom: userData.prenom,
