@@ -291,6 +291,7 @@
   /* PRICING */
   .pricing{padding:90px 40px;background:linear-gradient(180deg,transparent,rgba(30,100,255,0.04),transparent);}
   .pricing-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;max-width:1200px;margin:0 auto;align-items:stretch;}
+  .pricing-grid.pricing-3{grid-template-columns:repeat(3,1fr);max-width:1080px;}
   .tier-card{padding:26px 22px;border-radius:18px;background:var(--card2);border:1px solid var(--border);display:flex;flex-direction:column;position:relative;}
   .tier-card.featured{border-color:rgba(255,215,0,0.4);background:linear-gradient(135deg,#0a1228,#0d1428);box-shadow:0 0 40px rgba(255,215,0,0.08);}
   .tier-card.featured-red{border-color:rgba(255,140,0,0.4);background:linear-gradient(135deg,#0a1228,#0d1428);box-shadow:0 0 40px rgba(255,68,102,0.1);}
@@ -346,12 +347,12 @@
   @media(max-width:900px){
     .dim-grid,.why-grid,.classes-grid,.eco-grid,.events-grid,.testi-grid,.avis-gallery,.story-grid,.community-gallery{grid-template-columns:1fr;}
     .gamif-inner{grid-template-columns:1fr;}
-    .pricing-grid{grid-template-columns:1fr 1fr;}
+    .pricing-grid,.pricing-grid.pricing-3{grid-template-columns:1fr 1fr;}
   }
   @media(max-width:600px){
     nav{padding:14px 20px;}
     .nav-links{display:none;}
-    .pricing-grid{grid-template-columns:1fr;}
+    .pricing-grid,.pricing-grid.pricing-3{grid-template-columns:1fr;}
     .bridge-list{flex-direction:column;align-items:center;}
     footer{flex-direction:column;text-align:center;}
   }
@@ -783,7 +784,7 @@
   <div class="section-title reveal">Choisis ton niveau d'accompagnement</div>
   <p class="section-desc reveal">3 offres. L'accès n'est pas automatique : chaque candidature passe par un entretien pour vérifier que le programme te correspond et préserver le niveau du groupe.</p>
 
-  <div class="pricing-grid" style="grid-template-columns:repeat(3,1fr);max-width:1080px;">
+  <div class="pricing-grid pricing-3">
 
     <div class="tier-card reveal">
       <div class="tier-name">ESSENTIEL</div>
