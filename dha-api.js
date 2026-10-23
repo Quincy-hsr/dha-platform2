@@ -132,13 +132,13 @@
   // Admin : donne un mot de passe temporaire à un membre (m = {id, pseudo, email, prenom})
   function resetPasswordUI(m) {
     var ov = boite('<div style="font-size:26px">🔑</div><h3 style="margin:6px 0 8px;font-size:19px">Nouveau mot de passe pour @' + esc(m.pseudo || '') + '</h3>' +
-      '<p style="margin:0;font-size:14px;color:rgba(232,244,255,.65);line-height:1.5">Son ancien mot de passe ne marchera plus et il sera déconnecté de ses appareils. Il pourra en choisir un nouveau depuis son dashboard.</p>' +
+      '<p style="margin:0;font-size:14px;color:rgba(232,244,255,.65);line-height:1.5">Son ancien mot de passe ne marchera plus et il sera déconnecté de ses appareils.</p>' +
       '<button type="button" data-go style="' + BTN + '">Générer un mot de passe temporaire</button><button type="button" data-x style="' + BTN2 + '">Annuler</button>');
     ov.querySelector('[data-go]').onclick = function () {
       var pw = mdpTemp(), b = this; b.disabled = true; b.textContent = '…';
       admin('dha_admin_reset_password', { p_id: m.id, p_new: pw }).then(function (ok) {
         if (!ok) { b.disabled = false; b.textContent = 'Échec, réessaie'; return; }
-        var msg = 'Salut ' + (m.prenom || '') + ' ! Voici tes nouveaux identifiants DHA :\nEmail : ' + (m.email || '') + '\nMot de passe : ' + pw + '\nConnecte-toi ici : https://digitalhustleracademy.digital/dha-connexion.html\nPense à changer ton mot de passe depuis ton dashboard (bouton 🔑).';
+        var msg = 'Salut ' + (m.prenom || '') + ' ! Voici tes nouveaux identifiants DHA :\nEmail : ' + (m.email || '') + '\nMot de passe : ' + pw + '\nConnecte-toi ici : https://digitalhustleracademy.digital/dha-connexion.html';
         ov.firstChild.innerHTML = '<div style="font-size:26px">✅</div><h3 style="margin:6px 0 10px;font-size:19px">Mot de passe changé</h3>' +
           '<div style="font-size:13px;color:rgba(232,244,255,.6)">Email</div><div style="font-size:16px;margin-bottom:10px;word-break:break-all">' + esc(m.email || '') + '</div>' +
           '<div style="font-size:13px;color:rgba(232,244,255,.6)">Mot de passe temporaire</div><div style="font-family:monospace;font-size:22px;letter-spacing:1px;color:#00FF88">' + pw + '</div>' +
