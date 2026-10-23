@@ -514,6 +514,7 @@ function loadPlatform(){
   return DHA.admin('dha_admin_membres')
     .then(function(ms){
       PLAT.members = (Array.isArray(ms) ? ms : []).filter(function(m){ return m.plan!=='demo'; });
+      DHA.admin('dha_admin_activite').then(function(rows){ var l = {}; (rows||[]).forEach(function(r){ l[normPseudo(r.pseudo)] = new Date(r.derniere).getTime(); }); PLAT.last = l; schedule(); }).catch(function(){});
       if(S.tab==='clients') schedule();
       var dl = document.getElementById('dhaMembers');
       if(dl) dl.innerHTML = PLAT.members.map(function(m){ return '<option value="'+esc(m.pseudo)+'">'+esc([m.prenom,m.nom].filter(Boolean).join(' '))+'</option>'; }).join('');
@@ -615,6 +616,9 @@ function connectCloud(db){
   }, function(){});
   db.doc('settings/goals').onSnapshot(function(snap){
     S.goals = Object.assign({}, DEFAULT_GOALS, snap.exists ? snap.data() : {}); schedule();
+  }, function(){});
+  db.doc('settings/relances').onSnapshot(function(snap){
+    S.relances = snap.exists ? snap.data() : {}; schedule();
   }, function(){});
   db.doc('admin/objectif').onSnapshot(function(snap){
     S.objectif = snap.exists ? snap.data() : null; schedule();
@@ -1574,7 +1578,7 @@ function paintContent(){
 
 /* ---------- vue : clients ---------- */
 function skelClients(){
-  return '<div class="stack"><div id="cash"></div><div id="linkBanner"></div><div id="cfilt" style="display:flex;flex-wrap:wrap;gap:8px"></div><div class="toolbar" style="margin:0"><p class="sub">Un prospect passé en « Client » crée sa fiche automatiquement.</p><span style="display:flex;gap:10px;flex-wrap:wrap"><button type="button" class="btn" data-act="tab" data-tab="membres">🤝 Parrainages &amp; comptes</button><span id="clexp"></span><button type="button" class="btn primary" data-act="new-client">Nouveau membre</button></span></div><div class="grid" id="cg"></div></div>';
+  return '<div class="stack"><div id="cash"></div><div id="relance"></div><div id="linkBanner"></div><div id="cfilt" style="display:flex;flex-wrap:wrap;gap:8px"></div><div class="toolbar" style="margin:0"><p class="sub">Un prospect passé en « Client » crée sa fiche automatiquement.</p><span style="display:flex;gap:10px;flex-wrap:wrap"><button type="button" class="btn" data-act="tab" data-tab="membres">🤝 Parrainages &amp; comptes</button><span id="clexp"></span><button type="button" class="btn primary" data-act="new-client">Nouveau membre</button></span></div><div class="grid" id="cg"></div></div>';
 }
 function paintClients(){
   if(!$('#cg')) return;
@@ -1584,6 +1588,7 @@ function paintClients(){
   var cash = $('#cash');
   if(cash) cash.innerHTML = '<section class="card" style="display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between"><div><span style="display:block;color:var(--muted);font-size:13px;font-weight:600">💶 Reste à encaisser</span><span style="font:700 30px/1.1 var(--f-display)">'+euro(oweTot)+'</span><span class="sub" style="display:block">'+(owe.length?owe.length+' client'+(owe.length>1?'s te doivent':' te doit')+' de l\'argent':'Personne ne te doit d\'argent')+'</span></div>'
     +(owe.length?'<button type="button" class="btn" data-act="cf" data-v="owe">Voir qui me doit</button>':'')+'</section>';
+  paintRelance();
   var cf = $('#cfilt');
   var nUn = S.clients.filter(function(c){ return !c.pseudo; }).length;
   if(cf) cf.innerHTML = [['all','Tous',S.clients.length],['owe','Me doivent de l\'argent',owe.length],['unlinked','Pas reliés',nUn]].map(function(f){ return '<button type="button" class="chip" data-act="cf" data-v="'+f[0]+'" aria-pressed="'+((S.cliF||'all')===f[0])+'">'+f[1]+'<small>'+f[2]+'</small></button>'; }).join('');
@@ -1610,6 +1615,48 @@ function paintClients(){
       +((money||alert)?'<div>'+money+(alert?'<span class="badge">'+esc(alert)+'</span>':'')+'</div>':'')
       +'<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:auto">'+(m?'<button type="button" class="btn small primary" data-act="xp-open" data-id="'+esc(c.id)+'">⚡ Ajouter de l\'XP</button>':'')+'<button type="button" class="btn small" data-act="open-client" data-id="'+esc(c.id)+'">Voir les détails</button></div></div>';
   }).join('');
+}
+
+
+/* ---------- relance des membres inactifs ---------- */
+var RELANCE_JOURS = 3, RELANCE_ALL = false;
+function telWa(t){ var d = String(t||'').replace(/[^\d+]/g,''); if(!d) return ''; if(d.indexOf('+')===0) d = d.slice(1); else if(d.indexOf('00')===0) d = d.slice(2); else if(d.charAt(0)==='0' && d.length===10) d = '33'+d.slice(1); return d.length>=9 ? d : ''; }
+function relanceMsg(m, j){
+  var p = m.prenom || m.pseudo || '';
+  if(j===null || j>=7) return 'Salut '+p+', ça fait '+(j===null?'un moment':j+' jours')+' que tu n\'es pas passé sur la DHA. Je préfère te demander directement : qu\'est-ce qui te bloque en ce moment ? Le temps, un module pas clair, la motivation ? Réponds-moi, on trouve une solution ensemble. Ceux qui avancent, ce sont ceux qui restent réguliers 🔥\nhttps://digitalhustleracademy.digital/dha-connexion.html';
+  return 'Salut '+p+' ! Ça fait quelques jours que je ne t\'ai pas vu sur la plateforme 👀 Tout va bien ? Ta prochaine étape t\'attend, et tes quêtes du jour aussi (+XP). Si tu bloques sur quelque chose, dis-moi, on regarde ensemble 💪\nhttps://digitalhustleracademy.digital/dha-connexion.html';
+}
+function relanceListe(){
+  if(!PLAT.last) return null;
+  var now = Date.now(), R = S.relances || {};
+  return PLAT.members.filter(function(m){ return m.actif!==false; }).map(function(m){
+    var k = normPseudo(m.pseudo), t = PLAT.last[k] || null, j = t ? Math.floor((now-t)/86400000) : null;
+    return {m:m, k:k, j:j, rel:R[k]||0};
+  }).filter(function(x){ return (x.j===null || x.j>=RELANCE_JOURS) && (now - x.rel) > RELANCE_JOURS*86400000; })
+    .sort(function(a,b){ return (b.j===null?9999:b.j) - (a.j===null?9999:a.j); });
+}
+function paintRelance(){
+  var box = $('#relance'); if(!box) return;
+  var L = relanceListe();
+  if(L===null){ box.innerHTML = ''; return; }
+  if(!L.length){ box.innerHTML = '<section class="card"><b>🔔 À relancer</b> <span class="sub">· Personne : tous les membres sont passés sur la plateforme ces '+RELANCE_JOURS+' derniers jours 👌</span></section>'; return; }
+  var shown = RELANCE_ALL ? L : L.slice(0,5);
+  box.innerHTML = '<section class="card"><div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap"><h3 style="margin:0">🔔 À relancer <span class="badge" style="margin:0">'+L.length+'</span></h3><span class="sub" style="font-size:13px">Inactifs depuis '+RELANCE_JOURS+' jours ou plus · un membre relancé disparaît de la liste pendant '+RELANCE_JOURS+' jours</span></div>'
+    + '<div style="display:flex;flex-direction:column;gap:8px;margin-top:12px">' + shown.map(function(x){
+      var wa = telWa(x.m.telephone), txt = encodeURIComponent(relanceMsg(x.m, x.j));
+      var lien = 'https://wa.me/'+(wa||'')+'?text='+txt;
+      return '<div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:10px 12px;border:1px solid var(--line);border-radius:12px">'
+        + '<div style="flex:1;min-width:150px"><b>'+esc([x.m.prenom,x.m.nom].filter(Boolean).join(' ')||x.m.pseudo)+'</b> <span class="sub">@'+esc(x.m.pseudo||'')+'</span><div class="sub" style="font-size:13px">'+(x.j===null?'Jamais actif sur la plateforme':'Inactif depuis '+x.j+' jour'+(x.j>1?'s':''))+(wa?'':' · pas de numéro')+'</div></div>'
+        + '<a class="btn small primary" style="text-decoration:none" href="'+lien+'" target="_blank" rel="noopener" data-act="rel-wa" data-k="'+esc(x.k)+'">💬 WhatsApp</a>'
+        + '<button type="button" class="btn small" data-act="rel-ok" data-k="'+esc(x.k)+'">✓ Relancé</button></div>';
+    }).join('') + '</div>'
+    + (L.length>5 ? '<button type="button" class="btn small" data-act="rel-all" style="margin-top:10px">'+(RELANCE_ALL?'Voir moins':'Voir les '+L.length)+'</button>' : '')
+    + '</section>';
+}
+function marquerRelance(k){
+  var R = Object.assign({}, S.relances||{}); R[k] = Date.now(); S.relances = R;
+  if(dbh) dbh.doc('settings/relances').set(clean(R)).catch(function(){});
+  schedule();
 }
 
 /* ---------- vue : analyse IA ---------- */
@@ -2019,6 +2066,9 @@ document.addEventListener('click', function(ev){
     case 'candf': CANDF = el.getAttribute('data-v'); schedule(); break;
     case 'cand-det': openCand(id); break;
     case 'xp-open': ev.stopPropagation(); var xc = byId(S.clients); if(xc) openXp(xc); break;
+    case 'rel-wa': marquerRelance(el.getAttribute('data-k')); return;
+    case 'rel-ok': marquerRelance(el.getAttribute('data-k')); toast('Noté : relancé'); break;
+    case 'rel-all': RELANCE_ALL = !RELANCE_ALL; schedule(); break;
     case 'pw-reset': ev.stopPropagation(); var pc = byId(S.clients), pmm = pc && memberOf(pc); if(pmm) DHA.resetPasswordUI(pmm); break;
     case 'xp-q': var k = el.getAttribute('data-k'); XPC.q[k] = Math.max(0, (XPC.q[k]||0)+Number(el.getAttribute('data-d'))); $('#xq_'+k).textContent = XPC.q[k]; $('#xpTot').textContent = 'Total : +'+fmtN(xpTotal())+' XP'; break;
     case 'xp-ok': xpValidate(); break;
