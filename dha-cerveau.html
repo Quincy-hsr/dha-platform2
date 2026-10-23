@@ -752,15 +752,15 @@ function schedule(){ if(raf) return; raf = requestAnimationFrame(function(){ raf
 
 var TABS = {
   home:'Accueil', perdus:'Prospects perdus', stats:'Mes stats', cand:'Candidatures', membres:'Parrainages & comptes de la plateforme',
-  funnel:'Entonnoir', content:'Contenu', prospects:'Prospects', launches:'Lancements programmés', clients:'Membres', objectifs:'Objectifs', brain:'Analyse IA'
+  funnel:'Entonnoir', content:'Contenu', prospects:'Prospects', launches:'Lancements programmés', clients:'Membres', objectifs:'Objectifs', brain:'Analyse IA', retours:'Retours des membres'
 };
 
-var NAV_TABS = ['home','objectifs','prospects','launches','clients','cand','content','brain'];
-var NAV_ICON = {perdus:'🚫', home:'🏠', stats:'📊', cand:'📝', membres:'👥', objectifs:'🎯', funnel:'📉', prospects:'💬', clients:'🎓', content:'🎬', launches:'🚀', brain:'🤖'};
-var NAV_SHORT = {perdus:'Perdus', home:'Accueil', stats:'Stats', cand:'Candid.', membres:'Membres', objectifs:'Objectifs', funnel:'Entonnoir', prospects:'Prospects', clients:'Membres', content:'Contenu', launches:'Lancements', brain:'IA'};
+var NAV_TABS = ['home','objectifs','prospects','launches','clients','cand','retours','content','brain'];
+var NAV_ICON = {perdus:'🚫', home:'🏠', stats:'📊', cand:'📝', membres:'👥', objectifs:'🎯', funnel:'📉', prospects:'💬', clients:'🎓', content:'🎬', launches:'🚀', brain:'🤖', retours:'🛠️'};
+var NAV_SHORT = {perdus:'Perdus', home:'Accueil', stats:'Stats', cand:'Candid.', membres:'Membres', objectifs:'Objectifs', funnel:'Entonnoir', prospects:'Prospects', clients:'Membres', content:'Contenu', launches:'Lancements', brain:'IA', retours:'Retours'};
 function paintNav(){
   $('#nav').innerHTML = NAV_TABS.map(function(k){
-    var n = k==='prospects' ? S.prospects.filter(function(p){ return needsFollowUp(p) || prospectDue(p); }).length : k==='cand' ? CAND.list.filter(function(c){ return (c.statut||'nouvelle')==='nouvelle'; }).length : 0;
+    var n = k==='prospects' ? S.prospects.filter(function(p){ return needsFollowUp(p) || prospectDue(p); }).length : k==='cand' ? CAND.list.filter(function(c){ return (c.statut||'nouvelle')==='nouvelle'; }).length : k==='retours' ? SIG.list.filter(function(x){ return x.statut==='nouveau'; }).length : 0;
     return '<button type="button" data-act="tab" data-tab="'+k+'"'+(S.tab===k?' aria-current="page"':'')+'><span class="ni" aria-hidden="true">'+NAV_ICON[k]+'</span><span class="nl">'+(k==='launches'?'Lancements':TABS[k])+'</span><span class="ns">'+NAV_SHORT[k]+'</span>'+(n?'<span class="count" title="À contacter ou à relancer">'+n+'</span>':'')+'</button>';
   }).join('');
 }
@@ -1100,6 +1100,50 @@ window.addEventListener('message', function(ev){ if(ev.data==='dha-cand-maj') lo
 
 /* ---------- vue : candidatures ---------- */
 var CST = {nouvelle:['Nouvelle','#B7791F'], contactee:['Contactée','var(--focus)'], acceptee:['Acceptée','var(--gain)'], refusee:['Refusée','var(--leak)']};
+
+/* ---------- retours des membres : bugs, erreurs, idées ---------- */
+var SIG = {list:[], ok:false}, SIGF = 'nouveau';
+var SIG_TYPE = {bug:['🐞','Bug'], erreur:['⚠️','Erreur dans un cours'], idee:['💡','Idée']};
+var SIG_ST = {nouveau:['Nouveau','#2f80ed'], en_cours:['En cours','#d29b00'], regle:['Réglé','#1f9d55'], refuse:['Pas retenu','#c0392b']};
+function loadSig(){
+  if(!DHA.adminKey()) return Promise.resolve();
+  return DHA.admin('dha_admin_signalements')
+    .then(function(d){ if(Array.isArray(d)){ SIG.list = d; SIG.ok = true; schedule(); } })
+    .catch(function(){});
+}
+loadSig(); setInterval(function(){ if(document.visibilityState==='visible') loadSig(); }, 60000);
+function skelRetours(){
+  return '<div class="stack"><section class="card"><p class="sub" style="margin:0 0 10px">Ce que les membres signalent avec le bouton 🛠️ de la plateforme. Ta réponse s\'affiche chez eux dans « Mes signalements ».</p><div id="sgchips" style="display:flex;flex-wrap:wrap;gap:8px;margin:0 0 6px"></div><div class="plist" id="sglist"></div></section></div>';
+}
+function paintRetours(){
+  if(!$('#sglist')) return;
+  var cnt = {all:SIG.list.length};
+  SIG.list.forEach(function(x){ cnt[x.statut] = (cnt[x.statut]||0)+1; });
+  $('#sgchips').innerHTML = [['nouveau','Nouveaux'],['en_cours','En cours'],['regle','Réglés'],['refuse','Pas retenus'],['all','Tous']].map(function(f){
+    return '<button type="button" class="chip" data-act="sigf" data-v="'+f[0]+'" aria-pressed="'+(SIGF===f[0])+'">'+f[1]+'<small>'+(cnt[f[0]]||0)+'</small></button>';
+  }).join('');
+  if(!SIG.ok){ $('#sglist').innerHTML = '<div class="empty">Chargement…</div>'; return; }
+  var list = SIG.list.filter(function(x){ return SIGF==='all' || x.statut===SIGF; });
+  $('#sglist').innerHTML = list.length ? list.map(function(x){
+    var t = SIG_TYPE[x.type]||SIG_TYPE.bug, st = SIG_ST[x.statut]||SIG_ST.nouveau;
+    var d = new Date(x.created_at).toLocaleString('fr-FR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'});
+    return '<article class="prow" style="display:block">'
+      +'<div style="display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;align-items:center"><b>'+t[0]+' '+t[1]+' · @'+esc(x.pseudo||'?')+'</b><span class="badge" style="color:'+st[1]+';border:1px solid currentColor;background:transparent">'+st[0]+'</span></div>'
+      +'<div class="sub" style="font-size:13px;margin:4px 0 8px">'+esc(d)+(x.page?' · 📍 '+esc(x.page):'')+(x.appareil?' · '+esc(String(x.appareil).split(' · ').slice(0,2).join(' · ')):'')+'</div>'
+      +'<div style="white-space:pre-wrap;word-break:break-word;margin-bottom:10px">'+esc(x.message)+'</div>'
+      +'<div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-start">'
+      +'<select id="sgs_'+x.id+'" aria-label="Statut">'+Object.keys(SIG_ST).map(function(k){ return '<option value="'+k+'"'+(x.statut===k?' selected':'')+'>'+SIG_ST[k][0]+'</option>'; }).join('')+'</select>'
+      +'<textarea id="sgr_'+x.id+'" rows="2" style="flex:1;min-width:200px" placeholder="Réponse au membre (optionnel), ex. c\'est corrigé, merci !" aria-label="Réponse au membre">'+esc(x.reponse||'')+'</textarea>'
+      +'<button type="button" class="btn small primary" data-act="sig-save" data-sid="'+x.id+'">Enregistrer</button></div>'
+      +'</article>';
+  }).join('') : '<div class="empty">'+(SIG.list.length?'Rien ici.':'Aucun signalement pour l\'instant.')+'</div>';
+}
+function saveSig(sid){
+  var s1 = document.getElementById('sgs_'+sid), r1 = document.getElementById('sgr_'+sid); if(!s1) return;
+  DHA.admin('dha_admin_update_signalement',{p_id:Number(sid), p_statut:s1.value, p_reponse:r1?r1.value:''})
+    .then(function(ok){ if(ok){ toast('Enregistré'); loadSig(); } else toast('Échec de l\'enregistrement'); })
+    .catch(function(){ toast('Échec de l\'enregistrement'); });
+}
 var CANDF = 'all';
 function candLink(c){
   var v = String(c.contact_valeur||'').trim(), u = v.replace(/^@+/,'');
@@ -2064,6 +2108,8 @@ document.addEventListener('click', function(ev){
     case 'obj-edit': ev.stopPropagation(); openObjectif(); return;
     case 'save-obj': saveObjectif(); break;
     case 'candf': CANDF = el.getAttribute('data-v'); schedule(); break;
+    case 'sigf': SIGF = el.getAttribute('data-v'); schedule(); break;
+    case 'sig-save': saveSig(el.getAttribute('data-sid')); break;
     case 'cand-det': openCand(id); break;
     case 'xp-open': ev.stopPropagation(); var xc = byId(S.clients); if(xc) openXp(xc); break;
     case 'rel-wa': marquerRelance(el.getAttribute('data-k')); return;
@@ -2191,8 +2237,8 @@ document.addEventListener('keydown', function(ev){
 });
 
 /* ---------- démarrage ---------- */
-var SKEL = {cand:skelCand, perdus:skelLost, home:skelHome, stats:skelStats, membres:skelEmbed, funnel:skelFunnel, objectifs:skelGoals, launches:skelLaunches, prospects:skelProspects, content:skelContent, clients:skelClients, brain:skelBrain};
-var PAINT = {cand:paintCand, perdus:paintLost, home:paintHome, stats:paintStats, membres:function(){}, funnel:paintFunnel, objectifs:paintGoals, launches:paintLaunches, prospects:paintProspects, content:paintContent, clients:paintClients, brain:function(){}};
+var SKEL = {retours:skelRetours, cand:skelCand, perdus:skelLost, home:skelHome, stats:skelStats, membres:skelEmbed, funnel:skelFunnel, objectifs:skelGoals, launches:skelLaunches, prospects:skelProspects, content:skelContent, clients:skelClients, brain:skelBrain};
+var PAINT = {retours:paintRetours, cand:paintCand, perdus:paintLost, home:paintHome, stats:paintStats, membres:function(){}, funnel:paintFunnel, objectifs:paintGoals, launches:paintLaunches, prospects:paintProspects, content:paintContent, clients:paintClients, brain:function(){}};
 
 function use(name){
   try{ if(window.claude && typeof window.claude.use==='function') return Promise.resolve(window.claude.use(name)).catch(function(){ return null; }); }catch(e){}
@@ -2210,7 +2256,7 @@ function start(){
   $('#gate').remove();
   render();
   connectCloud(makeSupaDb());
-  loadCand();
+  loadCand(); loadSig();
   setInterval(loadPlatform, 60000);
 }
 // Plus de mot de passe (comme l'admin) : le Cerveau s'ouvre directement

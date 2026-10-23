@@ -1,0 +1,7 @@
+-- Signalements des membres (bugs, erreurs, idées) — appliqué le 23/10/2026
+-- Table dha_signalements (RLS, aucun accès direct) + RPC :
+--   dha_signaler(p_token, p_type, p_message, p_page, p_appareil)  -- membre, max 10/jour
+--   dha_mes_signalements(p_token)                                   -- membre : ses 20 derniers
+--   dha_admin_signalements(p_key)                                   -- Cerveau
+--   dha_admin_update_signalement(p_key, p_id, p_statut, p_reponse)  -- Cerveau
+-- Voir la migration Supabase « dha_signalements » pour le code complet.
