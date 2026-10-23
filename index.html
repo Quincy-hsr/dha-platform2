@@ -90,6 +90,17 @@
   .stars{position:absolute;inset:0;pointer-events:none;}
   .star{position:absolute;border-radius:50%;animation:float linear infinite;}
 
+  .faq{padding:90px 40px;}
+  .faq-list{max-width:780px;margin:34px auto 0;display:flex;flex-direction:column;gap:12px;}
+  .faq-list details{background:rgba(8,14,31,0.7);border:1px solid var(--border);border-radius:14px;transition:border-color .2s;}
+  .faq-list details[open]{border-color:rgba(0,212,255,0.4);}
+  .faq-list summary{list-style:none;cursor:pointer;padding:18px 52px 18px 20px;position:relative;font-family:'Chakra Petch',sans-serif;font-weight:600;font-size:16px;color:var(--white);}
+  .faq-list summary::-webkit-details-marker{display:none;}
+  .faq-list summary::after{content:'+';position:absolute;right:20px;top:50%;transform:translateY(-50%);font-size:22px;color:var(--cyan);transition:transform .2s;}
+  .faq-list details[open] summary::after{transform:translateY(-50%) rotate(45deg);}
+  .faq-list details p{margin:0;padding:0 20px 18px;font-family:'Rajdhani',sans-serif;font-size:16px;line-height:1.65;color:rgba(232,244,255,0.75);}
+  .faq-list a{color:var(--cyan);}
+  @media(max-width:600px){.faq{padding:70px 18px;}.faq-list summary{font-size:15px;}}
   .section-label{font-family:'Chakra Petch',sans-serif;font-size:12px;letter-spacing:2px;color:var(--cyan);text-align:center;margin-bottom:12px;text-shadow:0 0 10px rgba(0,212,255,0.4);}
   .section-title{font-family:'Chakra Petch',sans-serif;font-size:clamp(26px,4.5vw,42px);font-weight:700;letter-spacing:0.3px;text-align:center;color:var(--white);margin-bottom:16px;text-shadow:0 0 30px rgba(30,100,255,0.4);}
   .section-desc{font-size:17px;color:var(--dim);text-align:center;max-width:600px;margin:0 auto 60px;line-height:1.7;}
@@ -225,9 +236,9 @@
   .perk-list{list-style:none;margin:18px 0 0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:8px 24px;}
   .perk-list li{font-size:14px;color:rgba(232,244,255,0.85);}
   .perk-list li::before{content:"✈ ";color:var(--gold);}
-  .perk-gallery{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-top:28px;}
+  .perk-gallery{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:28px;}
   .perk-gallery img{width:100%;aspect-ratio:3/4;object-fit:cover;border-radius:12px;border:1px solid var(--border);display:block;}
-  @media(max-width:900px){.perk-gallery{grid-template-columns:repeat(3,1fr);}.perk-list{grid-template-columns:1fr;}}
+  @media(max-width:900px){.perk-gallery{grid-template-columns:repeat(2,1fr);}.perk-list{grid-template-columns:1fr;}}
   @media(max-width:600px){.perk-card{padding:24px 18px;}.perk-gallery{grid-template-columns:1fr 1fr;}}
 
   /* EVENTS */
@@ -774,7 +785,7 @@
       <li>Service de conciergerie dédié</li>
       <li>Réservé aux membres de la DHA</li>
     </ul>
-    <div class="perk-gallery"><img src="avantage-vol-1.jpg" alt="Offre vol Business ou First jusqu'à 70% de réduction Paris Miami" loading="lazy" onerror="this.style.display='none'"><img src="avantage-vol-2.jpg" alt="Avis client : vol réservé via la conciergerie" loading="lazy" class="contain" onerror="this.style.display='none'"><img src="avantage-vol-3.jpg" alt="Cabine Business" loading="lazy" onerror="this.style.display='none'"><img src="avantage-vol-4.jpg" alt="Cabine Business" loading="lazy" onerror="this.style.display='none'"><img src="avantage-vol-5.jpg" alt="Cabine Business Club World" loading="lazy" onerror="this.style.display='none'"></div>
+    <div class="perk-gallery"><img src="avantage-vol-1.jpg" alt="Offre vol Business ou First jusqu'à 70% de réduction Paris Miami" loading="lazy" onerror="this.style.display='none'"><img src="avantage-vol-2.jpg" alt="Avis client : vol réservé via la conciergerie" loading="lazy" class="contain" onerror="this.style.display='none'"><img src="avantage-vol-3.jpg" alt="Cabine Business" loading="lazy" onerror="this.style.display='none'"><img src="avantage-vol-4.jpg" alt="Cabine Business" loading="lazy" onerror="this.style.display='none'"></div>
   </div>
 </section>
 
@@ -836,6 +847,24 @@
   <p class="reveal" style="text-align:center;margin-top:22px;font-size:14px;color:var(--dim, rgba(232,244,255,0.55));">Pas encore sûr ? <a href="dha-inscription-demo.html" style="color:#FFD700;font-weight:700;text-decoration:none;">🎮 Teste la plateforme gratuitement avec la version démo →</a></p>
 </section>
 
+<!-- FAQ -->
+<section class="faq" id="faq">
+  <div class="section-label reveal">FAQ</div>
+  <div class="section-title reveal">Les questions qu'on me pose le plus</div>
+  <div class="faq-list">
+    <details class="reveal"><summary>Je suis débutant, c'est fait pour moi ?</summary><p>Oui. La formation part de zéro : le premier mois, tu apprends les bases avec des modules guidés étape par étape, et chaque notion débloque la suivante. Beaucoup de membres ne connaissaient rien au trading en arrivant.</p></details>
+    <details class="reveal"><summary>Il faut de l'argent pour commencer à trader ?</summary><p>Non. Tu t'entraînes d'abord sur un compte démo, gratuit et sans risque. Tu passes sur un vrai compte seulement quand ta stratégie est maîtrisée, et jamais avec de l'argent dont tu as besoin.</p></details>
+    <details class="reveal"><summary>Combien de temps ça me prend ?</summary><p>Tu avances à ton rythme, pas besoin de quitter ton travail ou tes études. Compte quelques sessions par semaine pour les modules et la pratique, plus les appels de groupe 2 fois par semaine si tu es dans l'offre groupe ou 1:1.</p></details>
+    <details class="reveal"><summary>Je peux payer en plusieurs fois ?</summary><p>Oui, les offres à 500 € et 750 € sont payables en 3 fois avec Klarna (sous réserve d'acceptation par Klarna). L'offre Essentiel à 180 € se règle en une fois. Le paiement passe par Stripe, 100 % sécurisé.</p></details>
+    <details class="reveal"><summary>Pourquoi une candidature avant de payer ?</summary><p>Parce qu'on ne prend pas tout le monde. On échange avec toi pour vérifier que le programme te correspond et garder un groupe motivé. Il faut avoir au moins 17 ans (avec l'accord d'un parent si tu es mineur).</p></details>
+    <details class="reveal"><summary>C'est quoi la garantie ?</summary><p>Elle concerne l'offre Accompagnement 1:1 : si au bout de 2 mois tu n'as obtenu aucun résultat concret alors que tu as fait le travail et appliqué nos conseils, tu es remboursé. Les conditions exactes sont dans les <a href="dha-cgv.html">CGV</a>.</p></details>
+    <details class="reveal"><summary>Les gains sont garantis ?</summary><p>Non, et méfie-toi de ceux qui te le promettent. Le trading comporte un risque de perte. On t'apprend une méthode, la discipline et la gestion du risque : les résultats dépendent de ton travail et de ta régularité.</p></details>
+    <details class="reveal"><summary>Je peux tester avant de me décider ?</summary><p>Oui, la <a href="dha-inscription-demo.html">version démo</a> est gratuite : tu vois l'intérieur de la plateforme, les modules, l'XP et les quêtes avant de rejoindre.</p></details>
+    <details class="reveal"><summary>Qu'est-ce qui se passe après le paiement ?</summary><p>Tu reçois tes accès et les prochaines étapes par email, tu crées ton compte et tu commences le module 1 dans la foulée. On fait ensuite ton appel de prise en main.</p></details>
+  </div>
+  <p class="reveal" style="text-align:center;margin-top:26px;font-size:15px;color:rgba(232,244,255,0.6);">Une autre question ? Pose ta candidature juste en dessous, je te réponds personnellement.</p>
+</section>
+
 <!-- CTA FINAL -->
 <section class="cta-final">
   <div class="cta-glow"></div>
@@ -869,6 +898,7 @@
     <a href="dha-cgv.html">CGV</a>
     <a href="dha-confidentialite.html">CONFIDENTIALITÉ</a>
     <a href="mailto:quincy.massol972@gmail.com">CONTACT</a>
+    <a href="#faq">FAQ</a>
   </div>
   <div class="footer-copy">© 2026 DIGITAL HUSTLER ACADEMY</div>
 </footer>
