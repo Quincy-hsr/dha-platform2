@@ -1663,7 +1663,7 @@ function paintClients(){
 
 
 /* ---------- relance des membres inactifs ---------- */
-var RELANCE_JOURS = 3, RELANCE_ALL = false;
+var RELANCE_JOURS = 25, RELANCE_ALL = false;
 function telWa(t){ var d = String(t||'').replace(/[^\d+]/g,''); if(!d) return ''; if(d.indexOf('+')===0) d = d.slice(1); else if(d.indexOf('00')===0) d = d.slice(2); else if(d.charAt(0)==='0' && d.length===10) d = '33'+d.slice(1); return d.length>=9 ? d : ''; }
 function relanceMsg(m, j){
   var p = m.prenom || m.pseudo || '';
@@ -1675,8 +1675,9 @@ function relanceListe(){
   var now = Date.now(), R = S.relances || {};
   return PLAT.members.filter(function(m){ return m.actif!==false; }).map(function(m){
     var k = normPseudo(m.pseudo), t = PLAT.last[k] || null, j = t ? Math.floor((now-t)/86400000) : null;
-    return {m:m, k:k, j:j, rel:R[k]||0};
-  }).filter(function(x){ return (x.j===null || x.j>=RELANCE_JOURS) && (now - x.rel) > RELANCE_JOURS*86400000; })
+    var ins = m.date_inscription ? Math.floor((now-new Date(m.date_inscription).getTime())/86400000) : 9999;
+    return {m:m, k:k, j:j, ins:ins, rel:R[k]||0};
+  }).filter(function(x){ return (x.j===null ? x.ins>=RELANCE_JOURS : x.j>=RELANCE_JOURS) && (now - x.rel) > RELANCE_JOURS*86400000; })
     .sort(function(a,b){ return (b.j===null?9999:b.j) - (a.j===null?9999:a.j); });
 }
 function paintRelance(){
