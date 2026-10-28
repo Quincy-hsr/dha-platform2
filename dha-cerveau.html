@@ -752,15 +752,15 @@ function schedule(){ if(raf) return; raf = requestAnimationFrame(function(){ raf
 
 var TABS = {
   home:'Accueil', perdus:'Prospects perdus', stats:'Mes stats', cand:'Candidatures', membres:'Parrainages & comptes de la plateforme',
-  funnel:'Entonnoir', content:'Contenu', prospects:'Prospects', launches:'Lancements programmés', clients:'Membres', objectifs:'Objectifs', brain:'Analyse IA', retours:'Exercices & retours'
+  funnel:'Entonnoir', content:'Contenu', prospects:'Prospects', launches:'Lancements programmés', clients:'Membres', objectifs:'Objectifs', brain:'Analyse IA', retours:'Retours des membres'
 };
 
 var NAV_TABS = ['home','objectifs','prospects','launches','clients','cand','retours','content','brain'];
-var NAV_ICON = {perdus:'🚫', home:'🏠', stats:'📊', cand:'📝', membres:'👥', objectifs:'🎯', funnel:'📉', prospects:'💬', clients:'🎓', content:'🎬', launches:'🚀', brain:'🤖', retours:'📤'};
-var NAV_SHORT = {perdus:'Perdus', home:'Accueil', stats:'Stats', cand:'Candid.', membres:'Membres', objectifs:'Objectifs', funnel:'Entonnoir', prospects:'Prospects', clients:'Membres', content:'Contenu', launches:'Lancements', brain:'IA', retours:'Exos'};
+var NAV_ICON = {perdus:'🚫', home:'🏠', stats:'📊', cand:'📝', membres:'👥', objectifs:'🎯', funnel:'📉', prospects:'💬', clients:'🎓', content:'🎬', launches:'🚀', brain:'🤖', retours:'🛠️'};
+var NAV_SHORT = {perdus:'Perdus', home:'Accueil', stats:'Stats', cand:'Candid.', membres:'Membres', objectifs:'Objectifs', funnel:'Entonnoir', prospects:'Prospects', clients:'Membres', content:'Contenu', launches:'Lancements', brain:'IA', retours:'Retours'};
 function paintNav(){
   $('#nav').innerHTML = NAV_TABS.map(function(k){
-    var n = k==='prospects' ? S.prospects.filter(function(p){ return needsFollowUp(p) || prospectDue(p); }).length : k==='cand' ? CAND.list.filter(function(c){ return (c.statut||'nouvelle')==='nouvelle'; }).length : k==='retours' ? SIG.list.filter(function(x){ return x.statut==='nouveau'; }).length + EXO.list.filter(function(x){ return x.statut==='a_corriger'; }).length : 0;
+    var n = k==='prospects' ? S.prospects.filter(function(p){ return needsFollowUp(p) || prospectDue(p); }).length : k==='cand' ? CAND.list.filter(function(c){ return (c.statut||'nouvelle')==='nouvelle'; }).length : k==='retours' ? SIG.list.filter(function(x){ return x.statut==='nouveau'; }).length : 0;
     return '<button type="button" data-act="tab" data-tab="'+k+'"'+(S.tab===k?' aria-current="page"':'')+'><span class="ni" aria-hidden="true">'+NAV_ICON[k]+'</span><span class="nl">'+(k==='launches'?'Lancements':TABS[k])+'</span><span class="ns">'+NAV_SHORT[k]+'</span>'+(n?'<span class="count" title="À contacter ou à relancer">'+n+'</span>':'')+'</button>';
   }).join('');
 }
@@ -1167,62 +1167,13 @@ function loadSig(){
     .catch(function(){});
 }
 loadSig(); setInterval(function(){ if(document.visibilityState==='visible') loadSig(); }, 60000);
-var RET_VUE = 'exos';
 function skelRetours(){
-  return '<div class="stack"><div id="retsw" style="display:flex;gap:8px;flex-wrap:wrap"></div><div id="retbody"></div></div>';
+  return '<div class="stack"><div id="retbody"></div></div>';
 }
 function paintRetours(){
-  var sw = $('#retsw'); if(!sw) return;
-  var ne = EXO.list.filter(function(x){ return x.statut==='a_corriger'; }).length, ns = SIG.list.filter(function(x){ return x.statut==='nouveau'; }).length;
-  sw.innerHTML = '<button type="button" class="chip" data-act="retv" data-v="exos" aria-pressed="'+(RET_VUE==='exos')+'">📤 Exercices à corriger<small>'+ne+'</small></button><button type="button" class="chip" data-act="retv" data-v="sig" aria-pressed="'+(RET_VUE==='sig')+'">🛠️ Bugs &amp; idées<small>'+ns+'</small></button>';
-  var b = $('#retbody');
-  if(RET_VUE==='exos'){
-    if(!$('#exlist')) b.innerHTML = '<section class="card"><p class="sub" style="margin:0 0 10px">Les exercices rendus dans les modules. Valide (+25 XP bonus pour le membre, une fois par module) ou demande de retravailler : ta correction s\'affiche sous l\'exercice chez lui.</p><div id="exchips" style="display:flex;flex-wrap:wrap;gap:8px;margin:0 0 6px"></div><div class="plist" id="exlist"></div></section>';
-    paintExos(); return;
-  }
+  var b = $('#retbody'); if(!b) return;
   if(!$('#sglist')) b.innerHTML = '<section class="card"><p class="sub" style="margin:0 0 10px">Ce que les membres signalent avec le bouton 🛠️ de la plateforme. Ta réponse s\'affiche chez eux dans « Mes signalements ».</p><div id="sgchips" style="display:flex;flex-wrap:wrap;gap:8px;margin:0 0 6px"></div><div class="plist" id="sglist"></div></section>';
   paintSig();
-}
-var EXO = {list:[], ok:false, imgs:{}}, EXOF = 'a_corriger';
-var EXO_ST = {a_corriger:['À corriger','#d29b00'], valide:['Validé','#1f9d55'], a_refaire:['À retravailler','#c0392b']};
-function loadExos(){
-  if(!DHA.adminKey()) return Promise.resolve();
-  return DHA.admin('dha_admin_exercices').then(function(d){ if(Array.isArray(d)){ EXO.list = d; EXO.ok = true; schedule(); } }).catch(function(){});
-}
-loadExos(); setInterval(function(){ if(document.visibilityState==='visible') loadExos(); }, 60000);
-function paintExos(){
-  if(!$('#exlist')) return;
-  var cnt = {all:EXO.list.length};
-  EXO.list.forEach(function(x){ cnt[x.statut] = (cnt[x.statut]||0)+1; });
-  $('#exchips').innerHTML = [['a_corriger','À corriger'],['a_refaire','À retravailler'],['valide','Validés'],['all','Tous']].map(function(f){
-    return '<button type="button" class="chip" data-act="exf" data-v="'+f[0]+'" aria-pressed="'+(EXOF===f[0])+'">'+f[1]+'<small>'+(cnt[f[0]]||0)+'</small></button>';
-  }).join('');
-  if(!EXO.ok){ $('#exlist').innerHTML = '<div class="empty">Chargement…</div>'; return; }
-  var list = EXO.list.filter(function(x){ return EXOF==='all' || x.statut===EXOF; });
-  $('#exlist').innerHTML = list.length ? list.map(function(x){
-    var st = EXO_ST[x.statut]||EXO_ST.a_corriger, im = EXO.imgs[x.id];
-    var d = new Date(x.created_at).toLocaleString('fr-FR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'});
-    return '<article class="prow" style="display:block">'
-      +'<div style="display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;align-items:center"><b>@'+esc(x.pseudo||'?')+' · '+esc(x.titre_module||x.module)+'</b><span class="badge" style="color:'+st[1]+';border:1px solid currentColor;background:transparent">'+st[0]+'</span></div>'
-      +'<div class="sub" style="font-size:13px;margin:4px 0 8px">Envoyé le '+esc(d)+(x.bonus_donne?' · +25 XP déjà donnés':'')+'</div>'
-      +(x.message?'<div style="white-space:pre-wrap;word-break:break-word;margin-bottom:10px">'+esc(x.message)+'</div>':'')
-      +(x.nb_images ? (im ? '<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px">'+im.map(function(src,i){ return '<a href="#" data-act="exo-zoom" data-src-i="'+i+'" data-eid="'+x.id+'"><img src="'+src+'" alt="Capture '+(i+1)+'" style="max-width:100%;width:260px;border-radius:10px;border:1px solid var(--line);display:block"></a>'; }).join('')+'</div>'
-            : '<button type="button" class="btn small" data-act="exo-imgs" data-eid="'+x.id+'" style="margin-bottom:10px">🖼️ Voir '+(x.nb_images>1?'les '+x.nb_images+' captures':'la capture')+'</button>') : '')
-      +'<div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-start">'
-      +'<textarea id="exc_'+x.id+'" rows="2" style="flex:1;min-width:200px" placeholder="Ta correction (ce qui est bien, ce qu\'il faut revoir)…" aria-label="Correction">'+esc(x.correction||'')+'</textarea>'
-      +'<span style="display:flex;gap:6px;flex-wrap:wrap"><button type="button" class="btn small primary" data-act="exo-ok" data-eid="'+x.id+'">✅ Valider</button><button type="button" class="btn small" data-act="exo-redo" data-eid="'+x.id+'">🔁 À retravailler</button></span></div>'
-      +'</article>';
-  }).join('') : '<div class="empty">'+(EXO.list.length?'Rien ici.':'Aucun exercice rendu pour l\'instant.')+'</div>';
-}
-function exoImgs(eid){
-  DHA.admin('dha_admin_exercice_images',{p_id:Number(eid)}).then(function(a){ if(Array.isArray(a)){ EXO.imgs[eid] = a; schedule(); } }).catch(function(){ toast('Impossible de charger les captures'); });
-}
-function exoCorriger(eid, statut){
-  var c = document.getElementById('exc_'+eid), txt = c ? c.value : '';
-  if(statut==='a_refaire' && !txt.trim()){ toast('Écris ce qu\'il doit retravailler.'); return; }
-  DHA.admin('dha_admin_corriger_exercice',{p_id:Number(eid), p_statut:statut, p_correction:txt})
-    .then(function(r){ if(r && r.ok){ toast(statut==='valide' ? (r.bonus ? 'Validé · +25 XP donnés' : 'Validé') : 'Envoyé : à retravailler'); loadExos(); } else toast('Échec de l\'enregistrement'); })
-    .catch(function(){ toast('Échec de l\'enregistrement'); });
 }
 function paintSig(){
   if(!$('#sglist')) return;
@@ -2219,12 +2170,6 @@ document.addEventListener('click', function(ev){
     case 'save-obj': saveObjectif(); break;
     case 'candf': CANDF = el.getAttribute('data-v'); schedule(); break;
     case 'sigf': SIGF = el.getAttribute('data-v'); schedule(); break;
-    case 'retv': RET_VUE = el.getAttribute('data-v'); $('#retbody').innerHTML = ''; schedule(); break;
-    case 'exf': EXOF = el.getAttribute('data-v'); schedule(); break;
-    case 'exo-imgs': exoImgs(el.getAttribute('data-eid')); break;
-    case 'exo-zoom': ev.preventDefault(); var zi = (EXO.imgs[el.getAttribute('data-eid')]||[])[Number(el.getAttribute('data-src-i'))]; if(zi) openDlg('<div class="dlg-body"><img src="'+zi+'" alt="Capture de l\'exercice" style="width:100%;height:auto;border-radius:10px;display:block"></div><div class="dlg-foot"><span></span><div class="r"><button type="button" class="btn" data-act="close">Fermer</button></div></div>'); return;
-    case 'exo-ok': exoCorriger(el.getAttribute('data-eid'),'valide'); break;
-    case 'exo-redo': exoCorriger(el.getAttribute('data-eid'),'a_refaire'); break;
     case 'lv-plan': openPlanning(); return;
     case 'lv-plan-save': savePlanning(); return;
     case 'lv-add': openReplay(); return;
@@ -2378,7 +2323,7 @@ function start(){
   $('#gate').remove();
   render();
   connectCloud(makeSupaDb());
-  loadCand(); loadSig(); loadLives(); loadExos();
+  loadCand(); loadSig(); loadLives();
   setInterval(loadPlatform, 60000);
 }
 // Plus de mot de passe (comme l'admin) : le Cerveau s'ouvre directement
