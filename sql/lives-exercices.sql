@@ -1,0 +1,5 @@
+-- 28/10/2026 — appliqué via migrations Supabase « dha_lives_replays » et « dha_exercices_rendus »
+-- Lives & replays : table dha_replays + dha_config('lives') ; RPC dha_lives (membre, offres 500/750/anciens packs),
+--   dha_admin_lives, dha_admin_lives_planning, dha_admin_replay_put, dha_admin_replay_del
+-- Exercices rendus : table dha_exercices ; RPC dha_exercice_rendre, dha_mes_exercices,
+--   dha_admin_exercices, dha_admin_exercice_images, dha_admin_corriger_exercice (+25 XP une fois par module à la validation)

@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<script src="dha-api.js"></script>
+<script src="dha-demo.js"></script>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>DHA — Mon certificat</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600;700&display=swap" rel="stylesheet"/>
+<style>
+:root{--bg:#050914;--card:#080e1f;--blue:#1E64FF;--cyan:#00D4FF;--gold:#FFD700;--green:#00FF88;--red:#FF4466;--white:#E8F4FF;--dim:rgba(232,244,255,0.45);--border:rgba(30,100,255,0.15);--sidebar-w:240px;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-height:100vh;display:flex;}
+.bg-grid{position:fixed;inset:0;z-index:0;background-image:linear-gradient(rgba(30,100,255,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(30,100,255,0.03) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;}
+.sidebar{position:fixed;left:0;top:0;bottom:0;width:var(--sidebar-w);background:rgba(8,14,31,0.97);border-right:1px solid var(--border);display:flex;flex-direction:column;z-index:100;padding:24px 0;}
+.sidebar-logo{padding:0 24px 24px;border-bottom:1px solid var(--border);margin-bottom:16px;}
+.sidebar-logo-text{font-family:'Orbitron',sans-serif;font-size:28px;font-weight:900;letter-spacing:4px;color:var(--white);text-shadow:0 0 20px rgba(30,100,255,0.6);}
+.sidebar-logo-sub{font-family:'Orbitron',sans-serif;font-size:6px;letter-spacing:3px;color:rgba(0,212,255,0.5);margin-top:2px;}
+.sidebar-section{padding:8px 24px 4px;font-family:'Orbitron',sans-serif;font-size:7px;letter-spacing:3px;color:rgba(255,255,255,0.2);margin-top:8px;}
+.nav-item{display:flex;align-items:center;gap:12px;padding:11px 24px;cursor:pointer;transition:all .2s;font-size:13px;color:var(--dim);text-decoration:none;}
+.nav-item:hover{background:rgba(30,100,255,0.08);color:var(--white);}
+.nav-item.active{background:rgba(30,100,255,0.12);color:var(--cyan);border-right:2px solid var(--cyan);}
+.nav-icon{font-size:16px;width:20px;text-align:center;flex-shrink:0;}
+.sidebar-bottom{margin-top:auto;padding:16px 24px;border-top:1px solid var(--border);}
+.sidebar-member{display:flex;align-items:center;gap:12px;}
+.sidebar-avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--cyan));display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;}
+.sidebar-member-name{font-family:'Orbitron',sans-serif;font-size:10px;font-weight:900;color:var(--white);}
+.sidebar-member-rang{font-size:10px;color:var(--dim);margin-top:2px;}
+.main{margin-left:var(--sidebar-w);flex:1;padding:32px;position:relative;z-index:1;}
+.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:32px;}
+.topbar-title{font-family:'Orbitron',sans-serif;font-size:20px;font-weight:900;color:var(--white);letter-spacing:2px;}
+.topbar-title span{color:var(--cyan);}
+.header-card{background:linear-gradient(135deg,#0a1428,#080e1f);border:1px solid rgba(30,100,255,0.25);border-radius:20px;padding:32px;margin-bottom:28px;position:relative;overflow:hidden;}
+.header-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--cyan),transparent);}
+.header-glow{position:absolute;top:-60px;right:-60px;width:300px;height:300px;background:radial-gradient(ellipse,rgba(30,100,255,0.15) 0%,transparent 70%);pointer-events:none;}
+.header-tag{font-family:'Orbitron',sans-serif;font-size:8px;letter-spacing:3px;color:var(--cyan);margin-bottom:10px;}
+.header-title{font-family:'Orbitron',sans-serif;font-size:26px;font-weight:900;color:var(--white);margin-bottom:8px;}
+.header-desc{font-size:14px;color:var(--dim);line-height:1.7;}
+.info-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-top:24px;}
+.info-item{padding:16px;border-radius:12px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);text-align:center;}
+.info-icon{font-size:24px;margin-bottom:8px;}
+.info-label{font-family:'Orbitron',sans-serif;font-size:8px;letter-spacing:2px;color:var(--dim);margin-bottom:4px;}
+.info-val{font-size:13px;color:var(--white);font-weight:600;}
+.calendly-wrap{background:var(--card);border:1px solid var(--border);border-radius:20px;overflow:hidden;min-height:700px;}
+.ce-prog{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:26px;}
+.ce-bar{height:10px;border-radius:99px;background:rgba(255,255,255,0.06);overflow:hidden;margin:14px 0 8px;}
+.ce-bar i{display:block;height:100%;background:linear-gradient(90deg,var(--blue),var(--cyan));}
+.ce-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:8px;margin-top:14px;}
+.ce-it{font-size:13px;padding:9px 12px;border-radius:10px;border:1px solid rgba(255,255,255,0.07);color:var(--dim);text-decoration:none;}
+.ce-it.ok{color:var(--green);border-color:rgba(0,255,136,0.3);}
+.cert{position:relative;background:#fff;color:#0B1530;border-radius:6px;padding:46px 40px;text-align:center;max-width:860px;margin:0 auto;box-shadow:0 20px 60px rgba(0,0,0,.5);border:10px solid #0B1530;outline:2px solid #1E64FF;outline-offset:-18px;}
+.cert .lg{font-family:'Orbitron',sans-serif;font-weight:900;font-size:34px;letter-spacing:6px;}
+.cert .lgs{font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:4px;color:#1E64FF;margin-bottom:26px;}
+.cert .k{font-family:'Orbitron',sans-serif;font-size:13px;letter-spacing:4px;color:#5B6B82;}
+.cert .nm{font-family:'Orbitron',sans-serif;font-size:clamp(22px,4.5vw,36px);font-weight:900;margin:14px 0 10px;}
+.cert .tx{font-size:15px;color:#33415c;line-height:1.7;max-width:580px;margin:0 auto;}
+.cert .ft{display:flex;justify-content:space-between;gap:20px;margin-top:38px;font-size:12px;color:#5B6B82;text-align:left;flex-wrap:wrap;}
+.cert .sg{font-family:'Orbitron',sans-serif;font-size:14px;color:#0B1530;font-weight:700;border-top:1px solid #C9D3E3;padding-top:6px;margin-top:22px;}
+.ce-act{display:flex;gap:10px;justify-content:center;margin-top:20px;flex-wrap:wrap;}
+.ce-btn{padding:13px 20px;border-radius:12px;border:none;cursor:pointer;background:linear-gradient(135deg,#FFD700,#FF9F00);color:#1a1200;font-family:'Orbitron',sans-serif;font-size:11px;font-weight:700;letter-spacing:1px;}
+@media print{body{background:#fff!important;display:block}.sidebar,.hamburger,.sidebar-overlay,.topbar,.header-card,.ce-act,.bg-grid,.dsg-fab,.dha-mm-btn,.dc-toast{display:none!important}.main{margin:0!important;padding:0!important}.cert{box-shadow:none;max-width:none}@page{size:A4 landscape;margin:10mm}}
+.lv-card{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:24px;margin-bottom:22px;}
+.lv-h{font-family:'Orbitron',sans-serif;font-size:11px;letter-spacing:2px;color:var(--cyan);margin-bottom:14px;}
+.lv-slots{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-bottom:14px;}
+.lv-slot{padding:16px;border-radius:14px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);}
+.lv-slot.today{border-color:rgba(0,255,136,0.5);background:rgba(0,255,136,0.06);}
+.lv-day{font-family:'Orbitron',sans-serif;font-size:14px;font-weight:700;}
+.lv-time{font-size:22px;font-weight:700;color:var(--cyan);margin:4px 0;}
+.lv-what{font-size:13px;color:var(--dim);}
+.lv-tag{display:inline-block;font-size:10px;font-family:'Orbitron',sans-serif;letter-spacing:1px;color:var(--green);margin-top:6px;}
+.lv-note{font-size:13px;color:var(--dim);margin-bottom:16px;}
+.lv-btn{display:inline-flex;align-items:center;gap:8px;padding:13px 20px;border-radius:12px;background:linear-gradient(135deg,#5865F2,#7983f5);color:#fff;font-family:'Orbitron',sans-serif;font-size:11px;font-weight:700;letter-spacing:1px;text-decoration:none;}
+.lv-btn.alt{background:linear-gradient(135deg,var(--blue),var(--cyan));color:#020610;}
+.rp-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;}
+.rp{background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.07);border-radius:16px;overflow:hidden;display:flex;flex-direction:column;}
+.rp-media{position:relative;aspect-ratio:16/9;background:#000;cursor:pointer;border:none;padding:0;width:100%;display:block;}
+.rp-media img{width:100%;height:100%;object-fit:cover;display:block;opacity:.85;}
+.rp-media .play{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:44px;text-shadow:0 4px 20px rgba(0,0,0,.6);}
+.rp-media iframe{width:100%;height:100%;border:0;display:block;}
+.rp-body{padding:14px 16px;}
+.rp-date{font-size:11px;color:var(--dim);font-family:'Orbitron',sans-serif;letter-spacing:1px;}
+.rp-title{font-weight:700;font-size:15px;margin:4px 0;}
+.rp-desc{font-size:13px;color:var(--dim);line-height:1.5;}
+.rp-link{display:inline-block;margin-top:8px;color:var(--cyan);font-size:13px;}
+.lv-empty{color:var(--dim);font-size:14px;padding:10px 0;}
+.lv-lock{text-align:center;padding:34px 22px;}
+@media(max-width:768px){.sidebar{display:none;}.main{margin-left:0;padding:16px;}.info-grid{grid-template-columns:1fr;}}
+
+/* ── MOBILE MENU ── */
+.hamburger{display:none;position:fixed;top:14px;left:14px;z-index:500;width:42px;height:42px;border-radius:10px;background:rgba(8,14,31,0.95);border:1px solid rgba(30,100,255,0.3);cursor:pointer;align-items:center;justify-content:center;flex-direction:column;gap:5px;}
+.hamburger span{display:block;width:20px;height:2px;background:var(--cyan);border-radius:2px;transition:all .3s;}
+.sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:150;backdrop-filter:blur(4px);}
+.sidebar-overlay.show{display:block;}
+@media(max-width:768px){
+  .hamburger{display:flex;}
+  .sidebar{transform:translateX(-100%);transition:transform .3s ease;z-index:200;}
+  .sidebar.open{transform:translateX(0);}
+  .main{margin-left:0 !important;padding:16px;padding-top:70px;}
+}
+</style>
+</head>
+<body>
+<div class="bg-grid"></div>
+<button class="hamburger" onclick="toggleSidebar()" id="hamburger-btn">
+  <span></span><span></span><span></span>
+</button>
+<div class="sidebar-overlay" id="sidebar-overlay" onclick="closeSidebar()"></div>
+
+<aside class="sidebar">
+  <div class="sidebar-logo"><div class="sidebar-logo-text">DHA</div><div class="sidebar-logo-sub">DIGITAL HUSTLER ACADEMY</div></div>
+  <div class="sidebar-section">MAIN</div>
+  <a class="nav-item" href="dha-dashboard.html"><span class="nav-icon">🎮</span> Dashboard</a>
+  <div class="sidebar-section">LEARN</div>
+  <a class="nav-item" href="dha-formation.html"><span class="nav-icon">📈</span> Formation Trading</a>
+  <a class="nav-item" href="dha-mindset.html"><span class="nav-icon">🧠</span> Mindset</a>
+  <a class="nav-item" href="dha-ressources.html"><span class="nav-icon">📁</span> Ressources</a>
+  <div class="sidebar-section">NETWORK</div>
+  <a class="nav-item" href="dha-squad.html"><span class="nav-icon">👥</span> Mon Squad</a>
+  <a class="nav-item" href="dha-lives.html"><span class="nav-icon">📺</span> Lives &amp; Replays</a>
+  <a class="nav-item" href="dha-leaderboard.html"><span class="nav-icon">🏆</span> Leaderboard</a>
+  <div class="sidebar-section">EARN</div>
+  <a class="nav-item" href="dha-affiliation.html"><span class="nav-icon">💰</span> Recommandation</a>
+  <div class="sidebar-section">TOOLS</div>
+  <a class="nav-item" href="dha-mentor.html"><span class="nav-icon">📞</span> Appel Mentor</a>
+  <div class="sidebar-bottom">
+    <div class="sidebar-member">
+      <div class="sidebar-avatar" id="sb-avatar">📈</div>
+      <div><div class="sidebar-member-name" id="sb-pseudo">HUSTLER</div><div class="sidebar-member-rang" id="sb-rang">NEW HUSTLER</div></div>
+    </div>
+  </div>
+</aside>
+<main class="main">
+  <div class="topbar">
+    <div><div class="topbar-title">MON <span>CERTIFICAT</span></div><div style="font-size:12px;color:var(--dim);margin-top:2px;">La preuve de ton parcours dans la DHA</div></div>
+  </div>
+  <div class="header-card">
+    <div class="header-glow"></div>
+    <div class="header-tag">🎓 FIN DE FORMATION</div>
+    <div class="header-title">Certificat de la formation Trading</div>
+    <div class="header-desc">Termine tous les modules de la formation pour débloquer ton certificat DHA. Tu pourras l'enregistrer en PDF et le partager.</div>
+  </div>
+  <div id="ce-zone"><div class="ce-prog">Chargement…</div></div>
+</main>
+<script>
+// Modules de la formation : numéro affiché -> fichier -> clé de complétion (même liste que dha-formation.html)
+var MODS=[['01','Introduction au Trading','dha-module1.html','bloc_m1'],['02','Bougies japonaises','dha-module2.html','bloc_m2_b1'],['03','Les tendances','dha-module4.html','bloc_m4'],['04','Stop Loss & Take Profit','dha-module16.html','bloc_m16'],
+['05','BOS & CHOCH','dha-module5.html','bloc_m5'],['06','Order Blocks','dha-module7.html','bloc_m7_b1'],['07','Imbalance / FVG','dha-module8.html','bloc_m8_b1'],
+['08','Compte démo & positions','dha-module17.html','bloc_m17'],['09','Risk Management','dha-module11.html','bloc_m11_b1'],['10','Gestion d\'un trade','dha-module12.html','bloc_m12_b1'],['11','Plan de trading','dha-module13.html','bloc_m13_b1'],['12','Journal de trading','dha-module14.html','bloc_m14_b1'],
+['13','Sessions de trading','dha-module18.html','bloc_m18'],['14','Annonces économiques','dha-module10.html','bloc_m10_b1'],['16','Utiliser les prop firms','dha-module6.html','bloc_m6'],['17','Exécution complète','dha-module15.html','bloc_m15_b1']];
+function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+async function init(){
+  var stored=localStorage.getItem('dha_member');
+  if(!stored){window.location.href='dha-connexion.html';return;}
+  var member=JSON.parse(stored);
+  document.getElementById('sb-pseudo').textContent=('@'+(member.pseudo||'HUSTLER')).toUpperCase();
+  var me=null, done={};
+  try{ me=await DHA.me(); }catch(e){}
+  try{ (await DHA.historique({keys:MODS.map(function(m){return m[3];})})||[]).forEach(function(r){ var t=r.created_at; if(!done[r.action_key]||t>done[r.action_key]) done[r.action_key]=t; }); }catch(e){}
+  var m=me||member, n=MODS.filter(function(x){return done[x[3]];}).length, z=document.getElementById('ce-zone');
+  if(n<MODS.length){
+    var pc=Math.round(n/MODS.length*100);
+    z.innerHTML='<div class="ce-prog"><div style="font-family:Orbitron,sans-serif;font-size:14px;font-weight:700;letter-spacing:1px">🔒 ENCORE '+(MODS.length-n)+' MODULE'+(MODS.length-n>1?'S':'')+' À TERMINER</div><div class="ce-bar"><i style="width:'+pc+'%"></i></div><div style="font-size:13px;color:var(--dim)">'+n+' / '+MODS.length+' modules terminés · '+pc+'%</div><div class="ce-list">'
+      +MODS.map(function(x){var ok=!!done[x[3]];return '<a class="ce-it'+(ok?' ok':'')+'" href="'+x[2]+'">'+(ok?'✅':'⬜')+' '+x[0]+' · '+esc(x[1])+'</a>';}).join('')+'</div></div>';
+    return;
+  }
+  var fin=Object.keys(done).map(function(k){return done[k];}).sort().pop();
+  var dt=new Date(fin||Date.now()).toLocaleDateString('fr-FR',{day:'numeric',month:'long',year:'numeric'});
+  var nom=[m.prenom,m.nom].filter(Boolean).join(' ')||m.pseudo||'Membre DHA';
+  var code='DHA-'+String(m.pseudo||'').toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,8)+'-'+new Date(fin||Date.now()).toISOString().slice(0,10).replace(/-/g,'');
+  z.innerHTML='<div class="cert"><div class="lg">DHA</div><div class="lgs">DIGITAL HUSTLER ACADEMY</div><div class="k">CERTIFICAT DE FORMATION</div><div class="tx" style="margin-top:18px">Ce certificat est décerné à</div><div class="nm">'+esc(nom)+'</div><div class="tx">pour avoir suivi et validé l\'ensemble des modules de la <b>formation Trading</b> de la Digital Hustler Academy : lecture du marché, structure, zones, risk management, plan et journal de trading, exécution complète.</div><div class="ft"><div>Délivré le <b>'+esc(dt)+'</b><br>N° '+esc(code)+'</div><div style="text-align:right"><div class="sg">Quincy Massol</div>Fondateur de la DHA</div></div></div>'
+    +'<div class="ce-act"><button type="button" class="ce-btn" onclick="window.print()">⬇ ENREGISTRER EN PDF</button></div>'
+    +'<p style="text-align:center;font-size:12px;color:var(--dim);margin-top:10px">Sur téléphone : bouton ci-dessus, puis « Enregistrer en PDF » dans le menu d\'impression.</p>';
+}
+init();
+function toggleSidebar(){document.querySelector('.sidebar').classList.toggle('open');document.getElementById('sidebar-overlay').classList.toggle('show');}
+function closeSidebar(){document.querySelector('.sidebar').classList.remove('open');document.getElementById('sidebar-overlay').classList.remove('show');}
+document.querySelectorAll('.nav-item').forEach(function(a){a.addEventListener('click',closeSidebar);});
+</script>
+<script src="dha-mobile-menu.js"></script>
+<script src="dha-signaler.js"></script>
+</body>
+</html>

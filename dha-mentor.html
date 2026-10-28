@@ -72,8 +72,10 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
   <div class="sidebar-section">LEARN</div>
   <a class="nav-item" href="dha-formation.html"><span class="nav-icon">📈</span> Formation Trading</a>
   <a class="nav-item" href="dha-mindset.html"><span class="nav-icon">🧠</span> Mindset</a>
+  <a class="nav-item" href="dha-ressources.html"><span class="nav-icon">📁</span> Ressources</a>
   <div class="sidebar-section">NETWORK</div>
   <a class="nav-item" href="dha-squad.html"><span class="nav-icon">👥</span> Mon Squad</a>
+  <a class="nav-item" href="dha-lives.html"><span class="nav-icon">📺</span> Lives &amp; Replays</a>
   <a class="nav-item" href="dha-leaderboard.html"><span class="nav-icon">🏆</span> Leaderboard</a>
   <div class="sidebar-section">EARN</div>
   <a class="nav-item" href="dha-affiliation.html"><span class="nav-icon">💰</span> Recommandation</a>
@@ -103,17 +105,43 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
     </div>
   </div>
 
-  <div class="calendly-wrap">
-    <div class="calendly-inline-widget" data-url="https://calendly.com/quincy-massol/appel-pour-huslter" style="min-width:320px;height:700px;"></div>
+  <div class="calendly-wrap" id="mentor-cal" hidden></div>
+  <div id="mentor-lock" hidden style="background:var(--card);border:1px solid var(--border);border-radius:20px;padding:34px 24px;text-align:center;">
+    <div style="font-size:40px;margin-bottom:10px;">🔒</div>
+    <div style="font-family:'Orbitron',sans-serif;font-size:16px;font-weight:700;letter-spacing:1px;margin-bottom:10px;">RÉSERVÉ À L'ACCOMPAGNEMENT 1:1</div>
+    <p style="color:var(--dim);max-width:520px;margin:0 auto 20px;line-height:1.6;">Les appels individuels avec Quincy font partie de l'offre <b style="color:#E8F4FF">Accompagnement 1:1</b>. <span id="mentor-lock-groupe" hidden>En attendant, tu as les <b style="color:#E8F4FF">appels de groupe 2 fois par semaine</b> pour poser toutes tes questions.</span> Tu veux passer au 1:1 ? Écris-moi, on en parle.</p>
+    <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
+      <a href="https://wa.me/qr/OCPS7DRIVP76L1" target="_blank" rel="noopener" style="padding:13px 20px;border-radius:12px;background:linear-gradient(135deg,#1E64FF,#00D4FF);color:#020610;font-family:'Orbitron',sans-serif;font-size:11px;font-weight:700;letter-spacing:1px;text-decoration:none;">💬 PASSER AU 1:1</a>
+      <a href="dha-lives.html" style="padding:13px 20px;border-radius:12px;border:1px solid var(--border);color:#E8F4FF;font-family:'Orbitron',sans-serif;font-size:11px;font-weight:700;letter-spacing:1px;text-decoration:none;">📺 LIVES & REPLAYS</a>
+    </div>
   </div>
 </main>
-<script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript" async></script>
 <script>
 function init(){
   const stored=localStorage.getItem('dha_member');
   if(!stored){window.location.href='dha-connexion.html';return;}
   const member=JSON.parse(stored);
   document.getElementById('sb-pseudo').textContent=('@'+(member.pseudo||'HUSTLER')).toUpperCase();
+  afficherMentor(member);
+  if(window.DHA) DHA.me().then(function(m){ if(m) afficherMentor(m); }).catch(function(){});
+}
+// Appels 1:1 : offre 750 € uniquement (les anciens packs gardent leur accès)
+var CALENDLY_URL='https://calendly.com/quincy-massol/appel-pour-huslter';
+function accesMentor(m){
+  if(!m || m.plan==='demo') return false;
+  var p=String(m.pack||'');
+  return p==='750' || (p!=='180' && p!=='500' && p!=='');
+}
+var calendlyCharge=false;
+function afficherMentor(m){
+  var ok=accesMentor(m), cal=document.getElementById('mentor-cal'), lock=document.getElementById('mentor-lock');
+  lock.hidden=ok; cal.hidden=!ok;
+  document.getElementById('mentor-lock-groupe').hidden=String(m&&m.pack)!=='500';
+  if(ok && !calendlyCharge){
+    calendlyCharge=true;
+    cal.innerHTML='<div class="calendly-inline-widget" data-url="'+CALENDLY_URL+'" style="min-width:320px;height:700px;"></div>';
+    var sc=document.createElement('script'); sc.src='https://assets.calendly.com/assets/external/widget.js'; sc.async=true; document.body.appendChild(sc);
+  }
 }
 init();
 

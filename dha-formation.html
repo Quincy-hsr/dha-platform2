@@ -118,8 +118,10 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
   <div class="sidebar-section">LEARN</div>
   <a class="nav-item active" href="dha-formation.html"><span class="nav-icon">📈</span> Formation Trading</a>
   <a class="nav-item" href="dha-mindset.html"><span class="nav-icon">🧠</span> Mindset</a>
+  <a class="nav-item" href="dha-ressources.html"><span class="nav-icon">📁</span> Ressources</a>
   <div class="sidebar-section">NETWORK</div>
   <a class="nav-item" href="dha-squad.html"><span class="nav-icon">👥</span> Mon Squad</a>
+  <a class="nav-item" href="dha-lives.html"><span class="nav-icon">📺</span> Lives &amp; Replays</a>
   <a class="nav-item" href="dha-leaderboard.html"><span class="nav-icon">🏆</span> Leaderboard</a>
   <div class="sidebar-section">EARN</div>
   <a class="nav-item" href="dha-affiliation.html"><span class="nav-icon">💰</span> Recommandation</a>
@@ -151,6 +153,10 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
     <div class="progress-global">
       <div class="progress-label"><span>PROGRESSION GLOBALE</span><span id="progress-text">0%</span></div>
       <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px;">
+      <a href="dha-ressources.html" style="padding:10px 14px;border-radius:10px;border:1px solid rgba(0,212,255,0.35);color:#00D4FF;text-decoration:none;font-family:'Orbitron',sans-serif;font-size:10px;letter-spacing:1px;">📁 PLAN, JOURNAL &amp; CHECKLIST</a>
+      <a href="dha-certificat.html" style="padding:10px 14px;border-radius:10px;border:1px solid rgba(255,215,0,0.45);color:#FFD700;text-decoration:none;font-family:'Orbitron',sans-serif;font-size:10px;letter-spacing:1px;">🎓 MON CERTIFICAT</a>
     </div>
   </div>
 
@@ -498,8 +504,6 @@ function showLockedModule(n){
 }
 
 // mapping id d'affichage -> clé Supabase de complétion (null = module verrouillé, pas encore créé)
-// ⚠️ à vérifier avec Quincy : bloc_m6, bloc_m13_b1, bloc_m14_b1, bloc_m15_b1 sont des suppositions
-// basées sur la convention des autres modules — pas confirmées dans le code source de ces fichiers.
 const moduleKeys={
   m1:'bloc_m1', m2:'bloc_m2_b1', m3:'bloc_m4', m4:'bloc_m16',
   m5:'bloc_m5', m6:'bloc_m7_b1', m7:'bloc_m8_b1',

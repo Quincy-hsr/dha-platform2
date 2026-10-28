@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<script src="dha-api.js"></script>
+<script src="dha-demo.js"></script>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>DHA — Ressources</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600;700&display=swap" rel="stylesheet"/>
+<style>
+:root{--bg:#050914;--card:#080e1f;--blue:#1E64FF;--cyan:#00D4FF;--gold:#FFD700;--green:#00FF88;--red:#FF4466;--white:#E8F4FF;--dim:rgba(232,244,255,0.45);--border:rgba(30,100,255,0.15);--sidebar-w:240px;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-height:100vh;display:flex;}
+.bg-grid{position:fixed;inset:0;z-index:0;background-image:linear-gradient(rgba(30,100,255,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(30,100,255,0.03) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;}
+.sidebar{position:fixed;left:0;top:0;bottom:0;width:var(--sidebar-w);background:rgba(8,14,31,0.97);border-right:1px solid var(--border);display:flex;flex-direction:column;z-index:100;padding:24px 0;}
+.sidebar-logo{padding:0 24px 24px;border-bottom:1px solid var(--border);margin-bottom:16px;}
+.sidebar-logo-text{font-family:'Orbitron',sans-serif;font-size:28px;font-weight:900;letter-spacing:4px;color:var(--white);text-shadow:0 0 20px rgba(30,100,255,0.6);}
+.sidebar-logo-sub{font-family:'Orbitron',sans-serif;font-size:6px;letter-spacing:3px;color:rgba(0,212,255,0.5);margin-top:2px;}
+.sidebar-section{padding:8px 24px 4px;font-family:'Orbitron',sans-serif;font-size:7px;letter-spacing:3px;color:rgba(255,255,255,0.2);margin-top:8px;}
+.nav-item{display:flex;align-items:center;gap:12px;padding:11px 24px;cursor:pointer;transition:all .2s;font-size:13px;color:var(--dim);text-decoration:none;}
+.nav-item:hover{background:rgba(30,100,255,0.08);color:var(--white);}
+.nav-item.active{background:rgba(30,100,255,0.12);color:var(--cyan);border-right:2px solid var(--cyan);}
+.nav-icon{font-size:16px;width:20px;text-align:center;flex-shrink:0;}
+.sidebar-bottom{margin-top:auto;padding:16px 24px;border-top:1px solid var(--border);}
+.sidebar-member{display:flex;align-items:center;gap:12px;}
+.sidebar-avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--cyan));display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;}
+.sidebar-member-name{font-family:'Orbitron',sans-serif;font-size:10px;font-weight:900;color:var(--white);}
+.sidebar-member-rang{font-size:10px;color:var(--dim);margin-top:2px;}
+.main{margin-left:var(--sidebar-w);flex:1;padding:32px;position:relative;z-index:1;}
+.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:32px;}
+.topbar-title{font-family:'Orbitron',sans-serif;font-size:20px;font-weight:900;color:var(--white);letter-spacing:2px;}
+.topbar-title span{color:var(--cyan);}
+.header-card{background:linear-gradient(135deg,#0a1428,#080e1f);border:1px solid rgba(30,100,255,0.25);border-radius:20px;padding:32px;margin-bottom:28px;position:relative;overflow:hidden;}
+.header-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--cyan),transparent);}
+.header-glow{position:absolute;top:-60px;right:-60px;width:300px;height:300px;background:radial-gradient(ellipse,rgba(30,100,255,0.15) 0%,transparent 70%);pointer-events:none;}
+.header-tag{font-family:'Orbitron',sans-serif;font-size:8px;letter-spacing:3px;color:var(--cyan);margin-bottom:10px;}
+.header-title{font-family:'Orbitron',sans-serif;font-size:26px;font-weight:900;color:var(--white);margin-bottom:8px;}
+.header-desc{font-size:14px;color:var(--dim);line-height:1.7;}
+.info-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-top:24px;}
+.info-item{padding:16px;border-radius:12px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);text-align:center;}
+.info-icon{font-size:24px;margin-bottom:8px;}
+.info-label{font-family:'Orbitron',sans-serif;font-size:8px;letter-spacing:2px;color:var(--dim);margin-bottom:4px;}
+.info-val{font-size:13px;color:var(--white);font-weight:600;}
+.calendly-wrap{background:var(--card);border:1px solid var(--border);border-radius:20px;overflow:hidden;min-height:700px;}
+.rs-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:16px;}
+.rs{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:22px;display:flex;flex-direction:column;gap:8px;}
+.rs-ico{font-size:30px;}
+.rs-t{font-family:'Orbitron',sans-serif;font-size:13px;font-weight:700;letter-spacing:1px;}
+.rs-d{font-size:13px;color:var(--dim);line-height:1.6;flex:1;}
+.rs-m{font-size:11px;color:var(--cyan);font-family:'Orbitron',sans-serif;letter-spacing:1px;}
+.rs-b{display:inline-flex;justify-content:center;align-items:center;gap:8px;padding:12px 14px;border-radius:12px;background:linear-gradient(135deg,var(--blue),var(--cyan));color:#020610;font-family:'Orbitron',sans-serif;font-size:10px;font-weight:700;letter-spacing:1px;text-decoration:none;margin-top:6px;}
+.rs-b.gold{background:linear-gradient(135deg,#FFD700,#FF9F00);color:#1a1200;}
+.lv-card{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:24px;margin-bottom:22px;}
+.lv-h{font-family:'Orbitron',sans-serif;font-size:11px;letter-spacing:2px;color:var(--cyan);margin-bottom:14px;}
+.lv-slots{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-bottom:14px;}
+.lv-slot{padding:16px;border-radius:14px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);}
+.lv-slot.today{border-color:rgba(0,255,136,0.5);background:rgba(0,255,136,0.06);}
+.lv-day{font-family:'Orbitron',sans-serif;font-size:14px;font-weight:700;}
+.lv-time{font-size:22px;font-weight:700;color:var(--cyan);margin:4px 0;}
+.lv-what{font-size:13px;color:var(--dim);}
+.lv-tag{display:inline-block;font-size:10px;font-family:'Orbitron',sans-serif;letter-spacing:1px;color:var(--green);margin-top:6px;}
+.lv-note{font-size:13px;color:var(--dim);margin-bottom:16px;}
+.lv-btn{display:inline-flex;align-items:center;gap:8px;padding:13px 20px;border-radius:12px;background:linear-gradient(135deg,#5865F2,#7983f5);color:#fff;font-family:'Orbitron',sans-serif;font-size:11px;font-weight:700;letter-spacing:1px;text-decoration:none;}
+.lv-btn.alt{background:linear-gradient(135deg,var(--blue),var(--cyan));color:#020610;}
+.rp-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;}
+.rp{background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.07);border-radius:16px;overflow:hidden;display:flex;flex-direction:column;}
+.rp-media{position:relative;aspect-ratio:16/9;background:#000;cursor:pointer;border:none;padding:0;width:100%;display:block;}
+.rp-media img{width:100%;height:100%;object-fit:cover;display:block;opacity:.85;}
+.rp-media .play{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:44px;text-shadow:0 4px 20px rgba(0,0,0,.6);}
+.rp-media iframe{width:100%;height:100%;border:0;display:block;}
+.rp-body{padding:14px 16px;}
+.rp-date{font-size:11px;color:var(--dim);font-family:'Orbitron',sans-serif;letter-spacing:1px;}
+.rp-title{font-weight:700;font-size:15px;margin:4px 0;}
+.rp-desc{font-size:13px;color:var(--dim);line-height:1.5;}
+.rp-link{display:inline-block;margin-top:8px;color:var(--cyan);font-size:13px;}
+.lv-empty{color:var(--dim);font-size:14px;padding:10px 0;}
+.lv-lock{text-align:center;padding:34px 22px;}
+@media(max-width:768px){.sidebar{display:none;}.main{margin-left:0;padding:16px;}.info-grid{grid-template-columns:1fr;}}
+
+/* ── MOBILE MENU ── */
+.hamburger{display:none;position:fixed;top:14px;left:14px;z-index:500;width:42px;height:42px;border-radius:10px;background:rgba(8,14,31,0.95);border:1px solid rgba(30,100,255,0.3);cursor:pointer;align-items:center;justify-content:center;flex-direction:column;gap:5px;}
+.hamburger span{display:block;width:20px;height:2px;background:var(--cyan);border-radius:2px;transition:all .3s;}
+.sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:150;backdrop-filter:blur(4px);}
+.sidebar-overlay.show{display:block;}
+@media(max-width:768px){
+  .hamburger{display:flex;}
+  .sidebar{transform:translateX(-100%);transition:transform .3s ease;z-index:200;}
+  .sidebar.open{transform:translateX(0);}
+  .main{margin-left:0 !important;padding:16px;padding-top:70px;}
+}
+</style>
+</head>
+<body>
+<div class="bg-grid"></div>
+<button class="hamburger" onclick="toggleSidebar()" id="hamburger-btn">
+  <span></span><span></span><span></span>
+</button>
+<div class="sidebar-overlay" id="sidebar-overlay" onclick="closeSidebar()"></div>
+
+<aside class="sidebar">
+  <div class="sidebar-logo"><div class="sidebar-logo-text">DHA</div><div class="sidebar-logo-sub">DIGITAL HUSTLER ACADEMY</div></div>
+  <div class="sidebar-section">MAIN</div>
+  <a class="nav-item" href="dha-dashboard.html"><span class="nav-icon">🎮</span> Dashboard</a>
+  <div class="sidebar-section">LEARN</div>
+  <a class="nav-item" href="dha-formation.html"><span class="nav-icon">📈</span> Formation Trading</a>
+  <a class="nav-item" href="dha-mindset.html"><span class="nav-icon">🧠</span> Mindset</a>
+  <a class="nav-item active" href="dha-ressources.html"><span class="nav-icon">📁</span> Ressources</a>
+  <div class="sidebar-section">NETWORK</div>
+  <a class="nav-item" href="dha-squad.html"><span class="nav-icon">👥</span> Mon Squad</a>
+  <a class="nav-item" href="dha-lives.html"><span class="nav-icon">📺</span> Lives &amp; Replays</a>
+  <a class="nav-item" href="dha-leaderboard.html"><span class="nav-icon">🏆</span> Leaderboard</a>
+  <div class="sidebar-section">EARN</div>
+  <a class="nav-item" href="dha-affiliation.html"><span class="nav-icon">💰</span> Recommandation</a>
+  <div class="sidebar-section">TOOLS</div>
+  <a class="nav-item" href="dha-mentor.html"><span class="nav-icon">📞</span> Appel Mentor</a>
+  <div class="sidebar-bottom">
+    <div class="sidebar-member">
+      <div class="sidebar-avatar" id="sb-avatar">📈</div>
+      <div><div class="sidebar-member-name" id="sb-pseudo">HUSTLER</div><div class="sidebar-member-rang" id="sb-rang">NEW HUSTLER</div></div>
+    </div>
+  </div>
+</aside>
+<main class="main">
+  <div class="topbar">
+    <div><div class="topbar-title">MES <span>RESSOURCES</span></div><div style="font-size:12px;color:var(--dim);margin-top:2px;">Les outils à télécharger pour appliquer la méthode</div></div>
+  </div>
+  <div class="header-card">
+    <div class="header-glow"></div>
+    <div class="header-tag">📁 À TÉLÉCHARGER</div>
+    <div class="header-title">Tes outils de trader</div>
+    <div class="header-desc">Les modules t'expliquent la méthode, ces fichiers t'aident à l'appliquer au quotidien. Imprime ta checklist, remplis ton plan et note chaque trade dans ton journal.</div>
+  </div>
+  <div class="rs-grid">
+    <div class="rs"><div class="rs-ico">📝</div><div class="rs-m">MODULE 11</div><div class="rs-t">PLAN DE TRADING</div><div class="rs-d">Le modèle à remplir à froid : règles d'entrée, de sortie, risk, sessions et paires, gestion des émotions. Une page, à garder sous les yeux.</div><a class="rs-b" href="ressources/DHA-plan-de-trading.pdf" download>⬇ TÉLÉCHARGER (PDF)</a></div>
+    <div class="rs"><div class="rs-ico">📊</div><div class="rs-m">MODULE 12</div><div class="rs-t">JOURNAL DE TRADING</div><div class="rs-d">Le fichier Excel pour noter chaque trade. Le bilan se calcule tout seul : taux de réussite, résultats par session, et surtout si tu respectes ton plan.</div><a class="rs-b" href="ressources/DHA-journal-de-trading.xlsx" download>⬇ TÉLÉCHARGER (EXCEL)</a></div>
+    <div class="rs"><div class="rs-ico">✅</div><div class="rs-m">MODULE 17</div><div class="rs-t">CHECKLIST PRÉ-TRADE</div><div class="rs-d">Les 12 étapes à suivre dans l'ordre avant chaque trade. Imprime-la et garde-la à côté de ton écran : une étape non validée = pas de trade.</div><a class="rs-b" href="ressources/DHA-checklist-pre-trade.pdf" download>⬇ TÉLÉCHARGER (PDF)</a></div>
+    <div class="rs"><div class="rs-ico">🎓</div><div class="rs-m">FIN DE FORMATION</div><div class="rs-t">MON CERTIFICAT DHA</div><div class="rs-d" id="rs-cert">Termine tous les modules de la formation pour débloquer ton certificat.</div><a class="rs-b gold" href="dha-certificat.html">🎓 VOIR MON CERTIFICAT</a></div>
+  </div>
+  <p style="font-size:12px;color:var(--dim);margin-top:18px;">Le journal s'ouvre avec Excel, Google Sheets (Fichier → Importer) ou Numbers sur iPhone.</p>
+</main>
+<script>
+function init(){
+  var stored=localStorage.getItem('dha_member');
+  if(!stored){window.location.href='dha-connexion.html';return;}
+  var member=JSON.parse(stored);
+  document.getElementById('sb-pseudo').textContent=('@'+(member.pseudo||'HUSTLER')).toUpperCase();
+}
+init();
+function toggleSidebar(){document.querySelector('.sidebar').classList.toggle('open');document.getElementById('sidebar-overlay').classList.toggle('show');}
+function closeSidebar(){document.querySelector('.sidebar').classList.remove('open');document.getElementById('sidebar-overlay').classList.remove('show');}
+document.querySelectorAll('.nav-item').forEach(function(a){a.addEventListener('click',closeSidebar);});
+</script>
+<script src="dha-mobile-menu.js"></script>
+<script src="dha-signaler.js"></script>
+</body>
+</html>
