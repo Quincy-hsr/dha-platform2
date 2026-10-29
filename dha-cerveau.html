@@ -1205,6 +1205,8 @@ function saveSig(sid){
     .catch(function(){ toast('Échec de l\'enregistrement'); });
 }
 var CANDF = 'all';
+var CHAL = {chaud:['🔥 Chaud','#e8590c'], tiede:['🌤️ Tiède','#d29b00'], froid:['❄️ Froid','#4a90d9']};
+function chalRank(c){ return c.pret_payer ? 0 : c.chaleur==='chaud' ? 1 : c.chaleur==='tiede' ? 2 : c.chaleur==='froid' ? 3 : 4; }
 function candLink(c){
   var v = String(c.contact_valeur||'').trim(), u = v.replace(/^@+/,'');
   switch(c.contact_canal){
@@ -1224,15 +1226,17 @@ function skelCand(){
 function paintCand(){
   if(!$('#clist')) return;
   var cnt = {all:CAND.list.length};
-  CAND.list.forEach(function(c){ var k = c.statut||'nouvelle'; cnt[k] = (cnt[k]||0)+1; if(candProspect(c)) cnt.pros = (cnt.pros||0)+1; });
-  $('#cchips').innerHTML = [['all','Toutes'],['nouvelle','Nouvelles'],['contactee','Contactées'],['pros','En prospect'],['acceptee','Acceptées'],['refusee','Refusées']].map(function(f){
+  CAND.list.forEach(function(c){ var k = c.statut||'nouvelle'; cnt[k] = (cnt[k]||0)+1; if(candProspect(c)) cnt.pros = (cnt.pros||0)+1; if(c.chaleur==='chaud' && k!=='acceptee' && k!=='refusee') cnt.chaud = (cnt.chaud||0)+1; });
+  $('#cchips').innerHTML = [['all','Toutes'],['chaud','🔥 Chauds à appeler'],['nouvelle','Nouvelles'],['contactee','Contactées'],['pros','En prospect'],['acceptee','Acceptées'],['refusee','Refusées']].map(function(f){
     return '<button type="button" class="chip" data-act="candf" data-v="'+f[0]+'" aria-pressed="'+(CANDF===f[0])+'">'+f[1]+'<small>'+(cnt[f[0]]||0)+'</small></button>';
   }).join('');
   if(!CAND.ok){ $('#clist').innerHTML = '<div class="empty">Chargement des candidatures…</div>'; return; }
-  var list = CAND.list.filter(function(c){ return CANDF==='all' || (CANDF==='pros' ? !!candProspect(c) : (c.statut||'nouvelle')===CANDF); });
+  var list = CAND.list.filter(function(c){ var st = c.statut||'nouvelle'; return CANDF==='all' || (CANDF==='pros' ? !!candProspect(c) : CANDF==='chaud' ? (c.chaleur==='chaud' && st!=='acceptee' && st!=='refusee') : st===CANDF); });
+  if(CANDF==='chaud' || CANDF==='nouvelle') list = list.slice().sort(function(a,b){ return chalRank(a)-chalRank(b) || (b.score||0)-(a.score||0); });
   $('#clist').innerHTML = list.length ? list.map(function(c){
     var st = CST[c.statut||'nouvelle']||CST.nouvelle, l = candLink(c);
     return '<article class="prow" style="display:flex;align-items:center;gap:12px;flex-wrap:wrap"><div style="flex:1;min-width:160px"><button type="button" class="p-handle" data-act="cand-det" data-id="'+esc(c.id)+'">'+esc(c.prenom||'?')+(c.age?' · '+c.age+' ans':'')+(c.ville?' · '+esc(c.ville):'')+'</button>'+(c.created_at?' <span class="sub" style="font-size:13px">· reçue le '+esc(candWhen(c))+'</span>':'')
+      +(c.chaleur?' <span class="badge" style="color:'+CHAL[c.chaleur][1]+';border:1px solid currentColor;background:transparent" title="'+c.score+'/80">'+CHAL[c.chaleur][0]+'</span>':'')+(c.pret_payer?' <span class="badge ok">💰 Prêt à payer</span>':'')
       +' <span class="badge" style="color:'+st[1]+';border:1px solid currentColor;background:transparent">'+st[0]+'</span>'+(candProspect(c)?' <span class="badge ok">✓ En prospect</span>':'')
       +(c.note?'<div class="sub" style="font-size:13px;margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:520px">📝 '+esc(String(c.note).split('\n')[0])+'</div>':'')+'</div>'
       +'<div class="p-actions" style="margin:0">'+(l?'<a class="btn small primary" href="'+esc(l)+'" target="_blank" rel="noopener">💬 Écrire</a>':'')+'<button type="button" class="btn small" data-act="cand-det" data-id="'+esc(c.id)+'">Voir les détails</button></div></article>';
@@ -1241,7 +1245,7 @@ function paintCand(){
 function openCand(id){
   var c = CAND.list.filter(function(x){ return String(x.id)===String(id); })[0]; if(!c) return;
   var l = candLink(c), pr = candProspect(c);
-  var rows = [['Âge',c.age?c.age+' ans':''],['Ville',[c.ville,c.pays].filter(Boolean).join(', ')],['Contact',(c.contact_canal||'')+' · '+(c.contact_valeur||'')],['Candidature reçue le',candWhen(c)],['Situation',c.situation],['Business en ligne',c.business_en_ligne],['Formations',c.formations],['Ce qui l\'attire',(c.avantages||[]).join(', ')],['Seul ou en équipe',c.seul_equipe],['Prêt à investir',c.investir],['Déplacements',c.deplacements],['Connu par',(c.source||'')+(c.source_detail?' ('+c.source_detail+')':'')+(c.source_lien?' · lien '+c.source_lien:'')]].filter(function(r){ return r[1]; });
+  var rows = [['Âge',c.age?c.age+' ans':''],['Ville',[c.ville,c.pays].filter(Boolean).join(', ')],['Contact',(c.contact_canal||'')+' · '+(c.contact_valeur||'')],['Candidature reçue le',candWhen(c)],['Note',c.chaleur?(CHAL[c.chaleur][0]+' · '+c.score+'/80'+(c.pret_payer?' · 💰 prêt à payer':'')):''],['Commencer',c.demarrage],['Budget',c.budget],['Pourquoi maintenant',c.motivation],['Temps par jour',c.temps_dispo],['Situation',c.situation],['Business en ligne',c.business_en_ligne],['Formations',c.formations],['Ce qui l\'attire',(c.avantages||[]).join(', ')],['Seul ou en équipe',c.seul_equipe],['Prêt à investir',c.investir],['Déplacements',c.deplacements],['Connu par',(c.source||'')+(c.source_detail?' ('+c.source_detail+')':'')+(c.source_lien?' · lien '+c.source_lien:'')]].filter(function(r){ return r[1]; });
   openDlg('<div class="dlg-body"><h2 id="dlgTitle">'+esc(c.prenom||'Candidature')+'</h2>'
     +(l?'<a class="btn primary" href="'+esc(l)+'" target="_blank" rel="noopener" style="text-align:center">💬 Écrire sur '+esc(c.contact_canal)+'</a>':'')
     +'<dl class="pinfo">'+rows.map(function(r){ return '<dt>'+r[0]+'</dt><dd>'+esc(r[1])+'</dd>'; }).join('')+'</dl>'
