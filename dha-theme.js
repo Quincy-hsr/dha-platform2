@@ -7,14 +7,6 @@
    ========================================================= */
 (function () {
   if (window.__dhaTheme) return; window.__dhaTheme = true;
-  // APERÇU : le thème ne s'active que pour qui ouvre la plateforme avec ?theme=glass
-  // (mémorisé sur cet appareil ; ?theme=off pour revenir à l'ancien style)
-  try {
-    var q = new URLSearchParams(location.search).get('theme');
-    if (q === 'glass') localStorage.setItem('dha_theme', 'glass');
-    else if (q === 'off') localStorage.removeItem('dha_theme');
-    if (localStorage.getItem('dha_theme') !== 'glass') return;
-  } catch (e) { return; }
 
   var f = document.createElement('link');
   f.rel = 'stylesheet';
