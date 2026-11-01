@@ -32,9 +32,8 @@
     return;
   }
 
-  // On cache la page le temps de la première vérification
-  document.documentElement.style.visibility = 'hidden';
-  setTimeout(afficherPage, 4000); // sécurité : on affiche quoi qu'il arrive au bout de 4 s
+  // La page s'affiche tout de suite (pas d'écran noir) ; la vérification se fait en arrière-plan
+  // et renvoie vers la connexion seulement si l'accès a été retiré. Les données restent protégées côté serveur.
 
 
   // Renvoie true si le membre a toujours accès, false sinon

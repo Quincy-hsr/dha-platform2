@@ -674,6 +674,12 @@ async function init(){
   const stored=localStorage.getItem('dha_member');
   if(!stored){window.location.href='dha-connexion.html';return;}
   member=JSON.parse(stored);
+  // Affichage immédiat avec les dernières valeurs connues (pas de « 0 XP » le temps du chargement)
+  try{
+    if(member.xp!=null){member.level=getLevelFromXP(member.xp);member.rang=getRang(member.xp).name;}
+    if(member.date_inscription){document.getElementById('stat-days').textContent=Math.max(1,Math.floor((new Date()-new Date(member.date_inscription))/86400000)+1);}
+    renderMember();
+  }catch(e){}
   try{
     const d0=await DHA.me();const data=d0?[d0]:[];
     console.log('Supabase XP data:',data);

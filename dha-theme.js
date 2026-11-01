@@ -16,9 +16,10 @@
   var GLASS = '.card,.player-card,.stat-card,.module-item,.category-card,.formation-header,.module-card,.formation-stat,.bloc,.module-header,.quiz-section,.exercice-section,.question-box,.lv-card,.header-card,.lb-card,.discord-card,.affilies-card,.contrat-card,.paliers-card,.rev-card,.rang-card,.current-rang,.calendly-wrap,.rs,.ct-step,.ce-prog,.hero,.av-card,.info-item,.squad-block,.dha-features,.rp,.lv-slot,.pg-live,.lb-item,.hero-stat';
 
   var css = '' +
-    ':root{--th-glass:linear-gradient(140deg,rgba(255,255,255,0.085),rgba(255,255,255,0.025));--th-line:rgba(255,255,255,0.13);--th-cyan:#00D4FF;--th-blue:#1E64FF;}' +
+    ':root{--th-glass:linear-gradient(140deg,rgba(22,36,72,0.78),rgba(10,18,40,0.70));--th-line:rgba(255,255,255,0.13);--th-cyan:#00D4FF;--th-blue:#1E64FF;}' +
     'html,body{background:#050914!important;}' +
     '@view-transition{navigation:auto;}' +
+    '.fadeup,.fadeup-1,.fadeup-2,.fadeup-3{animation:none!important;opacity:1!important;transform:none!important;}' +
     '::view-transition-old(root),::view-transition-new(root){animation-duration:.28s;}' +
     'body{font-family:Manrope,system-ui,sans-serif!important;-webkit-font-smoothing:antialiased;}' +
     'body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(900px 600px at 82% 4%,rgba(0,212,255,0.22),transparent 62%),radial-gradient(800px 560px at 6% 98%,rgba(30,100,255,0.24),transparent 60%),radial-gradient(560px 420px at 50% 55%,rgba(157,78,221,0.10),transparent 65%),linear-gradient(160deg,#0A1430 0%,#050914 70%);}' +
@@ -26,10 +27,10 @@
     '@keyframes thFloat{to{transform:translate(-40px,30px) scale(1.06)}}' +
     '.bg-grid,.player-card-grid,.stars,.scanlines{display:none!important;}' +
     '.th-bg{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;}' +
-    '.th-blob{position:absolute;border-radius:50%;filter:blur(70px);opacity:.55;will-change:transform;}' +
-    '.th-b1{width:620px;height:620px;left:58%;top:-18%;background:radial-gradient(circle,rgba(0,212,255,0.55),transparent 65%);animation:thDrift1 26s ease-in-out infinite alternate;}' +
-    '.th-b2{width:700px;height:700px;left:-14%;top:52%;background:radial-gradient(circle,rgba(30,100,255,0.55),transparent 65%);animation:thDrift2 32s ease-in-out infinite alternate;}' +
-    '.th-b3{width:480px;height:480px;left:34%;top:30%;background:radial-gradient(circle,rgba(157,78,221,0.35),transparent 65%);animation:thDrift3 38s ease-in-out infinite alternate;}' +
+    '.th-blob{position:absolute;border-radius:50%;opacity:.6;will-change:transform;transform:translateZ(0);}' +
+    '.th-b1{width:620px;height:620px;left:58%;top:-18%;background:radial-gradient(circle,rgba(0,212,255,0.30),rgba(0,212,255,0.08) 40%,transparent 70%);animation:thDrift1 26s ease-in-out infinite alternate;}' +
+    '.th-b2{width:700px;height:700px;left:-14%;top:52%;background:radial-gradient(circle,rgba(30,100,255,0.32),rgba(30,100,255,0.08) 40%,transparent 70%);animation:thDrift2 32s ease-in-out infinite alternate;}' +
+    '.th-b3{width:480px;height:480px;left:34%;top:30%;background:radial-gradient(circle,rgba(157,78,221,0.22),rgba(157,78,221,0.05) 40%,transparent 70%);animation:thDrift3 38s ease-in-out infinite alternate;}' +
     '.th-cv{position:absolute;inset:0;width:100%;height:100%;}' +
     '@keyframes thDrift1{to{transform:translate(-160px,140px) scale(1.15)}}' +
     '@keyframes thDrift2{to{transform:translate(200px,-160px) scale(1.1)}}' +
@@ -40,12 +41,12 @@
     '.th-d.th-small{letter-spacing:0.12em!important;}' +
     '.th-b{font-family:Manrope,system-ui,sans-serif!important;}' +
     /* verre */
-    GLASS.split(',').map(function (s) { return s; }).join(',') + '{background:var(--th-glass)!important;border:1px solid var(--th-line)!important;border-radius:24px!important;backdrop-filter:blur(22px) saturate(140%);-webkit-backdrop-filter:blur(22px) saturate(140%);box-shadow:0 24px 60px rgba(0,0,0,0.40),inset 0 1px 0 rgba(255,255,255,0.12)!important;}' +
+    GLASS.split(',').map(function (s) { return s; }).join(',') + '{background:var(--th-glass)!important;border:1px solid var(--th-line)!important;border-radius:24px!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;box-shadow:0 24px 60px rgba(0,0,0,0.40),inset 0 1px 0 rgba(255,255,255,0.12)!important;}' +
     '.lb-item,.pg-live,.lv-slot,.info-item,.hero-stat,.module-item{border-radius:16px!important;box-shadow:none!important;}' +
-    '.player-card{background:linear-gradient(140deg,rgba(255,255,255,0.13),rgba(255,255,255,0.035))!important;border-color:rgba(255,255,255,0.18)!important;}' +
+    '.player-card{background:linear-gradient(140deg,rgba(30,48,92,0.82),rgba(12,22,48,0.74))!important;border-color:rgba(255,255,255,0.18)!important;}' +
     '.player-card::before,.formation-header::before,.module-header::before,.header-card::before,.discord-card::before{opacity:.0;}' +
     /* menu */
-    '.sidebar{background:linear-gradient(180deg,rgba(10,20,48,0.72),rgba(5,9,20,0.78))!important;border-right:1px solid var(--th-line)!important;backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);}' +
+    '.sidebar{background:linear-gradient(180deg,rgba(10,20,48,0.92),rgba(5,9,20,0.95))!important;border-right:1px solid var(--th-line)!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;}' +
     '.nav-item{margin:2px 12px!important;padding:11px 14px!important;border-radius:14px!important;border-right:none!important;transition:background .2s,color .2s,box-shadow .2s;}' +
     '.nav-item:hover{background:rgba(255,255,255,0.06)!important;}' +
     '.nav-item.active{background:rgba(0,212,255,0.14)!important;color:#7FE9FF!important;border:1px solid rgba(0,212,255,0.5)!important;box-shadow:0 0 22px rgba(0,212,255,0.30),inset 0 1px 0 rgba(255,255,255,0.15)!important;}' +
@@ -62,7 +63,7 @@
     '.quiz-option-letter{border-radius:10px!important;}' +
     '.module-num,.exercice-step-num{border-radius:14px!important;}' +
     '.module-badge,.module-meta-item,.xp-pill,.topbar-xp,.player-rang{border-radius:999px!important;}' +
-    '.topbar-xp,.xp-pill{background:rgba(255,255,255,0.08)!important;border:1px solid rgba(255,255,255,0.16)!important;backdrop-filter:blur(12px);}' +
+    '.topbar-xp,.xp-pill{background:rgba(255,255,255,0.08)!important;border:1px solid rgba(255,255,255,0.16)!important;}' +
     '.player-rang{background:rgba(255,215,0,0.12)!important;border:1px solid rgba(255,215,0,0.5)!important;color:#FFD700!important;box-shadow:0 0 16px rgba(255,215,0,0.22)!important;}' +
     'iframe{border-radius:18px;}' +
     '.player-card{display:flex;flex-direction:column;justify-content:space-between;}' +
@@ -183,18 +184,25 @@
     taille(); window.addEventListener('resize', taille);
     var n = innerWidth < 700 ? 28 : 55, cols = ['0,212,255', '30,100,255', '157,78,221', '255,215,0'];
     for (var i = 0; i < n; i++) P.push({ x: Math.random() * W, y: Math.random() * H, r: Math.random() * 1.6 + 0.4, vx: (Math.random() - .5) * 0.12, vy: -(Math.random() * 0.25 + 0.05), a: Math.random() * 0.5 + 0.2, t: Math.random() * 6.28, c: cols[i % 7 === 0 ? 3 : i % 3] });
-    function tick() {
-      if (!document.hidden) {
-        cx.clearRect(0, 0, W, H);
-        for (var i = 0; i < P.length; i++) {
-          var p = P[i]; p.x += p.vx; p.y += p.vy; p.t += 0.02;
-          if (p.y < -10) { p.y = H + 10; p.x = Math.random() * W; } if (p.x < -10) p.x = W + 10; if (p.x > W + 10) p.x = -10;
-          var al = p.a * (0.6 + 0.4 * Math.sin(p.t));
-          cx.beginPath(); cx.arc(p.x, p.y, p.r, 0, 6.283);
-          cx.fillStyle = 'rgba(' + p.c + ',' + al + ')'; cx.shadowColor = 'rgba(' + p.c + ',0.9)'; cx.shadowBlur = 8; cx.fill();
-        }
-      }
+    var sprites = {};
+    function sprite(c) {
+      if (sprites[c]) return sprites[c];
+      var sc = document.createElement('canvas'); sc.width = sc.height = 24; var g = sc.getContext('2d');
+      var gr = g.createRadialGradient(12, 12, 0, 12, 12, 12); gr.addColorStop(0, 'rgba(' + c + ',1)'); gr.addColorStop(0.25, 'rgba(' + c + ',0.6)'); gr.addColorStop(1, 'rgba(' + c + ',0)');
+      g.fillStyle = gr; g.fillRect(0, 0, 24, 24); return (sprites[c] = sc);
+    }
+    var der = 0;
+    function tick(ts) {
       requestAnimationFrame(tick);
+      if (document.hidden || ts - der < 33) return; der = ts;
+      cx.clearRect(0, 0, W, H);
+      for (var i = 0; i < P.length; i++) {
+        var p = P[i]; p.x += p.vx * 2; p.y += p.vy * 2; p.t += 0.04;
+        if (p.y < -10) { p.y = H + 10; p.x = Math.random() * W; } if (p.x < -10) p.x = W + 10; if (p.x > W + 10) p.x = -10;
+        var s = p.r * 7; cx.globalAlpha = p.a * (0.6 + 0.4 * Math.sin(p.t));
+        cx.drawImage(sprite(p.c), p.x - s / 2, p.y - s / 2, s, s);
+      }
+      cx.globalAlpha = 1;
     }
     requestAnimationFrame(tick);
   }
