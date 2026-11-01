@@ -154,7 +154,7 @@ function render(d){
   if(!d){z.innerHTML='<div class="lv-card lv-empty">Impossible de charger la page. Recharge ou reconnecte-toi.</div>';return;}
   var pl=d.planning||{}, cr=pl.creneaux||[], auj=JOURS[new Date().getDay()];
   if(!d.acces){
-    z.innerHTML='<div class="lv-card lv-lock"><div style="font-size:40px;margin-bottom:10px">🔒</div><div style="font-family:Orbitron,sans-serif;font-size:15px;font-weight:700;letter-spacing:1px;margin-bottom:10px">INCLUS DANS L\'ACCOMPAGNEMENT</div><p style="color:var(--dim);max-width:520px;margin:0 auto 20px;line-height:1.6">Les appels de groupe, les lives trading'+(d.nb_replays?' et les <b style="color:#E8F4FF">'+d.nb_replays+' replay'+(d.nb_replays>1?'s':'')+'</b>':' et les replays')+' sont réservés aux offres <b style="color:#E8F4FF">Accompagnement en groupe</b> et <b style="color:#E8F4FF">1:1</b>. Tu veux passer à l\'accompagnement ? Écris-moi.</p><a class="lv-btn alt" href="https://wa.me/qr/OCPS7DRIVP76L1" target="_blank" rel="noopener">💬 PASSER À L\'ACCOMPAGNEMENT</a></div>';
+    z.innerHTML='<div class="lv-card lv-lock"><div style="font-size:40px;margin-bottom:10px">🔒</div><div style="font-family:Orbitron,sans-serif;font-size:15px;font-weight:700;letter-spacing:1px;margin-bottom:10px">LIVES &amp; REPLAYS</div><p style="color:#E8F4FF;font-size:16px;max-width:520px;margin:0 auto 8px;line-height:1.6">Si tu veux participer aux lives et voir les replays, augmente ton forfait.</p><p style="color:var(--dim);font-size:13px;margin:0 auto 20px">Inclus dans les offres Accompagnement en groupe (500 €) et 1:1 (750 €).</p><a class="lv-btn alt" style="background:linear-gradient(135deg,#FFD700,#FF9F00);color:#1a1200" href="https://wa.me/qr/OCPS7DRIVP76L1" target="_blank" rel="noopener">💬 AUGMENTER MON FORFAIT</a></div>';
     return;
   }
   var h='<div class="lv-card"><div class="lv-h">📅 CHAQUE SEMAINE</div><div class="lv-slots">'+(cr.length?cr.map(function(c){var t=c.jour===auj;return '<div class="lv-slot'+(t?' today':'')+'"><div class="lv-day">'+esc(c.jour)+'</div><div class="lv-time">'+(c.heure?esc(c.heure):'—')+'</div><div class="lv-what">'+esc(c.titre||'Appel de groupe')+'</div>'+(t?'<div class="lv-tag">● C\'EST AUJOURD\'HUI</div>':'')+'</div>';}).join(''):'<div class="lv-empty">Planning bientôt affiché.</div>')+'</div>'
@@ -209,5 +209,6 @@ document.querySelectorAll('.nav-item').forEach(function(a){a.addEventListener('c
 </script>
 <script src="dha-mobile-menu.js"></script>
 <script src="dha-signaler.js"></script>
+<script src="dha-forfait.js"></script>
 </body>
 </html>

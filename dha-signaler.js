@@ -152,6 +152,19 @@
     }
     // Remonter le bouton si la bannière démo est affichée
     setTimeout(function () { if (document.querySelector('.dha-demo-banner')) document.body.classList.add('dsg-demo'); }, 1500);
+    // Si un autre bouton fixe occupe le coin bas-droit (ex. « Ouvrir TradingView »), on se place au-dessus
+    function eviter() {
+      fab.style.bottom = '';
+      var f = fab.getBoundingClientRect(), haut = null;
+      document.querySelectorAll('body *').forEach(function (el) {
+        if (el === fab || fab.contains(el) || el.closest('.dsg-ov,.dfo-ov,.pres-bar')) return;
+        var cs = getComputedStyle(el); if (cs.position !== 'fixed' || cs.display === 'none' || cs.visibility === 'hidden') return;
+        var r = el.getBoundingClientRect(); if (!r.width || !r.height || r.height > innerHeight * 0.5) return;
+        if (r.left < f.right && r.right > f.left && r.top < f.bottom && r.bottom > f.top) haut = haut === null ? r.top : Math.min(haut, r.top);
+      });
+      if (haut !== null) fab.style.bottom = Math.round(innerHeight - haut + 10) + 'px';
+    }
+    setTimeout(eviter, 1600); window.addEventListener('resize', function () { setTimeout(eviter, 100); });
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
   window.DHASignaler = { ouvrir: ouvrir };
