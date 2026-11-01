@@ -129,7 +129,7 @@
       return '<div class="quete-item' + (ok ? ' done' : '') + '">' +
         '<div class="quete-check' + (ok ? ' done' : '') + '">' + (ok ? '✓' : q.i) + '</div>' +
         '<div class="quete-info"><div class="quete-name">' + esc(q.n) + '</div>' +
-        '<div class="quete-xp">+' + q.x + ' XP · +' + XP_QUETE + ' XP de quête</div>' +
+        '<div class="quete-xp">+' + q.x + ' XP</div>' +
         (q.auto ? '' : '<div class="dq-sub">Validé par ton mentor</div>') + '</div></div>';
     }).join('');
     var pct = etat.quetes.length ? Math.round(n / etat.quetes.length * 100) : 0;
