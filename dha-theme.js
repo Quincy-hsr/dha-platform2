@@ -13,7 +13,7 @@
   f.href = 'https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap';
   document.head.appendChild(f);
 
-  var GLASS = '.card,.player-card,.stat-card,.module-item,.category-card,.formation-header,.module-card,.formation-stat,.bloc,.module-header,.quiz-section,.exercice-section,.question-box,.lv-card,.header-card,.lb-card,.discord-card,.affilies-card,.contrat-card,.paliers-card,.rev-card,.rang-card,.current-rang,.calendly-wrap,.rs,.ct-step,.ce-prog,.hero,.av-card,.info-item,.squad-block,.dha-features,.rp,.lv-slot,.pg-live,.lb-item,.hero-stat';
+  var GLASS = '.demo-perks,.card,.player-card,.stat-card,.module-item,.category-card,.formation-header,.module-card,.formation-stat,.bloc,.module-header,.quiz-section,.exercice-section,.question-box,.lv-card,.header-card,.lb-card,.discord-card,.affilies-card,.contrat-card,.paliers-card,.rev-card,.rang-card,.current-rang,.calendly-wrap,.rs,.ct-step,.ce-prog,.hero,.av-card,.info-item,.squad-block,.dha-features,.rp,.lv-slot,.pg-live,.lb-item,.hero-stat';
 
   var css = '' +
     ':root{--th-glass:linear-gradient(140deg,rgba(22,36,72,0.78),rgba(10,18,40,0.70));--th-line:rgba(255,255,255,0.13);--th-cyan:#00D4FF;--th-blue:#1E64FF;}' +
@@ -58,6 +58,8 @@
     '.xp-fill,.progress-fill,.category-progress-fill,.dq-bar i{border-radius:999px!important;background:linear-gradient(90deg,#1E64FF,#00D4FF)!important;box-shadow:0 0 14px rgba(0,212,255,0.6)!important;}' +
     /* boutons */
     '.complete-btn,.quiz-submit,.exercice-validate,.lv-btn,.rs-b,.ct-btn,.discord-btn,.wa-btn,.activate-btn,.copy-btn,.question-box-send,.cat-back,.locked-modal-btn,.tt-ok,.tt-go,.dsg-send,.dsg-fab,.dfo-up{border-radius:999px!important;}' +
+    '.form-input,.field,input.field,.demo-perks input{border-radius:14px!important;}' +
+    '.btn-submit,.btn-demo,.btn{border-radius:999px!important;}' +
     '.complete-btn,.quiz-submit,.question-box-send{background:linear-gradient(135deg,#1E64FF,#00D4FF)!important;color:#020610!important;box-shadow:0 0 26px rgba(0,212,255,0.45),inset 0 1px 0 rgba(255,255,255,0.45)!important;border:none!important;}' +
     '.quiz-option{border-radius:16px!important;background:rgba(255,255,255,0.04)!important;border:1px solid var(--th-line)!important;}' +
     '.quiz-option-letter{border-radius:10px!important;}' +
