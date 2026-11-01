@@ -1101,6 +1101,37 @@ window.addEventListener('message', function(ev){ if(ev.data==='dha-cand-maj') lo
 /* ---------- vue : candidatures ---------- */
 var CST = {nouvelle:['Nouvelle','#B7791F'], contactee:['Contactée','var(--focus)'], acceptee:['Acceptée','var(--gain)'], refusee:['Refusée','var(--leak)']};
 
+/* ---------- copy trading : réglages (page dha-copy-trading.html) ---------- */
+var COPY = {cfg:{}, ok:false};
+function loadCopy(){
+  if(!DHA.adminKey()) return Promise.resolve();
+  return DHA.admin('dha_admin_copy').then(function(d){ if(d){ COPY.cfg = d; COPY.ok = true; schedule(); } }).catch(function(){});
+}
+loadCopy();
+var COPY_CHAMPS = [['lien_vantage','Ton lien d\'inscription Vantage','https://…'],['depot_min','Dépôt minimum conseillé','ex. 200 €'],['canal_nom','Nom du canal','ex. Telegram DHA Signaux'],['canal_lien','Lien d\'invitation du canal (visible seulement par les membres activés)','https://…'],['periode','Le prix, c\'est…','ex. par mois'],['pay_seul','Lien de paiement Stripe — canal seul (70 €)','https://buy.stripe.com/…'],['pay_180','Lien de paiement — avec l\'Essentiel (50 €)','https://buy.stripe.com/…'],['pay_500','Lien de paiement — avec le Groupe (30 €)','https://buy.stripe.com/…'],['pay_750','Lien de paiement — avec le 1:1 (10 €)','https://buy.stripe.com/…']];
+function paintCopy(){
+  var box = $('#copycfg'); if(!box) return;
+  if(!COPY.ok){ box.innerHTML = ''; return; }
+  var c = COPY.cfg||{}, manque = COPY_CHAMPS.filter(function(f){ return f[0]!=='periode' && !c[f[0]]; }).length;
+  var actifs = PLAT.members.filter(function(m){ return m.copy_trading; });
+  box.innerHTML = '<section class="card"><div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap"><h3 style="margin:0">📡 Copy trading</h3><button type="button" class="btn small" data-act="copy-cfg">⚙️ Liens &amp; réglages</button></div>'
+    + '<p class="sub" style="font-size:13px;margin:8px 0 0">'+actifs.length+' membre'+(actifs.length>1?'s':'')+' avec l\'accès'+(actifs.length?' : '+actifs.slice(0,8).map(function(m){ return '@'+esc(m.pseudo); }).join(', ')+(actifs.length>8?'…':''):'')+'. Pour activer quelqu\'un : ouvre sa fiche → « 📡 Copy trading ».'
+    + (manque ? ' <b style="color:var(--leak,#c0392b)">· '+manque+' lien'+(manque>1?'s':'')+' à remplir</b>' : '')+'</p></section>';
+}
+function openCopyCfg(){
+  var c = COPY.cfg||{};
+  openDlg('<div class="dlg-body"><h2 id="dlgTitle">Réglages copy trading</h2><p class="sub" style="margin:0">Tout s\'affiche directement sur la page Copy trading des membres. Laisse vide ce que tu n\'as pas encore.</p>'
+    + COPY_CHAMPS.map(function(f){ return '<div><label for="cp_'+f[0]+'">'+f[1]+'</label><input id="cp_'+f[0]+'" maxlength="300" placeholder="'+esc(f[2])+'" value="'+esc(c[f[0]]||'')+'"></div>'; }).join('')
+    + '</div><div class="dlg-foot"><span></span><div class="r"><button type="button" class="btn" data-act="close">Annuler</button><button type="button" class="btn primary" data-act="copy-save">Enregistrer</button></div></div>');
+}
+function saveCopyCfg(){
+  var p = {};
+  COPY_CHAMPS.forEach(function(f){ p[f[0]] = $('#cp_'+f[0]).value.trim(); });
+  var bad = COPY_CHAMPS.filter(function(f){ return /^(lien|canal_lien|pay)/.test(f[0]) && p[f[0]] && !/^https?:\/\//.test(p[f[0]]); });
+  if(bad.length){ toast('Vérifie le lien : « '+bad[0][1]+' » doit commencer par https://'); return; }
+  DHA.admin('dha_admin_copy_set',{p:p}).then(function(ok){ if(ok){ COPY.cfg = p; closeDlg(); schedule(); toast('Réglages enregistrés'); } else toast('Échec de l\'enregistrement'); }).catch(function(){ toast('Échec de l\'enregistrement'); });
+}
+
 /* ---------- lives & replays (page dha-lives.html de la plateforme) ---------- */
 var LIVES = {planning:{}, replays:[], ok:false}, LV_JOURS = ['Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi','Dimanche'];
 function loadLives(){
@@ -1686,7 +1717,7 @@ function paintContent(){
 
 /* ---------- vue : clients ---------- */
 function skelClients(){
-  return '<div class="stack"><div id="cash"></div><div id="relance"></div><div id="lives"></div><div id="linkBanner"></div><div id="cfilt" style="display:flex;flex-wrap:wrap;gap:8px"></div><div class="toolbar" style="margin:0"><p class="sub">Un prospect passé en « Client » crée sa fiche automatiquement.</p><span style="display:flex;gap:10px;flex-wrap:wrap"><button type="button" class="btn" data-act="tab" data-tab="membres">🤝 Parrainages &amp; comptes</button><span id="clexp"></span><button type="button" class="btn primary" data-act="new-client">Nouveau membre</button></span></div><div class="grid" id="cg"></div></div>';
+  return '<div class="stack"><div id="cash"></div><div id="relance"></div><div id="lives"></div><div id="copycfg"></div><div id="linkBanner"></div><div id="cfilt" style="display:flex;flex-wrap:wrap;gap:8px"></div><div class="toolbar" style="margin:0"><p class="sub">Un prospect passé en « Client » crée sa fiche automatiquement.</p><span style="display:flex;gap:10px;flex-wrap:wrap"><button type="button" class="btn" data-act="tab" data-tab="membres">🤝 Parrainages &amp; comptes</button><span id="clexp"></span><button type="button" class="btn primary" data-act="new-client">Nouveau membre</button></span></div><div class="grid" id="cg"></div></div>';
 }
 function paintClients(){
   if(!$('#cg')) return;
@@ -1696,7 +1727,7 @@ function paintClients(){
   var cash = $('#cash');
   if(cash) cash.innerHTML = '<section class="card" style="display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between"><div><span style="display:block;color:var(--muted);font-size:13px;font-weight:600">💶 Reste à encaisser</span><span style="font:700 30px/1.1 var(--f-display)">'+euro(oweTot)+'</span><span class="sub" style="display:block">'+(owe.length?owe.length+' client'+(owe.length>1?'s te doivent':' te doit')+' de l\'argent':'Personne ne te doit d\'argent')+'</span></div>'
     +(owe.length?'<button type="button" class="btn" data-act="cf" data-v="owe">Voir qui me doit</button>':'')+'</section>';
-  paintRelance(); paintLives();
+  paintRelance(); paintLives(); paintCopy();
   var cf = $('#cfilt');
   var nUn = S.clients.filter(function(c){ return !c.pseudo; }).length;
   if(cf) cf.innerHTML = [['all','Tous',S.clients.length],['owe','Me doivent de l\'argent',owe.length],['unlinked','Pas reliés',nUn]].map(function(f){ return '<button type="button" class="chip" data-act="cf" data-v="'+f[0]+'" aria-pressed="'+((S.cliF||'all')===f[0])+'">'+f[1]+'<small>'+f[2]+'</small></button>'; }).join('');
@@ -2029,7 +2060,7 @@ function openClient(c){
   var pm = memberOf(c), prec = c.pseudo ? (PLAT.recent[normPseudo(c.pseudo)]||[]) : [];
   var platBox = pm ? '<div class="pinfo" style="display:block"><div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap"><b>Sur la plateforme : @'+esc(pm.pseudo)+'</b><span>⚡ '+fmtN(pm.xp||0)+' XP · niveau '+levelOf(pm.xp)+'</span></div>'
     +(prec.length ? '<div class="tl" style="margin-top:8px">'+prec.slice(0,8).map(function(r){ return '<div><b>+'+fmtN(r.xp_gagne||0)+' XP</b> · '+esc(String(r.raison||'').split(' · ')[0])+' <span class="sub">('+ago(new Date(r.created_at).getTime())+')</span></div>'; }).join('')+'</div>' : '<p class="sub" style="margin:6px 0 0">Aucune activité pour l\'instant.</p>')
-    +'<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px"><button type="button" class="btn small primary" data-act="xp-open" data-id="'+esc(c.id)+'">⚡ Ajouter de l\'XP</button><button type="button" class="btn small" data-act="pw-reset" data-id="'+esc(c.id)+'">🔑 Nouveau mot de passe</button></div></div>'
+    +'<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px"><button type="button" class="btn small primary" data-act="xp-open" data-id="'+esc(c.id)+'">⚡ Ajouter de l\'XP</button><button type="button" class="btn small" data-act="pw-reset" data-id="'+esc(c.id)+'">🔑 Nouveau mot de passe</button><button type="button" class="btn small'+(pm.copy_trading?' primary':'')+'" data-act="copy-tog" data-id="'+esc(c.id)+'">📡 Copy trading : '+(pm.copy_trading?'activé ✓':'désactivé')+'</button></div></div>'
     : '<div class="pinfo" style="display:block"><b>Pas encore relié à son compte.</b> <span class="sub">Choisis son pseudo plus bas pour voir son activité en temps réel.</span></div>';
   openDlg('<div class="dlg-body"><h2 id="dlgTitle">'+(c.name?esc(c.name):'Nouveau membre')+'</h2>'+(c.id && S.clients.some(function(x){ return x.id===c.id; }) ? platBox : '')
     +'<div class="two"><div><label for="cdName">Nom ou pseudo</label><input id="cdName" value="'+esc(c.name||'')+'"></div><div><label for="cdStatus">Statut</label><select id="cdStatus">'+CLIENT_STATUS.map(function(s){return '<option value="'+s[0]+'"'+((c.status||'actif')===s[0]?' selected':'')+'>'+s[1]+'</option>';}).join('')+'</select></div></div>'
@@ -2174,6 +2205,8 @@ document.addEventListener('click', function(ev){
     case 'save-obj': saveObjectif(); break;
     case 'candf': CANDF = el.getAttribute('data-v'); schedule(); break;
     case 'sigf': SIGF = el.getAttribute('data-v'); schedule(); break;
+    case 'copy-cfg': openCopyCfg(); return;
+    case 'copy-save': saveCopyCfg(); return;
     case 'lv-plan': openPlanning(); return;
     case 'lv-plan-save': savePlanning(); return;
     case 'lv-add': openReplay(); return;
@@ -2186,6 +2219,11 @@ document.addEventListener('click', function(ev){
     case 'rel-wa': marquerRelance(el.getAttribute('data-k')); return;
     case 'rel-ok': marquerRelance(el.getAttribute('data-k')); toast('Noté : relancé'); break;
     case 'rel-all': RELANCE_ALL = !RELANCE_ALL; schedule(); break;
+    case 'copy-tog': ev.stopPropagation(); var cc = byId(S.clients), cm = cc && memberOf(cc); if(!cm) break;
+      var nv = !cm.copy_trading;
+      if(nv && !confirm('Activer l\'accès copy trading pour @'+cm.pseudo+' ? (paiement et preuve de dépôt reçus)')) break;
+      DHA.admin('dha_admin_update_membre',{p_id:cm.id, p:{copy_trading:nv}}).then(function(r){ if(r){ cm.copy_trading = !!r.copy_trading; toast(nv?'Copy trading activé pour @'+cm.pseudo:'Copy trading désactivé'); openClient(cc); schedule(); } else toast('Échec'); }).catch(function(){ toast('Échec'); });
+      break;
     case 'pw-reset': ev.stopPropagation(); var pc = byId(S.clients), pmm = pc && memberOf(pc); if(pmm) DHA.resetPasswordUI(pmm); break;
     case 'xp-q': var k = el.getAttribute('data-k'); XPC.q[k] = Math.max(0, (XPC.q[k]||0)+Number(el.getAttribute('data-d'))); $('#xq_'+k).textContent = XPC.q[k]; $('#xpTot').textContent = 'Total : +'+fmtN(xpTotal())+' XP'; break;
     case 'xp-ok': xpValidate(); break;
@@ -2327,7 +2365,7 @@ function start(){
   $('#gate').remove();
   render();
   connectCloud(makeSupaDb());
-  loadCand(); loadSig(); loadLives();
+  loadCand(); loadSig(); loadLives(); loadCopy();
   setInterval(loadPlatform, 60000);
 }
 // Plus de mot de passe (comme l'admin) : le Cerveau s'ouvre directement

@@ -101,6 +101,21 @@
   .faq-list details p{margin:0;padding:0 20px 18px;font-family:'Rajdhani',sans-serif;font-size:16px;line-height:1.65;color:rgba(232,244,255,0.75);}
   .faq-list a{color:var(--cyan);}
   @media(max-width:600px){.faq{padding:70px 18px;}.faq-list summary{font-size:15px;}}
+  .copy-opt{max-width:1080px;margin:34px auto 0;padding:26px 24px;border-radius:20px;background:linear-gradient(135deg,rgba(0,212,255,0.06),rgba(30,100,255,0.04));border:1px solid rgba(0,212,255,0.3);}
+  .copy-head{text-align:center;margin-bottom:20px;}
+  .copy-tag{display:inline-block;font-family:'Chakra Petch',sans-serif;font-size:11px;letter-spacing:2px;color:var(--cyan);border:1px solid rgba(0,212,255,0.4);padding:4px 12px;border-radius:99px;margin-bottom:10px;}
+  .copy-head h3{font-family:'Chakra Petch',sans-serif;font-size:clamp(20px,3vw,26px);color:var(--white);margin:0 0 8px;}
+  .copy-head p{font-family:'Rajdhani',sans-serif;font-size:16px;color:var(--dim);max-width:620px;margin:0 auto;line-height:1.55;}
+  .copy-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+  .copy-p{padding:18px 14px;border-radius:14px;background:var(--card2);border:1px solid var(--border);text-align:center;}
+  .copy-p.best{border-color:rgba(255,215,0,0.5);box-shadow:0 0 24px rgba(255,215,0,0.12);}
+  .copy-n{font-family:'Chakra Petch',sans-serif;font-size:11px;letter-spacing:1px;color:var(--dim);margin-bottom:8px;}
+  .copy-v{font-family:'Chakra Petch',sans-serif;font-size:34px;font-weight:700;color:var(--white);line-height:1;}
+  .copy-v span{font-size:18px;color:var(--cyan);margin-left:2px;}
+  .copy-p.best .copy-v span{color:#FFD700;}
+  .copy-d{font-family:'Rajdhani',sans-serif;font-size:13px;color:var(--dim);margin-top:6px;}
+  .copy-warn{font-family:'Rajdhani',sans-serif;font-size:12.5px;color:rgba(232,244,255,0.5);text-align:center;margin:16px auto 0;max-width:720px;line-height:1.5;}
+  @media(max-width:700px){.copy-grid{grid-template-columns:1fr 1fr;}.copy-opt{padding:22px 16px;}}
   .section-label{font-family:'Chakra Petch',sans-serif;font-size:12px;letter-spacing:2px;color:var(--cyan);text-align:center;margin-bottom:12px;text-shadow:0 0 10px rgba(0,212,255,0.4);}
   .section-title{font-family:'Chakra Petch',sans-serif;font-size:clamp(26px,4.5vw,42px);font-weight:700;letter-spacing:0.3px;text-align:center;color:var(--white);margin-bottom:16px;text-shadow:0 0 30px rgba(30,100,255,0.4);}
   .section-desc{font-size:17px;color:var(--dim);text-align:center;max-width:600px;margin:0 auto 60px;line-height:1.7;}
@@ -843,6 +858,18 @@
       <a href="https://buy.stripe.com/7sY3cw2C69Lg2Dd4FS6g80g" target="_blank" rel="noopener" class="tier-btn">PAYER — 750€ (ou en 3× avec Klarna)</a>
     </div>
 
+  </div>
+  <!-- OPTION COPY TRADING -->
+  <div class="copy-opt reveal">
+    <div class="copy-head"><span class="copy-tag">📡 OPTION</span><h3>Copy trading : le canal de signaux</h3>
+      <p>Reçois mes prises de position en direct et apprends à les exécuter sur ton compte, étape par étape. L'accès au canal est moins cher selon ton offre.</p></div>
+    <div class="copy-grid">
+      <div class="copy-p"><div class="copy-n">CANAL SEUL</div><div class="copy-v">70<span>€</span></div><div class="copy-d">Sans formation</div></div>
+      <div class="copy-p"><div class="copy-n">AVEC L'ESSENTIEL</div><div class="copy-v">50<span>€</span></div><div class="copy-d">En plus de l'offre à 180 €</div></div>
+      <div class="copy-p"><div class="copy-n">AVEC LE GROUPE</div><div class="copy-v">30<span>€</span></div><div class="copy-d">En plus de l'offre à 500 €</div></div>
+      <div class="copy-p best"><div class="copy-n">AVEC LE 1:1</div><div class="copy-v">10<span>€</span></div><div class="copy-d">En plus de l'offre à 750 €</div></div>
+    </div>
+    <p class="copy-warn">⚠️ Les signaux sont partagés à but pédagogique : ce n'est pas un conseil en investissement. Le trading comporte un risque de perte en capital, les résultats passés ne garantissent pas les résultats futurs.</p>
   </div>
   <p class="pricing-guarantee-note reveal">🛡️ <strong style="color:var(--green)">Garantie de l'offre Accompagnement 1:1 :</strong> si au bout de 2 mois tu n'es pas satisfait, et que malgré ton travail et le respect de nos conseils tu n'as obtenu aucun résultat, tu es remboursé. Voir conditions complètes dans les <a href="dha-cgv.html" style="color:var(--cyan)">CGV</a>.<br/><br/>💳 En cliquant, tu es redirigé vers un paiement sécurisé Stripe. Une fois le paiement confirmé, tu recevras tes accès et les prochaines étapes par email.</p>
   <p class="reveal" style="text-align:center;margin-top:22px;font-size:14px;color:var(--dim, rgba(232,244,255,0.55));">Pas encore sûr ? <a href="dha-inscription-demo.html" style="color:#FFD700;font-weight:700;text-decoration:none;">🎮 Teste la plateforme gratuitement avec la version démo →</a></p>

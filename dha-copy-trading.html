@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<script src="dha-api.js"></script>
+<script src="dha-demo.js"></script>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>DHA — Copy trading</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600;700&display=swap" rel="stylesheet"/>
+<style>
+:root{--bg:#050914;--card:#080e1f;--blue:#1E64FF;--cyan:#00D4FF;--gold:#FFD700;--green:#00FF88;--red:#FF4466;--white:#E8F4FF;--dim:rgba(232,244,255,0.45);--border:rgba(30,100,255,0.15);--sidebar-w:240px;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-height:100vh;display:flex;}
+.bg-grid{position:fixed;inset:0;z-index:0;background-image:linear-gradient(rgba(30,100,255,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(30,100,255,0.03) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;}
+.sidebar{position:fixed;left:0;top:0;bottom:0;width:var(--sidebar-w);background:rgba(8,14,31,0.97);border-right:1px solid var(--border);display:flex;flex-direction:column;z-index:100;padding:24px 0;}
+.sidebar-logo{padding:0 24px 24px;border-bottom:1px solid var(--border);margin-bottom:16px;}
+.sidebar-logo-text{font-family:'Orbitron',sans-serif;font-size:28px;font-weight:900;letter-spacing:4px;color:var(--white);text-shadow:0 0 20px rgba(30,100,255,0.6);}
+.sidebar-logo-sub{font-family:'Orbitron',sans-serif;font-size:6px;letter-spacing:3px;color:rgba(0,212,255,0.5);margin-top:2px;}
+.sidebar-section{padding:8px 24px 4px;font-family:'Orbitron',sans-serif;font-size:7px;letter-spacing:3px;color:rgba(255,255,255,0.2);margin-top:8px;}
+.nav-item{display:flex;align-items:center;gap:12px;padding:11px 24px;cursor:pointer;transition:all .2s;font-size:13px;color:var(--dim);text-decoration:none;}
+.nav-item:hover{background:rgba(30,100,255,0.08);color:var(--white);}
+.nav-item.active{background:rgba(30,100,255,0.12);color:var(--cyan);border-right:2px solid var(--cyan);}
+.nav-icon{font-size:16px;width:20px;text-align:center;flex-shrink:0;}
+.sidebar-bottom{margin-top:auto;padding:16px 24px;border-top:1px solid var(--border);}
+.sidebar-member{display:flex;align-items:center;gap:12px;}
+.sidebar-avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--cyan));display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;}
+.sidebar-member-name{font-family:'Orbitron',sans-serif;font-size:10px;font-weight:900;color:var(--white);}
+.sidebar-member-rang{font-size:10px;color:var(--dim);margin-top:2px;}
+.main{margin-left:var(--sidebar-w);flex:1;padding:32px;position:relative;z-index:1;}
+.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:32px;}
+.topbar-title{font-family:'Orbitron',sans-serif;font-size:20px;font-weight:900;color:var(--white);letter-spacing:2px;}
+.topbar-title span{color:var(--cyan);}
+.header-card{background:linear-gradient(135deg,#0a1428,#080e1f);border:1px solid rgba(30,100,255,0.25);border-radius:20px;padding:32px;margin-bottom:28px;position:relative;overflow:hidden;}
+.header-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--cyan),transparent);}
+.header-glow{position:absolute;top:-60px;right:-60px;width:300px;height:300px;background:radial-gradient(ellipse,rgba(30,100,255,0.15) 0%,transparent 70%);pointer-events:none;}
+.header-tag{font-family:'Orbitron',sans-serif;font-size:8px;letter-spacing:3px;color:var(--cyan);margin-bottom:10px;}
+.header-title{font-family:'Orbitron',sans-serif;font-size:26px;font-weight:900;color:var(--white);margin-bottom:8px;}
+.header-desc{font-size:14px;color:var(--dim);line-height:1.7;}
+.info-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-top:24px;}
+.info-item{padding:16px;border-radius:12px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);text-align:center;}
+.info-icon{font-size:24px;margin-bottom:8px;}
+.info-label{font-family:'Orbitron',sans-serif;font-size:8px;letter-spacing:2px;color:var(--dim);margin-bottom:4px;}
+.info-val{font-size:13px;color:var(--white);font-weight:600;}
+.calendly-wrap{background:var(--card);border:1px solid var(--border);border-radius:20px;overflow:hidden;min-height:700px;}
+.ct-warn{padding:14px 16px;border-radius:14px;border:1px solid rgba(255,140,0,0.4);background:rgba(255,140,0,0.07);font-size:13px;line-height:1.6;color:rgba(232,244,255,0.8);margin-bottom:22px;}
+.ct-steps{display:flex;flex-direction:column;gap:14px;}
+.ct-step{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:20px;display:grid;grid-template-columns:44px 1fr;gap:16px;}
+.ct-num{width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,var(--blue),var(--cyan));display:flex;align-items:center;justify-content:center;font-family:'Orbitron',sans-serif;font-weight:900;color:#020610;font-size:16px;}
+.ct-step.lock .ct-num{background:rgba(255,215,0,0.15);color:#FFD700;border:1px solid rgba(255,215,0,0.5);}
+.ct-t{font-family:'Orbitron',sans-serif;font-size:14px;font-weight:700;letter-spacing:1px;margin-bottom:8px;}
+.ct-p{font-size:14px;color:rgba(232,244,255,0.75);line-height:1.65;}
+.ct-p b{color:#E8F4FF;}
+.ct-list{margin:10px 0 0;padding-left:18px;font-size:14px;color:rgba(232,244,255,0.75);line-height:1.7;}
+.ct-btn{display:inline-flex;align-items:center;gap:8px;margin-top:12px;padding:12px 16px;border-radius:12px;background:linear-gradient(135deg,var(--blue),var(--cyan));color:#020610;font-family:'Orbitron',sans-serif;font-size:10px;font-weight:700;letter-spacing:1px;text-decoration:none;}
+.ct-btn.gold{background:linear-gradient(135deg,#FFD700,#FF9F00);color:#1a1200;}
+.ct-btn.wa{background:#25D366;color:#04210f;}
+.sig{margin-top:12px;border-radius:14px;border:1px solid rgba(0,212,255,0.3);background:#050914;padding:14px 16px;font-family:monospace;font-size:13px;line-height:1.8;max-width:420px;}
+.sig .buy{color:#00FF88;font-weight:700;}
+.sig small{color:rgba(232,244,255,0.45);}
+.ct-prix{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px;}
+.ct-prix div{padding:10px;border-radius:10px;border:1px solid rgba(255,255,255,0.08);text-align:center;font-size:12px;color:var(--dim);}
+.ct-prix div b{display:block;font-size:20px;color:#E8F4FF;font-family:'Orbitron',sans-serif;}
+.ct-prix div.moi{border-color:rgba(255,215,0,0.6);background:rgba(255,215,0,0.06);}
+@media(max-width:600px){.ct-step{grid-template-columns:1fr;gap:10px}.ct-prix{grid-template-columns:1fr 1fr}}
+.rs-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:16px;}
+.rs{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:22px;display:flex;flex-direction:column;gap:8px;}
+.rs-ico{font-size:30px;}
+.rs-t{font-family:'Orbitron',sans-serif;font-size:13px;font-weight:700;letter-spacing:1px;}
+.rs-d{font-size:13px;color:var(--dim);line-height:1.6;flex:1;}
+.rs-m{font-size:11px;color:var(--cyan);font-family:'Orbitron',sans-serif;letter-spacing:1px;}
+.rs-b{display:inline-flex;justify-content:center;align-items:center;gap:8px;padding:12px 14px;border-radius:12px;background:linear-gradient(135deg,var(--blue),var(--cyan));color:#020610;font-family:'Orbitron',sans-serif;font-size:10px;font-weight:700;letter-spacing:1px;text-decoration:none;margin-top:6px;}
+.rs-b.gold{background:linear-gradient(135deg,#FFD700,#FF9F00);color:#1a1200;}
+.lv-card{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:24px;margin-bottom:22px;}
+.lv-h{font-family:'Orbitron',sans-serif;font-size:11px;letter-spacing:2px;color:var(--cyan);margin-bottom:14px;}
+.lv-slots{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-bottom:14px;}
+.lv-slot{padding:16px;border-radius:14px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);}
+.lv-slot.today{border-color:rgba(0,255,136,0.5);background:rgba(0,255,136,0.06);}
+.lv-day{font-family:'Orbitron',sans-serif;font-size:14px;font-weight:700;}
+.lv-time{font-size:22px;font-weight:700;color:var(--cyan);margin:4px 0;}
+.lv-what{font-size:13px;color:var(--dim);}
+.lv-tag{display:inline-block;font-size:10px;font-family:'Orbitron',sans-serif;letter-spacing:1px;color:var(--green);margin-top:6px;}
+.lv-note{font-size:13px;color:var(--dim);margin-bottom:16px;}
+.lv-btn{display:inline-flex;align-items:center;gap:8px;padding:13px 20px;border-radius:12px;background:linear-gradient(135deg,#5865F2,#7983f5);color:#fff;font-family:'Orbitron',sans-serif;font-size:11px;font-weight:700;letter-spacing:1px;text-decoration:none;}
+.lv-btn.alt{background:linear-gradient(135deg,var(--blue),var(--cyan));color:#020610;}
+.rp-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;}
+.rp{background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.07);border-radius:16px;overflow:hidden;display:flex;flex-direction:column;}
+.rp-media{position:relative;aspect-ratio:16/9;background:#000;cursor:pointer;border:none;padding:0;width:100%;display:block;}
+.rp-media img{width:100%;height:100%;object-fit:cover;display:block;opacity:.85;}
+.rp-media .play{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:44px;text-shadow:0 4px 20px rgba(0,0,0,.6);}
+.rp-media iframe{width:100%;height:100%;border:0;display:block;}
+.rp-body{padding:14px 16px;}
+.rp-date{font-size:11px;color:var(--dim);font-family:'Orbitron',sans-serif;letter-spacing:1px;}
+.rp-title{font-weight:700;font-size:15px;margin:4px 0;}
+.rp-desc{font-size:13px;color:var(--dim);line-height:1.5;}
+.rp-link{display:inline-block;margin-top:8px;color:var(--cyan);font-size:13px;}
+.lv-empty{color:var(--dim);font-size:14px;padding:10px 0;}
+.lv-lock{text-align:center;padding:34px 22px;}
+@media(max-width:768px){.sidebar{display:none;}.main{margin-left:0;padding:16px;}.info-grid{grid-template-columns:1fr;}}
+
+/* ── MOBILE MENU ── */
+.hamburger{display:none;position:fixed;top:14px;left:14px;z-index:500;width:42px;height:42px;border-radius:10px;background:rgba(8,14,31,0.95);border:1px solid rgba(30,100,255,0.3);cursor:pointer;align-items:center;justify-content:center;flex-direction:column;gap:5px;}
+.hamburger span{display:block;width:20px;height:2px;background:var(--cyan);border-radius:2px;transition:all .3s;}
+.sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:150;backdrop-filter:blur(4px);}
+.sidebar-overlay.show{display:block;}
+@media(max-width:768px){
+  .hamburger{display:flex;}
+  .sidebar{transform:translateX(-100%);transition:transform .3s ease;z-index:200;}
+  .sidebar.open{transform:translateX(0);}
+  .main{margin-left:0 !important;padding:16px;padding-top:70px;}
+}
+</style>
+</head>
+<body>
+<div class="bg-grid"></div>
+<button class="hamburger" onclick="toggleSidebar()" id="hamburger-btn">
+  <span></span><span></span><span></span>
+</button>
+<div class="sidebar-overlay" id="sidebar-overlay" onclick="closeSidebar()"></div>
+
+<aside class="sidebar">
+  <div class="sidebar-logo"><div class="sidebar-logo-text">DHA</div><div class="sidebar-logo-sub">DIGITAL HUSTLER ACADEMY</div></div>
+  <div class="sidebar-section">MAIN</div>
+  <a class="nav-item" href="dha-dashboard.html"><span class="nav-icon">🎮</span> Dashboard</a>
+  <div class="sidebar-section">LEARN</div>
+  <a class="nav-item" href="dha-formation.html"><span class="nav-icon">📈</span> Formation Trading</a>
+  <a class="nav-item" href="dha-mindset.html"><span class="nav-icon">🧠</span> Mindset</a>
+  <a class="nav-item" href="dha-ressources.html"><span class="nav-icon">📁</span> Ressources</a>
+  <div class="sidebar-section">NETWORK</div>
+  <a class="nav-item" href="dha-squad.html"><span class="nav-icon">👥</span> Mon Squad</a>
+  <a class="nav-item" href="dha-lives.html"><span class="nav-icon">📺</span> Lives &amp; Replays</a>
+  <a class="nav-item active" href="dha-copy-trading.html"><span class="nav-icon">📡</span> Copy trading</a>
+  <a class="nav-item" href="dha-leaderboard.html"><span class="nav-icon">🏆</span> Leaderboard</a>
+  <div class="sidebar-section">EARN</div>
+  <a class="nav-item" href="dha-affiliation.html"><span class="nav-icon">💰</span> Recommandation</a>
+  <div class="sidebar-section">TOOLS</div>
+  <a class="nav-item" href="dha-mentor.html"><span class="nav-icon">📞</span> Appel Mentor</a>
+  <div class="sidebar-bottom">
+    <div class="sidebar-member">
+      <div class="sidebar-avatar" id="sb-avatar">📈</div>
+      <div><div class="sidebar-member-name" id="sb-pseudo">HUSTLER</div><div class="sidebar-member-rang" id="sb-rang">NEW HUSTLER</div></div>
+    </div>
+  </div>
+</aside>
+<main class="main">
+  <div class="topbar">
+    <div><div class="topbar-title">COPY <span>TRADING</span></div><div style="font-size:12px;color:var(--dim);margin-top:2px;">Le canal de signaux, étape par étape</div></div>
+  </div>
+  <div class="header-card">
+    <div class="header-glow"></div>
+    <div class="header-tag">📡 CANAL DE SIGNAUX</div>
+    <div class="header-title">Suis mes trades en direct</div>
+    <div class="header-desc">Je partage mes prises de position dans le canal. Toi, tu apprends à les lire et à les exécuter sur ton compte, avec ta propre gestion du risque. Suis les étapes dans l'ordre.</div>
+  </div>
+  <div class="ct-warn">⚠️ <b>À lire avant de commencer.</b> Les signaux sont partagés à but pédagogique, ce n'est pas un conseil en investissement personnalisé. Le trading comporte un risque élevé de perte en capital : n'investis que ce que tu peux te permettre de perdre. Les résultats passés ne garantissent pas les résultats futurs.</div>
+  <div class="ct-steps">
+    <div class="ct-step"><div class="ct-num">1</div><div><div class="ct-t">OUVRE TON COMPTE VANTAGE</div>
+      <div class="ct-p">Inscris-toi chez Vantage avec mon lien (c'est un lien partenaire). Remplis ton profil et valide ton identité (pièce d'identité + justificatif de domicile) : la validation prend en général quelques heures.</div>
+      <span id="ct-vantage"></span></div></div>
+    <div class="ct-step"><div class="ct-num">2</div><div><div class="ct-t">FAIS TON DÉPÔT</div>
+      <div class="ct-p">Depuis ton espace Vantage, clique sur « Dépôt » et choisis ton moyen de paiement (carte, virement…). <span id="ct-depot"></span></div>
+      <ul class="ct-list"><li>Dépose uniquement de l'argent dont tu n'as pas besoin.</li><li>Garde une capture de la confirmation du dépôt : elle te sert à l'étape 3.</li></ul></div></div>
+    <div class="ct-step"><div class="ct-num">3</div><div><div class="ct-t">ENVOIE TA PREUVE</div>
+      <div class="ct-p">Envoie-moi la capture de ton dépôt (et ton identifiant de compte Vantage). Je vérifie et je t'active l'accès au canal.</div>
+      <a class="ct-btn wa" href="https://wa.me/qr/OCPS7DRIVP76L1" target="_blank" rel="noopener">💬 ENVOYER MA PREUVE À QUINCY</a></div></div>
+    <div class="ct-step" id="ct-canal"><div class="ct-num">4</div><div><div class="ct-t">REJOINS LE CANAL</div><div class="ct-p">Chargement…</div></div></div>
+    <div class="ct-step"><div class="ct-num">5</div><div><div class="ct-t">PRENDS UN TRADE DU SIGNAL</div>
+      <div class="ct-p">Chaque signal ressemble à ça :</div>
+      <div class="sig">📡 <b>EUR/USD</b> — <span class="buy">ACHAT</span><br>Entrée : 1.0850<br>Stop Loss : 1.0820<br>Take Profit : 1.0910<br><small>Exemple, pas un vrai signal</small></div>
+      <ol class="ct-list"><li>Ouvre MetaTrader 5 (module 8) et cherche la paire.</li><li><b>Calcule ta taille de lot</b> pour risquer 1 % de ton capital maximum (module 9).</li><li>Place l'ordre avec <b>exactement</b> l'entrée, le Stop Loss et le Take Profit du signal.</li><li>Si le prix est déjà loin de l'entrée, <b>ne cours pas après</b> : tu attends le suivant.</li><li>Note le trade dans ton journal (module 12).</li></ol>
+</div></div>
+    <div class="ct-step"><div class="ct-num">6</div><div><div class="ct-t">LES RÈGLES DU CANAL</div>
+      <ul class="ct-list" style="margin-top:0"><li><b>Jamais plus de 1 %</b> de risque par trade, même si tu es sûr de toi.</li><li><b>Toujours un Stop Loss</b>, placé dès l'ouverture.</li><li>Tu restes <b>seul responsable</b> de tes trades : le signal t'aide, il ne décide pas pour toi.</li><li>Les pertes font partie du jeu : pas de revenge trading, pas de lot doublé pour « se refaire ».</li><li>Une question ? Pose-la pendant le live du mardi.</li></ul></div></div>
+  </div>
+</main>
+<script>
+function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+var WA='https://wa.me/qr/OCPS7DRIVP76L1';
+function okUrl(u){return /^https?:\/\//.test(String(u||''));}
+function rendre(c,member){
+  c=c||{};
+  document.getElementById('ct-vantage').innerHTML=okUrl(c.lien_vantage)?'<a class="ct-btn" href="'+esc(c.lien_vantage)+'" target="_blank" rel="noopener">🔗 OUVRIR MON COMPTE VANTAGE</a>':'<div class="ct-p" style="margin-top:10px;color:var(--dim)">🔗 Le lien d\'inscription arrive très bientôt ici.</div>';
+  document.getElementById('ct-depot').innerHTML=c.depot_min?'Dépôt minimum conseillé : <b>'+esc(c.depot_min)+'</b>.':'Je t\'indique le dépôt minimum conseillé quand tu m\'écris.';
+  var pack=String((member&&member.pack)||''), per=c.periode?' <small style="font-size:11px;color:var(--dim)">'+esc(c.periode)+'</small>':'';
+  var mien=pack==='180'?'180':pack==='500'?'500':pack==='750'?'750':(pack?'750':'seul');
+  var P=[['seul','Canal seul','70 €'],['180','Essentiel','50 €'],['500','Groupe','30 €'],['750','1:1','10 €']];
+  var box=document.getElementById('ct-canal');
+  if(c.acces){
+    box.classList.remove('lock');
+    box.innerHTML='<div class="ct-num">✓</div><div><div class="ct-t">REJOINS LE CANAL</div><div class="ct-p">✅ <b>Ton accès est activé.</b> Rejoins le canal'+(c.canal_nom?' '+esc(c.canal_nom):'')+' : les signaux arrivent là-bas.</div>'+(okUrl(c.canal_lien)?'<a class="ct-btn" href="'+esc(c.canal_lien)+'" target="_blank" rel="noopener">📡 REJOINDRE LE CANAL</a>':'<a class="ct-btn wa" href="'+WA+'" target="_blank" rel="noopener">💬 DEMANDER LE LIEN À QUINCY</a>')+'</div>';
+    return;
+  }
+  box.classList.add('lock');
+  var lien=c['pay_'+mien];
+  box.innerHTML='<div class="ct-num">🔒</div><div><div class="ct-t">REJOINS LE CANAL</div><div class="ct-p">L\'accès au canal se débloque une fois ton paiement et ta preuve validés. Le prix dépend de ton offre :</div>'
+    +'<div class="ct-prix">'+P.map(function(x){return '<div'+(x[0]===mien?' class="moi"':'')+'>'+x[1]+'<b>'+x[2]+'</b>'+(x[0]===mien?per:'')+'</div>';}).join('')+'</div>'
+    +'<a class="ct-btn gold" href="'+(okUrl(lien)?esc(lien):WA)+'" target="_blank" rel="noopener">🔓 DÉBLOQUER MON ACCÈS</a>'
+    +'<div class="ct-p" style="margin-top:10px;font-size:13px;color:var(--dim)">Une fois activé, le bouton « Rejoindre le canal » apparaît ici.</div></div>';
+}
+async function init(){
+  var stored=localStorage.getItem('dha_member');
+  if(!stored){window.location.href='dha-connexion.html';return;}
+  var member=JSON.parse(stored);
+  document.getElementById('sb-pseudo').textContent=('@'+(member.pseudo||'HUSTLER')).toUpperCase();
+  rendre({},member);
+  try{ var c=await DHA.rpc('dha_copy',{p_token:await DHA.token()}); var me=null; try{me=await DHA.me();}catch(e){} rendre(c,me||member); }catch(e){}
+}
+init();
+function toggleSidebar(){document.querySelector('.sidebar').classList.toggle('open');document.getElementById('sidebar-overlay').classList.toggle('show');}
+function closeSidebar(){document.querySelector('.sidebar').classList.remove('open');document.getElementById('sidebar-overlay').classList.remove('show');}
+document.querySelectorAll('.nav-item').forEach(function(a){a.addEventListener('click',closeSidebar);});
+</script>
+<script src="dha-mobile-menu.js"></script>
+<script src="dha-signaler.js"></script>
+<script src="dha-forfait.js"></script>
+</body>
+</html>

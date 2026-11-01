@@ -18,7 +18,7 @@
   var PAGES_LIBRES = ['dha-dashboard.html', 'dha-formation.html', 'dha-module1.html'];
 
   // Pages de la plateforme concernées par le verrou
-  var PAGES_PLATEFORME = /^dha-(module\d+|mindset|squad|leaderboard|affiliation|mentor|niveaux|formation|dashboard|lives|ressources|certificat)\.html$/;
+  var PAGES_PLATEFORME = /^dha-(module\d+|mindset|squad|leaderboard|affiliation|mentor|niveaux|formation|dashboard|lives|ressources|certificat|copy-trading)\.html$/;
 
   // Ce que chaque page verrouillée débloque (texte du pop-up)
   var INFOS = {
@@ -30,6 +30,7 @@
     'dha-lives.html':       { icon: '📺', titre: 'Lives & Replays', txt: 'Les appels de groupe, les lives trading et tous les replays.' },
     'dha-ressources.html':  { icon: '📁', titre: 'Ressources', txt: 'Ton plan de trading, ton journal de trading et la checklist pré-trade à télécharger.' },
     'dha-certificat.html':  { icon: '🎓', titre: 'Certificat DHA', txt: 'Ton certificat de fin de formation, une fois tous les modules terminés.' },
+    'dha-copy-trading.html': { icon: '📡', titre: 'Copy trading', txt: 'Le canal de signaux et le guide pour suivre les trades sur ton compte.' },
     'dha-niveaux.html':     { icon: '⭐', titre: 'Niveaux & rangs', txt: 'Le système de progression complet de la plateforme.' },
     'avantages':            { icon: '🎁', titre: 'Avantages membres', txt: 'Les avantages réservés aux membres, comme les vols business et first à prix réduit.' }
   };
