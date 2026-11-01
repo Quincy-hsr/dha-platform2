@@ -67,6 +67,25 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
 .rp-link{display:inline-block;margin-top:8px;color:var(--cyan);font-size:13px;}
 .lv-empty{color:var(--dim);font-size:14px;padding:10px 0;}
 .lv-lock{text-align:center;padding:34px 22px;}
+.pg-week{margin-top:18px;}
+.pg-week:first-of-type{margin-top:4px;}
+.pg-wt{font-family:'Orbitron',sans-serif;font-size:11px;letter-spacing:1px;color:var(--gold);margin-bottom:10px;line-height:1.5;}
+.pg-live{display:flex;align-items:center;gap:14px;padding:12px 14px;border-radius:12px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);margin-bottom:8px;}
+.pg-live.today{border-color:rgba(0,255,136,0.5);background:rgba(0,255,136,0.06);}
+.pg-live.past{opacity:.6;}
+.pg-date{min-width:62px;text-align:center;font-family:'Orbitron',sans-serif;}
+.pg-date b{display:block;font-size:20px;color:var(--white);}
+.pg-date span{font-size:9px;letter-spacing:1px;color:var(--dim);}
+.pg-info{flex:1;min-width:0;}
+.pg-type{display:inline-block;font-size:9px;font-family:'Orbitron',sans-serif;letter-spacing:1px;padding:3px 8px;border-radius:99px;margin-bottom:4px;}
+.pg-type.t-trading{color:var(--cyan);border:1px solid rgba(0,212,255,0.4);}
+.pg-type.t-mindset{color:#C9A0FF;border:1px solid rgba(157,78,221,0.5);}
+.pg-type.t-autre{color:var(--gold);border:1px solid rgba(255,215,0,0.5);}
+.pg-theme{font-size:15px;font-weight:600;}
+.pg-st{font-size:11px;font-family:'Orbitron',sans-serif;letter-spacing:1px;white-space:nowrap;}
+.pg-st a{color:var(--cyan);text-decoration:none;}
+.pg-arch summary{cursor:pointer;color:var(--dim);font-size:13px;margin-top:6px;}
+
 @media(max-width:768px){.sidebar{display:none;}.main{margin-left:0;padding:16px;}.info-grid{grid-template-columns:1fr;}}
 
 /* ── MOBILE MENU ── */
@@ -138,14 +157,35 @@ function render(d){
     z.innerHTML='<div class="lv-card lv-lock"><div style="font-size:40px;margin-bottom:10px">🔒</div><div style="font-family:Orbitron,sans-serif;font-size:15px;font-weight:700;letter-spacing:1px;margin-bottom:10px">INCLUS DANS L\'ACCOMPAGNEMENT</div><p style="color:var(--dim);max-width:520px;margin:0 auto 20px;line-height:1.6">Les appels de groupe, les lives trading'+(d.nb_replays?' et les <b style="color:#E8F4FF">'+d.nb_replays+' replay'+(d.nb_replays>1?'s':'')+'</b>':' et les replays')+' sont réservés aux offres <b style="color:#E8F4FF">Accompagnement en groupe</b> et <b style="color:#E8F4FF">1:1</b>. Tu veux passer à l\'accompagnement ? Écris-moi.</p><a class="lv-btn alt" href="https://wa.me/qr/OCPS7DRIVP76L1" target="_blank" rel="noopener">💬 PASSER À L\'ACCOMPAGNEMENT</a></div>';
     return;
   }
-  var h='<div class="lv-card"><div class="lv-h">📅 PLANNING DE LA SEMAINE</div><div class="lv-slots">'+(cr.length?cr.map(function(c){var t=c.jour===auj;return '<div class="lv-slot'+(t?' today':'')+'"><div class="lv-day">'+esc(c.jour)+'</div><div class="lv-time">'+(c.heure?esc(c.heure):'—')+'</div><div class="lv-what">'+esc(c.titre||'Appel de groupe')+'</div>'+(t?'<div class="lv-tag">● C\'EST AUJOURD\'HUI</div>':'')+'</div>';}).join(''):'<div class="lv-empty">Planning bientôt affiché.</div>')+'</div>'
+  var h='<div class="lv-card"><div class="lv-h">📅 CHAQUE SEMAINE</div><div class="lv-slots">'+(cr.length?cr.map(function(c){var t=c.jour===auj;return '<div class="lv-slot'+(t?' today':'')+'"><div class="lv-day">'+esc(c.jour)+'</div><div class="lv-time">'+(c.heure?esc(c.heure):'—')+'</div><div class="lv-what">'+esc(c.titre||'Appel de groupe')+'</div>'+(t?'<div class="lv-tag">● C\'EST AUJOURD\'HUI</div>':'')+'</div>';}).join(''):'<div class="lv-empty">Planning bientôt affiché.</div>')+'</div>'
     +(pl.note?'<div class="lv-note">'+esc(pl.note)+'</div>':'')
     +(pl.discord?'<a class="lv-btn" href="'+esc(pl.discord)+'" target="_blank" rel="noopener">🎮 REJOINDRE LE DISCORD</a>':'')+'</div>';
-  var rp=d.replays||[];
+  var rp=d.replays||[], prog=d.programme||[];
+  var now=new Date(), ymd=function(x){return x.getFullYear()+'-'+('0'+(x.getMonth()+1)).slice(-2)+'-'+('0'+x.getDate()).slice(-2);}, auj=ymd(now), moisCour=auj.slice(0,7);
+  var replayDu=function(dt){return rp.filter(function(r){return r.date_live===dt;})[0];};
+  var typeCls=function(t){t=String(t||'').toLowerCase();return t.indexOf('trading')>-1?'t-trading':t.indexOf('mindset')>-1?'t-mindset':'t-autre';};
+  var nomMois=function(m){return new Date(m+'-15T12:00:00').toLocaleDateString('fr-FR',{month:'long',year:'numeric'}).toUpperCase();};
+  var ligne=function(l){
+    var dt=new Date(l.date_live+'T12:00:00'), passe=l.date_live<auj, tod=l.date_live===auj, r=replayDu(l.date_live);
+    var st=tod?'<span class="pg-st" style="color:var(--green)">● CE SOIR '+esc(l.heure||'')+'</span>':passe?(r?'<span class="pg-st"><a href="#rp-'+r.id+'">▶ REPLAY</a></span>':'<span class="pg-st" style="color:var(--dim)">PASSÉ</span>'):'<span class="pg-st" style="color:var(--dim)">'+esc(l.heure||'')+'</span>';
+    return '<div class="pg-live'+(tod?' today':passe&&!r?' past':'')+'"><div class="pg-date"><span>'+dt.toLocaleDateString('fr-FR',{weekday:'short'}).replace('.','').toUpperCase()+'</span><b>'+dt.getDate()+'</b><span>'+dt.toLocaleDateString('fr-FR',{month:'short'}).replace('.','').toUpperCase()+'</span></div><div class="pg-info"><span class="pg-type '+typeCls(l.type)+'">'+esc(String(l.type||'').toUpperCase())+'</span><div class="pg-theme">'+esc(l.theme)+'</div></div>'+st+'</div>';
+  };
+  var duMois=prog.filter(function(l){return l.date_live.slice(0,7)===moisCour;});
+  if(!duMois.length){ var fut=prog.filter(function(l){return l.date_live>=auj;}); if(fut.length){ var m2=fut[0].date_live.slice(0,7); duMois=prog.filter(function(l){return l.date_live.slice(0,7)===m2;}); } }
+  if(duMois.length){
+    var mois=duMois[0].date_live.slice(0,7), semaines=[];
+    duMois.forEach(function(l){var k=l.semaine||'';var g=semaines.filter(function(x){return x.k===k;})[0];if(!g){g={k:k,l:[]};semaines.push(g);}g.l.push(l);});
+    h+='<div class="lv-card"><div class="lv-h">🗓️ PROGRAMME DES LIVES — '+nomMois(mois)+'</div>'+semaines.map(function(g){return '<div class="pg-week">'+(g.k?'<div class="pg-wt">'+esc(g.k)+'</div>':'')+g.l.map(ligne).join('')+'</div>';}).join('')+'</div>';
+    var arch=prog.filter(function(l){return l.date_live.slice(0,7)<mois;});
+    if(arch.length){
+      var ms=[];arch.forEach(function(l){var k=l.date_live.slice(0,7);if(ms.indexOf(k)<0)ms.push(k);});ms.reverse();
+      h+='<div class="lv-card"><div class="lv-h">🗂️ ARCHIVES DES LIVES</div>'+ms.map(function(k){return '<details class="pg-arch"><summary>'+nomMois(k)+' · '+(function(n){return n+(n>1?' lives':' live');})(arch.filter(function(l){return l.date_live.slice(0,7)===k;}).length)+'</summary><div style="margin-top:10px">'+arch.filter(function(l){return l.date_live.slice(0,7)===k;}).map(ligne).join('')+'</div></details>';}).join('')+'</div>';
+    }
+  }
   h+='<div class="lv-card"><div class="lv-h">🎬 REPLAYS'+(rp.length?' · '+rp.length:'')+'</div>'+(rp.length?'<div class="rp-list">'+rp.map(function(r){
     var id=ytId(r.url), dt=r.date_live?new Date(r.date_live+'T12:00:00').toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'}):'';
     var media=id?'<button type="button" class="rp-media" data-yt="'+id+'" aria-label="Lire le replay : '+esc(r.titre)+'"><img src="https://i.ytimg.com/vi/'+id+'/hqdefault.jpg" alt="" loading="lazy"><span class="play">▶️</span></button>':'';
-    return '<article class="rp">'+media+'<div class="rp-body"><div class="rp-date">'+esc(dt.toUpperCase())+'</div><div class="rp-title">'+esc(r.titre)+'</div>'+(r.description?'<div class="rp-desc">'+esc(r.description)+'</div>':'')+(id?'':'<a class="rp-link" href="'+esc(r.url)+'" target="_blank" rel="noopener">▶ Voir le replay</a>')+'</div></article>';
+    return '<article class="rp" id="rp-'+r.id+'">'+media+'<div class="rp-body"><div class="rp-date">'+esc(dt.toUpperCase())+'</div><div class="rp-title">'+esc(r.titre)+'</div>'+(r.description?'<div class="rp-desc">'+esc(r.description)+'</div>':'')+(id?'':'<a class="rp-link" href="'+esc(r.url)+'" target="_blank" rel="noopener">▶ Voir le replay</a>')+'</div></article>';
   }).join('')+'</div>':'<div class="lv-empty">Aucun replay pour l\'instant. Ils apparaîtront ici après chaque appel.</div>')+'</div>';
   z.innerHTML=h;
 }
