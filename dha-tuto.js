@@ -61,6 +61,13 @@
     '.tt-back{background:none;border:none;color:rgba(232,244,255,0.5);cursor:pointer;font-size:13px;padding:8px 4px;}' +
     '.tt-quit{display:block;margin:12px auto 0;background:none;border:none;color:rgba(232,244,255,0.35);font-size:12px;cursor:pointer;text-decoration:underline;}' +
     '.tt-ok:focus-visible,.tt-go:focus-visible,.tt-back:focus-visible,.tt-quit:focus-visible,.tt-skip:focus-visible{outline:2px solid #FFD700;outline-offset:2px;}' +
+    '.tt-ban{position:relative;display:flex;align-items:center;margin:0 0 16px;border-radius:18px;border:1px solid rgba(0,212,255,0.45);background:linear-gradient(135deg,rgba(30,100,255,0.22),rgba(0,212,255,0.10));box-shadow:0 0 24px rgba(0,212,255,0.18);}' +
+    '.tt-ban a{flex:1;display:flex;align-items:center;gap:12px;padding:14px 44px 14px 14px;text-decoration:none;color:#F2F6FF;}' +
+    '.tt-ban-ic{font-size:26px;}' +
+    '.tt-ban b{display:block;font-family:Sora,sans-serif;font-size:15px;}' +
+    '.tt-ban small{display:block;font-size:13px;color:#A9B8D6;margin-top:2px;}' +
+    '.tt-ban-go{margin-left:auto;font-family:Sora,sans-serif;font-size:12px;font-weight:800;letter-spacing:1px;color:#00D4FF;white-space:nowrap;}' +
+    '.tt-ban button{position:absolute;top:6px;right:6px;width:30px;height:30px;border:none;border-radius:50%;background:transparent;color:#A9B8D6;font-size:14px;cursor:pointer;}' +
     '.tt-again{font-family:Orbitron,"Chakra Petch",sans-serif;font-size:8px;letter-spacing:2px;color:#00D4FF;text-decoration:none;opacity:.8;}' +
     '@media (prefers-reduced-motion:reduce){.tt-cine *,.tt-cine::before,.tt-cine::after,.tt-hole,.tt-card{animation:none!important;transition:none!important;}}';
   var st = document.createElement('style'); st.textContent = css; document.head.appendChild(st);
@@ -208,6 +215,23 @@
       var a = document.createElement('a'); a.href = '#'; a.className = 'tt-again'; a.textContent = '🎮 REVOIR LE TUTO';
       a.onclick = function (e) { e.preventDefault(); lancer(); };
       zone.appendChild(a); zone.style.flexWrap = 'wrap'; zone.style.gap = '8px';
+    }
+    // Mobile : proposer d'installer l'appli (pas si déjà ouverte comme appli)
+    var mobile = /iphone|ipad|ipod|android/i.test(navigator.userAgent || '');
+    var appli = window.navigator.standalone === true || (window.matchMedia && matchMedia('(display-mode: standalone)').matches);
+    if (mobile && !appli) {
+      if (zone && !document.querySelector('.tt-app')) {
+        var l = document.createElement('a'); l.href = 'dha-appli.html'; l.className = 'tt-again tt-app'; l.textContent = '📲 INSTALLER L\'APPLI';
+        zone.appendChild(l);
+      }
+      var cache = false; try { cache = localStorage.getItem('dha_appli_ban') === '1'; } catch (e) {}
+      var tb = document.querySelector('.main .topbar');
+      if (!cache && tb && !document.querySelector('.tt-ban')) {
+        var bn = document.createElement('div'); bn.className = 'tt-ban';
+        bn.innerHTML = '<a href="dha-appli.html"><span class="tt-ban-ic">📲</span><span><b>Installe l\'appli DHA</b><small>L\'icône sur ton écran d\'accueil, en 30 secondes</small></span><span class="tt-ban-go">VOIR ›</span></a><button type="button" aria-label="Masquer">✕</button>';
+        bn.querySelector('button').onclick = function () { bn.remove(); try { localStorage.setItem('dha_appli_ban', '1'); } catch (e) {} };
+        tb.parentNode.insertBefore(bn, tb.nextSibling);
+      }
     }
     if (!membre().pseudo || dejaVu()) return;
     // attendre que le dashboard soit chargé (pseudo, quêtes, courrier)

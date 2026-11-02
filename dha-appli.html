@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<script src="dha-theme.js"></script>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+<title>DHA — Installer l'appli</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+:root{--bg:#050914;--card:rgba(16,28,62,0.72);--line:rgba(255,255,255,0.12);--white:#F2F6FF;--dim:#A9B8D6;--cyan:#00D4FF;--blue:#1E64FF;--gold:#FFD700;--green:#00FF88;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--white);font-family:Manrope,system-ui,sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden;}
+.wrap{max-width:560px;margin:0 auto;padding:0 16px calc(40px + env(safe-area-inset-bottom));position:relative;z-index:1;}
+.top{display:flex;align-items:center;gap:12px;padding:18px 0 6px;}
+.back{display:inline-flex;align-items:center;gap:8px;padding:10px 14px;border-radius:999px;border:1px solid var(--line);background:rgba(16,28,62,0.6);color:var(--white);text-decoration:none;font-family:Sora,sans-serif;font-size:13px;font-weight:600;}
+.ahero{text-align:center;padding:22px 0 18px;}
+.ahero img{width:84px;height:84px;border-radius:20px;box-shadow:0 0 34px rgba(0,212,255,0.45);border:1px solid rgba(0,212,255,0.4);}
+.kick{font-family:Sora,sans-serif;font-size:12px;font-weight:700;letter-spacing:3px;color:var(--cyan);margin:18px 0 8px;}
+h1{font-family:Sora,sans-serif;font-size:clamp(26px,7vw,34px);line-height:1.15;font-weight:800;margin-bottom:10px;}
+.lead{color:var(--dim);font-size:16px;line-height:1.55;}
+.pros{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:16px;}
+.pros span{padding:7px 12px;border-radius:999px;border:1px solid rgba(0,212,255,0.35);background:rgba(30,100,255,0.12);font-size:13px;font-weight:600;}
+.tabs{display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:5px;border-radius:999px;background:rgba(16,28,62,0.7);border:1px solid var(--line);margin:22px 0 18px;}
+.tab{padding:12px;border:none;border-radius:999px;background:transparent;color:var(--dim);font-family:Sora,sans-serif;font-size:14px;font-weight:700;cursor:pointer;}
+.tab.on{background:linear-gradient(135deg,var(--blue),var(--cyan));color:#020610;box-shadow:0 0 20px rgba(0,212,255,0.4);}
+.tab:focus-visible{outline:3px solid var(--gold);outline-offset:2px;}
+.pane{display:none}.pane.on{display:block}
+.step{border-radius:20px;border:1px solid var(--line);background:var(--card);padding:16px;margin-bottom:14px;}
+.sh{display:flex;align-items:flex-start;gap:12px;margin-bottom:12px;}
+.n{flex-shrink:0;width:34px;height:34px;border-radius:11px;background:linear-gradient(135deg,var(--blue),var(--cyan));color:#020610;font-family:Sora,sans-serif;font-weight:800;display:flex;align-items:center;justify-content:center;}
+.sh b{display:block;font-family:Sora,sans-serif;font-size:16px;margin-bottom:3px;}
+.sh span{display:block;color:var(--dim);font-size:15px;line-height:1.45;}
+.sh em{font-style:normal;color:var(--cyan);font-weight:700;}
+.shot{display:block;width:100%;border-radius:14px;border:1px solid var(--line);}
+.note{border-radius:16px;border:1px dashed rgba(255,215,0,0.5);background:rgba(255,215,0,0.06);padding:14px 16px;font-size:14px;line-height:1.5;color:var(--dim);margin-bottom:14px;}
+.note b{color:var(--gold);}
+.mock{display:flex;align-items:center;justify-content:center;gap:10px;padding:18px;border-radius:14px;background:#0b1430;border:1px solid var(--line);font-family:Sora,sans-serif;font-size:14px;}
+.mock .k{display:inline-flex;align-items:center;justify-content:center;min-width:40px;height:40px;padding:0 12px;border-radius:12px;border:2px solid var(--cyan);box-shadow:0 0 18px rgba(0,212,255,0.5);color:var(--cyan);font-weight:800;}
+.mock .ar{color:var(--cyan);font-size:22px;}
+.done{text-align:center;border-radius:20px;border:1px solid rgba(0,255,136,0.4);background:rgba(0,255,136,0.07);padding:22px 18px;margin-top:6px;}
+.done b{display:block;font-family:Sora,sans-serif;font-size:18px;margin-bottom:6px;}
+.done span{color:var(--dim);font-size:15px;line-height:1.5;}
+.already{display:none;text-align:center;border-radius:20px;border:1px solid rgba(0,255,136,0.4);background:rgba(0,255,136,0.07);padding:20px;margin-top:18px;}
+.standalone .already{display:block}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top"><a class="back" href="dha-dashboard.html">← Retour</a></div>
+
+  <div class="ahero">
+    <img src="apple-touch-icon.png" alt="Icône DHA"/>
+    <div class="kick">APPLI DHA</div>
+    <h1>Mets la DHA sur ton écran d'accueil</h1>
+    <p class="lead">En 30 secondes, la plateforme s'ouvre comme une vraie appli : une icône sur ton téléphone, en plein écran, sans barre de navigateur.</p>
+    <div class="pros"><span>Icône DHA</span><span>Accès en 1 clic</span><span>Plein écran</span></div>
+  </div>
+
+  <div class="already"><b>✅ C'est bon, tu es déjà sur l'appli !</b></div>
+
+  <div class="tabs" role="tablist">
+    <button class="tab" role="tab" data-t="ios">🍎 iPhone</button>
+    <button class="tab" role="tab" data-t="android">🤖 Android</button>
+  </div>
+
+  <!-- iPhone -->
+  <section class="pane" data-p="ios">
+    <div class="note"><b>Important :</b> ouvre la plateforme avec <b>Safari</b> (pas depuis Instagram, Snap ou WhatsApp). Si tu es dans une de ces applis, appuie sur « Ouvrir dans le navigateur » d'abord.</div>
+
+    <div class="step"><div class="sh"><div class="n">1</div><div><b>Appuie sur les 3 petits points</b><span>Connecte-toi, puis appuie sur <em>···</em> en bas à droite de Safari.</span></div></div><img class="shot" src="appli/ios-1.jpg" alt="Bouton trois points en bas à droite de Safari" loading="lazy"/></div>
+
+    <div class="step"><div class="sh"><div class="n">2</div><div><b>Appuie sur « Partager »</b><span>Le premier choix du menu : <em>Partager</em> (ou <em>Share</em>).</span></div></div><img class="shot" src="appli/ios-2.jpg" alt="Menu Safari avec Partager entouré" loading="lazy"/></div>
+
+    <div class="step"><div class="sh"><div class="n">3</div><div><b>Appuie sur « Afficher plus »</b><span>La flèche vers le bas à droite : <em>Afficher plus</em> (ou <em>View More</em>).</span></div></div><img class="shot" src="appli/ios-3.jpg" alt="Bouton Afficher plus entouré" loading="lazy"/></div>
+
+    <div class="step"><div class="sh"><div class="n">4</div><div><b>« Sur l'écran d'accueil »</b><span>Descends un peu et appuie sur <em>Sur l'écran d'accueil</em> (ou <em>Add to Home Screen</em>).</span></div></div><img class="shot" src="appli/ios-4.jpg" alt="Option Sur l'écran d'accueil entourée" loading="lazy"/></div>
+
+    <div class="step"><div class="sh"><div class="n">5</div><div><b>Laisse « Ouvrir comme appli » activé, puis « Ajouter »</b><span><em>1.</em> L'interrupteur doit rester vert. <em>2.</em> Appuie sur <em>Ajouter</em> en haut à droite.</span></div></div><img class="shot" src="appli/ios-5.jpg" alt="Interrupteur Ouvrir comme appli et bouton Ajouter entourés" loading="lazy"/></div>
+
+    <div class="step"><div class="sh"><div class="n">6</div><div><b>C'est fait !</b><span>L'icône DHA est sur ton écran d'accueil. Ouvre-la depuis là, à chaque fois.</span></div></div><img class="shot" src="appli/ios-6.jpg" alt="Icône DHA sur l'écran d'accueil" loading="lazy"/></div>
+
+    <div class="note"><b>Tu ne vois pas les ··· ?</b> Sur les iPhone plus anciens, appuie directement sur l'icône <b>Partager</b> (le carré avec une flèche vers le haut) en bas de l'écran, puis passe à l'étape 4.</div>
+  </section>
+
+  <!-- Android -->
+  <section class="pane" data-p="android">
+    <div class="note"><b>Important :</b> ouvre la plateforme avec <b>Chrome</b> (pas depuis Instagram, Snap ou WhatsApp).</div>
+
+    <div class="step"><div class="sh"><div class="n">1</div><div><b>Appuie sur les 3 points</b><span>Connecte-toi, puis appuie sur <em>⋮</em> en haut à droite de Chrome.</span></div></div>
+      <div class="mock"><span>Chrome</span><span class="ar">→</span><span class="k">⋮</span></div></div>
+
+    <div class="step"><div class="sh"><div class="n">2</div><div><b>« Ajouter à l'écran d'accueil »</b><span>Dans le menu, appuie sur <em>Ajouter à l'écran d'accueil</em> (parfois <em>Installer l'application</em>).</span></div></div>
+      <div class="mock"><span class="ar">→</span><span class="k">📲 Ajouter à l'écran d'accueil</span></div></div>
+
+    <div class="step"><div class="sh"><div class="n">3</div><div><b>Confirme avec « Installer » ou « Ajouter »</b><span>Garde le nom <em>DHA</em> et valide.</span></div></div>
+      <div class="mock"><span class="k">Installer</span></div></div>
+
+    <div class="done"><b>🔥 C'est fait !</b><span>L'icône DHA est sur ton écran d'accueil. Ouvre la plateforme depuis là, à chaque fois.</span></div>
+  </section>
+</div>
+
+<script>
+(function(){
+  var ua=navigator.userAgent||'';
+  var standalone=window.navigator.standalone===true||(window.matchMedia&&matchMedia('(display-mode: standalone)').matches);
+  if(standalone){location.replace('dha-dashboard.html');return;}
+  var def=/android/i.test(ua)?'android':'ios';
+  function show(t){
+    document.querySelectorAll('.tab').forEach(function(b){var on=b.getAttribute('data-t')===t;b.classList.toggle('on',on);b.setAttribute('aria-selected',on);});
+    document.querySelectorAll('.pane').forEach(function(p){p.classList.toggle('on',p.getAttribute('data-p')===t);});
+  }
+  document.querySelectorAll('.tab').forEach(function(b){b.addEventListener('click',function(){show(b.getAttribute('data-t'));});});
+  show(def);
+})();
+</script>
+</body>
+</html>

@@ -8,6 +8,20 @@
 (function () {
   if (window.__dhaTheme) return; window.__dhaTheme = true;
 
+  // Appli sur l'écran d'accueil : icône DHA, nom, plein écran
+  [['link', { rel: 'apple-touch-icon', href: 'apple-touch-icon.png' }],
+   ['link', { rel: 'manifest', href: 'manifest.webmanifest' }],
+   ['meta', { name: 'apple-mobile-web-app-capable', content: 'yes' }],
+   ['meta', { name: 'mobile-web-app-capable', content: 'yes' }],
+   ['meta', { name: 'apple-mobile-web-app-title', content: 'DHA' }],
+   ['meta', { name: 'apple-mobile-web-app-status-bar-style', content: 'black-translucent' }],
+   ['meta', { name: 'theme-color', content: '#050914' }]
+  ].forEach(function (t) {
+    var sel = t[0] + (t[1].rel ? '[rel="' + t[1].rel + '"]' : '[name="' + t[1].name + '"]');
+    if (document.head.querySelector(sel)) return;
+    var el = document.createElement(t[0]); for (var k in t[1]) el.setAttribute(k, t[1][k]); document.head.appendChild(el);
+  });
+
   var f = document.createElement('link');
   f.rel = 'stylesheet';
   f.href = 'https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap';
