@@ -127,7 +127,7 @@ footer a{color:rgba(169,184,214,0.8);margin:0 6px;}
       <span class="logo-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m22 7-8.5 8.5-5-5L2 17"/><path d="M16 7h6v6"/></svg></span>
       <b>DHA</b><span class="tr">TRADING</span>
     </a>
-    <a class="btn btn-sm" href="#candidature" data-candid>Poser ma candidature
+    <a class="btn btn-sm" href="dha-candidature.html?src=video" data-candid>Poser ma candidature
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
   </div>
 </header>
@@ -152,7 +152,7 @@ footer a{color:rgba(169,184,214,0.8);margin:0 6px;}
   </section>
 
   <div class="cta-zone">
-    <a class="btn btn-lg" href="#candidature" data-candid>Poser ma candidature pour rejoindre la DHA
+    <a class="btn btn-lg" href="dha-candidature.html?src=video" data-candid>Poser ma candidature pour rejoindre la DHA
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
     <p>3 minutes. Aucun engagement à ce stade.</p>
   </div>
@@ -225,24 +225,18 @@ footer a{color:rgba(169,184,214,0.8);margin:0 6px;}
     <section class="card final">
       <h2>Dans 3 mois, tu seras content d'avoir commencé aujourd'hui.</h2>
       <p>La seule chose à faire maintenant : remplir la candidature. 3 minutes, aucun engagement. Je la lis et je te recontacte personnellement.</p>
-      <a class="btn btn-lg" href="#candidature" data-candid>Je pose ma candidature
+      <a class="btn btn-lg" href="dha-candidature.html?src=video" data-candid>Je pose ma candidature
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
     </section>
   </div>
 
-  <section class="apply" id="candidature" aria-label="Candidature">
-    <div class="kick" style="text-align:center">REJOINDRE L'ACADÉMIE</div>
-    <h2 style="text-align:center">Pose ta candidature.</h2>
-    <p style="text-align:center;color:var(--dim);margin-bottom:18px;line-height:1.6">Les places, les accès et le fonctionnement se présentent en privé après ta candidature.</p>
-    <div class="card"><iframe id="cand-frame" title="Formulaire de candidature DHA" loading="lazy" src="dha-candidature.html?src=video"></iframe></div>
-  </section>
 
   <p class="warn">Le trading comporte un risque de perte en capital. Les contenus de la DHA sont pédagogiques et ne constituent pas un conseil en investissement. Les résultats présentés sont ceux de membres réels et ne garantissent pas de résultats futurs.</p>
 </main>
 
 <footer><a href="dha-mentions-legales.html">Mentions légales</a>·<a href="dha-cgv.html">CGV</a>·<a href="dha-confidentialite.html">Confidentialité</a><br/><br/>© 2026 Digital Hustler Academy</footer>
 
-<div class="sticky-cta" id="sticky"><a class="btn btn-lg" href="#candidature" data-candid style="padding:16px">Poser ma candidature</a></div>
+<div class="sticky-cta" id="sticky"><a class="btn btn-lg" href="dha-candidature.html?src=video" data-candid style="padding:16px">Poser ma candidature</a></div>
 
 <script>
 /* ─── Lien de la vidéo de présentation ───
@@ -268,8 +262,8 @@ var VIDEO_URL = '';
   // un clic vers la candidature ouvre aussi la suite (pour ne pas sauter le formulaire)
   document.querySelectorAll('[data-candid]').forEach(function(a){ a.addEventListener('click', function(){ ouvrir(); }); });
   // bouton fixe sur téléphone, une fois la vidéo passée
-  var sticky = document.getElementById('sticky'), cand = document.getElementById('candidature');
-  function maj(){ var v = document.getElementById('video').getBoundingClientRect().bottom < 0, c = cand.getBoundingClientRect().top < window.innerHeight; sticky.classList.toggle('on', v && !c); }
+  var sticky = document.getElementById('sticky'), fin = document.querySelector('.final');
+  function maj(){ var v = document.getElementById('video').getBoundingClientRect().bottom < 0, c = fin && fin.getBoundingClientRect().top < window.innerHeight && document.getElementById('suite').classList.contains('on'); sticky.classList.toggle('on', v && !c); }
   window.addEventListener('scroll', maj, { passive: true });
 })();
 </script>
