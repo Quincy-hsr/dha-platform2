@@ -71,7 +71,15 @@
   }
   function bloque(v) { return !!(membre && !estDemo(membre) && !ACCES[v.acces](membre)); }
 
+  function photo() {
+    var a = membre && membre.avatar; if (!a || !/^data:image\//.test(a)) return;
+    document.querySelectorAll('.sidebar-avatar').forEach(function (el) {
+      if (el.querySelector('img.dfo-av')) return;
+      el.innerHTML = '<img class="dfo-av" src="' + a + '" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:50%">';
+    });
+  }
   function appliquer() {
+    photo();
     // Cadenas dans le menu
     document.querySelectorAll('a.nav-item').forEach(function (a) {
       var v = verrouPour(a.getAttribute('href')); if (!v) return;
