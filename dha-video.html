@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<script src="dha-theme.js"></script>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>DHA Trading — Quincy te présente la DHA</title>
+<meta name="description" content="Une méthode, un mentor, une communauté. Regarde la présentation de la DHA puis pose ta candidature."/>
+<meta property="og:title" content="DHA Trading — un plan clair pour apprendre les marchés"/>
+<meta property="og:description" content="Regarde la présentation de la DHA (5 min) puis pose ta candidature."/>
+<meta property="og:image" content="https://digitalhustleracademy.digital/call-1.jpg"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+:root{--bg:#050914;--card:rgba(16,28,62,0.72);--line:rgba(255,255,255,0.12);--white:#F2F6FF;--dim:#A9B8D6;--cyan:#00D4FF;--blue:#1E64FF;--gold:#FFD700;--green:#00FF88;}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--white);font-family:Manrope,system-ui,sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden;}
+a{color:inherit;}
+.wrap{max-width:760px;margin:0 auto;padding:0 18px;position:relative;z-index:1;}
+.disp{font-family:Sora,system-ui,sans-serif;}
+
+/* en-tête */
+.top{position:sticky;top:0;z-index:50;background:rgba(5,9,20,0.82);border-bottom:1px solid var(--line);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:12px;height:68px;max-width:1080px;}
+.logo{display:flex;align-items:center;gap:12px;text-decoration:none;}
+.logo-ic{width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,var(--blue),var(--cyan));display:flex;align-items:center;justify-content:center;box-shadow:0 0 22px rgba(0,212,255,0.4);}
+.logo b{font-family:Sora,sans-serif;font-weight:800;font-size:22px;letter-spacing:1px;}
+.logo .tr{font-family:Sora,sans-serif;font-size:13px;letter-spacing:3px;color:var(--dim);}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;border:none;cursor:pointer;text-decoration:none;font-family:Sora,sans-serif;font-weight:700;border-radius:999px;background:linear-gradient(135deg,var(--blue),var(--cyan));color:#020610;box-shadow:0 0 28px rgba(0,212,255,0.40),inset 0 1px 0 rgba(255,255,255,0.45);transition:transform .15s,box-shadow .15s;}
+.btn:hover{transform:translateY(-1px);box-shadow:0 0 40px rgba(0,212,255,0.6),inset 0 1px 0 rgba(255,255,255,0.45);}
+.btn:focus-visible,.play:focus-visible,summary:focus-visible{outline:3px solid var(--gold);outline-offset:3px;}
+.btn-sm{padding:11px 18px;font-size:14px;}
+.btn-lg{width:100%;padding:20px 22px;font-size:17px;}
+
+/* hero */
+.vhero{text-align:center;padding:46px 0 26px;}
+.pill{display:inline-flex;align-items:center;gap:10px;padding:10px 18px;border-radius:999px;background:rgba(30,100,255,0.16);border:1px solid rgba(0,212,255,0.45);font-family:Sora,sans-serif;font-weight:700;font-size:12px;letter-spacing:2px;color:#BFEFFF;box-shadow:0 0 26px rgba(0,212,255,0.2);}
+.pill i{width:7px;height:7px;border-radius:50%;background:var(--cyan);box-shadow:0 0 10px var(--cyan);animation:blink 1.6s ease-in-out infinite;}
+@keyframes blink{50%{opacity:.35}}
+h1{font-family:Sora,sans-serif;font-weight:800;font-size:clamp(34px,8vw,58px);line-height:1.08;letter-spacing:-0.5px;margin:24px 0 16px;}
+h1 em{font-style:normal;background:linear-gradient(90deg,#4F8BFF,#00D4FF 60%,#BFF4FF);-webkit-background-clip:text;background-clip:text;color:transparent;}
+.lead{font-size:clamp(16px,4vw,19px);line-height:1.6;color:var(--dim);max-width:600px;margin:0 auto;}
+.down{display:inline-flex;margin-top:26px;width:52px;height:52px;border-radius:50%;border:1px solid var(--line);align-items:center;justify-content:center;color:var(--dim);animation:bob 2s ease-in-out infinite;}
+@keyframes bob{50%{transform:translateY(6px)}}
+
+/* vidéo */
+.vid{position:relative;border-radius:26px;padding:8px;background:linear-gradient(140deg,rgba(0,212,255,0.35),rgba(30,100,255,0.15) 40%,rgba(255,255,255,0.06));box-shadow:0 30px 80px rgba(0,0,0,0.55),0 0 60px rgba(0,212,255,0.15);scroll-margin-top:84px;}
+.vid-in{position:relative;border-radius:20px;overflow:hidden;aspect-ratio:16/9;background:#000;}
+.vid-in img.poster{width:100%;height:100%;object-fit:cover;display:block;filter:saturate(1.05) brightness(.82);}
+.vid-in iframe,.vid-in video{position:absolute;inset:0;width:100%;height:100%;border:0;}
+.play{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:88px;height:88px;border-radius:50%;border:none;cursor:pointer;background:linear-gradient(135deg,var(--blue),var(--cyan));color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 10px rgba(0,212,255,0.18),0 0 50px rgba(0,212,255,0.7);animation:pulse 2.2s ease-in-out infinite;}
+@keyframes pulse{50%{box-shadow:0 0 0 18px rgba(0,212,255,0.08),0 0 70px rgba(0,212,255,0.9)}}
+.vid-tag{position:absolute;left:16px;bottom:16px;padding:12px 16px;border-radius:14px;background:rgba(5,9,20,0.82);border:1px solid var(--line);max-width:70%;}
+.vid-tag small{display:block;font-family:Sora,sans-serif;font-size:11px;letter-spacing:2.5px;color:var(--cyan);font-weight:700;}
+.vid-tag b{font-family:Sora,sans-serif;font-size:clamp(14px,3.6vw,18px);}
+.vid-dur{position:absolute;right:16px;bottom:16px;padding:6px 10px;border-radius:10px;background:rgba(5,9,20,0.82);border:1px solid var(--line);font-family:Sora,sans-serif;font-size:13px;}
+.cta-zone{text-align:center;margin:26px 0 8px;}
+.cta-zone p{margin-top:12px;color:var(--dim);font-size:14px;}
+
+/* sections révélées après le clic sur la vidéo */
+#suite{display:none;}
+#suite.on{display:block;animation:open .7s cubic-bezier(.2,.8,.2,1) both;}
+@keyframes open{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
+.sec{padding:52px 0 8px;}
+.kick{font-family:Sora,sans-serif;font-weight:700;font-size:12px;letter-spacing:3px;color:var(--cyan);margin-bottom:10px;}
+h2{font-family:Sora,sans-serif;font-weight:800;font-size:clamp(26px,6vw,38px);line-height:1.15;margin-bottom:14px;}
+.sec > p{color:var(--dim);font-size:16px;line-height:1.65;}
+.card{background:linear-gradient(140deg,rgba(22,36,72,0.78),rgba(10,18,40,0.70));border:1px solid var(--line);border-radius:22px;box-shadow:0 20px 50px rgba(0,0,0,0.35),inset 0 1px 0 rgba(255,255,255,0.08);}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:20px;}
+.feat{padding:18px;}
+.feat .ic{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:12px;background:rgba(0,212,255,0.12);border:1px solid rgba(0,212,255,0.35);color:var(--cyan);}
+.feat b{display:block;font-family:Sora,sans-serif;font-size:16px;margin-bottom:6px;}
+.feat span{font-size:14px;color:var(--dim);line-height:1.55;}
+.compare{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:20px;}
+.compare .card{padding:20px;}
+.compare h3{font-family:Sora,sans-serif;font-size:16px;margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+.compare ul{list-style:none;display:flex;flex-direction:column;gap:9px;}
+.compare li{font-size:14px;line-height:1.5;color:#D3DCEE;padding-left:22px;position:relative;}
+.compare .non li::before{content:"";position:absolute;left:4px;top:8px;width:9px;height:2px;background:#FF6B81;}
+.compare .oui li::before{content:"";position:absolute;left:3px;top:4px;width:9px;height:5px;border-left:2px solid var(--green);border-bottom:2px solid var(--green);transform:rotate(-45deg);}
+.compare .oui{border-color:rgba(0,255,136,0.35);}
+.stories{display:flex;flex-direction:column;gap:12px;margin-top:20px;}
+.story{padding:18px;display:flex;gap:16px;align-items:flex-start;}
+.story img{width:58px;height:58px;border-radius:50%;object-fit:cover;flex-shrink:0;box-shadow:0 0 0 2px rgba(0,212,255,0.6),0 0 18px rgba(0,212,255,0.35);}
+.story b{font-family:Sora,sans-serif;font-size:17px;}
+.story .steps{margin-top:8px;display:flex;flex-direction:column;gap:6px;font-size:14px;color:var(--dim);line-height:1.5;}
+.story .steps strong{color:var(--white);font-weight:700;}
+.story .res{color:var(--green);font-weight:700;}
+.proofs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:14px;}
+.proofs img{width:100%;aspect-ratio:3/4;object-fit:cover;border-radius:14px;border:1px solid var(--line);display:block;}
+.steps3{display:flex;flex-direction:column;gap:12px;margin-top:20px;}
+.st{padding:18px;display:flex;gap:16px;align-items:center;}
+.st .n{width:46px;height:46px;border-radius:14px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-family:Sora,sans-serif;font-weight:800;font-size:18px;background:linear-gradient(135deg,var(--blue),var(--cyan));color:#020610;}
+.st b{display:block;font-family:Sora,sans-serif;font-size:16px;}
+.st span{font-size:14px;color:var(--dim);line-height:1.5;}
+.photos{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:20px;}
+.photos img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:16px;border:1px solid var(--line);display:block;}
+.faq{display:flex;flex-direction:column;gap:10px;margin-top:20px;}
+.faq details{border-radius:18px;}
+.faq summary{list-style:none;cursor:pointer;padding:18px 50px 18px 18px;font-family:Sora,sans-serif;font-weight:600;font-size:15px;position:relative;}
+.faq summary::-webkit-details-marker{display:none;}
+.faq summary::after{content:"+";position:absolute;right:18px;top:50%;transform:translateY(-50%);color:var(--cyan);font-size:22px;}
+.faq details[open] summary::after{content:"–";}
+.faq details p{padding:0 18px 18px;color:var(--dim);font-size:14px;line-height:1.6;}
+.final{margin:46px 0 0;padding:30px 22px;text-align:center;border-color:rgba(0,212,255,0.45);box-shadow:0 0 60px rgba(0,212,255,0.15),0 20px 50px rgba(0,0,0,0.4);}
+.final h2{margin-bottom:10px;}
+.final p{color:var(--dim);margin-bottom:22px;line-height:1.6;}
+.apply{scroll-margin-top:80px;margin-top:46px;}
+.apply .card{overflow:hidden;}
+.apply iframe{width:100%;height:760px;border:0;display:block;}
+.warn{margin:34px 0 0;font-size:12px;line-height:1.6;color:rgba(169,184,214,0.75);text-align:center;}
+footer{text-align:center;padding:34px 0 40px;font-size:12px;color:rgba(169,184,214,0.6);}
+footer a{color:rgba(169,184,214,0.8);margin:0 6px;}
+.sticky-cta{position:fixed;left:12px;right:12px;bottom:12px;z-index:60;display:none;}
+.sticky-cta.on{display:block;animation:open .4s ease both;}
+@media(min-width:720px){.sticky-cta{display:none!important}}
+@media(max-width:600px){.grid2,.compare{grid-template-columns:1fr}.btn-sm{padding:10px 14px;font-size:13px}.logo .tr{display:none}.play{width:74px;height:74px}.vid-tag{max-width:64%;padding:10px 12px}.apply iframe{height:720px}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="logo" href="#top" aria-label="DHA Trading">
+      <span class="logo-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m22 7-8.5 8.5-5-5L2 17"/><path d="M16 7h6v6"/></svg></span>
+      <b>DHA</b><span class="tr">TRADING</span>
+    </a>
+    <a class="btn btn-sm" href="#candidature" data-candid>Poser ma candidature
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
+  </div>
+</header>
+
+<main class="wrap" id="top">
+  <section class="vhero">
+    <div class="pill"><i></i>DIGITAL HUSTLER ACADEMY · PAR QUINCY</div>
+    <h1>DHA Trading.<br/>Un plan clair pour <em>apprendre les marchés.</em></h1>
+    <p class="lead">Une méthode, un mentor, une communauté. Je t'explique tout dans la vidéo ci-dessous, la candidature se fait juste après.</p>
+    <a class="down" href="#video" aria-label="Aller à la vidéo"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12l7 7 7-7"/></svg></a>
+  </section>
+
+  <section class="vid" id="video" aria-label="Vidéo de présentation">
+    <div class="vid-in" id="vid-in">
+      <img class="poster" src="call-1.jpg" alt="Quincy te présente la DHA"/>
+      <button type="button" class="play" id="play" aria-label="Lancer la vidéo de présentation">
+        <svg width="34" height="34" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M8 5.5v13a1 1 0 0 0 1.5.87l11-6.5a1 1 0 0 0 0-1.74l-11-6.5A1 1 0 0 0 8 5.5Z"/></svg>
+      </button>
+      <div class="vid-tag"><small>LA PRÉSENTATION</small><b>Quincy te présente la DHA.</b></div>
+      <div class="vid-dur">05:35</div>
+    </div>
+  </section>
+
+  <div class="cta-zone">
+    <a class="btn btn-lg" href="#candidature" data-candid>Poser ma candidature pour rejoindre la DHA
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
+    <p>3 minutes. Aucun engagement à ce stade.</p>
+  </div>
+
+  <!-- Tout ce qui suit s'ouvre quand la personne lance la vidéo -->
+  <div id="suite" aria-live="polite">
+
+    <section class="sec">
+      <div class="kick">CE QUE TU REJOINS</div>
+      <h2>Pas juste une formation. Un cadre pour avancer.</h2>
+      <p>Seul devant ton écran, tu te perds entre les vidéos YouTube et les stratégies contradictoires. Ici, tu as un ordre, des règles et des gens qui avancent avec toi.</p>
+      <div class="grid2">
+        <div class="card feat"><div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg></div><b>17 modules, dans l'ordre</b><span>Des bases jusqu'à l'exécution complète. Vidéo, quiz et exercice à chaque étape.</span></div>
+        <div class="card feat"><div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="2" y="7" width="20" height="15" rx="2"/><path d="m17 2-5 5-5-5"/></svg></div><b>Lives 2 fois par semaine</b><span>Mardi trading, jeudi mindset et bilan. Tu poses tes questions en direct, les replays restent dispo.</span></div>
+        <div class="card feat"><div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><b>Une vraie communauté</b><span>Un groupe qui partage ses analyses, des sorties en équipe et un séminaire. Personne n'avance seul.</span></div>
+        <div class="card feat"><div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 12h4M8 10v4M15 13h.01M18 11h.01"/><rect x="2" y="6" width="20" height="12" rx="2"/></svg></div><b>Une plateforme qui te fait avancer</b><span>XP, niveaux, quêtes du jour : tu vois ta progression chaque jour et tu restes régulier.</span></div>
+      </div>
+    </section>
+
+    <section class="sec">
+      <div class="kick">SOYONS CLAIRS</div>
+      <h2>La DHA, c'est pour toi si…</h2>
+      <div class="compare">
+        <div class="card oui"><h3><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#00FF88" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/></svg>C'est pour toi</h3>
+          <ul><li>Tu veux apprendre une vraie méthode, étape par étape</li><li>Tu peux y consacrer environ 1 h par jour</li><li>Tu acceptes de t'entraîner en démo avant de risquer de l'argent</li><li>Tu veux être entouré et suivi, pas juste regarder des vidéos</li></ul></div>
+        <div class="card non"><h3><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FF6B81" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6M9 9l6 6"/></svg>Ce n'est pas pour toi</h3>
+          <ul><li>Tu cherches de l'argent facile ou des signaux miracles</li><li>Tu veux des résultats sans faire les exercices</li><li>Tu n'es pas prêt à suivre des règles de gestion du risque</li></ul></div>
+      </div>
+    </section>
+
+    <section class="sec">
+      <div class="kick">ILS SONT PASSÉS PAR LÀ</div>
+      <h2>Des parcours de membres, pas des promesses.</h2>
+      <div class="stories">
+        <div class="card story"><img src="avis-noah.jpg" alt="Noah"/><div><b>Noah</b><div class="steps"><div><strong>Avant :</strong> il tradait déjà, mais sans stratégie stable.</div><div><strong>1 mois :</strong> du travail en démo pour maîtriser la méthode.</div><div><strong>Aujourd'hui :</strong> <span class="res">challenge prop firm 100k validé.</span></div></div></div></div>
+        <div class="card story"><img src="avis-loid.jpg" alt="Loïd"/><div><b>Loïd</b><div class="steps"><div><strong>Avant :</strong> il ne connaissait rien au trading.</div><div><strong>Quelques semaines :</strong> premiers résultats, 1 à 3 € par jour.</div><div><strong>1 mois après :</strong> <span class="res">16 à 20 € par jour.</span></div></div></div></div>
+        <div class="card story"><img src="avis-akim.jpg" alt="Akim"/><div><b>Akim</b><div class="steps"><div><strong>Avant :</strong> il avait tout essayé et stagnait.</div><div><strong>Le déclic :</strong> il rejoint la DHA et suit la méthode.</div><div><strong>Aujourd'hui :</strong> <span class="res">il a repris goût au trading, analyses structurées.</span></div></div></div></div>
+      </div>
+      <div class="proofs"><img src="avis-1.jpg" alt="Preuve de résultat d'un membre" loading="lazy"/><img src="avis-2.jpg" alt="Preuve de résultat d'un membre" loading="lazy"/><img src="avis-3.jpg" alt="Message d'un membre" loading="lazy"/></div>
+    </section>
+
+    <section class="sec">
+      <div class="kick">LA COMMUNAUTÉ EN VRAI</div>
+      <h2>On se voit aussi en dehors des écrans.</h2>
+      <div class="photos"><img src="call-2.jpg" alt="Appel de groupe DHA" loading="lazy"/><img src="sortie-1.jpg" alt="Sortie en équipe" loading="lazy"/><img src="sem-1.jpg" alt="Séminaire DHA" loading="lazy"/></div>
+    </section>
+
+    <section class="sec">
+      <div class="kick">COMMENT ÇA SE PASSE</div>
+      <h2>3 étapes, et tu commences.</h2>
+      <div class="steps3">
+        <div class="card st"><div class="n">1</div><div><b>Tu poses ta candidature</b><span>13 questions, 3 minutes. Je lis chaque candidature moi-même.</span></div></div>
+        <div class="card st"><div class="n">2</div><div><b>On échange ensemble</b><span>Je te recontacte pour voir si la DHA te correspond, et quelle offre colle à ta situation.</span></div></div>
+        <div class="card st"><div class="n">3</div><div><b>Tu entres sur la plateforme</b><span>Ton accès, ton appel de prise en main, et tu attaques le module 1.</span></div></div>
+      </div>
+    </section>
+
+    <section class="sec">
+      <div class="kick">TES QUESTIONS</div>
+      <h2>Ce qu'on me demande le plus.</h2>
+      <div class="faq">
+        <details class="card"><summary>Je suis débutant, c'est fait pour moi ?</summary><p>Oui. La formation part de zéro et chaque module débloque le suivant. Beaucoup de membres ne connaissaient rien au trading en arrivant.</p></details>
+        <details class="card"><summary>Il faut de l'argent pour commencer à trader ?</summary><p>Non. Tu t'entraînes d'abord sur un compte démo, gratuit. Tu passes sur un vrai compte seulement quand ta méthode est maîtrisée, et jamais avec de l'argent dont tu as besoin.</p></details>
+        <details class="card"><summary>Combien de temps ça me prend ?</summary><p>Environ 1 h par jour pour les modules et la pratique, plus les lives 2 fois par semaine. Pas besoin de quitter ton travail ou tes études.</p></details>
+        <details class="card"><summary>Je peux payer en plusieurs fois ?</summary><p>Oui, selon l'offre, en 3 fois avec Klarna. On en parle pendant l'échange après ta candidature.</p></details>
+        <details class="card"><summary>Les gains sont garantis ?</summary><p>Non, et méfie-toi de ceux qui te le promettent. On t'apprend une méthode, la discipline et la gestion du risque. Sur l'accompagnement 1:1, tu as une garantie de remboursement si tu fais le travail et que tu n'as aucun résultat au bout de 2 mois.</p></details>
+      </div>
+    </section>
+
+    <section class="card final">
+      <h2>Dans 3 mois, tu seras content d'avoir commencé aujourd'hui.</h2>
+      <p>La seule chose à faire maintenant : remplir la candidature. 3 minutes, aucun engagement. Je la lis et je te recontacte personnellement.</p>
+      <a class="btn btn-lg" href="#candidature" data-candid>Je pose ma candidature
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
+    </section>
+  </div>
+
+  <section class="apply" id="candidature" aria-label="Candidature">
+    <div class="kick" style="text-align:center">REJOINDRE L'ACADÉMIE</div>
+    <h2 style="text-align:center">Pose ta candidature.</h2>
+    <p style="text-align:center;color:var(--dim);margin-bottom:18px;line-height:1.6">Les places, les accès et le fonctionnement se présentent en privé après ta candidature.</p>
+    <div class="card"><iframe id="cand-frame" title="Formulaire de candidature DHA" loading="lazy" src="dha-candidature.html?src=video"></iframe></div>
+  </section>
+
+  <p class="warn">Le trading comporte un risque de perte en capital. Les contenus de la DHA sont pédagogiques et ne constituent pas un conseil en investissement. Les résultats présentés sont ceux de membres réels et ne garantissent pas de résultats futurs.</p>
+</main>
+
+<footer><a href="dha-mentions-legales.html">Mentions légales</a>·<a href="dha-cgv.html">CGV</a>·<a href="dha-confidentialite.html">Confidentialité</a><br/><br/>© 2026 Digital Hustler Academy</footer>
+
+<div class="sticky-cta" id="sticky"><a class="btn btn-lg" href="#candidature" data-candid style="padding:16px">Poser ma candidature</a></div>
+
+<script>
+/* ─── Lien de la vidéo de présentation ───
+   Colle ici le lien YouTube (non répertorié) ou le lien direct d'un fichier .mp4 */
+var VIDEO_URL = '';
+
+(function(){
+  var suite = document.getElementById('suite'), box = document.getElementById('vid-in');
+  function ytId(u){ var m = String(u).match(/(?:youtu\.be\/|youtube(?:-nocookie)?\.com\/(?:watch\?(?:.*&)?v=|embed\/|shorts\/|live\/))([\w-]{11})/); return m ? m[1] : null; }
+  function ouvrir(){
+    if (!suite.classList.contains('on')) { suite.classList.add('on'); try { sessionStorage.setItem('dha_vsl', '1'); } catch (e) {} }
+  }
+  document.getElementById('play').addEventListener('click', function(){
+    var id = ytId(VIDEO_URL);
+    if (id) box.innerHTML = '<iframe src="https://www.youtube-nocookie.com/embed/' + id + '?autoplay=1&rel=0&modestbranding=1&playsinline=1" title="Quincy te présente la DHA" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>';
+    else if (/^https?:\/\/.+\.(mp4|webm|mov)(\?.*)?$/i.test(VIDEO_URL)) box.innerHTML = '<video src="' + VIDEO_URL + '" controls autoplay playsinline></video>';
+    else box.insertAdjacentHTML('beforeend', '<div style="position:absolute;inset:auto 12px 70px 12px;padding:12px 14px;border-radius:12px;background:rgba(5,9,20,0.9);border:1px solid rgba(255,215,0,0.5);color:#FFE58A;font-size:13px;text-align:center">Vidéo bientôt disponible. En attendant, découvre tout juste en dessous.</div>');
+    ouvrir();
+    setTimeout(function(){ document.getElementById('video').scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 50);
+  });
+  // si la personne revient sur la page, les arguments restent ouverts
+  try { if (sessionStorage.getItem('dha_vsl') === '1') suite.classList.add('on'); } catch (e) {}
+  // un clic vers la candidature ouvre aussi la suite (pour ne pas sauter le formulaire)
+  document.querySelectorAll('[data-candid]').forEach(function(a){ a.addEventListener('click', function(){ ouvrir(); }); });
+  // bouton fixe sur téléphone, une fois la vidéo passée
+  var sticky = document.getElementById('sticky'), cand = document.getElementById('candidature');
+  function maj(){ var v = document.getElementById('video').getBoundingClientRect().bottom < 0, c = cand.getBoundingClientRect().top < window.innerHeight; sticky.classList.toggle('on', v && !c); }
+  window.addEventListener('scroll', maj, { passive: true });
+})();
+</script>
+</body>
+</html>
