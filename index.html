@@ -291,6 +291,37 @@
   .soc-sc .soc-ic{background:#FFFC00;color:#111;} .soc-sc:hover{border-color:#FFFC00;}
   @media(max-width:800px){.socials{grid-template-columns:1fr 1fr;}}
   @media(max-width:420px){.socials{grid-template-columns:1fr;}}
+  .copy-pill{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;margin-top:12px;padding:11px 14px;border-radius:12px;border:1px solid rgba(255,68,102,0.55);background:linear-gradient(135deg,rgba(255,68,102,0.22),rgba(200,20,60,0.12));color:#ff8aa0;font-family:'Chakra Petch',sans-serif;font-size:12px;font-weight:700;letter-spacing:1.5px;cursor:pointer;box-shadow:0 0 18px rgba(255,68,102,0.15);transition:background .2s,box-shadow .2s}
+  .copy-pill:hover{box-shadow:0 0 26px rgba(255,68,102,0.35)}
+  .copy-pill:focus-visible{outline:2px solid #FFD700;outline-offset:2px}
+  .copy-ch{display:inline-block;transition:transform .25s}
+  .copy-pill[aria-expanded="true"] .copy-ch{transform:rotate(180deg)}
+  .copy-drop{margin-top:8px;padding:14px;border-radius:12px;border:1px solid rgba(255,68,102,0.35);background:rgba(255,68,102,0.07);text-align:left;animation:copyIn .3s ease both}
+  @keyframes copyIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+  .copy-dv{font-family:'Chakra Petch',sans-serif;font-size:30px;font-weight:700;color:#ff8aa0;line-height:1}
+  .copy-dv span{font-size:16px;margin-left:2px}
+  .copy-dt{font-size:14px;color:var(--white);line-height:1.5;margin-top:6px}
+  .copy-dw{font-size:11px;color:var(--dim);line-height:1.45;margin-top:8px}
+  .avis-feature{grid-column:1/-1;position:relative}
+  .avis-feature img{aspect-ratio:auto!important;height:auto!important}
+  .avis-cap{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;padding:12px 14px;font-family:'Chakra Petch',sans-serif;font-size:15px;font-weight:700;color:var(--white);background:linear-gradient(90deg,rgba(255,215,0,0.14),rgba(0,212,255,0.08));border-top:1px solid rgba(255,215,0,0.3)}
+  .avis-cap b{color:var(--gold)}
+  .gx-rows{display:flex;flex-direction:column;gap:10px}
+  .gx-row{display:flex;align-items:center;gap:14px;padding:13px 16px;border-radius:14px;background:linear-gradient(140deg,rgba(22,36,72,0.78),rgba(10,18,40,0.7));border:1px solid rgba(255,255,255,0.12)}
+  .gx-ic{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:19px;flex-shrink:0;border:1.5px solid}
+  .gx-n{font-family:'Chakra Petch',sans-serif;font-size:14px;font-weight:600;color:var(--white)}
+  .gx-x{font-family:'Chakra Petch',sans-serif;font-size:13px;font-weight:700;margin-top:2px}
+  .gx-ranks{display:flex;flex-wrap:wrap;gap:6px;margin-top:16px}
+  .gx-ranks span{padding:6px 11px;border-radius:999px;font-family:'Chakra Petch',sans-serif;font-size:11px;font-weight:700;letter-spacing:1px;border:1px solid}
+  .gx-card{max-width:400px;margin:0 auto;position:relative}
+  .gx-tag{text-align:center;font-family:'Chakra Petch',sans-serif;font-size:11px;letter-spacing:2px;color:var(--dim);margin-top:12px}
+  .certs{display:grid;grid-template-columns:repeat(2,minmax(0,340px));justify-content:center;gap:16px;margin:36px auto 40px}
+  .cert{margin:0;border-radius:14px;overflow:hidden;border:1px solid rgba(255,215,0,0.35);background:var(--card);box-shadow:0 0 24px rgba(255,215,0,0.08)}
+  .cert-img{height:220px;display:flex;align-items:center;justify-content:center;background:#03060f}
+  .cert-img img{width:auto;height:auto;max-width:100%;max-height:100%;display:block}
+  .cert figcaption{display:flex;align-items:center;justify-content:center;gap:8px;padding:10px 12px;font-family:'Chakra Petch',sans-serif;font-size:13px;font-weight:700;color:var(--white);text-align:center;background:linear-gradient(90deg,rgba(255,215,0,0.12),rgba(0,212,255,0.06));border-top:1px solid rgba(255,215,0,0.25)}
+  .cert figcaption b{color:var(--gold)}
+  @media(max-width:700px){.certs{grid-template-columns:minmax(0,300px)}.cert-img{height:180px}.cert figcaption{font-size:12px}}
   .avis-gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:1000px;margin:44px auto 0;}
   .avis-item{border-radius:14px;overflow:hidden;border:1px solid var(--border);background:var(--card);transition:transform .3s, border-color .3s;}
   .avis-item:hover{transform:translateY(-4px);border-color:rgba(0,212,255,0.3);}
@@ -428,59 +459,16 @@
 </section>
 
 <!-- TESTIMONIALS (remontés) -->
-<section class="testimonials">
-  <div class="section-label reveal">ILS L'ONT FAIT</div>
-  <div class="section-title reveal">Ils ont rejoint la DHA</div>
-  <p class="section-desc reveal">Des membres réels qui transforment leur vie grâce à l'écosystème.</p>
-  <div class="testi-grid">
-    <div class="testi-card reveal" style="transition-delay:.2s">
-      <div class="testi-stars">★★★★★</div>
-      <div class="testi-text">"Ce qui m'a convaincu c'est le cadre. Ce n'est pas 'débrouille-toi', c'est structuré, étape par étape. Et le réseau de membres vaut à lui seul l'accompagnement."</div>
-      <div class="testi-author">
-        <div class="testi-avatar" style="background:rgba(0,255,136,0.2);border:1.5px solid rgba(0,255,136,0.4);color:var(--green)">AT</div>
-        <div><div class="testi-name">Alex T.</div><div class="testi-rank" style="color:var(--cyan)">Membre Trading</div></div>
-      </div>
-    </div>
-    <div class="testi-card reveal" style="transition-delay:.1s">
-      <div class="testi-stars">★★★★★</div>
-      <div class="testi-text">"Ce que j'apprécie le plus c'est de ne jamais être seule face à un doute. Il y a toujours quelqu'un du groupe ou un appel pour débloquer une question."</div>
-      <div class="testi-author">
-        <div class="testi-avatar" style="background:rgba(255,68,102,0.2);border:1.5px solid rgba(255,68,102,0.4);color:var(--red)">CN</div>
-        <div><div class="testi-name">Camille N.</div><div class="testi-rank" style="color:var(--cyan)">Membre Trading</div></div>
-      </div>
-    </div>
-    <div class="testi-card reveal" style="transition-delay:.2s">
-      <div class="testi-stars">★★★★★</div>
-      <div class="testi-text">"J'ai hésité longtemps à cause du prix. Avec le recul c'est le meilleur investissement que j'ai fait sur moi-même cette année, largement rentabilisé."</div>
-      <div class="testi-author">
-        <div class="testi-avatar" style="background:rgba(0,212,255,0.2);border:1.5px solid rgba(0,212,255,0.4);color:var(--cyan)">YR</div>
-        <div><div class="testi-name">Yanis R.</div><div class="testi-rank" style="color:var(--gold)">Membre Trading</div></div>
-      </div>
-    </div>
-    <div class="testi-card reveal" style="transition-delay:.1s">
-      <div class="testi-stars">★★★★★</div>
-      <div class="testi-text">"Les rencontres en présentiel ont tout changé pour moi. Mettre des visages sur les pseudos du groupe, ça crée une vraie cohésion, on se motive entre nous."</div>
-      <div class="testi-author">
-        <div class="testi-avatar" style="background:rgba(0,255,136,0.2);border:1.5px solid rgba(0,255,136,0.4);color:var(--green)">JD</div>
-        <div><div class="testi-name">Jade D.</div><div class="testi-rank" style="color:var(--cyan)">Membre Trading</div></div>
-      </div>
-    </div>
-    <div class="testi-card reveal">
-      <div class="testi-stars">★★★★★</div>
-      <div class="testi-text">"J'ai testé d'autres formations avant, jamais aussi structuré. Le fait d'avoir des niveaux et des objectifs clairs m'a évité de me disperser dans tous les sens."</div>
-      <div class="testi-author">
-        <div class="testi-avatar" style="background:rgba(255,68,102,0.2);border:1.5px solid rgba(255,68,102,0.4);color:var(--red)">EP</div>
-        <div><div class="testi-name">Elisa P.</div><div class="testi-rank" style="color:var(--cyan)">Membre Trading</div></div>
-      </div>
-    </div>
-  </div>
-</section>
 
 <!-- AVIS & RÉSULTATS -->
 <section style="padding:90px 40px;background:linear-gradient(180deg,transparent,rgba(0,212,255,0.03),transparent);">
   <div class="section-label reveal">PREUVES</div>
   <div class="section-title reveal">Avis & résultats</div>
   <p class="section-desc reveal">Des parcours réels de membres de la communauté DHA.</p>
+  <div class="certs" id="certifs" aria-label="Challenges prop firm validés">
+    <figure class="cert reveal"><div class="cert-img"><img src="avis-dave.jpg" alt="Certificat Apex Trader Funding : Dave, compte 300k validé" width="856" height="569" loading="lazy"/></div><figcaption>🏆 <span><b>Dave</b> · challenge prop firm <b>300 000 $</b> validé</span></figcaption></figure>
+    <figure class="cert reveal" style="transition-delay:.1s"><div class="cert-img"><img src="avis-noah-cert.jpg" alt="Certificat Apex Trader Funding : Noah, compte 100k validé" width="452" height="612" loading="lazy"/></div><figcaption>🏆 <span><b>Noah</b> · challenge prop firm <b>100 000 $</b> validé</span></figcaption></figure>
+  </div>
   <div class="story-grid">
     <div class="story reveal">
       <div class="story-head"><img class="story-av story-photo" src="avis-noah.jpg" alt="Photo de Noah" width="64" height="64" loading="lazy"><div><div class="story-name">Noah</div><div class="story-tag">Avait des bases, pas de stratégie</div></div></div>
@@ -505,7 +493,6 @@
     <div class="avis-item reveal"><img src="avis-1.jpg" alt="Retour d'élève DHA"/></div>
     <div class="avis-item reveal" style="transition-delay:.1s"><img src="avis-2.jpg" alt="Résultat de trading membre DHA"/></div>
     <div class="avis-item reveal" style="transition-delay:.2s"><img src="avis-3.jpg" alt="Retours d'élèves DHA"/></div>
-    <div class="avis-item reveal"><img src="avis-4.jpg" alt="Certificat de financement prop firm membre DHA"/></div>
     <div class="avis-item reveal" style="transition-delay:.1s"><img src="avis-5.jpg" alt="Retour d'élève DHA"/></div>
     <div class="avis-item reveal" style="transition-delay:.2s"><img src="avis-6.jpg" alt="Retours d'élèves DHA"/></div>
   </div>
@@ -648,44 +635,22 @@
     <div>
       <div class="section-label reveal" style="text-align:left">GAME SYSTEM</div>
       <div class="section-title reveal" style="text-align:left;font-size:clamp(22px,3.5vw,36px)">L'apprentissage comme une progression</div>
-      <p style="font-size:15px;color:var(--dim);line-height:1.8;margin-bottom:32px;max-width:480px" class="reveal">Chaque action sur la plateforme te rapporte des points d'expérience. Tu montes en niveau, tu débloques du contenu. L'apprentissage devient une progression constante plutôt qu'une longue liste de vidéos.</p>
-      <div style="display:flex;flex-direction:column;gap:14px" class="reveal">
-        <div style="display:flex;align-items:center;gap:14px;padding:14px 18px;border-radius:12px;background:var(--card);border:1px solid var(--border)">
-          <div style="width:40px;height:40px;border-radius:10px;background:rgba(0,212,255,0.15);border:1.5px solid rgba(0,212,255,0.3);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">🎯</div>
-          <div><div style="font-family:'Chakra Petch',sans-serif;font-size:13px;font-weight:600;color:var(--white)">MODULE COMPLÉTÉ</div><div style="font-family:'Rajdhani',sans-serif;font-size:12px;font-weight:600;color:var(--cyan);margin-top:3px">+25 XP</div></div>
-        </div>
-        <div style="display:flex;align-items:center;gap:14px;padding:14px 18px;border-radius:12px;background:var(--card);border:1px solid var(--border)">
-          <div style="width:40px;height:40px;border-radius:10px;background:rgba(255,68,102,0.15);border:1.5px solid rgba(255,68,102,0.3);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">📓</div>
-          <div><div style="font-family:'Chakra Petch',sans-serif;font-size:13px;font-weight:600;color:var(--white)">JOURNAL DE TRADE TENU</div><div style="font-family:'Rajdhani',sans-serif;font-size:12px;font-weight:600;color:var(--red);margin-top:3px">+50 XP</div></div>
-        </div>
-        <div style="display:flex;align-items:center;gap:14px;padding:14px 18px;border-radius:12px;background:var(--card);border:1px solid var(--border)">
-          <div style="width:40px;height:40px;border-radius:10px;background:rgba(0,255,136,0.15);border:1.5px solid rgba(0,255,136,0.3);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">🔥</div>
-          <div><div style="font-family:'Chakra Petch',sans-serif;font-size:13px;font-weight:600;color:var(--white)">CONNEXION QUOTIDIENNE</div><div style="font-family:'Rajdhani',sans-serif;font-size:12px;font-weight:600;color:var(--green);margin-top:3px">+10 XP / JOUR</div></div>
-        </div>
+      <p style="font-size:15px;color:var(--dim);line-height:1.8;margin-bottom:26px;max-width:480px" class="reveal">Chaque action sur la plateforme te rapporte de l'XP. Tu montes de niveau, tu passes des rangs, et tu as ta propre <b style="color:var(--white)">fiche joueur</b> dans le classement : tes stats, tes attributs et tes perfs, comme dans un jeu.</p>
+      <div class="gx-rows reveal">
+        <div class="gx-row"><div class="gx-ic" style="background:rgba(0,212,255,0.14);border-color:rgba(0,212,255,0.35)">📚</div><div><div class="gx-n">FINIR UN MODULE</div><div class="gx-x" style="color:var(--cyan)">+40 XP · + quiz et exercice</div></div></div>
+        <div class="gx-row"><div class="gx-ic" style="background:rgba(255,215,0,0.12);border-color:rgba(255,215,0,0.35)">🎯</div><div><div class="gx-n">LES 4 QUÊTES DU JOUR</div><div class="gx-x" style="color:var(--gold)">+25 XP chacune · +100 XP bonus</div></div></div>
+        <div class="gx-row"><div class="gx-ic" style="background:rgba(157,78,221,0.15);border-color:rgba(157,78,221,0.4)">📈</div><div><div class="gx-n">ENVOYER UNE ANALYSE TRADING</div><div class="gx-x" style="color:#C77DFF">+100 XP</div></div></div>
+        <div class="gx-row"><div class="gx-ic" style="background:rgba(0,255,136,0.12);border-color:rgba(0,255,136,0.35)">🔥</div><div><div class="gx-n">CONNEXION QUOTIDIENNE</div><div class="gx-x" style="color:var(--green)">+10 XP / JOUR</div></div></div>
       </div>
+      <div class="gx-ranks reveal"><span style="color:#C8CDD8;border-color:rgba(200,205,216,0.4)">🎮 NEW HUSTLER</span><span style="color:#3D85FF;border-color:rgba(61,133,255,0.5)">⚡ HUSTLER</span><span style="color:#00D4FF;border-color:rgba(0,212,255,0.5)">🚀 PRO</span><span style="color:#FFD700;border-color:rgba(255,215,0,0.5)">👑 AMBASSADEUR</span><span style="color:#C77DFF;border-color:rgba(199,125,255,0.5)">💎 LEGEND</span></div>
     </div>
     <div class="gamif-visual reveal" style="transition-delay:.2s">
-      <div class="floating-badge">
-        <div style="font-size:24px">👑</div>
-        <div style="font-family:'Chakra Petch',sans-serif;font-size:11px;color:var(--gold);font-weight:700;margin-top:4px">RANK UP!</div>
+      <div class="floating-badge" style="z-index:8">
+        <div style="font-size:24px">🚀</div>
+        <div style="font-family:'Chakra Petch',sans-serif;font-size:11px;color:var(--cyan);font-weight:700;margin-top:4px">RANK UP!</div>
       </div>
-      <div class="player-card" style="animation:glow 4s ease-in-out infinite">
-        <div class="player-header">
-          <div class="player-avatar">JM</div>
-          <div class="player-info"><div class="player-name">JORDAN M.</div><div class="player-rank">TRADER NIVEAU 8</div></div>
-          <div class="player-level">LV8</div>
-        </div>
-        <div class="xp-bar-wrap">
-          <div class="xp-label"><span>XP VERS NIVEAU 9</span><span style="color:var(--cyan)">72%</span></div>
-          <div class="xp-bar"><div class="xp-fill"></div></div>
-        </div>
-        <div class="badges-row">
-          <div class="badge-item" style="background:rgba(255,68,102,0.15);border-color:rgba(255,68,102,0.3)">🔥</div>
-          <div class="badge-item" style="background:rgba(0,212,255,0.15);border-color:rgba(0,212,255,0.3)">⚡</div>
-          <div class="badge-item" style="background:rgba(255,215,0,0.15);border-color:rgba(255,215,0,0.3)">📓</div>
-          <div class="badge-item" style="background:rgba(255,255,255,0.04);border-color:var(--border);filter:grayscale(1);opacity:.4">💎</div>
-        </div>
-      </div>
+      <div class="gx-card" id="gxCard"></div>
+      <div class="gx-tag">EXEMPLE DE FICHE JOUEUR · TA CARTE DANS LE CLASSEMENT</div>
     </div>
   </div>
 </section>
@@ -694,14 +659,14 @@
 <section style="padding:90px 40px;">
   <div class="section-label reveal">VISITE GUIDÉE</div>
   <div class="section-title reveal">Regarde l'intérieur de la plateforme</div>
-  <p class="section-desc reveal">Pour te faire une vraie idée de ce qui t'attend à l'intérieur — pseudo, XP, modules, vidéos, cours illustrés, quiz et questions — voilà à quoi ressemble ta plateforme.</p>
+  <p class="section-desc reveal">Pour te faire une vraie idée de ce qui t'attend à l'intérieur (XP, niveaux, modules, vidéos, cours illustrés, quiz et questions), voilà à quoi ressemble ta plateforme.</p>
   <div class="plat-gallery">
-    <div class="plat-item reveal"><img src="plateforme-1.jpg" alt="Dashboard : pseudo, XP, niveau et quêtes du jour" loading="lazy" onerror="this.parentNode.style.display='none'"><span>Dashboard : pseudo, XP, niveau et quêtes du jour</span></div>
-    <div class="plat-item reveal"><img src="plateforme-2.jpg" alt="Formation : tous les modules et ta progression" loading="lazy" onerror="this.parentNode.style.display='none'"><span>Formation : tous les modules et ta progression</span></div>
-    <div class="plat-item reveal"><img src="plateforme-3.jpg" alt="Vidéo de formation dans chaque module" loading="lazy" onerror="this.parentNode.style.display='none'"><span>Vidéo de formation dans chaque module</span></div>
-    <div class="plat-item reveal"><img src="plateforme-4.jpg" alt="Cours illustrés avec exemples concrets" loading="lazy" onerror="this.parentNode.style.display='none'"><span>Cours illustrés avec exemples concrets</span></div>
-    <div class="plat-item reveal"><img src="plateforme-5.jpg" alt="Mini quiz pour valider tes acquis" loading="lazy" onerror="this.parentNode.style.display='none'"><span>Mini quiz pour valider tes acquis</span></div>
-    <div class="plat-item reveal"><img src="plateforme-6.jpg" alt="Une question ? Pose-la directement" loading="lazy" onerror="this.parentNode.style.display='none'"><span>Une question ? Pose-la directement</span></div>
+    <div class="plat-item reveal"><img src="plateforme-1.jpg" alt="Dashboard : ton niveau, ton XP et tes quêtes du jour" loading="lazy" width="1600" height="992"><span>Dashboard : ton niveau, ton XP et tes quêtes du jour</span></div>
+    <div class="plat-item reveal" style="transition-delay:.1s"><img src="plateforme-2.jpg" alt="Formation : tous les modules et ta progression" loading="lazy" width="1600" height="992"><span>Formation : tous les modules et ta progression</span></div>
+    <div class="plat-item reveal"><img src="plateforme-3.jpg" alt="La vidéo de formation dans chaque module" loading="lazy" width="1600" height="992"><span>La vidéo de formation dans chaque module</span></div>
+    <div class="plat-item reveal" style="transition-delay:.1s"><img src="plateforme-4.jpg" alt="Des cours illustrés avec des exemples concrets" loading="lazy" width="1600" height="992"><span>Des cours illustrés avec des exemples concrets</span></div>
+    <div class="plat-item reveal"><img src="plateforme-5.jpg" alt="Un quiz pour valider tes acquis" loading="lazy" width="1600" height="992"><span>Un quiz pour valider tes acquis</span></div>
+    <div class="plat-item reveal" style="transition-delay:.1s"><img src="plateforme-6.jpg" alt="Une question ? Tu la poses directement" loading="lazy" width="1600" height="992"><span>Une question ? Tu la poses directement</span></div>
   </div>
 </section>
 
@@ -722,24 +687,9 @@
       <div class="eco-text">Des meetups organisés pour se retrouver, networker et travailler ensemble en dehors des écrans.</div>
     </div>
     <div class="eco-card reveal" style="transition-delay:.2s">
-      <span class="eco-icon">👨‍👩‍👧‍👦</span>
-      <div class="eco-title">UNE COMMUNAUTÉ, PAS UN PRODUIT</div>
-      <div class="eco-text">Tu échanges avec des membres qui traversent les mêmes doutes que toi. Personne n'avance seul dans son coin.</div>
-    </div>
-    <div class="eco-card reveal" style="transition-delay:.1s">
-      <span class="eco-icon">📺</span>
-      <div class="eco-title">LIVES & REPLAYS</div>
-      <div class="eco-text">Sessions de trading en direct chaque semaine, avec replays disponibles pour revoir à ton rythme.</div>
-    </div>
-    <div class="eco-card reveal" style="transition-delay:.2s">
       <span class="eco-icon">📅</span>
       <div class="eco-title">SUIVI PERSONNALISÉ</div>
       <div class="eco-text">Selon ton offre, un accompagnement stratégique individuel pour construire ton plan et corriger tes erreurs.</div>
-    </div>
-    <div class="eco-card reveal" style="transition-delay:.3s">
-      <span class="eco-icon">🌍</span>
-      <div class="eco-title">UNE VISION QUI GRANDIT</div>
-      <div class="eco-text">L'objectif : bâtir la plus grande communauté de traders indépendants et disciplinés en France.</div>
     </div>
   </div>
 
@@ -826,6 +776,7 @@
         <div class="tier-feature" style="color:var(--dimmer)"><span class="tier-check" style="color:var(--dimmer)">✗</span>Pas d'accompagnement physique</div>
       </div>
       <a href="https://buy.stripe.com/00w28sb8CcXs0v5a0c6g80e" target="_blank" class="tier-btn">PAYER — 180€</a>
+      <button type="button" class="copy-pill" aria-expanded="false">📡 SUPPLÉMENT COPY TRADING <span class="copy-ch">▾</span></button><div class="copy-drop" hidden><div class="copy-dv">+50<span>€</span></div><div class="copy-dt">Accès au canal de signaux en plus de l'offre à 180 € : tu reçois mes prises de position en direct et tu apprends à les exécuter sur ton compte, étape par étape.</div><div class="copy-dw">Signaux partagés à but pédagogique, pas un conseil en investissement. Le trading comporte un risque de perte en capital.</div></div>
     </div>
 
     <div class="tier-card featured reveal" style="transition-delay:.1s">
@@ -842,6 +793,7 @@
         <div class="tier-feature"><span class="tier-check">✓</span>Séminaire 2-3 jours en villa</div>
       </div>
       <a href="https://buy.stripe.com/fZu9AU7Wq6z4elV0pC6g80d" target="_blank" class="tier-btn">PAYER — 500€ (ou en 3× avec Klarna)</a>
+      <button type="button" class="copy-pill" aria-expanded="false">📡 SUPPLÉMENT COPY TRADING <span class="copy-ch">▾</span></button><div class="copy-drop" hidden><div class="copy-dv">+30<span>€</span></div><div class="copy-dt">Accès au canal de signaux en plus de l'offre à 500 € : tu reçois mes prises de position en direct et tu apprends à les exécuter sur ton compte, étape par étape.</div><div class="copy-dw">Signaux partagés à but pédagogique, pas un conseil en investissement. Le trading comporte un risque de perte en capital.</div></div>
     </div>
 
     <div class="tier-card featured-red reveal" style="transition-delay:.2s">
@@ -857,20 +809,9 @@
         <div class="tier-feature"><span class="tier-check">✓</span>Garanti ou remboursé</div>
       </div>
       <a href="https://buy.stripe.com/7sY3cw2C69Lg2Dd4FS6g80g" target="_blank" rel="noopener" class="tier-btn">PAYER — 750€ (ou en 3× avec Klarna)</a>
+      <button type="button" class="copy-pill" aria-expanded="false">📡 SUPPLÉMENT COPY TRADING <span class="copy-ch">▾</span></button><div class="copy-drop" hidden><div class="copy-dv">+10<span>€</span></div><div class="copy-dt">Accès au canal de signaux en plus de l'offre à 750 € : tu reçois mes prises de position en direct et tu apprends à les exécuter sur ton compte, étape par étape.</div><div class="copy-dw">Signaux partagés à but pédagogique, pas un conseil en investissement. Le trading comporte un risque de perte en capital.</div></div>
     </div>
 
-  </div>
-  <!-- OPTION COPY TRADING -->
-  <div class="copy-opt reveal">
-    <div class="copy-head"><span class="copy-tag">📡 OPTION</span><h3>Copy trading : le canal de signaux</h3>
-      <p>Reçois mes prises de position en direct et apprends à les exécuter sur ton compte, étape par étape. L'accès au canal est moins cher selon ton offre.</p></div>
-    <div class="copy-grid">
-      <div class="copy-p"><div class="copy-n">CANAL SEUL</div><div class="copy-v">70<span>€</span></div><div class="copy-d">Sans formation</div></div>
-      <div class="copy-p"><div class="copy-n">AVEC L'ESSENTIEL</div><div class="copy-v">50<span>€</span></div><div class="copy-d">En plus de l'offre à 180 €</div></div>
-      <div class="copy-p"><div class="copy-n">AVEC LE GROUPE</div><div class="copy-v">30<span>€</span></div><div class="copy-d">En plus de l'offre à 500 €</div></div>
-      <div class="copy-p best"><div class="copy-n">AVEC LE 1:1</div><div class="copy-v">10<span>€</span></div><div class="copy-d">En plus de l'offre à 750 €</div></div>
-    </div>
-    <p class="copy-warn">⚠️ Les signaux sont partagés à but pédagogique : ce n'est pas un conseil en investissement. Le trading comporte un risque de perte en capital, les résultats passés ne garantissent pas les résultats futurs.</p>
   </div>
   <p class="pricing-guarantee-note reveal">🛡️ <strong style="color:var(--green)">Garantie de l'offre Accompagnement 1:1 :</strong> si au bout de 2 mois tu n'es pas satisfait, et que malgré ton travail et le respect de nos conseils tu n'as obtenu aucun résultat, tu es remboursé. Voir conditions complètes dans les <a href="dha-cgv.html" style="color:var(--cyan)">CGV</a>.<br/><br/>💳 En cliquant, tu es redirigé vers un paiement sécurisé Stripe. Une fois le paiement confirmé, tu recevras tes accès et les prochaines étapes par email.</p>
   <p class="reveal" style="text-align:center;margin-top:22px;font-size:14px;color:var(--dim, rgba(232,244,255,0.55));">Pas encore sûr ? <a href="dha-inscription-demo.html" style="color:#FFD700;font-weight:700;text-decoration:none;">🎮 Teste la plateforme gratuitement avec la version démo →</a></p>
@@ -1101,6 +1042,20 @@ body.pres .reveal{opacity:1!important;transform:none!important;}
   else{try{var sv=parseInt(sessionStorage.getItem('dha_pres'),10);if(sv>=0&&sv<pages.length)depart=sv;}catch(e){}}
   if('scrollRestoration' in history)history.scrollRestoration='manual';
   aller(depart,1);
+})();
+</script>
+
+<script src="dha-fiche.js"></script>
+<script>
+(function(){
+  // étiquettes « supplément copy trading »
+  document.querySelectorAll('.copy-pill').forEach(function(b){ b.addEventListener('click',function(){ var d=b.nextElementSibling, o=b.getAttribute('aria-expanded')==='true'; b.setAttribute('aria-expanded',!o); d.hidden=o; }); });
+  // carte joueur d'exemple
+  var el=document.getElementById('gxCard');
+  if(el && window.DHAFiche) DHAFiche.render({pseudo:'ton_pseudo',xp:16200,entree:new Date(Date.now()-96*864e5).toISOString(),pos:3,modules:9,serie:21,actif_auj:true,
+    attributs:[['Connaissance',64],['Régularité',88],['Discipline',72],['Rigueur',55],['Communauté',70]],
+    fiche:{bio:'Patience, setup, exécution.',titre:'studieux',style:'day',session:'londres',actifs:['XAUUSD','NAS100'],effets:['particules','neon']},
+    perfs:[{type:'encours',valeur:'50K',firm:'Challenge prop firm',prog:70,statut:'declare'},{type:'trade',valeur:'+3R',firm:'XAUUSD · Londres',statut:'declare'}]},el,{apercu:true,sansPerfs:true});
 })();
 </script>
 </body>

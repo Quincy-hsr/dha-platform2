@@ -198,9 +198,9 @@
       '<div class="fj-st"><div><b>' + fmt(d.xp) + '</b><small>XP</small></div><div><b>' + lvl + '</b><small>LEVEL</small></div><div><b>' + (d.modules || 0) + '/17</b><small>MODULES</small></div><div><b>🔥' + (d.serie || 0) + '</b><small>SÉRIE</small></div></div>' +
       (at.length ? '<div class="fj-sec">ATTRIBUTS <span class="fj-ovr">NOTE ' + ovr + '</span></div><div class="fj-radar">' + radar(at) + '<div class="fj-attrs">' + at.map(function (a) { return '<div class="fj-at"><span>' + esc(a[0]) + '</span><b>' + a[1] + '</b><i style="--v:' + a[1] + '%"></i></div>'; }).join('') + '</div></div>' : '') +
       (chips.length ? '<div class="fj-sec">MON STYLE</div><div class="fj-chips">' + chips.join('') + '</div>' : '') +
-      '<div class="fj-sec">MES PERFS ' + (perfs.length ? '<span>appuie pour retourner →</span>' : '') + '</div>' +
+      (opt.sansPerfs ? '' : '<div class="fj-sec">MES PERFS ' + (perfs.length ? '<span>appuie pour retourner →</span>' : '') + '</div>' +
       (perfs.length ? '<div class="fj-perfs">' + perfs.map(perfHtml).join('') + '</div><p class="fj-disc">Perfs renseignées par le membre. « Vérifié » = preuve contrôlée par Quincy. Les résultats passés ne garantissent pas les résultats futurs.</p>'
-        : '<div class="fj-vide">' + (d.moi ? 'Ajoute ta première perf dans « Modifier ma fiche » 💪' : 'Pas encore de perf renseignée.') + '</div>');
+        : '<div class="fj-vide">' + (d.moi ? 'Ajoute ta première perf dans « Modifier ma fiche » 💪' : 'Pas encore de perf renseignée.') + '</div>'));
     if (!opt.apercu) {
       h += '<div class="fj-acts"><button type="button" class="fj-ab story full" data-fj="story">📸 Partager ma carte en story</button>';
       if (d.moi) h += '<a class="fj-ab edit full" href="dha-ma-fiche.html">✏️ Modifier ma fiche</a>';
