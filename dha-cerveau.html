@@ -1743,7 +1743,7 @@ function paintClients(){
     var m = memberOf(c), rec = c.pseudo ? (PLAT.recent[normPseudo(c.pseudo)]||[]) : [];
     var plat = '';
     if(!c.pseudo) plat = '<span class="badge">Pas relié</span> <button type="button" class="iconbtn" data-act="open-client" data-id="'+esc(c.id)+'">Relier son compte</button>';
-    else plat = '@'+esc(c.pseudo)+(m ? ' · ⚡ '+fmtN(m.xp||0)+' XP · niveau '+levelOf(m.xp) : (PLAT.members.length?' <span class="badge">Compte introuvable</span>':''))+(rec[0] ? ' · actif '+ago(new Date(rec[0].created_at).getTime()) : '')+' <button type="button" class="iconbtn" data-act="relink" data-id="'+esc(c.id)+'">Changer</button>';
+    else plat = '@'+esc(c.pseudo)+(m && m.actif===false ? ' <span class="badge" style="background:rgba(255,68,102,0.15);color:#c41d43;border-color:rgba(214,40,80,0.5)">🚫 Accès retiré</span>' : '')+(m ? ' · ⚡ '+fmtN(m.xp||0)+' XP · niveau '+levelOf(m.xp) : (PLAT.members.length?' <span class="badge">Compte introuvable</span>':''))+(rec[0] ? ' · actif '+ago(new Date(rec[0].created_at).getTime()) : '')+' <button type="button" class="iconbtn" data-act="relink" data-id="'+esc(c.id)+'">Changer</button>';
     var alert = '', restC = remainingOf(c);
     { var late = active ? lateInfo(c) : ''; if(late) alert = late; }
     var money = restC>0 ? '<span class="badge" style="background:var(--leak-bg);color:var(--leak)">💶 Doit encore '+euro(restC)+'</span>' : (c.price>0 ? '<span class="badge ok">Payé</span>' : '');
@@ -2060,7 +2060,7 @@ function openClient(c){
   var pm = memberOf(c), prec = c.pseudo ? (PLAT.recent[normPseudo(c.pseudo)]||[]) : [];
   var platBox = pm ? '<div class="pinfo" style="display:block"><div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap"><b>Sur la plateforme : @'+esc(pm.pseudo)+'</b><span>⚡ '+fmtN(pm.xp||0)+' XP · niveau '+levelOf(pm.xp)+'</span></div>'
     +(prec.length ? '<div class="tl" style="margin-top:8px">'+prec.slice(0,8).map(function(r){ return '<div><b>+'+fmtN(r.xp_gagne||0)+' XP</b> · '+esc(String(r.raison||'').split(' · ')[0])+' <span class="sub">('+ago(new Date(r.created_at).getTime())+')</span></div>'; }).join('')+'</div>' : '<p class="sub" style="margin:6px 0 0">Aucune activité pour l\'instant.</p>')
-    +'<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px"><button type="button" class="btn small primary" data-act="xp-open" data-id="'+esc(c.id)+'">⚡ Ajouter de l\'XP</button><button type="button" class="btn small" data-act="pw-reset" data-id="'+esc(c.id)+'">🔑 Nouveau mot de passe</button><button type="button" class="btn small'+(pm.copy_trading?' primary':'')+'" data-act="copy-tog" data-id="'+esc(c.id)+'">📡 Copy trading : '+(pm.copy_trading?'activé ✓':'désactivé')+'</button></div></div>'
+    +'<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px"><button type="button" class="btn small primary" data-act="xp-open" data-id="'+esc(c.id)+'">⚡ Ajouter de l\'XP</button><button type="button" class="btn small" data-act="pw-reset" data-id="'+esc(c.id)+'">🔑 Nouveau mot de passe</button><button type="button" class="btn small'+(pm.copy_trading?' primary':'')+'" data-act="copy-tog" data-id="'+esc(c.id)+'">📡 Copy trading : '+(pm.copy_trading?'activé ✓':'désactivé')+'</button>'+(pm.actif===false?'<button type="button" class="btn small primary" data-act="acc-tog" data-id="'+esc(c.id)+'">✅ Rendre l\'accès</button>':'<button type="button" class="btn small" style="color:#c41d43;border-color:rgba(214,40,80,0.5)" data-act="acc-tog" data-id="'+esc(c.id)+'">🚫 Retirer l\'accès</button>')+'</div>'+(pm.actif===false?'<p style="margin:10px 0 0;padding:10px 12px;border-radius:10px;background:rgba(255,68,102,0.1);border:1px solid rgba(255,68,102,0.4);color:#b3123a;font-size:14px">🚫 <b>Accès retiré</b> : ce membre ne peut plus se connecter à la plateforme. Sa progression est conservée.</p>':'')+'</div>'
     : '<div class="pinfo" style="display:block"><b>Pas encore relié à son compte.</b> <span class="sub">Choisis son pseudo plus bas pour voir son activité en temps réel.</span></div>';
   openDlg('<div class="dlg-body"><h2 id="dlgTitle">'+(c.name?esc(c.name):'Nouveau membre')+'</h2>'+(c.id && S.clients.some(function(x){ return x.id===c.id; }) ? platBox : '')
     +'<div class="two"><div><label for="cdName">Nom ou pseudo</label><input id="cdName" value="'+esc(c.name||'')+'"></div><div><label for="cdStatus">Statut</label><select id="cdStatus">'+CLIENT_STATUS.map(function(s){return '<option value="'+s[0]+'"'+((c.status||'actif')===s[0]?' selected':'')+'>'+s[1]+'</option>';}).join('')+'</select></div></div>'
@@ -2219,6 +2219,11 @@ document.addEventListener('click', function(ev){
     case 'rel-wa': marquerRelance(el.getAttribute('data-k')); return;
     case 'rel-ok': marquerRelance(el.getAttribute('data-k')); toast('Noté : relancé'); break;
     case 'rel-all': RELANCE_ALL = !RELANCE_ALL; schedule(); break;
+    case 'acc-tog': ev.stopPropagation(); var ac = byId(S.clients), am = ac && memberOf(ac); if(!am) break;
+      var on = am.actif===false;
+      if(!confirm(on ? 'Rendre l\'accès à la plateforme à @'+am.pseudo+' ?' : 'Retirer l\'accès à la plateforme à @'+am.pseudo+' ?\n\nIl ne pourra plus se connecter et sera déconnecté. Son XP et sa progression sont conservés, tu pourras lui rendre l\'accès quand tu veux.')) break;
+      DHA.admin('dha_admin_update_membre',{p_id:am.id, p:{actif:on}}).then(function(r){ if(r){ am.actif = r.actif!==false; toast(on?'Accès rendu à @'+am.pseudo:'Accès retiré à @'+am.pseudo); openClient(ac); schedule(); } else toast('Échec'); }).catch(function(){ toast('Échec'); });
+      break;
     case 'copy-tog': ev.stopPropagation(); var cc = byId(S.clients), cm = cc && memberOf(cc); if(!cm) break;
       var nv = !cm.copy_trading;
       if(nv && !confirm('Activer l\'accès copy trading pour @'+cm.pseudo+' ? (paiement et preuve de dépôt reçus)')) break;
