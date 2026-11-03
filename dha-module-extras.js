@@ -95,9 +95,13 @@
   anchor.parentNode.insertBefore(retake, anchor.nextSibling);
 
   // Le bouton apparaît dès que le quiz est validé (ou déjà fait)
+  // (on ne réécrit le texte que s'il change : le réécrire en boucle cassait le clic)
+  var libelle = '';
   setInterval(function () {
-    retake.style.display = (quizBtn.disabled && !window.dhaQuizRetake) ? 'block' : 'none';
-    retake.textContent = revisionDejaFaite() ? '🔁 REFAIRE LE QUIZ (RÉVISION)' : '🔁 REFAIRE LE QUIZ — +' + XP_REFAIT + ' XP';
+    var d = (quizBtn.disabled && !window.dhaQuizRetake) ? 'block' : 'none';
+    if (retake.style.display !== d) retake.style.display = d;
+    var t = revisionDejaFaite() ? '🔁 REFAIRE LE QUIZ (RÉVISION)' : '🔁 REFAIRE LE QUIZ — +' + XP_REFAIT + ' XP';
+    if (t !== libelle) { libelle = t; retake.textContent = t; }
   }, 400);
 
   retake.addEventListener('click', function () {
