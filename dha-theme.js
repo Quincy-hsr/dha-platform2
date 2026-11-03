@@ -150,7 +150,7 @@
     var w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null), n, todo = [];
     while ((n = w.nextNode())) { RE_EMO.lastIndex = 0; if (RE_EMO.test(n.nodeValue)) todo.push(n); }
     todo.forEach(function (t) {
-      var p = t.parentNode; if (!p || SAUTER.test(p.nodeName) || (p.closest && p.closest('svg,select,textarea'))) return;
+      var p = t.parentNode; if (!p || SAUTER.test(p.nodeName) || (p.closest && p.closest('svg,select,textarea,.th-keep'))) return;
       var txt = t.nodeValue, html = '', last = 0, m, touche = false;
       RE_EMO.lastIndex = 0;
       while ((m = RE_EMO.exec(txt))) {

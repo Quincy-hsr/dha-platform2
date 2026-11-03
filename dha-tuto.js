@@ -215,6 +215,8 @@
       var a = document.createElement('a'); a.href = '#'; a.className = 'tt-again'; a.textContent = '🎮 REVOIR LE TUTO';
       a.onclick = function (e) { e.preventDefault(); lancer(); };
       zone.appendChild(a); zone.style.flexWrap = 'wrap'; zone.style.gap = '8px';
+      var fj = document.createElement('a'); fj.href = 'dha-ma-fiche.html'; fj.className = 'tt-again tt-fiche'; fj.textContent = '🪪 MA FICHE JOUEUR';
+      zone.appendChild(fj);
     }
     // Mobile : proposer d'installer l'appli (pas si déjà ouverte comme appli)
     var mobile = /iphone|ipad|ipod|android/i.test(navigator.userAgent || '');

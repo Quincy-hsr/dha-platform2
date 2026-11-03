@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<script src="dha-api.js"></script>
+<script src="dha-theme.js"></script>
+<script src="dha-guard.js"></script>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+<title>DHA — Ma fiche joueur</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+:root{--bg:#050914;--card:rgba(16,28,62,0.72);--line:rgba(255,255,255,0.12);--white:#F2F6FF;--dim:#A9B8D6;--cyan:#00D4FF;--blue:#1E64FF;--gold:#FFD700;--green:#00FF88;--red:#FF4466;}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--white);font-family:Manrope,system-ui,sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+button,input,select,textarea{font:inherit;color:inherit}
+.wrap{max-width:1080px;margin:0 auto;padding:0 16px calc(110px + env(safe-area-inset-bottom));position:relative;z-index:1}
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:18px 0 4px}
+.back{display:inline-flex;align-items:center;gap:8px;padding:10px 14px;border-radius:999px;border:1px solid var(--line);background:rgba(16,28,62,0.6);color:var(--white);text-decoration:none;font-family:Sora,sans-serif;font-size:13px;font-weight:600}
+.kick{font-family:Sora,sans-serif;font-size:12px;font-weight:700;letter-spacing:3px;color:var(--cyan);margin:18px 0 6px}
+h1{font-family:Sora,sans-serif;font-size:clamp(24px,6vw,32px);font-weight:800;margin-bottom:6px}
+.lead{color:var(--dim);font-size:15px;line-height:1.5;margin-bottom:20px}
+.grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,420px);gap:26px;align-items:start}
+.prev{position:sticky;top:16px;order:2}
+@media(max-width:900px){.grid{grid-template-columns:1fr}.prev{position:static;order:0}}
+.sec{border-radius:20px;border:1px solid var(--line);background:var(--card);padding:16px;margin-bottom:14px}
+.sec h2{font-family:Sora,sans-serif;font-size:15px;margin-bottom:4px}
+.sec .h{font-size:13px;color:var(--dim);margin-bottom:12px;line-height:1.45}
+.opts{display:flex;flex-wrap:wrap;gap:6px}
+.o{padding:9px 12px;border-radius:10px;border:1px solid var(--line);background:transparent;font-size:13px;font-weight:600;color:var(--dim);cursor:pointer;text-align:left}
+.o.on{border-color:var(--cyan);color:var(--white);background:rgba(0,212,255,0.1)}
+.o[aria-disabled="true"]{opacity:.45;cursor:not-allowed}
+.o small{display:block;font-size:11px;font-weight:500;opacity:.8}
+.o:focus-visible,.fxt:focus-visible,.btn:focus-visible,.in:focus-visible,.sw:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.in{width:100%;padding:12px 14px;border-radius:12px;border:1px solid var(--line);background:rgba(5,9,20,0.6);font-size:15px;color:var(--white)}
+textarea.in{resize:vertical;min-height:70px;line-height:1.45}
+.cnt{font-size:12px;color:var(--dim);text-align:right;margin-top:4px}
+.lab{display:block;font-family:Sora,sans-serif;font-size:11px;font-weight:700;letter-spacing:1.5px;color:var(--dim);margin:12px 0 7px}
+.fxg{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+@media(max-width:480px){.fxg{grid-template-columns:1fr}}
+.fxt{display:flex;gap:10px;align-items:flex-start;text-align:left;padding:11px;border-radius:14px;border:1px solid var(--line);background:rgba(5,9,20,0.4);cursor:pointer}
+.fxt .e{font-size:20px;width:36px;height:36px;border-radius:11px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.06);flex-shrink:0}
+.fxt b{display:block;font-family:Sora,sans-serif;font-size:13px}
+.fxt small{display:block;font-size:11.5px;color:var(--dim);margin-top:2px;line-height:1.35}
+.fxt .t{display:inline-block;margin-top:5px;font-size:10px;font-weight:800;letter-spacing:1px;padding:3px 8px;border-radius:99px;background:rgba(255,255,255,0.08)}
+.fxt.on{border-color:var(--cyan);box-shadow:0 0 0 1px var(--cyan) inset}.fxt.on .t{background:rgba(0,212,255,0.15);color:var(--cyan)}
+.fxt.lock{opacity:.5;cursor:not-allowed}.fxt.lock .t{background:rgba(255,68,102,0.12);color:#ff8aa0}
+.tg{display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:14px}
+.sw{width:48px;height:28px;border-radius:99px;background:rgba(255,255,255,0.15);position:relative;flex-shrink:0;border:none;cursor:pointer}
+.sw:after{content:'';position:absolute;top:4px;left:4px;width:20px;height:20px;border-radius:50%;background:#fff;transition:left .2s}
+.sw[aria-checked="true"]{background:#25D366}.sw[aria-checked="true"]:after{left:24px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+@media(max-width:480px){.two{grid-template-columns:1fr}}
+.perf{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:12px;border:1px solid var(--line);background:rgba(5,9,20,0.4);margin-bottom:8px;font-size:14px}
+.perf .ic{font-size:20px}
+.perf .tx{flex:1;min-width:0}.perf .tx small{display:block;color:var(--dim);font-size:12px}
+.stt{font-size:10px;font-weight:800;letter-spacing:.5px;padding:3px 8px;border-radius:99px;white-space:nowrap}
+.stt.v{background:rgba(0,255,136,0.12);color:var(--green)}.stt.a{background:rgba(0,212,255,0.12);color:var(--cyan)}.stt.d{background:rgba(255,215,0,0.12);color:#FFE680}.stt.r{background:rgba(255,68,102,0.12);color:#ff8aa0}
+.del{border:none;background:transparent;color:var(--dim);font-size:16px;cursor:pointer;padding:6px}
+.upl{display:flex;align-items:center;justify-content:center;gap:8px;padding:12px;border-radius:12px;border:1px dashed rgba(0,212,255,0.5);font-size:13px;color:var(--cyan);cursor:pointer;text-align:center}
+.upl input{position:absolute;opacity:0;width:1px;height:1px}
+.thumb{max-width:100%;max-height:140px;border-radius:10px;margin-top:8px;display:none}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:13px 20px;border-radius:999px;border:none;background:linear-gradient(135deg,var(--blue),var(--cyan));color:#020610;font-family:Sora,sans-serif;font-weight:800;font-size:14px;cursor:pointer}
+.btn.sec2{background:rgba(255,255,255,0.06);border:1px solid var(--line);color:var(--white)}
+.btn:disabled{opacity:.5;cursor:wait}
+.bar{position:fixed;left:0;right:0;bottom:0;z-index:50;padding:12px 16px calc(12px + env(safe-area-inset-bottom));background:rgba(5,9,20,0.92);border-top:1px solid var(--line);display:flex;justify-content:center;gap:10px;align-items:center}
+.bar .btn{min-width:240px}
+.msg{font-size:13px;color:var(--green);min-height:18px}
+.err{color:#ff8aa0}
+.load{padding:60px 0;text-align:center;color:var(--dim);font-family:Sora,sans-serif;letter-spacing:2px;font-size:13px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top"><a class="back" href="dha-dashboard.html">← Dashboard</a><a class="back" href="dha-leaderboard.html">Leaderboard ›</a></div>
+  <div class="kick">MA FICHE JOUEUR</div>
+  <h1>Personnalise ta carte</h1>
+  <p class="lead">C'est ta carte dans le leaderboard. Ton XP, tes modules et tes attributs se mettent à jour tout seuls ; le reste, c'est toi qui choisis. Les effets et les titres se débloquent en avançant.</p>
+
+  <div id="app" class="th-keep"><div class="load">CHARGEMENT…</div></div>
+</div>
+<div class="bar"><span class="msg" id="msg" role="status"></span><button class="btn" id="save" type="button">💾 ENREGISTRER MA CARTE</button></div>
+
+<script src="dha-fiche.js"></script>
+<script>
+(function(){
+  var F=window.DHAFiche, D=null, E=null;
+  var BIOS=['Discipline avant profit.','Un plan, des règles, zéro émotion.','Je pars de zéro, mais je ne lâche rien.','Patience, setup, exécution.','Je trade peu, mais je trade bien.','Le marché paye les patients.'];
+  var ACTIFS=['XAUUSD','EURUSD','GBPUSD','USDJPY','NAS100','US30','SP500','GER40','BTCUSD','ETHUSD'];
+  function esc(t){return String(t==null?'':t).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+  function $(s){return document.querySelector(s);}
+  function msg(t,err){var m=$('#msg');m.textContent=t||'';m.className='msg'+(err?' err':'');}
+
+  async function charger(){
+    var m=DHA.local()||{};
+    try{ D=await DHA.rpc('dha_fiche',{p_token:await DHA.token(),p_pseudo:m.pseudo}); }catch(e){ D=null; }
+    if(!D){ $('#app').innerHTML='<div class="load">Ta fiche n\'est pas disponible pour l\'instant (compte démo ou session expirée).</div>'; $('.bar').style.display='none'; return; }
+    var f=D.fiche||{};
+    E={bio:f.bio||'',titre:f.titre||'debutant',style:f.style||'',session:f.session||'',actifs:(f.actifs||[]).slice(),effets:(f.effets||[]).slice(),insta:f.insta||'',wa_on:!!f.wa_on,wa_num:D.wa_num||''};
+    dessiner();
+  }
+
+  function dessiner(){
+    var t=D.titres||['debutant'], fxok=D.effets_ok||[];
+    var h='<div class="grid"><div class="prev" id="prev"></div><div>'
+    +'<section class="sec"><h2>📝 Ma bio</h2><p class="h">Choisis une phrase ou écris la tienne (120 caractères max).</p><div class="opts" id="bios">'+BIOS.map(function(b){return '<button type="button" class="o'+(E.bio===b?' on':'')+'" data-bio="'+esc(b)+'">'+esc(b)+'</button>';}).join('')+'</div>'
+    +'<textarea class="in" id="bio" maxlength="120" style="margin-top:10px" placeholder="Écris ta bio…" aria-label="Ma bio">'+esc(E.bio)+'</textarea><div class="cnt" id="cnt"></div></section>'
+    +'<section class="sec"><h2>🏷️ Mon titre</h2><p class="h">Il s\'affiche sous ton pseudo. Les titres se débloquent avec tes succès.</p><div class="opts" id="titres">'+Object.keys(F.TITRES).map(function(k){var ok=t.indexOf(k)>-1;return '<button type="button" class="o'+(E.titre===k?' on':'')+'" data-titre="'+k+'"'+(ok?'':' aria-disabled="true"')+'>'+(ok?'':'🔒 ')+esc(F.TITRES[k])+(ok?'':'<small>'+esc(F.TITRES_COND[k])+'</small>')+'</button>';}).join('')+'</div></section>'
+    +'<section class="sec"><h2>📊 Mon style</h2><span class="lab">STYLE</span><div class="opts" data-grp="style">'+Object.keys(F.STYLES).map(function(k){return '<button type="button" class="o'+(E.style===k?' on':'')+'" data-v="'+k+'">'+F.STYLES[k]+'</button>';}).join('')+'</div>'
+    +'<span class="lab">SESSION</span><div class="opts" data-grp="session">'+Object.keys(F.SESSIONS).map(function(k){return '<button type="button" class="o'+(E.session===k?' on':'')+'" data-v="'+k+'">'+F.SESSIONS[k].replace('Session ','')+'</button>';}).join('')+'</div>'
+    +'<span class="lab">MES ACTIFS · 3 MAX</span><div class="opts" id="actifs">'+ACTIFS.map(function(a){return '<button type="button" class="o'+(E.actifs.indexOf(a)>-1?' on':'')+'" data-a="'+a+'">'+a+'</button>';}).join('')+'</div></section>'
+    +'<section class="sec"><h2>✨ Mes effets de carte</h2><p class="h">Équipe jusqu\'à 3 effets débloqués.</p><div class="fxg" id="fx">'+F.FX.map(function(x){var ok=fxok.indexOf(x.k)>-1,on=E.effets.indexOf(x.k)>-1;return '<button type="button" class="fxt '+(on?'on':ok?'':'lock')+'" data-fx="'+x.k+'"'+(ok?'':' aria-disabled="true"')+'><span class="e">'+x.e+'</span><span><b>'+x.n+'</b><small>'+(ok?'Débloqué · ':'🔒 ')+x.c+'</small><span class="t">'+(on?'ÉQUIPÉ':ok?'ÉQUIPER':'VERROUILLÉ')+'</span></span></button>';}).join('')+'</div></section>'
+    +'<section class="sec"><h2>💬 Me contacter</h2><div class="tg"><span>Afficher le bouton « Écrire sur WhatsApp » sur ma carte</span><button type="button" class="sw" id="wa" role="switch" aria-checked="'+E.wa_on+'" aria-label="Afficher WhatsApp"></button></div>'
+    +'<div id="waBox" style="'+(E.wa_on?'':'display:none')+'"><span class="lab">MON NUMÉRO WHATSAPP</span><input class="in" id="waNum" inputmode="tel" maxlength="20" value="'+esc(E.wa_num)+'" placeholder="06 12 34 56 78"/><p class="h" style="margin:6px 0 0">Visible uniquement par les membres de la DHA connectés.</p></div>'
+    +'<span class="lab">MON INSTAGRAM (OPTIONNEL)</span><input class="in" id="insta" maxlength="30" value="'+esc(E.insta)+'" placeholder="ton_pseudo (sans @)"/></section>'
+    +'<section class="sec"><h2>🏆 Mes perfs</h2><p class="h">Ajoute tes résultats. Avec une preuve (capture), Quincy la vérifie et ta carte passe en « ✔ Vérifié ». Jamais de montant en euros.</p><div id="perfs"></div>'
+    +'<details id="addp"'+((D.perfs||[]).length?'':' open')+'><summary class="btn sec2" style="list-style:none;width:100%">➕ Ajouter une perf</summary><div style="margin-top:12px">'
+    +'<span class="lab">TYPE</span><select class="in" id="pType">'+Object.keys(F.PERF).map(function(k){return '<option value="'+k+'">'+F.PERF[k].ic+' '+F.PERF[k].n+'</option>';}).join('')+'</select>'
+    +'<div class="two"><div><span class="lab" id="pValLab">TAILLE DU COMPTE</span><input class="in" id="pVal" maxlength="12" placeholder="100K"/></div><div><span class="lab">PROP FIRM / BROKER</span><input class="in" id="pFirm" maxlength="30" placeholder="FTMO"/></div></div>'
+    +'<div class="two"><div><span class="lab">DATE</span><input class="in" id="pDate" maxlength="20" placeholder="oct. 2026"/></div><div id="pProgBox" style="display:none"><span class="lab">PROGRESSION (%)</span><input class="in" id="pProg" type="number" min="0" max="100" placeholder="60"/></div></div>'
+    +'<span class="lab">DÉTAIL (OPTIONNEL)</span><input class="in" id="pDet" maxlength="140" placeholder="Phase 1 et 2 validées en septembre"/>'
+    +'<span class="lab">PREUVE (RECOMMANDÉ)</span><label class="upl">📎 <span id="pFileTxt">Ajouter une capture</span><input type="file" id="pFile" accept="image/*"/></label><img class="thumb" id="pThumb" alt="Aperçu de la preuve"/>'
+    +'<div style="margin-top:12px"><button type="button" class="btn" id="pAdd">AJOUTER CETTE PERF</button></div></div></details></section>'
+    +'</div></div>';
+    $('#app').innerHTML=h;
+    perfsListe(); apercu(); compteur(); typeChange();
+    brancher();
+  }
+
+  function perfsListe(){
+    var ps=D.perfs||[];
+    $('#perfs').innerHTML=ps.length?ps.map(function(p){var t=F.PERF[p.type]||F.PERF.trade,s=p.statut==='verifie'?['v','✔ VÉRIFIÉ']:p.statut==='attente'?['a','⏳ EN VÉRIFICATION']:p.statut==='refuse'?['r','✕ REFUSÉ']:['d','• DÉCLARÉ'];
+      return '<div class="perf"><span class="ic">'+t.ic+'</span><span class="tx"><b>'+esc(p.valeur||t.n)+'</b> · '+esc(t.n)+'<small>'+esc([p.firm,p.date_perf].filter(Boolean).join(' · '))+'</small></span><span class="stt '+s[0]+'">'+s[1]+'</span><button type="button" class="del" data-del="'+p.id+'" aria-label="Supprimer cette perf">🗑</button></div>';}).join(''):'';
+  }
+  function apercu(){
+    var d=Object.assign({},D,{fiche:{bio:E.bio,titre:E.titre,style:E.style,session:E.session,actifs:E.actifs,effets:E.effets,insta:E.insta,wa_on:E.wa_on}});
+    F.render(d,$('#prev'),{apercu:true,mesPerfs:true});
+  }
+  function compteur(){ $('#cnt').textContent=E.bio.length+'/120'; }
+  function typeChange(){ var t=$('#pType').value; $('#pProgBox').style.display=t==='encours'?'':'none';
+    $('#pValLab').textContent=t==='trade'?'RÉSULTAT (EN R)':'TAILLE DU COMPTE'; $('#pVal').placeholder=t==='trade'?'+4,2R':'100K'; }
+
+  var preuve=null;
+  function compresser(file){ return new Promise(function(ok,ko){ var r=new FileReader(); r.onload=function(){ var im=new Image(); im.onload=function(){ var M=1280,w=im.width,h=im.height,k=Math.min(1,M/Math.max(w,h)); var c=document.createElement('canvas'); c.width=Math.round(w*k); c.height=Math.round(h*k); c.getContext('2d').drawImage(im,0,0,c.width,c.height); var q=0.75,u=c.toDataURL('image/jpeg',q); while(u.length>650000&&q>0.35){q-=0.1;u=c.toDataURL('image/jpeg',q);} ok(u); }; im.onerror=ko; im.src=r.result; }; r.onerror=ko; r.readAsDataURL(file); }); }
+
+  function brancher(){
+    $('#bios').onclick=function(e){var b=e.target.closest('[data-bio]');if(!b)return;E.bio=b.getAttribute('data-bio');$('#bio').value=E.bio;document.querySelectorAll('#bios .o').forEach(function(x){x.classList.toggle('on',x===b);});compteur();apercu();};
+    $('#bio').oninput=function(){E.bio=this.value.slice(0,120);document.querySelectorAll('#bios .o').forEach(function(x){x.classList.toggle('on',x.getAttribute('data-bio')===E.bio);});compteur();apercu();};
+    $('#titres').onclick=function(e){var b=e.target.closest('[data-titre]');if(!b||b.getAttribute('aria-disabled'))return;E.titre=b.getAttribute('data-titre');document.querySelectorAll('#titres .o').forEach(function(x){x.classList.toggle('on',x===b);});apercu();};
+    document.querySelectorAll('[data-grp]').forEach(function(g){g.onclick=function(e){var b=e.target.closest('[data-v]');if(!b)return;var k=g.getAttribute('data-grp'),v=b.getAttribute('data-v');E[k]=E[k]===v?'':v;g.querySelectorAll('.o').forEach(function(x){x.classList.toggle('on',x.getAttribute('data-v')===E[k]);});apercu();};});
+    $('#actifs').onclick=function(e){var b=e.target.closest('[data-a]');if(!b)return;var a=b.getAttribute('data-a'),i=E.actifs.indexOf(a);if(i>-1)E.actifs.splice(i,1);else{if(E.actifs.length>=3){msg('3 actifs maximum',true);return;}E.actifs.push(a);}msg('');b.classList.toggle('on',E.actifs.indexOf(a)>-1);apercu();};
+    $('#fx').onclick=function(e){var b=e.target.closest('[data-fx]');if(!b||b.getAttribute('aria-disabled'))return;var k=b.getAttribute('data-fx'),i=E.effets.indexOf(k);if(i>-1)E.effets.splice(i,1);else{if(E.effets.length>=3){msg('3 effets maximum : retire-en un d\'abord',true);return;}E.effets.push(k);}msg('');
+      document.querySelectorAll('#fx .fxt').forEach(function(x){var on=E.effets.indexOf(x.getAttribute('data-fx'))>-1;if(x.classList.contains('lock'))return;x.classList.toggle('on',on);x.querySelector('.t').textContent=on?'ÉQUIPÉ':'ÉQUIPER';});apercu();};
+    $('#wa').onclick=function(){E.wa_on=!E.wa_on;this.setAttribute('aria-checked',E.wa_on);$('#waBox').style.display=E.wa_on?'':'none';apercu();};
+    $('#waNum').oninput=function(){E.wa_num=this.value;};
+    $('#insta').oninput=function(){E.insta=this.value.replace(/^@/,'').replace(/[^A-Za-z0-9._]/g,'');apercu();};
+    $('#pType').onchange=typeChange;
+    $('#pFile').onchange=async function(){var f=this.files&&this.files[0];if(!f)return;try{preuve=await compresser(f);$('#pThumb').src=preuve;$('#pThumb').style.display='block';$('#pFileTxt').textContent='Capture ajoutée ✓ (changer)';}catch(e){preuve=null;msg('Image illisible',true);}};
+    $('#pAdd').onclick=async function(){var b=this,t=$('#pType').value,v=$('#pVal').value.trim();if(!v&&t!=='payout'){msg('Renseigne la taille ou le résultat',true);return;}
+      b.disabled=true;msg('');
+      try{var r=await DHA.rpc('dha_perf_add',{p_token:await DHA.token(),p:{type:t,valeur:v,firm:$('#pFirm').value.trim(),date_perf:$('#pDate').value.trim(),prog:$('#pProg').value?Number($('#pProg').value):null,detail:$('#pDet').value.trim(),preuve:preuve}});
+        if(r){D.perfs=[r].concat(D.perfs||[]);preuve=null;['#pVal','#pFirm','#pDate','#pProg','#pDet'].forEach(function(s){$(s).value='';});$('#pThumb').style.display='none';$('#pFileTxt').textContent='Ajouter une capture';$('#pFile').value='';perfsListe();apercu();msg(r.statut==='attente'?'Perf ajoutée : Quincy va vérifier ta preuve ✔':'Perf ajoutée ✔');}
+      }catch(e){msg(e.message&&/12/.test(e.message)?'12 perfs maximum':'Échec, réessaie',true);}
+      b.disabled=false;};
+    $('#perfs').onclick=async function(e){var b=e.target.closest('[data-del]');if(!b)return;if(!confirm('Supprimer cette perf ?'))return;var id=b.getAttribute('data-del');
+      try{var ok=await DHA.rpc('dha_perf_del',{p_token:await DHA.token(),p_id:id});if(ok){D.perfs=(D.perfs||[]).filter(function(p){return p.id!==id;});perfsListe();apercu();msg('Perf supprimée');}}catch(er){msg('Échec',true);}};
+  }
+
+  $('#save').onclick=async function(){var b=this;if(!E)return;
+    if(E.wa_on&&String(E.wa_num).replace(/[^0-9]/g,'').length<9){msg('Renseigne ton numéro WhatsApp',true);return;}
+    b.disabled=true;msg('Enregistrement…');
+    try{var r=await DHA.rpc('dha_fiche_set',{p_token:await DHA.token(),p:E});if(r){D.fiche=r;msg('Carte enregistrée ✔');}else msg('Session expirée, reconnecte-toi',true);}catch(e){msg('Échec, réessaie',true);}
+    b.disabled=false;};
+
+  charger();
+})();
+</script>
+</body>
+</html>

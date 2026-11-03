@@ -1132,6 +1132,41 @@ function saveCopyCfg(){
   DHA.admin('dha_admin_copy_set',{p:p}).then(function(ok){ if(ok){ COPY.cfg = p; closeDlg(); schedule(); toast('Réglages enregistrés'); } else toast('Échec de l\'enregistrement'); }).catch(function(){ toast('Échec de l\'enregistrement'); });
 }
 
+
+/* ---------- perfs des fiches joueurs : vérification des preuves ---------- */
+var PERFS = {list:[], ok:false, all:false};
+function loadPerfs(){
+  if(!DHA.adminKey()) return Promise.resolve();
+  return DHA.admin('dha_admin_perfs').then(function(d){ if(Array.isArray(d)){ PERFS.list = d; PERFS.ok = true; schedule(); } }).catch(function(){});
+}
+loadPerfs();
+var PERF_LBL = {propfirm:'🏆 Prop firm validée', payout:'💸 Payout reçu', encours:'⏳ Challenge en cours', trade:'🎯 Meilleur trade', reel:'📈 Compte réel'};
+function paintPerfs(){
+  var box = $('#perfsv'); if(!box) return;
+  if(!PERFS.ok){ box.innerHTML = ''; return; }
+  var att = PERFS.list.filter(function(p){ return p.statut==='attente'; });
+  var L = PERFS.all ? PERFS.list : att;
+  box.innerHTML = '<section class="card"><div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap"><h3 style="margin:0">🏆 Perfs à vérifier <span class="badge" style="margin:0">'+att.length+'</span></h3><button type="button" class="btn small" data-act="perf-all">'+(PERFS.all?'Voir seulement à vérifier':'Voir toutes les perfs ('+PERFS.list.length+')')+'</button></div>'
+    + '<p class="sub" style="font-size:13px;margin:8px 0 10px">Les membres ajoutent leurs perfs sur leur fiche joueur. Regarde la preuve puis valide : la carte passe en « ✔ Vérifié ».</p>'
+    + (L.length ? '<div style="display:flex;flex-direction:column;gap:10px">'+L.map(function(p){
+        var st = p.statut==='verifie'?'<span class="badge" style="background:rgba(0,160,90,0.12);color:#0a7a4a">✔ Vérifiée</span>':p.statut==='refuse'?'<span class="badge" style="background:rgba(214,40,80,0.12);color:#c41d43">Refusée</span>':p.statut==='attente'?'<span class="badge">À vérifier</span>':'<span class="badge">Sans preuve</span>';
+        return '<div style="display:flex;gap:12px;flex-wrap:wrap;align-items:flex-start;padding:12px;border:1px solid var(--line);border-radius:12px">'
+          + (p.preuve ? '<button type="button" data-act="perf-img" data-id="'+esc(p.id)+'" aria-label="Agrandir la preuve" style="padding:0;border:none;background:none;cursor:zoom-in"><img src="'+p.preuve+'" alt="Preuve" style="width:110px;height:110px;object-fit:cover;border-radius:10px;border:1px solid var(--line)"></button>' : '')
+          + '<div style="flex:1;min-width:180px"><b>@'+esc(p.pseudo)+'</b> · '+esc(PERF_LBL[p.type]||p.type)+' '+st
+          + '<div style="margin-top:4px"><b>'+esc(p.valeur||'—')+'</b>'+(p.firm?' · '+esc(p.firm):'')+(p.date_perf?' · '+esc(p.date_perf):'')+(p.prog!=null?' · '+p.prog+' %':'')+'</div>'
+          + (p.detail?'<div class="sub" style="font-size:13px;margin-top:2px">'+esc(p.detail)+'</div>':'')
+          + '<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px">'
+          + (p.statut!=='verifie'?'<button type="button" class="btn small primary" data-act="perf-ok" data-id="'+esc(p.id)+'">✔ Vérifier</button>':'')
+          + (p.statut!=='refuse'?'<button type="button" class="btn small" data-act="perf-ko" data-id="'+esc(p.id)+'">✕ Refuser</button>':'')
+          + (p.statut==='verifie'||p.statut==='refuse'?'<button type="button" class="btn small" data-act="perf-reset" data-id="'+esc(p.id)+'">↺ Remettre en attente</button>':'')
+          + '</div></div></div>';
+      }).join('')+'</div>' : '<p class="sub" style="margin:0">'+(PERFS.all?'Aucune perf renseignée pour l\'instant.':'Rien à vérifier pour l\'instant ✓')+'</p>')
+    + '</section>';
+}
+function setPerf(id, statut, msgOk){
+  DHA.admin('dha_admin_perf_set',{p_id:id, p_statut:statut}).then(function(ok){ if(ok){ PERFS.list.forEach(function(p){ if(p.id===id) p.statut = statut; }); schedule(); toast(msgOk); } else toast('Échec'); }).catch(function(){ toast('Échec'); });
+}
+
 /* ---------- lives & replays (page dha-lives.html de la plateforme) ---------- */
 var LIVES = {planning:{}, replays:[], ok:false}, LV_JOURS = ['Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi','Dimanche'];
 function loadLives(){
@@ -1717,7 +1752,7 @@ function paintContent(){
 
 /* ---------- vue : clients ---------- */
 function skelClients(){
-  return '<div class="stack"><div id="cash"></div><div id="relance"></div><div id="lives"></div><div id="copycfg"></div><div id="linkBanner"></div><div id="cfilt" style="display:flex;flex-wrap:wrap;gap:8px"></div><div class="toolbar" style="margin:0"><p class="sub">Un prospect passé en « Client » crée sa fiche automatiquement.</p><span style="display:flex;gap:10px;flex-wrap:wrap"><button type="button" class="btn" data-act="tab" data-tab="membres">🤝 Parrainages &amp; comptes</button><span id="clexp"></span><button type="button" class="btn primary" data-act="new-client">Nouveau membre</button></span></div><div class="grid" id="cg"></div></div>';
+  return '<div class="stack"><div id="cash"></div><div id="relance"></div><div id="perfsv"></div><div id="lives"></div><div id="copycfg"></div><div id="linkBanner"></div><div id="cfilt" style="display:flex;flex-wrap:wrap;gap:8px"></div><div class="toolbar" style="margin:0"><p class="sub">Un prospect passé en « Client » crée sa fiche automatiquement.</p><span style="display:flex;gap:10px;flex-wrap:wrap"><button type="button" class="btn" data-act="tab" data-tab="membres">🤝 Parrainages &amp; comptes</button><span id="clexp"></span><button type="button" class="btn primary" data-act="new-client">Nouveau membre</button></span></div><div class="grid" id="cg"></div></div>';
 }
 function paintClients(){
   if(!$('#cg')) return;
@@ -1727,7 +1762,7 @@ function paintClients(){
   var cash = $('#cash');
   if(cash) cash.innerHTML = '<section class="card" style="display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between"><div><span style="display:block;color:var(--muted);font-size:13px;font-weight:600">💶 Reste à encaisser</span><span style="font:700 30px/1.1 var(--f-display)">'+euro(oweTot)+'</span><span class="sub" style="display:block">'+(owe.length?owe.length+' client'+(owe.length>1?'s te doivent':' te doit')+' de l\'argent':'Personne ne te doit d\'argent')+'</span></div>'
     +(owe.length?'<button type="button" class="btn" data-act="cf" data-v="owe">Voir qui me doit</button>':'')+'</section>';
-  paintRelance(); paintLives(); paintCopy();
+  paintRelance(); paintPerfs(); paintLives(); paintCopy();
   var cf = $('#cfilt');
   var nUn = S.clients.filter(function(c){ return !c.pseudo; }).length;
   if(cf) cf.innerHTML = [['all','Tous',S.clients.length],['owe','Me doivent de l\'argent',owe.length],['unlinked','Pas reliés',nUn]].map(function(f){ return '<button type="button" class="chip" data-act="cf" data-v="'+f[0]+'" aria-pressed="'+((S.cliF||'all')===f[0])+'">'+f[1]+'<small>'+f[2]+'</small></button>'; }).join('');
@@ -2205,6 +2240,11 @@ document.addEventListener('click', function(ev){
     case 'save-obj': saveObjectif(); break;
     case 'candf': CANDF = el.getAttribute('data-v'); schedule(); break;
     case 'sigf': SIGF = el.getAttribute('data-v'); schedule(); break;
+    case 'perf-all': PERFS.all = !PERFS.all; schedule(); return;
+    case 'perf-ok': setPerf(el.getAttribute('data-id'),'verifie','Perf vérifiée ✔'); return;
+    case 'perf-ko': if(confirm('Refuser cette perf ? Elle ne s\'affichera plus sur la carte du membre.')) setPerf(el.getAttribute('data-id'),'refuse','Perf refusée'); return;
+    case 'perf-reset': setPerf(el.getAttribute('data-id'),'attente','Perf remise en attente'); return;
+    case 'perf-img': var pi = PERFS.list.filter(function(x){ return x.id===el.getAttribute('data-id'); })[0]; if(pi && pi.preuve) openDlg('<div class="dlg-body"><h2 id="dlgTitle">Preuve de @'+esc(pi.pseudo)+'</h2><img src="'+pi.preuve+'" alt="Preuve" style="width:100%;border-radius:12px"></div><div class="dlg-foot"><span></span><div class="r"><button type="button" class="btn" data-act="close">Fermer</button></div></div>'); return;
     case 'copy-cfg': openCopyCfg(); return;
     case 'copy-save': saveCopyCfg(); return;
     case 'lv-plan': openPlanning(); return;
