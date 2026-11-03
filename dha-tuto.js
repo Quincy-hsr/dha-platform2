@@ -96,7 +96,7 @@
         apres: 'Finis le <b>Module 1</b> et tu passes direct <b>niveau 2</b> 🔥' },
       { cible: function () { var s = document.querySelector('.sidebar'); return (s && s.getBoundingClientRect().width > 0 && innerWidth > 768) ? s : null; }, titre: '🧭 TON MENU',
         texte: innerWidth > 768 ? 'Tout le reste est dans le menu à gauche :' : 'Tout le reste est dans le menu (le bouton ☰ en haut à gauche) :',
-        liste: [['👥', 'Mon Squad : le groupe WhatsApp et le Discord'], ['📺', 'Lives & Replays : le planning et les replays'], ['🏆', 'Leaderboard : le classement des membres'], ['📁', 'Ressources : plan, journal et checklist'], ['💰', 'Recommandation : 20 % sur chaque ami qui rejoint'], ['📞', 'Appel Mentor : ton appel avec Quincy'], ['🛠️', 'Signaler : un bug ou une idée, on lit tout']] },
+        liste: [['👥', 'Mon Squad : le groupe WhatsApp et le Discord'], ['📺', 'Lives & Replays : le planning et les replays'], ['🏆', 'Leaderboard : le classement des membres'], ['📁', 'Plan, journal et checklist : dans Formation Trading'], ['💰', 'Recommandation : 20 % sur chaque ami qui rejoint'], ['📞', 'Appel Mentor : ton appel avec Quincy'], ['🛠️', 'Signaler : un bug ou une idée, on lit tout']] },
       { cible: null, final: true, titre: '🚀 À TOI DE JOUER, ' + prenom.toUpperCase(),
         texte: 'Ta première mission : <b>le Module 1</b>. Regarde la vidéo, fais le quiz, valide le bloc… et passe <b>niveau 2</b>.<br><br>On se retrouve en haut du classement 💪' }
     ];
