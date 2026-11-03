@@ -53,7 +53,7 @@
     var dl = document.createElement('a');
     dl.href = modele[2]; dl.setAttribute('download', '');
     dl.style.cssText = 'display:flex;align-items:center;gap:12px;margin:14px 0;padding:14px 16px;border-radius:12px;border:1px solid rgba(0,212,255,0.4);background:rgba(0,212,255,0.07);color:#E8F4FF;text-decoration:none;';
-    dl.innerHTML = '<span style="font-size:24px">' + modele[0] + '</span><span style="flex:1"><b>' + modele[1] + '</b><br><span style="font-size:12px;color:rgba(232,244,255,0.6)">À télécharger · aussi dans l\'onglet « Ressources »</span></span><span style="font-family:Orbitron,sans-serif;font-size:10px;color:#00D4FF;letter-spacing:1px">⬇ ' + modele[3] + '</span>';
+    dl.innerHTML = '<span style="font-size:24px">' + modele[0] + '</span><span style="flex:1"><b>' + modele[1] + '</b><br><span style="font-size:12px;color:rgba(232,244,255,0.6)">À télécharger · à imprimer ou à remplir</span></span><span style="font-family:Orbitron,sans-serif;font-size:10px;color:#00D4FF;letter-spacing:1px">⬇ ' + modele[3] + '</span>';
     if (exoBtn) { var titre = ancreModele.querySelector('.exercice-step') || ancreModele.firstChild; ancreModele.insertBefore(dl, titre); }
     else ancreModele.parentNode.insertBefore(dl, ancreModele);
   }

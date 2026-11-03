@@ -91,14 +91,12 @@
       { cible: '.dc-btn', titre: '✉️ TON COURRIER XP',
         texte: 'Chaque fois que tu gagnes de l\'XP, une <b>lettre</b> arrive ici : combien, quand et pourquoi. La <b>pastille rouge</b> te dit que tu as du nouveau.' },
       { cible: '#module-classe', titre: '📚 TA FORMATION',
-        texte: 'C\'est le cœur de la DHA : <b>17 modules</b>, des bases jusqu\'à l\'exécution complète. Dans chaque module :',
-        liste: [['🎥', 'La vidéo et le cours'], ['🧠', 'Le quiz (jusqu\'à +50 XP)'], ['💪', 'L\'exercice pratique (+75 XP)'], ['✅', '« Terminer le bloc » pour valider le module']],
-        apres: 'Finis le <b>Module 1</b> et tu passes direct <b>niveau 2</b> 🔥' },
+        texte: 'Ici tu retrouves ta formation. Clique dessus quand tu veux : une présentation t\'expliquera tout en arrivant.' },
       { cible: function () { var s = document.querySelector('.sidebar'); return (s && s.getBoundingClientRect().width > 0 && innerWidth > 768) ? s : null; }, titre: '🧭 TON MENU',
         texte: innerWidth > 768 ? 'Tout le reste est dans le menu à gauche :' : 'Tout le reste est dans le menu (le bouton ☰ en haut à gauche) :',
-        liste: [['👥', 'Mon Squad : le groupe WhatsApp et le Discord'], ['📺', 'Lives & Replays : le planning et les replays'], ['🏆', 'Leaderboard : le classement des membres'], ['📁', 'Plan, journal et checklist : dans Formation Trading'], ['💰', 'Recommandation : 20 % sur chaque ami qui rejoint'], ['📞', 'Appel Mentor : ton appel avec Quincy'], ['🛠️', 'Signaler : un bug ou une idée, on lit tout']] },
+        liste: [['👥', 'Mon Squad : le groupe WhatsApp et le Discord'], ['📺', 'Lives & Replays : le planning et les replays'], ['🏆', 'Leaderboard : le classement des membres'], ['💰', 'Recommandation : 20 % sur chaque ami qui rejoint'], ['📞', 'Appel Mentor : ton appel avec Quincy'], ['🛠️', 'Signaler : un bug ou une idée, on lit tout']] },
       { cible: null, final: true, titre: '🚀 À TOI DE JOUER, ' + prenom.toUpperCase(),
-        texte: 'Ta première mission : <b>le Module 1</b>. Regarde la vidéo, fais le quiz, valide le bloc… et passe <b>niveau 2</b>.<br><br>On se retrouve en haut du classement 💪' }
+        texte: 'Tu connais ton dashboard. Chaque page de la plateforme a sa propre présentation la première fois que tu l\'ouvres.<br><br>On se retrouve en haut du classement 💪' }
     ];
   }
 
@@ -169,8 +167,8 @@
         (e.liste ? '<ul class="tt-list">' + e.liste.map(function (l) { return '<li><span>' + l[0] + '</span><div>' + l[1] + '</div>' + (l[2] ? '<em>' + l[2] + '</em>' : '') + '</li>'; }).join('') + '</ul>' : '') +
         (e.apres ? '<div class="tt-p" style="margin-top:12px;font-size:14px;color:rgba(232,244,255,0.65)">' + e.apres + '</div>' : '') +
         '<div class="tt-foot">' + (i > 0 ? '<button type="button" class="tt-back">← Retour</button>' : '<div class="tt-dots">' + E.map(function (_, k) { return '<i' + (k === i ? ' class="on"' : '') + '></i>'; }).join('') + '</div>') +
-        (e.final ? '<button type="button" class="tt-ok gold" data-go="module1">▶ COMMENCER LE MODULE 1</button>' : '<button type="button" class="tt-ok">OK ✓</button>') + '</div>' +
-        (e.final ? '<button type="button" class="tt-quit" data-go="rester">Rester sur le dashboard</button>' : '<button type="button" class="tt-quit" data-go="quitter">Passer le tuto</button>');
+        (e.final ? '<button type="button" class="tt-ok gold" data-go="rester">🚀 C\'EST PARTI</button>' : '<button type="button" class="tt-ok">OK ✓</button>') + '</div>' +
+        (e.final ? '' : '<button type="button" class="tt-quit" data-go="quitter">Passer le tuto</button>');
       if (t) {
         var r = t.getBoundingClientRect();
         var fixe = getComputedStyle(t).position === 'fixed' || t.classList.contains('sidebar');
