@@ -16,8 +16,8 @@
     { min: 30000, name: 'AMBASSADEUR', icon: '👑', k: 'amb', r: '#FFD700', r2: '#FF9F00', ban: ['#2b1d00', '#c78a00', '#FFD700'] },
     { min: 60000, name: 'LEGEND', icon: '💎', k: 'leg', r: '#C77DFF', r2: '#7B2CBF', ban: ['#1a0b3d', '#7B2CBF', '#C77DFF'] }
   ];
-  var TITRES = { debutant: 'Le Débutant motivé', regulier: 'Le Régulier', discipline: 'Le Discipliné', studieux: 'Le Studieux', diplome: 'Le Diplômé', funded: 'Le Funded', imperturbable: "L'Imperturbable" };
-  var TITRES_COND = { debutant: 'Dès ton arrivée', regulier: 'Série de 30 jours', discipline: '50 quêtes du jour', studieux: '9 modules terminés', diplome: 'Les 17 modules terminés', funded: 'Un challenge prop firm vérifié', imperturbable: 'Rang LEGEND' };
+  var TITRES = { debutant: 'Le Débutant motivé', regulier: 'Le Régulier', discipline: 'Le Discipliné', studieux: 'Le Studieux', diplome: 'Le Diplômé', funded: 'Le Funded', imperturbable: "L'Imperturbable", aguerri: 'Le Mindset aguerri' };
+  var TITRES_COND = { debutant: 'Dès ton arrivée', regulier: 'Série de 30 jours', discipline: '50 quêtes du jour', studieux: '9 modules terminés', diplome: 'Les 17 modules terminés', funded: 'Un challenge prop firm vérifié', imperturbable: 'Rang LEGEND', aguerri: 'Prise de conscience terminée' };
   var STYLES = { scalper: 'Scalper', day: 'Day trader', swing: 'Swing' };
   var SESSIONS = { asie: 'Session Asie', londres: 'Session Londres', ny: 'Session New York' };
   var FX = [
@@ -87,6 +87,10 @@
     '.fj-at i{grid-column:1/-1;height:5px;border-radius:9px;background:rgba(255,255,255,0.08);overflow:hidden;position:relative;margin-top:-2px}' +
     '.fj-at i:after{content:"";position:absolute;inset:0;width:var(--v);border-radius:9px;background:linear-gradient(90deg,#1E64FF,#00D4FF);animation:fjbar 1.1s ease-out both .3s;transform-origin:left}' +
     '.fj-pc.leg .fj-at i:after{background:linear-gradient(90deg,#7B2CBF,#C77DFF,#00D4FF)}@keyframes fjbar{from{transform:scaleX(0)}}' +
+    '.fj-mind{position:relative;display:flex;align-items:center;gap:11px;margin:0 0 14px;padding:10px 13px;border-radius:14px;background:linear-gradient(120deg,rgba(157,78,221,0.22),rgba(0,212,255,0.12));border:1px solid rgba(199,125,255,0.55);box-shadow:0 0 18px rgba(157,78,221,0.28);overflow:hidden}' +
+    '.fj-mind:after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,transparent 30%,rgba(255,255,255,0.18) 50%,transparent 70%);transform:translateX(-100%);animation:fjMind 3.2s ease-in-out infinite}' +
+    '.fj-mind i{font-style:normal;font-size:24px;filter:drop-shadow(0 0 8px rgba(199,125,255,0.9))}.fj-mind b{display:block;font-family:Sora,sans-serif;font-size:12.5px;font-weight:900;letter-spacing:1.6px;color:#E4C6FF}.fj-mind small{display:block;font-size:11.5px;color:rgba(232,244,255,0.7)}' +
+    '@keyframes fjMind{0%,40%{transform:translateX(-100%)}100%{transform:translateX(100%)}}' +
     '.fj-chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px}.fj-chip{padding:6px 10px;border-radius:999px;font-size:12px;font-weight:700;background:rgba(30,100,255,0.14);border:1px solid rgba(0,212,255,0.3)}' +
     '.fj-chip.g{background:rgba(255,215,0,0.1);border-color:rgba(255,215,0,0.4);color:#FFE680}' +
     '.fj-perfs{display:flex;gap:12px;overflow-x:auto;padding:4px 2px 12px;margin:0 -4px 6px;scroll-snap-type:x mandatory}' +
@@ -194,6 +198,7 @@
       '<div class="fj-idt"><b>@' + esc(String(d.pseudo || '').replace(/^@/, '')) + '</b><span class="fj-titre">« ' + esc(TITRES[f.titre] || TITRES.debutant) + ' »</span></div></div>' +
       '<div class="fj-body"><div class="fj-meta">' + (ent ? '<span>📅 Entré le <b>' + ent + '</b></span><span>⏱ <b>' + jours(d.entree) + '</b> jours dans la DHA</span>' : '') + '</div>' +
       '<p class="fj-bio' + (f.bio ? '' : ' vide') + '">' + (f.bio ? esc(f.bio) : (d.moi ? 'Ajoute ta bio dans « Modifier ma fiche ».' : 'Pas encore de bio.')) + '</p>' +
+      (d.mindset ? '<div class="fj-mind th-keep"><i>🧠</i><div><b>MINDSET AGUERRI</b><small>Prise de conscience terminée</small></div></div>' : '') +
       (fx.length ? '<div class="fj-fxb">' + fx.map(function (k) { var e = FX.filter(function (x) { return x.k === k; })[0]; return e ? '<span>' + e.e + ' ' + e.n + '</span>' : ''; }).join('') + '</div>' : '') +
       '<div class="fj-st"><div><b>' + fmt(d.xp) + '</b><small>XP</small></div><div><b>' + lvl + '</b><small>LEVEL</small></div><div><b>' + (d.modules || 0) + '/17</b><small>MODULES</small></div><div><b>🔥' + (d.serie || 0) + '</b><small>SÉRIE</small></div></div>' +
       (at.length ? '<div class="fj-sec">ATTRIBUTS <span class="fj-ovr">NOTE ' + ovr + '</span></div><div class="fj-radar">' + radar(at) + '<div class="fj-attrs">' + at.map(function (a) { return '<div class="fj-at"><span>' + esc(a[0]) + '</span><b>' + a[1] + '</b><i style="--v:' + a[1] + '%"></i></div>'; }).join('') + '</div></div>' : '') +
@@ -322,8 +327,9 @@
     c.textAlign = 'left'; c.fillStyle = '#fff'; c.font = '800 60px ' + F;
     var ps = '@' + String(d.pseudo || '').replace(/^@/, ''); while (c.measureText(ps).width > 560 && ps.length > 3) ps = ps.slice(0, -1);
     c.fillText(ps, X + 290, Y + 300); c.fillStyle = col[0]; c.font = '800 34px ' + F; c.fillText('« ' + (TITRES[f.titre] || TITRES.debutant) + ' »', X + 292, Y + 360);
+    if (d.mindset) { c.save(); c.shadowColor = '#9D4EDD'; c.shadowBlur = 24; pill('🧠 MINDSET AGUERRI', X + 290, Y + 396, '#C77DFF', '#E4C6FF'); c.restore(); }
     var bio = f.bio || 'Je grind sur la DHA.';
-    c.font = 'italic 600 34px Manrope, sans-serif'; var words = bio.split(' '), line = '', ly = Y + 470, nl = 0;
+    c.font = 'italic 600 34px Manrope, sans-serif'; var words = bio.split(' '), line = '', ly = Y + (d.mindset ? 515 : 470), nl = 0;
     c.fillStyle = col[0]; c.fillRect(X + 60, ly - 28, 6, 96); c.fillStyle = '#D5DEF2';
     words.forEach(function (w) { if (nl > 1) return; var tt = line + w + ' '; if (c.measureText(tt).width > 720) { if (nl === 1) { c.fillText(line.trim() + '…', X + 90, ly); nl = 2; return; } c.fillText(line, X + 90, ly); line = w + ' '; ly += 48; nl++; } else line = tt; });
     if (nl < 2) c.fillText(line, X + 90, ly);
