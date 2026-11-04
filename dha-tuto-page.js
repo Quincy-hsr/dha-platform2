@@ -2,7 +2,7 @@
    DHA — Présentation de chaque page (première visite)
    Cinématique courte, puis visite guidée étape par étape de la page.
    Pages : Formation, modules, Mon Squad, Lives & Replays, Recommandation, Appel Mentor.
-   (Dashboard : dha-tuto.js · Leaderboard : dha-tuto-lb.js · pas de présentation pour Mindset et Copy trading)
+   (Dashboard : dha-tuto.js · Leaderboard : dha-tuto-lb.js · pas de présentation pour Copy trading)
    Vue une seule fois par page et par pseudo ; bouton « 🎬 Revoir la présentation » pour la relancer.
    ========================================================= */
 (function () {
@@ -92,6 +92,21 @@
         { cible: function () { return $('.calendly-wrap') || $('#mentor-cal'); }, titre: '📅 RÉSERVE TON CRÉNEAU', texte: 'Choisis un jour et une heure qui t\'arrangent : tu reçois la confirmation directement.' }
       ],
       fin: { titre: '🎯 PRÉPARE TES QUESTIONS', texte: 'Arrive avec tes questions et tes analyses : chaque appel avec ton mentor rapporte <b>+300 XP</b>.' }
+    },
+    'dha-mindset.html': {
+      couleur: ['#9D4EDD', '#00FF88'], ic: '🧠', k: 'TON MENTAL', h: 'LE<br><span>MINDSET</span>',
+      chips: ['🌱 Prise de conscience', '🎬 Des vidéos qui rapportent de l\'XP', '📚 Une bibliothèque', '🧠 Badge Mindset aguerri'],
+      ligne: 'La stratégie, tout le monde peut l\'apprendre. Ce qui fait la différence, c\'est ta tête : ta discipline, ta patience, ta façon de voir l\'argent. C\'est ici que ça se construit.',
+      etapes: [
+        { cible: function () { return $('.ms-tabs'); }, titre: '🗂️ DEUX PARTIES', texte: '<b>Développement personnel</b> : la Prise de conscience, à faire en premier. <b>Mindset trading</b> : la psychologie du trader, qui arrive bientôt.' },
+        { cible: function () { return $('.pc-hero'); }, titre: '🌱 LA PRISE DE CONSCIENCE', texte: 'La partie <b>la plus importante</b> avant de trader. Elle t\'aide à casser tes vieilles croyances sur l\'argent et à comprendre <b>pourquoi</b> tu fais tout ça. Lis chaque étape <b>dans l\'ordre</b>.' },
+        { cible: function () { return $('#pcProg'); }, titre: '📊 TA PROGRESSION', texte: 'Combien de vidéos tu as vues et l\'<b>XP</b> gagné. Finis la Partie 1 pour <b>+100 XP</b> de bonus.' },
+        { cible: function () { return $('.pc-vid'); }, titre: '▶ CHAQUE VIDÉO = DE L\'XP', texte: 'Lance la vidéo, regarde-la, puis appuie sur <b>« J\'ai regardé »</b> : <b>+50 XP</b>. Une vidéo vue valide aussi ta <b>quête du jour</b>.' },
+        { cible: function () { return $('.pc-feat'); }, saute: true, titre: '🎬 LE FILM « LE SECRET »', texte: 'La dernière vidéo de la Partie 1. Elle vaut le <b>triple</b> : <b>+150 XP</b>.' },
+        { cible: function () { return $('#pcDone'); }, saute: true, titre: '🧠 MINDSET AGUERRI', texte: 'Partie 1 finie : badge <b>Mindset aguerri</b> sur ta carte joueur et un nouveau titre à débloquer.' },
+        { cible: function () { return $('.pc-lib-h'); }, titre: '📚 LA BIBLIOTHÈQUE', texte: 'La Partie 2, à ton rythme : Bob Proctor, Napoléon Hill, Joe Dispenza… <b>+50 XP</b> par vidéo et les livres à avoir.' }
+      ],
+      fin: { titre: '🔥 COMMENCE PAR L\'ÉTAPE 1', texte: 'Ne la survole pas : prends ton temps, regarde les vidéos en entier et va <b>jusqu\'au bout de la Partie 1</b>. Un mental solide, c\'est ce qui te fera tenir quand le marché sera dur.' }
     }
   };
   var cleCfg = estModule ? 'module' : fichier;
