@@ -407,7 +407,7 @@ html.embed .back{display:none}
       <div class="sc"><div class="slbl">En cours</div><div class="sval or" id="se">—</div></div>
       <div class="sc"><div class="slbl">Versé</div><div class="sval gr" id="sv">—</div></div>
     </div>
-    <div class="sr" style="display:flex;gap:8px;flex-wrap:wrap"><input class="si" id="search" placeholder="Rechercher pseudo, prénom, email..." style="flex:1;min-width:200px"><button class="tbtn" id="fcom" type="button" style="white-space:nowrap">🤝 Parrainages à valider (0)</button></div>
+    <div class="sr" style="display:flex;gap:8px;flex-wrap:wrap"><input class="si" id="search" placeholder="Rechercher pseudo, prénom, nom, email, téléphone..." style="flex:1;min-width:200px"><button class="tbtn" id="fcom" type="button" style="white-space:nowrap">🤝 Parrainages à valider (0)</button></div>
     <div class="mlist" id="mlist"><div class="loader">Chargement...</div></div>
     </div>
   </div></div>
@@ -919,13 +919,14 @@ function stats(d){
 }
 
 function filter(){
-  var q=document.getElementById('search').value.toLowerCase();
+  var nz=function(t){return String(t||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/^@+/,'');};
+  var q=nz(document.getElementById('search').value).trim();
   var nb=members.filter(function(m){var c=comInfo(m);return c&&c.enAttente;}).length;
   var fb=document.getElementById('fcom');
   if(fb){fb.textContent=(filtreCom?'✕ ':'🤝 ')+'Parrainages à valider ('+nb+')';fb.style.borderColor=nb?'rgba(255,215,0,0.6)':'';fb.style.color=nb?'#FFD700':'';}
   render(members.filter(function(m){
     if(filtreCom){var c=comInfo(m);if(!c||!c.enAttente)return false;}
-    return (m.pseudo||'').toLowerCase().indexOf(q)>-1||(m.email||'').toLowerCase().indexOf(q)>-1||(m.prenom||'').toLowerCase().indexOf(q)>-1;
+    return nz([m.pseudo,m.email,m.prenom,m.nom,(m.prenom||'')+' '+(m.nom||''),m.telephone,m.ville].join(' | ')).indexOf(q)>-1;
   }));
 }
 

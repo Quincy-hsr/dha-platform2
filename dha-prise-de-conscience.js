@@ -186,7 +186,7 @@
       if (await crediter(k, xp, '🧠 Prise de conscience · ' + titre)) { vues[k] = true; }
       else { sb.disabled = false; sb.textContent = '✓ J\'ai regardé · +' + xp + ' XP'; }
       if (!finOk && VID1.every(function (id) { return vues[cleVid(id)]; })) {
-        if (await crediter('pc_fin', XP_FIN, '🌱 Prise de conscience terminée')) finOk = true;
+        if (await crediter('pc_fin', XP_FIN, '🌱 Prise de conscience terminée')) { finOk = true; if (window.DHADeblocage) setTimeout(DHADeblocage.verifier, 3000); }
         setTimeout(function () { $('#pcDone').scrollIntoView({ behavior: 'smooth', block: 'center' }); }, 300);
       }
       maj();

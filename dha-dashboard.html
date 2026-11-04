@@ -691,6 +691,7 @@ async function init(){
   }catch(e){}
   try{
     const d0=await DHA.me();const data=d0?[d0]:[];
+    if(d0&&d0.mdp_temp&&!sessionStorage.getItem('dha_mdp_plus_tard')){setTimeout(function(){DHA.choosePasswordUI(null).then(function(ok){if(!ok)try{sessionStorage.setItem('dha_mdp_plus_tard','1')}catch(e){}});},1200);}
     console.log('Supabase XP data:',data);
     if(data&&data.length>0){
       member.xp=data[0].xp!=null?data[0].xp:0;
@@ -734,5 +735,6 @@ document.querySelectorAll('.nav-item').forEach(a=>a.addEventListener('click',clo
 <script src="dha-mobile-menu.js"></script>
 <script src="dha-signaler.js"></script>
 <script src="dha-forfait.js"></script>
+<script src="dha-deblocage.js"></script>
 </body>
 </html>

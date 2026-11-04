@@ -98,6 +98,7 @@ async function login(){
     if(!r||!r.token){if(r&&r.erreur==='inactif'){bar.style.width='0%';btn.textContent='▶ SE CONNECTER';btn.disabled=false;showError('Ton accès à la plateforme a été désactivé. Contacte le support DHA.');return;}bar.style.width='0%';btn.textContent='▶ SE CONNECTER';btn.disabled=false;showError('Email ou mot de passe incorrect.');return;}
     const member=r.membre;
     bar.style.width='100%';
+    if(member&&member.mdp_temp){ const okMdp=await DHA.choosePasswordUI(password); if(!okMdp){try{sessionStorage.setItem('dha_mdp_plus_tard','1')}catch(e){}} }
     document.getElementById('success-name').textContent=member.prenom||'Hustler';
     document.getElementById('success-overlay').classList.add('show');
     setTimeout(()=>window.location.href='dha-dashboard.html',2000);

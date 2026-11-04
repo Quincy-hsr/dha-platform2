@@ -149,6 +149,38 @@
     };
   }
 
+  // Membre connecté avec un mot de passe donné par Quincy : on lui propose d'en choisir un à lui
+  function choosePasswordUI(ancien) {
+    return new Promise(function (fini) {
+      var ov = boite('<div style="font-size:26px">🔐</div><h3 style="margin:6px 0 6px;font-size:19px">Choisis ton mot de passe</h3>' +
+        '<p style="margin:0;font-size:14px;color:rgba(232,244,255,.65);line-height:1.5">Tu t\'es connecté avec un mot de passe provisoire. Mets-en un à toi dès maintenant, tu t\'en souviendras plus facilement.</p>' +
+        '<label style="display:block;margin-top:14px;font-size:13px;color:rgba(232,244,255,.65)">Nouveau mot de passe (6 caractères minimum)<input type="password" data-n autocomplete="new-password" style="' + CHAMP + '"></label>' +
+        '<label style="display:block;margin-top:12px;font-size:13px;color:rgba(232,244,255,.65)">Confirme-le<input type="password" data-c autocomplete="new-password" style="' + CHAMP + '"></label>' +
+        '<label style="display:flex;gap:8px;align-items:center;margin-top:10px;font-size:13px;color:rgba(232,244,255,.65);cursor:pointer"><input type="checkbox" data-v> Afficher</label>' +
+        '<div data-e role="alert" style="color:#FF4466;font-size:13px;min-height:18px;margin-top:8px"></div>' +
+        '<button type="button" data-go style="' + BTN + '">Enregistrer mon mot de passe</button><button type="button" data-later style="' + BTN2 + '">Plus tard</button>');
+      var e = ov.querySelector('[data-e]'), n = ov.querySelector('[data-n]'), c = ov.querySelector('[data-c]');
+      function fermer(ok) { ov.remove(); fini(ok); }
+      ov.addEventListener('click', function (ev) { if (ev.target === ov) ev.stopImmediatePropagation(); }, true);
+      setTimeout(function () { n.focus(); }, 50);
+      ov.querySelector('[data-v]').onchange = function () { n.type = c.type = this.checked ? 'text' : 'password'; };
+      ov.querySelector('[data-later]').onclick = function () { fermer(false); };
+      ov.querySelector('[data-go]').onclick = async function () {
+        if (n.value.length < 6) { e.textContent = 'Au moins 6 caractères.'; return; }
+        if (n.value !== c.value) { e.textContent = 'Les deux mots de passe ne sont pas pareils.'; return; }
+        if (ancien && n.value === ancien) { e.textContent = 'Choisis un mot de passe différent du provisoire.'; return; }
+        var b = this; b.disabled = true;
+        try {
+          var r = ancien ? await rpc('dha_change_password', { p_token: await token(), p_old: ancien, p_new: n.value })
+            : await rpc('dha_set_password_temp', { p_token: await token(), p_new: n.value });
+          if (r && r.ok) { ov.firstChild.innerHTML = '<div style="font-size:26px">✅</div><h3 style="margin:6px 0 6px">C\'est enregistré</h3><p style="margin:0;font-size:14px;color:rgba(232,244,255,.65)">La prochaine fois, connecte-toi avec ton nouveau mot de passe.</p>'; setTimeout(function () { fermer(true); }, 1600); return; }
+          e.textContent = 'Impossible pour le moment, réessaie.';
+        } catch (x) { e.textContent = 'Connexion impossible, réessaie.'; }
+        b.disabled = false;
+      };
+    });
+  }
+
   // Membre : change son mot de passe
   function changePasswordUI() {
     var ov = boite('<div style="font-size:26px">🔑</div><h3 style="margin:6px 0 4px;font-size:19px">Changer mon mot de passe</h3>' +
@@ -173,5 +205,5 @@
   function esc(t) { return String(t == null ? '' : t).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
 
   window.DHA = { rpc: rpc, local: local, save: save, clear: clear, token: token, me: me, login: login, logout: logout,
-    historique: historique, award: award, admin: admin, adminKey: adminKey, adminGate: adminGate, resetPasswordUI: resetPasswordUI, changePasswordUI: changePasswordUI, URL: URL_, KEY: KEY_ };
+    historique: historique, award: award, admin: admin, adminKey: adminKey, adminGate: adminGate, resetPasswordUI: resetPasswordUI, changePasswordUI: changePasswordUI, choosePasswordUI: choosePasswordUI, URL: URL_, KEY: KEY_ };
 })();
