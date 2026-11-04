@@ -27,7 +27,7 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
 .sidebar-avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--cyan));display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;overflow:hidden;}
 .sidebar-member-name{font-family:'Orbitron',sans-serif;font-size:10px;font-weight:900;color:var(--white);}
 .sidebar-member-rang{font-size:10px;color:var(--dim);margin-top:2px;}
-.main{margin-left:var(--sidebar-w);flex:1;padding:32px;position:relative;z-index:1;max-width:900px;}
+.main{margin-left:var(--sidebar-w);flex:1;padding:32px;position:relative;z-index:1;max-width:960px;min-width:0;}
 @keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.4;}}
 
 /* ── MOBILE MENU ── */
@@ -41,6 +41,110 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
   .sidebar.open{transform:translateX(0);}
   .main{margin-left:0 !important;padding:16px;padding-top:70px;}
 }
+
+/* ── MINDSET ── */
+.ms-top{margin-bottom:22px}
+.ms-k{font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:3px;color:rgba(0,212,255,0.7);margin-bottom:8px}
+.ms-h{font-family:'Orbitron',sans-serif;font-size:clamp(24px,5vw,32px);font-weight:900;line-height:1.2;margin-bottom:8px}
+.ms-h span{color:var(--cyan)}
+.ms-sub{font-size:15px;color:var(--dim);line-height:1.6;max-width:640px}
+.ms-tabs{display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:5px;border-radius:999px;background:rgba(16,28,62,0.7);border:1px solid var(--border);margin-bottom:22px;max-width:560px}
+.ms-tab{padding:12px 10px;border:none;border-radius:999px;background:transparent;color:var(--dim);font-family:'Orbitron',sans-serif;font-size:12px;font-weight:700;cursor:pointer}
+.ms-tab.on{background:linear-gradient(135deg,#00a35c,#00FF88);color:#04140c;box-shadow:0 0 20px rgba(0,255,136,0.35)}
+.ms-tab[data-tab="trading"].on{background:linear-gradient(135deg,var(--blue),var(--cyan));color:#020610;box-shadow:0 0 20px rgba(0,212,255,0.35)}
+.ms-tab:focus-visible,.pc-thumb:focus-visible,.pc-seen:focus-visible,.pc-ch summary:focus-visible,.pc-links a:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.ms-pane{display:none}.ms-pane.on{display:block}
+.pc-hero{display:flex;gap:18px;align-items:flex-start;padding:24px;border-radius:20px;background:linear-gradient(135deg,rgba(0,255,136,0.10),rgba(0,212,255,0.05));border:1px solid rgba(0,255,136,0.3);margin-bottom:14px}
+.pc-ic{font-size:44px;flex-shrink:0}
+.pc-k{font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:3px;color:var(--green);margin-bottom:6px}
+.pc-hero h2,.pc-lib-h h2{font-family:'Orbitron',sans-serif;font-size:22px;font-weight:900;margin-bottom:8px}
+.pc-hero p,.pc-lib-h p{font-size:15px;color:rgba(232,244,255,0.75);line-height:1.6}
+.pc-hero b{color:var(--green)}
+.pc-prog{position:sticky;top:8px;z-index:20;padding:12px 16px;border-radius:14px;background:rgba(8,14,31,0.95);border:1px solid var(--border);margin-bottom:24px;backdrop-filter:blur(8px)}
+.pc-prog-t{display:flex;justify-content:space-between;gap:10px;font-size:13px;font-weight:600;margin-bottom:8px}
+.pc-prog-t span:last-child{color:var(--green)}
+.pc-bar{height:6px;border-radius:9px;background:rgba(255,255,255,0.08);overflow:hidden}
+.pc-bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#00a35c,#00FF88);box-shadow:0 0 12px rgba(0,255,136,0.6);transition:width .5s}
+.pc-step{display:flex;gap:16px;margin-bottom:18px}
+.pc-num{flex-shrink:0;width:38px;height:38px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-family:'Orbitron',sans-serif;font-weight:900;font-size:14px;background:rgba(0,255,136,0.12);border:1px solid rgba(0,255,136,0.4);color:var(--green)}
+.pc-body{flex:1;min-width:0;padding:20px;border-radius:18px;background:var(--card);border:1px solid var(--border)}
+.pc-body h3{font-family:'Orbitron',sans-serif;font-size:15px;font-weight:900;margin-bottom:12px;letter-spacing:.5px}
+.pc-body p{font-size:15px;line-height:1.7;color:rgba(232,244,255,0.82);margin-bottom:10px}
+.pc-body b{color:var(--white)}
+.pc-q{font-style:italic;color:#FFE680!important;border-left:3px solid rgba(255,215,0,0.5);padding-left:12px}
+.pc-big{font-size:17px!important;font-weight:700;color:var(--white)!important}
+.pc-sign{font-weight:700;color:var(--green)!important}
+.pc-vs,.pc-3{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0}
+.pc-3{grid-template-columns:repeat(3,1fr);text-align:center}
+.pc-vs div,.pc-3 div{padding:14px;border-radius:12px;background:rgba(255,255,255,0.04);border:1px solid var(--border);font-size:22px}
+.pc-vs b,.pc-3 b{display:block;font-size:13px;margin-top:4px}
+.pc-vs span{display:block;font-size:13px;color:var(--dim);margin-top:4px;line-height:1.45}
+.pc-vs div{font-size:14px}
+.pc-img{display:block;width:100%;height:auto;border-radius:14px;border:1px solid var(--border);margin:6px 0 14px}
+.pc-callout{padding:14px 16px;border-radius:12px;background:rgba(255,68,102,0.07);border:1px solid rgba(255,68,102,0.35);font-size:14px;line-height:1.6;color:rgba(232,244,255,0.8);margin:10px 0}
+.pc-callout b{display:block;color:#ff8aa0;margin-bottom:4px}
+.pc-list{list-style:none;display:flex;flex-direction:column;gap:8px;margin:10px 0}
+.pc-list li{display:flex;gap:10px;padding:10px 12px;border-radius:12px;background:rgba(255,255,255,0.03);border:1px solid var(--border);font-size:14px;line-height:1.5;color:rgba(232,244,255,0.82)}
+.pc-vids{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px;margin-top:12px}
+.pc-chb .pc-vids{grid-template-columns:repeat(auto-fill,minmax(200px,1fr))}
+.pc-vid{border-radius:14px;overflow:hidden;background:#050914;border:1px solid var(--border);display:flex;flex-direction:column}
+.pc-vid.done{border-color:rgba(0,255,136,0.45)}
+.pc-thumb,.pc-vid iframe{display:block;width:100%;aspect-ratio:16/9;border:none;padding:0;position:relative;cursor:pointer;background:radial-gradient(ellipse at 50% 40%,#16306b,#050914 75%)}
+.pc-thumb img{width:100%;height:100%;object-fit:cover;display:block;opacity:.85}
+.pc-play{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:58px;height:40px;border-radius:12px;background:#ff0033;color:#fff;font-size:16px;display:flex;align-items:center;justify-content:center;box-shadow:0 0 24px rgba(255,0,51,0.45)}
+.pc-thumb:hover .pc-play{transform:translate(-50%,-50%) scale(1.08)}
+.pc-vt{padding:10px 12px;display:flex;flex-direction:column;gap:8px;flex:1}
+.pc-vt b{font-size:13.5px;line-height:1.4}
+.pc-seen{margin-top:auto;padding:9px;border-radius:10px;border:1px solid var(--border);background:rgba(255,255,255,0.04);color:var(--dim);font-family:'Orbitron',sans-serif;font-size:10px;font-weight:700;letter-spacing:1px;cursor:pointer}
+.pc-seen:not(:disabled){background:linear-gradient(135deg,#00a35c,#00FF88);border:none;color:#04140c;box-shadow:0 0 16px rgba(0,255,136,0.35)}
+.pc-seen.ok{background:rgba(0,255,136,0.1);border-color:rgba(0,255,136,0.4);color:var(--green);cursor:default}
+.pc-feat{margin-top:16px;border:2px solid rgba(255,215,0,0.6);box-shadow:0 0 40px rgba(255,215,0,0.22);background:linear-gradient(160deg,#1a1300,#050914 60%)}
+.pc-feat-tag{padding:10px 14px;font-family:'Orbitron',sans-serif;font-size:11px;font-weight:900;letter-spacing:2px;color:#1a1200;background:linear-gradient(90deg,#FFD700,#FF9F00)}
+.pc-feat .pc-thumb{aspect-ratio:16/7;max-height:460px}
+.pc-feat .pc-play{width:80px;height:56px;font-size:22px}
+.pc-feat-xp{position:absolute;right:12px;top:12px;padding:6px 12px;border-radius:99px;background:linear-gradient(135deg,#FFD700,#FF9F00);color:#1a1200;font-family:'Orbitron',sans-serif;font-size:12px;font-weight:900;box-shadow:0 0 20px rgba(255,215,0,0.5)}
+.pc-feat .pc-vt b{font-size:17px;font-family:'Orbitron',sans-serif}
+.pc-feat-d{font-size:14px;color:rgba(232,244,255,0.75);line-height:1.5}
+.pc-feat .pc-seen:not(:disabled):not(.ok){background:linear-gradient(135deg,#FFD700,#FF9F00);color:#1a1200;box-shadow:0 0 20px rgba(255,215,0,0.4)}
+.pc-chn{color:var(--green);font-weight:700}
+.pc-chdone{color:var(--green)}
+.pc-done{display:none;text-align:center;padding:30px 22px;border-radius:20px;background:linear-gradient(135deg,rgba(255,215,0,0.12),rgba(0,255,136,0.08));border:1px solid rgba(255,215,0,0.45);margin:8px 0 30px}
+.pc-done.on{display:block;animation:pcIn .6s ease both}
+@keyframes pcIn{from{opacity:0;transform:scale(.96)}to{opacity:1;transform:none}}
+.pc-done-ic{font-size:48px}
+.pc-done h3{font-family:'Orbitron',sans-serif;font-size:18px;margin:10px 0}
+.pc-done p{font-size:15px;color:rgba(232,244,255,0.8);line-height:1.6;max-width:560px;margin:0 auto 14px}
+.pc-done-xp{display:inline-block;padding:9px 16px;border-radius:999px;background:linear-gradient(135deg,#FFD700,#FF9F00);color:#1a1200;font-family:'Orbitron',sans-serif;font-size:11px;font-weight:900;letter-spacing:1px}
+.pc-lib-h{margin:34px 0 14px}
+.pc-lib-h .pc-k{color:var(--cyan)}
+.pc-ch{border-radius:16px;background:var(--card);border:1px solid var(--border);margin-bottom:10px;overflow:hidden}
+.pc-ch summary{list-style:none;display:flex;align-items:center;gap:14px;padding:14px 16px;cursor:pointer}
+.pc-ch summary::-webkit-details-marker{display:none}
+.pc-chi{font-size:24px;width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;background:rgba(0,212,255,0.08);border:1px solid rgba(0,212,255,0.25);flex-shrink:0}
+.pc-cht{flex:1;min-width:0}.pc-cht b{display:block;font-family:'Orbitron',sans-serif;font-size:13px;letter-spacing:.5px}.pc-cht small{font-size:12px;color:var(--dim)}
+.pc-chv{color:var(--cyan);transition:transform .2s}.pc-ch[open] .pc-chv{transform:rotate(180deg)}
+.pc-chb{padding:0 16px 16px}
+.pc-chb>p{font-size:14px;color:var(--dim);line-height:1.6}
+.pc-links{list-style:none;display:flex;flex-direction:column;gap:6px;margin-top:12px}
+.pc-links a{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 12px;border-radius:10px;background:rgba(255,255,255,0.03);border:1px solid var(--border);color:var(--white);text-decoration:none;font-size:14px}
+.pc-links a:hover{border-color:rgba(0,212,255,0.4)}
+.pc-links span{color:var(--cyan)}
+.pc-foot{font-size:13px;color:var(--dim);text-align:center;margin:20px 0 10px}
+.pc-toast{position:fixed;left:50%;bottom:28px;transform:translate(-50%,20px);z-index:900;padding:12px 18px;border-radius:14px;background:linear-gradient(135deg,#00a35c,#00FF88);color:#04140c;font-family:'Orbitron',sans-serif;font-size:12px;font-weight:900;opacity:0;transition:all .35s;box-shadow:0 10px 40px rgba(0,255,136,0.35);max-width:calc(100vw - 32px)}
+.pc-toast.on{opacity:1;transform:translate(-50%,0)}
+.mt-soon{background:var(--card);border:1px solid rgba(30,100,255,0.2);border-radius:20px;padding:36px 24px;text-align:center;margin-bottom:16px}
+.mt-ic{font-size:52px;margin-bottom:12px}
+.mt-t{font-family:'Orbitron',sans-serif;font-size:16px;font-weight:900;letter-spacing:2px;margin-bottom:10px}
+.mt-soon p{font-size:14px;color:var(--dim);line-height:1.7;max-width:500px;margin:0 auto 18px}
+.mt-pill{display:inline-flex;align-items:center;gap:8px;padding:8px 18px;border-radius:99px;background:rgba(0,212,255,0.1);border:1px solid rgba(0,212,255,0.25);font-family:'Orbitron',sans-serif;font-size:10px;color:var(--cyan);letter-spacing:2px}
+.mt-pill i{width:8px;height:8px;border-radius:50%;background:var(--cyan);animation:pulse 1.5s infinite}
+.mt-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+.mt-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px}
+.mt-card span{font-size:24px}.mt-card b{display:block;font-family:'Orbitron',sans-serif;font-size:11px;letter-spacing:1px;margin:8px 0 6px}.mt-card small{font-size:13px;color:var(--dim);line-height:1.55}
+.mt-q{padding:20px;border-left:3px solid rgba(255,215,0,0.4);background:rgba(255,215,0,0.06);font-size:15px;color:rgba(255,215,0,0.9);line-height:1.8;font-style:italic}
+.mt-q cite{display:block;font-family:'Orbitron',sans-serif;font-size:10px;font-style:normal;color:rgba(255,215,0,0.55);margin-top:8px;letter-spacing:1px}
+@media(max-width:768px){.pc-prog{top:64px}.pc-step{gap:10px}.pc-num{width:30px;height:30px;font-size:12px}.pc-body{padding:16px}.pc-hero{flex-direction:column;gap:8px;padding:18px}.pc-3{grid-template-columns:1fr}.pc-vs{grid-template-columns:1fr}.mt-grid{grid-template-columns:1fr}.ms-tab{font-size:10px;padding:11px 6px}.pc-vids,.pc-chb .pc-vids{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce){.pc-done.on,.pc-bar i,.pc-toast{animation:none;transition:none}}
 </style>
 </head>
 <body>
@@ -75,54 +179,63 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
 </aside>
 
 <main class="main">
-  <div style="margin-bottom:40px;">
-    <div style="font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:3px;color:rgba(0,212,255,0.6);margin-bottom:8px;">MODULE · MINDSET</div>
-    <div style="font-family:'Orbitron',sans-serif;font-size:32px;font-weight:900;color:var(--white);line-height:1.2;margin-bottom:8px;">Le mindset<br/><span style="color:var(--cyan);">du trader</span></div>
-    <div style="font-size:14px;color:var(--dim);line-height:1.7;">Le trading c'est 20% technique et 80% mental. Ce module arrive bientôt.</div>
+  <div class="ms-top">
+    <div class="ms-k">MINDSET</div>
+    <h1 class="ms-h">Le mental <span>fait la différence</span></h1>
+    <p class="ms-sub">Deux parties : le développement personnel pour changer ta façon de voir les choses, et le mindset du trader pour tenir face au marché.</p>
   </div>
 
-  <div style="background:var(--card);border:1px solid rgba(30,100,255,0.2);border-radius:20px;padding:40px;text-align:center;margin-bottom:24px;position:relative;overflow:hidden;">
-    <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--cyan),transparent);"></div>
-    <div style="font-size:56px;margin-bottom:20px;">🧠</div>
-    <div style="font-family:'Orbitron',sans-serif;font-size:18px;font-weight:900;color:var(--white);letter-spacing:2px;margin-bottom:12px;">MODULE EN COURS DE CRÉATION</div>
-    <div style="font-size:14px;color:var(--dim);line-height:1.8;max-width:500px;margin:0 auto 24px;">Ce module va couvrir tout ce qu'on ne t'apprend pas en trading — la gestion des émotions, la discipline, la patience et la résilience face aux pertes.</div>
-    <div style="display:inline-flex;align-items:center;gap:8px;padding:8px 20px;border-radius:99px;background:rgba(0,212,255,0.1);border:1px solid rgba(0,212,255,0.25);">
-      <div style="width:8px;height:8px;border-radius:50%;background:var(--cyan);animation:pulse 1.5s infinite;"></div>
-      <span style="font-family:'Orbitron',sans-serif;font-size:10px;color:var(--cyan);letter-spacing:2px;">BIENTÔT DISPONIBLE</span>
-    </div>
+  <div class="ms-tabs" role="tablist">
+    <button class="ms-tab on" role="tab" data-tab="dev" aria-selected="true">🌱 Développement personnel</button>
+    <button class="ms-tab" role="tab" data-tab="trading" aria-selected="false">📈 Mindset trading</button>
   </div>
 
-  <div style="font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:3px;color:rgba(232,244,255,0.3);margin-bottom:16px;">APERÇU DU CONTENU</div>
+  <!-- ===== DÉVELOPPEMENT PERSONNEL ===== -->
+  <section class="ms-pane on" data-pane="dev">
+    <div class="pc-hero">
+      <div class="pc-ic">🌱</div>
+      <div>
+        <div class="pc-k">PARTIE 1 · À FAIRE EN PREMIER</div>
+        <h2>La prise de conscience</h2>
+        <p>Si tu ne prends pas conscience de certaines choses, tu n'auras jamais de succès. Lis chaque étape, regarde chaque vidéo : chaque vidéo vue = <b>+50 XP</b>, le film « Le Secret » = <b>+150 XP</b>, et <b>+100 XP</b> de bonus quand tu termines la partie.</p>
+      </div>
+    </div>
+    <div class="pc-prog" id="pcProg"><div class="pc-prog-t"><span id="pcProgTxt">0 / 0 vidéos</span><span id="pcProgXp">0 XP gagnés</span></div><div class="pc-bar"><i id="pcBar"></i></div></div>
 
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:24px;">
-    <div style="background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px;">
-      <div style="font-size:24px;margin-bottom:10px;">😤</div>
-      <div style="font-family:'Orbitron',sans-serif;font-size:11px;font-weight:900;color:var(--white);letter-spacing:1px;margin-bottom:6px;">GESTION DES ÉMOTIONS</div>
-      <div style="font-size:12px;color:var(--dim);line-height:1.6;">La peur, la cupidité, le FOMO — comment les identifier et les contrôler.</div>
-    </div>
-    <div style="background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px;">
-      <div style="font-size:24px;margin-bottom:10px;">🎯</div>
-      <div style="font-family:'Orbitron',sans-serif;font-size:11px;font-weight:900;color:var(--white);letter-spacing:1px;margin-bottom:6px;">DISCIPLINE & ROUTINE</div>
-      <div style="font-size:12px;color:var(--dim);line-height:1.6;">Comment construire une routine de trader et s'y tenir même quand ça va mal.</div>
-    </div>
-    <div style="background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px;">
-      <div style="font-size:24px;margin-bottom:10px;">💪</div>
-      <div style="font-family:'Orbitron',sans-serif;font-size:11px;font-weight:900;color:var(--white);letter-spacing:1px;margin-bottom:6px;">RÉSILIENCE FACE AUX PERTES</div>
-      <div style="font-size:12px;color:var(--dim);line-height:1.6;">Perdre fait partie du jeu. Comment rebondir sans exploser son compte.</div>
-    </div>
-    <div style="background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px;">
-      <div style="font-size:24px;margin-bottom:10px;">🧘</div>
-      <div style="font-family:'Orbitron',sans-serif;font-size:11px;font-weight:900;color:var(--white);letter-spacing:1px;margin-bottom:6px;">PATIENCE & SÉLECTIVITÉ</div>
-      <div style="font-size:12px;color:var(--dim);line-height:1.6;">Attendre le bon setup plutôt que de forcer des trades médiocres.</div>
-    </div>
-  </div>
+    <div id="pcSteps"></div>
 
-  <div style="padding:24px;border-radius:14px;background:rgba(255,215,0,0.06);border-left:3px solid rgba(255,215,0,0.4);border-radius:0;margin-bottom:24px;">
-    <div style="font-size:15px;color:rgba(255,215,0,0.9);line-height:1.8;font-style:italic;">"La différence entre un trader rentable et un trader perdant, c'est pas la stratégie ou le capital. C'est le mental."</div>
-    <div style="font-family:'Orbitron',sans-serif;font-size:11px;color:rgba(255,215,0,0.5);margin-top:8px;letter-spacing:1px;">— QUINCY · DHA</div>
-  </div>
+    <div class="pc-done" id="pcDone">
+      <div class="pc-done-ic">🎉</div>
+      <h3>Félicitations, tu as terminé la prise de conscience !</h3>
+      <p>Continue ton évolution petit à petit avec la bibliothèque ci-dessous, et prends des notes. Toutes ces informations t'aideront dans ton trading, dans ton business et dans la vie de tous les jours.</p>
+      <div class="pc-done-xp" id="pcDoneXp">+100 XP BONUS</div>
+    </div>
 
-  <a href="dha-formation.html" style="display:flex;align-items:center;justify-content:center;gap:10px;padding:14px;border-radius:12px;background:linear-gradient(135deg,var(--blue),var(--cyan));color:#000;font-family:'Orbitron',sans-serif;font-size:11px;font-weight:900;letter-spacing:2px;text-decoration:none;">← RETOUR À LA FORMATION</a>
+    <div class="pc-lib-h">
+      <div class="pc-k">PARTIE 2 · À TON RYTHME</div>
+      <h2>La bibliothèque</h2>
+      <p>Des personnes qui ont appliqué les principes du succès et qui vont te les enseigner. Ouvre un chapitre, regarde, prends des notes. Chaque vidéo vue = <b style="color:var(--green)">+50 XP</b>.</p>
+    </div>
+    <div id="pcLib"></div>
+    <p class="pc-foot">Le contenu est mis à jour régulièrement. Une question sur une vidéo ? Pose-la dans le groupe ou en appel.</p>
+  </section>
+
+  <!-- ===== MINDSET TRADING ===== -->
+  <section class="ms-pane" data-pane="trading">
+    <div class="mt-soon">
+      <div class="mt-ic">🧠</div>
+      <div class="mt-t">EN COURS DE CRÉATION</div>
+      <p>Tout ce qu'on ne t'apprend pas en trading : la gestion des émotions, la discipline, la patience et la résilience face aux pertes.</p>
+      <span class="mt-pill"><i></i>BIENTÔT DISPONIBLE</span>
+    </div>
+    <div class="mt-grid">
+      <div class="mt-card"><span>😤</span><b>Gestion des émotions</b><small>La peur, la cupidité, le FOMO : comment les reconnaître et les contrôler.</small></div>
+      <div class="mt-card"><span>🎯</span><b>Discipline &amp; routine</b><small>Construire une routine de trader et s'y tenir, même quand ça va mal.</small></div>
+      <div class="mt-card"><span>💪</span><b>Résilience face aux pertes</b><small>Perdre fait partie du jeu. Rebondir sans exploser son compte.</small></div>
+      <div class="mt-card"><span>🧘</span><b>Patience &amp; sélectivité</b><small>Attendre le bon setup plutôt que de forcer des trades moyens.</small></div>
+    </div>
+    <blockquote class="mt-q">« La différence entre un trader rentable et un trader perdant, ce n'est pas la stratégie ou le capital. C'est le mental. »<cite>— QUINCY · DHA</cite></blockquote>
+  </section>
 </main>
 
 <script>
@@ -149,6 +262,7 @@ function closeSidebar(){
 document.querySelectorAll('.nav-item').forEach(a=>a.addEventListener('click',closeSidebar));
 
 </script>
+<script src="dha-prise-de-conscience.js"></script>
 <script src="dha-mobile-menu.js"></script>
 <script src="dha-signaler.js"></script>
 <script src="dha-forfait.js"></script>

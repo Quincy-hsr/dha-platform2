@@ -116,6 +116,7 @@
     if (q.k === 'co') return cles.has('connexion_' + etat.jour);
     if (q.k === 'mo') { var ok = false; cles.forEach(function (c) { if (/^bloc_m\d+/.test(c)) ok = true; }); return ok; }
     var f = false;
+    if (q.k === 'pc') cles.forEach(function (c) { if (c.indexOf('pc_') === 0 && c !== 'pc_fin') f = true; });
     cles.forEach(function (c) { if (c.indexOf('man-') === 0 && c.split('-').indexOf(q.k) > 0) f = true; });
     return f;
   }
