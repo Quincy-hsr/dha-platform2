@@ -404,7 +404,7 @@ var DM_SOURCES = SOURCES.slice(1);
 var PLATFORMS = ['Instagram','TikTok','Autre'];
 var CTAS = ['Commente « DHA »','DM « DHA »','Aucun'];
 var CI_TYPES = ['Message','Appel individuel','Appel de groupe','RDV en personne'];
-var ONB = [['access','Accès à la plateforme donné'],['awareness','Fichier « prise de conscience » terminé'],['kickoff','Appel de prise en main fait']];
+var ONB = [['access','Accès à la plateforme donné'],['awareness','Prise de conscience (partie 1) terminée'],['kickoff','Appel de prise en main fait']];
 var MILES = [['m1','Mois 1 : stratégie maîtrisée'],['m2','Mois 2 : objectif en démo atteint'],['m3','Mois 3 : passage en réel'],['m4','Mois 4 : challenge validé']];
 var STEP_TOTAL = ONB.length + MILES.length;
 var MODULES = 17;
@@ -520,7 +520,7 @@ function loadPlatform(){
       if(dl) dl.innerHTML = PLAT.members.map(function(m){ return '<option value="'+esc(m.pseudo)+'">'+esc([m.prenom,m.nom].filter(Boolean).join(' '))+'</option>'; }).join('');
       var linked = S.clients.map(function(c){ return c.pseudo; }).filter(Boolean);
       if(!linked.length){ PLAT.loaded = true; return; }
-      var keys = Object.keys(MOD_KEYS).map(function(k){ return MOD_KEYS[k]; }).filter(Boolean);
+      var keys = Object.keys(MOD_KEYS).map(function(k){ return MOD_KEYS[k]; }).filter(Boolean).concat(['pc_fin']);
       return DHA.admin('dha_admin_historique', {p_pseudos:linked})
         .then(function(all){
           all = Array.isArray(all) ? all : [];
@@ -554,9 +554,12 @@ function syncModules(){
       if(t && !mods['v'+n]){ mods['v'+n] = t; changed = true; }
       else if(!t && mods['v'+n]){ mods['v'+n] = null; changed = true; }
     }
+    // Partie 1 de la Prise de conscience finie sur la plateforme → case « prise de conscience » cochée
+    var onb = Object.assign({}, c.onb||{}), pcFin = (PLAT.done[normPseudo(c.pseudo)]||{}).pc_fin;
+    if(pcFin && !onb.awareness){ onb.awareness = pcFin; changed = true; }
     if(!changed) return;
     syncing[c.id] = 1;
-    put('clients', Object.assign({}, c, {mods:mods})).then(function(){ delete syncing[c.id]; }, function(){ delete syncing[c.id]; });
+    put('clients', Object.assign({}, c, {mods:mods, onb:onb})).then(function(){ delete syncing[c.id]; }, function(){ delete syncing[c.id]; });
   });
 }
 var syncT = 0;
