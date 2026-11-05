@@ -43,6 +43,7 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
 .info-label{font-family:'Orbitron',sans-serif;font-size:8px;letter-spacing:2px;color:var(--dim);margin-bottom:4px;}
 .info-val{font-size:13px;color:var(--white);font-weight:600;}
 .calendly-wrap{background:var(--card);border:1px solid var(--border);border-radius:20px;overflow:hidden;min-height:700px;}
+.ct-vid{margin-top:14px;border-radius:14px;overflow:hidden;border:1px solid rgba(0,212,255,0.25);background:#000}.ct-vid-h{padding:8px 12px;font-family:'Orbitron',sans-serif;font-size:10px;letter-spacing:1.5px;color:var(--cyan);background:rgba(0,212,255,0.08)}.ct-vid video{display:block;width:100%;height:auto;aspect-ratio:4/3;background:#000}
 .ct-must{margin-top:12px;padding:12px 14px;border-radius:12px;background:rgba(255,215,0,0.08);border:1px solid rgba(255,215,0,0.45);color:#FFE9A8;font-size:13.5px;line-height:1.55}.ct-must b{color:#FFD700}
 .ct-warn{padding:14px 16px;border-radius:14px;border:1px solid rgba(255,140,0,0.4);background:rgba(255,140,0,0.07);font-size:13px;line-height:1.6;color:rgba(232,244,255,0.8);margin-bottom:22px;}
 .ct-steps{display:flex;flex-direction:column;gap:14px;}
@@ -157,20 +158,30 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
     <div class="ct-step"><div class="ct-num">1</div><div><div class="ct-t">OUVRE TON COMPTE VANTAGE</div>
       <div class="ct-p">Inscris-toi chez Vantage avec mon lien (c'est un lien partenaire). Remplis ton profil et valide ton identité (pièce d'identité + justificatif de domicile) : la validation prend en général quelques heures.</div>
       <div class="ct-must" role="note">🔑 <b>Obligatoire : inscris-toi uniquement avec ce lien.</b> C'est grâce à lui que je vois ton compte. Si tu ouvres ton compte autrement (ou si tu as déjà un compte Vantage ouvert sans le lien), <b>tu n'auras pas accès au canal</b>. Dans ce cas, écris-moi avant de faire ton dépôt.</div>
-      <span id="ct-vantage"></span></div></div>
-    <div class="ct-step"><div class="ct-num">2</div><div><div class="ct-t">FAIS TON DÉPÔT</div>
+      <span id="ct-vantage"></span>
+      <div class="ct-vid"><div class="ct-vid-h">🎥 TUTO VIDÉO · CRÉER SON COMPTE + VÉRIFICATION · 1 MIN 48</div><video controls playsinline preload="none" poster="videos/vantage-1-compte.jpg" aria-label="Comment créer son compte Vantage et le vérifier"><source src="videos/vantage-1-compte.mp4" type="video/mp4"></video></div></div></div>
+    <div class="ct-step"><div class="ct-num">2</div><div><div class="ct-t">OUVRE TON COMPTE MT5</div>
+      <div class="ct-p">Une fois ton profil vérifié, crée ton compte de trading <b>réel MT5</b> depuis l'application Vantage. Vantage t'envoie ensuite tes identifiants (numéro de compte, mot de passe, serveur) par mail.</div>
+      <div class="ct-vid"><div class="ct-vid-h">🎥 TUTO VIDÉO · OUVRIR SON COMPTE MT5 · 48 S</div><video controls playsinline preload="none" poster="videos/vantage-2-mt5.jpg" aria-label="Comment ouvrir son compte MT5 chez Vantage"><source src="videos/vantage-2-mt5.mp4" type="video/mp4"></video></div></div></div>
+    <div class="ct-step"><div class="ct-num">3</div><div><div class="ct-t">ACTIVE LA PROMOTION</div>
+      <div class="ct-p">Avant ton premier dépôt, va dans <b>Promo</b> et active le bonus de dépôt. Fais-le <b>avant</b> de déposer : le bonus s'applique sur ton premier dépôt.</div>
+      <div class="ct-vid"><div class="ct-vid-h">🎥 TUTO VIDÉO · ACTIVER LA PROMOTION · 1 MIN 10</div><video controls playsinline preload="none" poster="videos/vantage-3-promotion.jpg" aria-label="Comment activer la promotion Vantage"><source src="videos/vantage-3-promotion.mp4" type="video/mp4"></video></div></div></div>
+    <div class="ct-step"><div class="ct-num">4</div><div><div class="ct-t">FAIS TON DÉPÔT</div>
       <div class="ct-p">Depuis ton espace Vantage, clique sur « Dépôt » et choisis ton moyen de paiement (carte, virement…). <span id="ct-depot"></span></div>
-      <ul class="ct-list"><li>Dépose uniquement de l'argent dont tu n'as pas besoin.</li><li>Garde une capture de la confirmation du dépôt : elle te sert à l'étape 3.</li></ul></div></div>
-    <div class="ct-step"><div class="ct-num">3</div><div><div class="ct-t">ENVOIE TA PREUVE</div>
+      <ul class="ct-list"><li>Dépose uniquement de l'argent dont tu n'as pas besoin.</li><li>Garde une capture de la confirmation du dépôt : elle te sert à l'étape 6.</li></ul></div></div>
+    <div class="ct-step"><div class="ct-num">5</div><div><div class="ct-t">CONNECTE TON COMPTE À METATRADER 5</div>
+      <div class="ct-p">Télécharge l'application <b>MetaTrader 5</b>, cherche le courtier <b>Vantage Markets</b> et connecte-toi avec les identifiants reçus par mail (numéro de compte, mot de passe, serveur).</div>
+      <div class="ct-vid"><div class="ct-vid-h">🎥 TUTO VIDÉO · CONNECTER SON COMPTE À MT5 · 1 MIN 33</div><video controls playsinline preload="none" poster="videos/vantage-4-connexion.jpg" aria-label="Comment connecter son compte Vantage à MetaTrader 5"><source src="videos/vantage-4-connexion.mp4" type="video/mp4"></video></div></div></div>
+    <div class="ct-step"><div class="ct-num">6</div><div><div class="ct-t">ENVOIE TA PREUVE</div>
       <div class="ct-p">Envoie-moi la capture de ton dépôt (et ton identifiant de compte Vantage). Je vérifie et je t'active l'accès au canal.</div>
       <a class="ct-btn wa" href="https://wa.me/qr/OCPS7DRIVP76L1" target="_blank" rel="noopener">💬 ENVOYER MA PREUVE À QUINCY</a></div></div>
-    <div class="ct-step" id="ct-canal"><div class="ct-num">4</div><div><div class="ct-t">REJOINS LE CANAL</div><div class="ct-p">Chargement…</div></div></div>
-    <div class="ct-step"><div class="ct-num">5</div><div><div class="ct-t">PRENDS UN TRADE DU SIGNAL</div>
+    <div class="ct-step" id="ct-canal"><div class="ct-num">7</div><div><div class="ct-t">REJOINS LE CANAL</div><div class="ct-p">Chargement…</div></div></div>
+    <div class="ct-step"><div class="ct-num">8</div><div><div class="ct-t">PRENDS UN TRADE DU SIGNAL</div>
       <div class="ct-p">Chaque signal ressemble à ça :</div>
       <div class="sig">📡 <b>EUR/USD</b> — <span class="buy">ACHAT</span><br>Entrée : 1.0850<br>Stop Loss : 1.0820<br>Take Profit : 1.0910<br><small>Exemple, pas un vrai signal</small></div>
       <ol class="ct-list"><li>Ouvre MetaTrader 5 (module 8) et cherche la paire.</li><li><b>Calcule ta taille de lot</b> pour risquer 1 % de ton capital maximum (module 9).</li><li>Place l'ordre avec <b>exactement</b> l'entrée, le Stop Loss et le Take Profit du signal.</li><li>Si le prix est déjà loin de l'entrée, <b>ne cours pas après</b> : tu attends le suivant.</li><li>Note le trade dans ton journal (module 12).</li></ol>
 </div></div>
-    <div class="ct-step"><div class="ct-num">6</div><div><div class="ct-t">LES RÈGLES DU CANAL</div>
+    <div class="ct-step"><div class="ct-num">9</div><div><div class="ct-t">LES RÈGLES DU CANAL</div>
       <ul class="ct-list" style="margin-top:0"><li><b>Jamais plus de 1 %</b> de risque par trade, même si tu es sûr de toi.</li><li><b>Toujours un Stop Loss</b>, placé dès l'ouverture.</li><li>Tu restes <b>seul responsable</b> de tes trades : le signal t'aide, il ne décide pas pour toi.</li><li>Les pertes font partie du jeu : pas de revenge trading, pas de lot doublé pour « se refaire ».</li><li>Une question ? Pose-la pendant le live du mardi.</li></ul></div></div>
   </div>
 </main>
