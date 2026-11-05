@@ -43,6 +43,7 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
 .info-label{font-family:'Orbitron',sans-serif;font-size:8px;letter-spacing:2px;color:var(--dim);margin-bottom:4px;}
 .info-val{font-size:13px;color:var(--white);font-weight:600;}
 .calendly-wrap{background:var(--card);border:1px solid var(--border);border-radius:20px;overflow:hidden;min-height:700px;}
+.ct-must{margin-top:12px;padding:12px 14px;border-radius:12px;background:rgba(255,215,0,0.08);border:1px solid rgba(255,215,0,0.45);color:#FFE9A8;font-size:13.5px;line-height:1.55}.ct-must b{color:#FFD700}
 .ct-warn{padding:14px 16px;border-radius:14px;border:1px solid rgba(255,140,0,0.4);background:rgba(255,140,0,0.07);font-size:13px;line-height:1.6;color:rgba(232,244,255,0.8);margin-bottom:22px;}
 .ct-steps{display:flex;flex-direction:column;gap:14px;}
 .ct-step{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:20px;display:grid;grid-template-columns:44px 1fr;gap:16px;}
@@ -155,6 +156,7 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
   <div class="ct-steps">
     <div class="ct-step"><div class="ct-num">1</div><div><div class="ct-t">OUVRE TON COMPTE VANTAGE</div>
       <div class="ct-p">Inscris-toi chez Vantage avec mon lien (c'est un lien partenaire). Remplis ton profil et valide ton identité (pièce d'identité + justificatif de domicile) : la validation prend en général quelques heures.</div>
+      <div class="ct-must" role="note">🔑 <b>Obligatoire : inscris-toi uniquement avec ce lien.</b> C'est grâce à lui que je vois ton compte. Si tu ouvres ton compte autrement (ou si tu as déjà un compte Vantage ouvert sans le lien), <b>tu n'auras pas accès au canal</b>. Dans ce cas, écris-moi avant de faire ton dépôt.</div>
       <span id="ct-vantage"></span></div></div>
     <div class="ct-step"><div class="ct-num">2</div><div><div class="ct-t">FAIS TON DÉPÔT</div>
       <div class="ct-p">Depuis ton espace Vantage, clique sur « Dépôt » et choisis ton moyen de paiement (carte, virement…). <span id="ct-depot"></span></div>
