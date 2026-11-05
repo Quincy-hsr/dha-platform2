@@ -195,7 +195,7 @@ function rendre(c,member){
   document.getElementById('ct-depot').innerHTML=c.depot_min?'Dépôt minimum conseillé : <b>'+esc(c.depot_min)+'</b>.':'Je t\'indique le dépôt minimum conseillé quand tu m\'écris.';
   var pack=String((member&&member.pack)||''), per=c.periode?' <small style="font-size:11px;color:var(--dim)">'+esc(c.periode)+'</small>':'';
   var mien=pack==='180'?'180':pack==='500'?'500':pack==='750'?'750':(pack?'750':'seul');
-  var P=[['seul','Canal seul','70 €'],['180','Essentiel','50 €'],['500','Groupe','30 €'],['750','1:1','10 €']];
+  var P=[['seul','Canal seul','30 €/mois'],['180','Essentiel','20 €/mois'],['500','Groupe','Inclus'],['750','1:1','Inclus']];
   var box=document.getElementById('ct-canal');
   if(c.acces){
     box.classList.remove('lock');
@@ -203,8 +203,14 @@ function rendre(c,member){
     return;
   }
   box.classList.add('lock');
+  if(mien==='500'||mien==='750'){
+    box.innerHTML='<div class="ct-num">🎁</div><div><div class="ct-t">REJOINS LE CANAL</div><div class="ct-p">✅ <b>Le copy trading est inclus dans ton offre</b>, tu n\'as rien à payer. Ouvre ton compte Vantage <b>avec mon lien</b> (étape 1), puis envoie-moi la preuve (étape 6) : je t\'active l\'accès au canal.</div>'
+      +'<a class="ct-btn wa" href="'+WA+'" target="_blank" rel="noopener">💬 ACTIVER MON ACCÈS</a>'
+      +'<div class="ct-p" style="margin-top:10px;font-size:13px;color:var(--dim)">Une fois activé, le bouton « Rejoindre le canal » apparaît ici.</div></div>';
+    return;
+  }
   var lien=c['pay_'+mien];
-  box.innerHTML='<div class="ct-num">🔒</div><div><div class="ct-t">REJOINS LE CANAL</div><div class="ct-p">L\'accès au canal se débloque une fois ton paiement et ta preuve validés. Le prix dépend de ton offre :</div>'
+  box.innerHTML='<div class="ct-num">🔒</div><div><div class="ct-t">REJOINS LE CANAL</div><div class="ct-p">L\'accès au canal se débloque une fois ton paiement et ta preuve validés. Inclus avec les offres Groupe et 1:1, sinon :</div>'
     +'<div class="ct-prix">'+P.map(function(x){return '<div'+(x[0]===mien?' class="moi"':'')+'>'+x[1]+'<b>'+x[2]+'</b>'+(x[0]===mien?per:'')+'</div>';}).join('')+'</div>'
     +'<a class="ct-btn gold" href="'+(okUrl(lien)?esc(lien):WA)+'" target="_blank" rel="noopener">🔓 DÉBLOQUER MON ACCÈS</a>'
     +'<div class="ct-p" style="margin-top:10px;font-size:13px;color:var(--dim)">Une fois activé, le bouton « Rejoindre le canal » apparaît ici.</div></div>';

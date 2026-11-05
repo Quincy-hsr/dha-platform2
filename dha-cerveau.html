@@ -1111,7 +1111,7 @@ function loadCopy(){
   return DHA.admin('dha_admin_copy').then(function(d){ if(d){ COPY.cfg = d; COPY.ok = true; schedule(); } }).catch(function(){});
 }
 loadCopy();
-var COPY_CHAMPS = [['lien_vantage','Ton lien d\'inscription Vantage','https://…'],['depot_min','Dépôt minimum conseillé','ex. 200 €'],['canal_nom','Nom du canal','ex. Telegram DHA Signaux'],['canal_lien','Lien d\'invitation du canal (visible seulement par les membres activés)','https://…'],['periode','Le prix, c\'est…','ex. par mois'],['pay_seul','Lien de paiement Stripe — canal seul (70 €)','https://buy.stripe.com/…'],['pay_180','Lien de paiement — avec l\'Essentiel (50 €)','https://buy.stripe.com/…'],['pay_500','Lien de paiement — avec le Groupe (30 €)','https://buy.stripe.com/…'],['pay_750','Lien de paiement — avec le 1:1 (10 €)','https://buy.stripe.com/…']];
+var COPY_CHAMPS = [['lien_vantage','Ton lien d\'inscription Vantage','https://…'],['depot_min','Dépôt minimum conseillé','ex. 200 €'],['canal_nom','Nom du canal','ex. Telegram DHA Signaux'],['canal_lien','Lien d\'invitation du canal (visible seulement par les membres activés)','https://…'],['periode','Le prix, c\'est…','ex. par mois'],['pay_seul','Lien de paiement Stripe — canal seul (30 €/mois)','https://buy.stripe.com/…'],['pay_180','Lien de paiement — avec l\'Essentiel (20 €/mois)','https://buy.stripe.com/…']];
 function paintCopy(){
   var box = $('#copycfg'); if(!box) return;
   if(!COPY.ok){ box.innerHTML = ''; return; }
