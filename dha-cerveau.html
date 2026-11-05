@@ -1030,7 +1030,7 @@ var CAND = {list:[], ok:false};
 function loadCand(){
   if(!DHA.adminKey()) return Promise.resolve();
   return DHA.admin('dha_admin_candidatures')
-    .then(function(d){ CAND.list = Array.isArray(d) ? d : []; CAND.ok = true; schedule(); })
+    .then(function(d){ CAND.list = Array.isArray(d) ? d : []; CAND.ok = true; schedule(); loadLanding(); })
     .catch(function(){});
 }
 function ymdToTs(v, fin){ return new Date(v+(fin?'T23:59:59':'T00:00:00')).getTime(); }
@@ -1290,9 +1290,44 @@ function candLink(c){
 }
 function candProspect(c){ return S.prospects.filter(function(p){ return p.fromCand===c.id; })[0]; }
 function skelCand(){
-  return '<div class="stack"><section class="card"><div id="cchips" style="display:flex;flex-wrap:wrap;gap:8px;margin:0 0 6px"></div><div class="plist" id="clist"></div></section></div>';
+  return '<div class="stack"><section class="card" id="landing" aria-label="Page vidéo"></section><section class="card"><div id="cchips" style="display:flex;flex-wrap:wrap;gap:8px;margin:0 0 6px"></div><div class="plist" id="clist"></div></section></div>';
+}
+/* ---------- page vidéo : conversion visiteurs → candidatures ---------- */
+var LND = {per:'30', d:null};
+function loadLanding(){
+  if(!DHA.adminKey()) return Promise.resolve();
+  var depuis = LND.per==='all' ? null : new Date(Date.now() - Number(LND.per)*86400000).toISOString();
+  return DHA.admin('dha_admin_landing', {p_depuis:depuis})
+    .then(function(d){ LND.d = d || null; schedule(); })
+    .catch(function(){ LND.d = {erreur:true}; schedule(); });
+}
+function lndPct(a, b){ return b ? (Math.round(1000*a/b)/10).toString().replace('.', ',')+' %' : '–'; }
+var LND_BTN = {'header':'En-tête', 'sous-video':'Sous la vidéo', 'bande-1':'Bandeau 1 (après ton histoire)', 'bande-2':'Bandeau 2 (après les rangs)', 'bande-3':'Bandeau 3 (après l\'objection)', 'bande-4':'Bandeau 4 (après les étapes)', 'final':'Bloc final', 'bouton-fixe':'Bouton fixe en bas'};
+function paintLanding(){
+  var box = $('#landing'); if(!box) return;
+  var chips = [['7','7 jours'],['30','30 jours'],['all','Depuis le début']].map(function(f){
+    return '<button type="button" class="chip" data-act="lnd-per" data-v="'+f[0]+'" aria-pressed="'+(LND.per===f[0])+'">'+f[1]+'</button>';
+  }).join('');
+  var h = '<div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap"><h3 style="margin:0">🎬 Page vidéo → candidatures</h3><div style="display:flex;gap:6px;flex-wrap:wrap">'+chips+'</div></div>';
+  var d = LND.d;
+  if(!d){ box.innerHTML = h+'<p class="sub">Chargement…</p>'; return; }
+  if(d.erreur){ box.innerHTML = h+'<p class="sub">Impossible de charger les stats de la page vidéo. Lance sql/landing-suivi.sql dans Supabase si ce n\'est pas déjà fait.</p>'; return; }
+  var v = d.visiteurs||0, p = d.play||0, c = d.clic||0, n = d.cand||0;
+  var steps = [['Visiteurs', v, ''], ['Ont lancé la vidéo', p, lndPct(p, v)+' des visiteurs'], ['Ont cliqué « candidature »', c, lndPct(c, v)+' des visiteurs'], ['Candidatures reçues', n, lndPct(n, v)+' des visiteurs']];
+  h += '<div class="kpis" style="margin-top:10px">'+steps.map(function(s){ return '<div class="kpi"><span>'+s[0]+(s[2]?'<br><small>'+s[2]+'</small>':'')+'</span><b>'+fmtN(s[1])+'</b></div>'; }).join('')+'</div>';
+  h += '<p class="sub" style="margin:10px 0 0"><b>Conversion de la page : '+lndPct(n, v)+'</b> · parmi ceux qui lancent la vidéo : '+lndPct(n, p)+'</p>';
+  function liste(titre, rows, lab){
+    if(!rows || !rows.length) return '';
+    return '<div style="margin-top:14px"><b style="font-size:14px">'+titre+'</b>'+rows.map(function(r){ return '<div class="kpi" style="padding:7px 0"><span>'+esc(lab ? (lab[r.k]||r.k||'?') : (r.k||'?'))+'</span><b style="font-size:17px">'+fmtN(r.n)+'</b></div>'; }).join('')+'</div>';
+  }
+  h += liste('Boutons les plus cliqués', d.boutons, LND_BTN);
+  h += liste('D\'où viennent les visiteurs', d.provenances);
+  h += liste('Appareil', d.appareils, {mobile:'📱 Téléphone', desktop:'💻 Ordinateur'});
+  if(!v && !n) h += '<p class="sub" style="margin-top:10px">Pas encore de visite enregistrée. Les chiffres arrivent dès que la page vidéo est en ligne.</p>';
+  box.innerHTML = h;
 }
 function paintCand(){
+  paintLanding();
   if(!$('#clist')) return;
   var cnt = {all:CAND.list.length};
   CAND.list.forEach(function(c){ var k = c.statut||'nouvelle'; cnt[k] = (cnt[k]||0)+1; if(candProspect(c)) cnt.pros = (cnt.pros||0)+1; if(c.chaleur==='chaud' && k!=='acceptee' && k!=='refusee') cnt.chaud = (cnt.chaud||0)+1; });
@@ -2242,6 +2277,7 @@ document.addEventListener('click', function(ev){
     case 'obj-edit': ev.stopPropagation(); openObjectif(); return;
     case 'save-obj': saveObjectif(); break;
     case 'candf': CANDF = el.getAttribute('data-v'); schedule(); break;
+    case 'lnd-per': LND.per = el.getAttribute('data-v'); LND.d = null; schedule(); loadLanding(); break;
     case 'sigf': SIGF = el.getAttribute('data-v'); schedule(); break;
     case 'perf-all': PERFS.all = !PERFS.all; schedule(); return;
     case 'perf-ok': setPerf(el.getAttribute('data-id'),'verifie','Perf vérifiée ✔'); return;
