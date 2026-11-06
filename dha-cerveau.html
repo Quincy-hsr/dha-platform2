@@ -358,6 +358,15 @@ input[type=range]{padding:0;border:0;accent-color:var(--gain)}
 .tools summary{cursor:pointer;list-style:none}
 .tools summary::-webkit-details-marker{display:none}
 .tools .card{border:0;padding:0;background:transparent;box-shadow:none}
+.xpg-acts{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.xpg-a{display:flex;align-items:center;gap:4px;border:1px solid var(--line);border-radius:10px;background:var(--bg);padding:2px 4px 2px 0}
+.xpg-a.on{border-color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink)}
+.xpg-add{flex:1;display:grid;text-align:left;gap:1px;border:0;background:transparent;color:var(--ink);font:inherit;font-size:13px;padding:8px 10px;cursor:pointer;min-width:0}
+.xpg-add small{color:var(--muted);font-size:11.5px}
+.xpg-n{display:flex;align-items:center;gap:4px;font-size:13px}
+.xpg-list{max-height:38vh;margin-top:8px;border:1px solid var(--line);border-radius:10px;padding:0 10px}
+.xpg-m{cursor:pointer;gap:10px}.xpg-m input{width:20px;height:20px;flex-shrink:0;accent-color:var(--ink)}
+.xpg-m.on b{color:var(--focus)}
 @media (max-width:860px){.fab{bottom:calc(78px + env(safe-area-inset-bottom,0px));right:14px;width:54px;height:54px}}
 </style>
 <script src="dha-api.js"></script>
@@ -1416,28 +1425,75 @@ var XP_ACTIONS = [
   {k:'ga',i:'💰',l:"Gain en trading",x:60},
   {k:'pc',i:'🧠',l:"Vidéo Prise de conscience",x:50}
 ];
-var XPC = {};
-function openXp(c){
-  var m = memberOf(c); if(!m){ toast('Relie d\'abord ce client à son compte.'); return; }
-  XPC = {clientId:c.id, q:{}};
-  openDlg('<div class="dlg-body"><h2 id="dlgTitle">⚡ XP pour @'+esc(m.pseudo)+'</h2><p class="sub" style="margin:0">Actuellement '+fmtN(m.xp||0)+' XP · niveau '+levelOf(m.xp)+'. Choisis les actions, puis valide.</p>'
-    +'<div class="tl" id="xpList">'+XP_ACTIONS.map(function(a){ return '<div style="display:flex;align-items:center;gap:10px;justify-content:space-between"><span>'+a.i+' '+esc(a.l)+' <span class="sub">+'+a.x+' XP</span></span><span style="display:flex;align-items:center;gap:6px"><button type="button" class="btn small" data-act="xp-q" data-k="'+a.k+'" data-d="-1" aria-label="Retirer">−</button><b id="xq_'+a.k+'" style="min-width:18px;text-align:center">0</b><button type="button" class="btn small" data-act="xp-q" data-k="'+a.k+'" data-d="1" aria-label="Ajouter">+</button></span></div>'; }).join('')+'</div>'
-    +'<div><label for="xpNote">Message pour le membre (facultatif)</label><input id="xpNote" maxlength="280" placeholder="Ex. Super appel, continue comme ça 🔥"></div>'
-    +'<p class="note" id="xpTot" style="margin:0">Total : +0 XP</p></div>'
-    +'<div class="dlg-foot"><span></span><div class="r"><button type="button" class="btn" data-act="close">Annuler</button><button type="button" class="btn primary" data-act="xp-ok">Valider</button></div></div>');
+/* ---------- comptes de la plateforme sans fiche ---------- */
+function platSansFiche(){
+  var lies = {}; S.clients.forEach(function(c){ if(c.pseudo) lies[normPseudo(c.pseudo)] = 1; });
+  return PLAT.members.filter(function(m){ return m.pseudo && !lies[normPseudo(m.pseudo)]; })
+    .sort(function(a,b){ return ((PLAT.last||{})[normPseudo(b.pseudo)]||0) - ((PLAT.last||{})[normPseudo(a.pseudo)]||0); });
 }
-function xpTotal(){ return XP_ACTIONS.reduce(function(t,a){ return t + a.x*(XPC.q[a.k]||0); },0); }
+function platCard(m){
+  var last = (PLAT.last||{})[normPseudo(m.pseudo)], nom = [m.prenom,m.nom].filter(Boolean).join(' ');
+  return '<div class="card ccard"><div style="display:flex;justify-content:space-between;gap:8px;align-items:flex-start"><h3>@'+esc(m.pseudo)+(nom?' <span class="sub" style="font-weight:500;font-size:14px">· '+esc(nom)+'</span>':'')+'</h3><span class="badge" style="margin:0">Sans fiche</span></div>'
+    +'<div class="p-when" style="margin:0">⚡ '+fmtN(m.xp||0)+' XP · niveau '+levelOf(m.xp)+(last?' · vu '+ago(last):'')+(m.actif===false?' · 🚫 accès retiré':'')+'</div>'
+    +'<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:auto"><button type="button" class="btn small primary" data-act="xpm-open" data-v="'+esc(m.id)+'">⚡ Ajouter de l\'XP</button><button type="button" class="btn small" data-act="mk-fiche" data-v="'+esc(m.id)+'">Créer sa fiche</button></div></div>';
+}
+
+/* ---------- XP : un ou plusieurs membres d'un coup ---------- */
+var XPG = {q:{}, sel:{}, s:'', busy:false};
+function openXp(c){ var m = memberOf(c); if(!m){ toast('Relie d\'abord ce client à son compte.'); return; } openXpGroup([m.id]); }
+function openXpGroup(ids){
+  XPG = {q:{}, sel:{}, s:'', busy:false};
+  (ids||[]).forEach(function(id){ XPG.sel[id] = 1; });
+  if(!(ids||[]).length) XPG.q.ag = 1; // par défaut : appel de groupe / live
+  if(!PLAT.members.length){ loadPlatform(); }
+  openDlg('<div class="dlg-body"><h2 id="dlgTitle">⚡ Donner de l\'XP</h2>'
+    +'<div><label>1. Pour quoi ?</label><div class="xpg-acts" id="xpgA"></div></div>'
+    +'<div><label for="xpgS">2. À qui ? <span class="sub" id="xpgN"></span></label><div class="qk-row"><input id="xpgS" type="search" autocomplete="off" placeholder="Rechercher un membre"><button type="button" class="btn small" data-act="xpg-all">Tout cocher</button><button type="button" class="btn small" data-act="xpg-none">Aucun</button></div><div class="qk-list xpg-list" id="xpgL"></div></div>'
+    +'<div><label for="xpNote">Message pour les membres (facultatif)</label><input id="xpNote" maxlength="280" placeholder="Ex. Merci d\'être venu au live 🔥"></div></div>'
+    +'<div class="dlg-foot"><span class="sub" id="xpgT"></span><div class="r"><button type="button" class="btn" data-act="close">Annuler</button><button type="button" class="btn primary" data-act="xpg-ok">Valider</button></div></div>');
+  paintXpg();
+}
+function xpTotal(){ return XP_ACTIONS.reduce(function(t,a){ return t + a.x*(XPG.q[a.k]||0); },0); }
+function xpgVisible(){
+  var q = normName(XPG.s);
+  return PLAT.members.filter(function(m){ return !q || normName([m.pseudo,m.prenom,m.nom].filter(Boolean).join(' ')).indexOf(q)>=0; })
+    .sort(function(a,b){ var sa = XPG.sel[a.id]?1:0, sb = XPG.sel[b.id]?1:0; if(sa!==sb) return sb-sa; return ((PLAT.last||{})[normPseudo(b.pseudo)]||0) - ((PLAT.last||{})[normPseudo(a.pseudo)]||0); });
+}
+function paintXpg(){
+  var A = $('#xpgA'), L = $('#xpgL'); if(!A || !L) return;
+  A.innerHTML = XP_ACTIONS.map(function(a){ var n = XPG.q[a.k]||0;
+    return '<div class="xpg-a'+(n?' on':'')+'"><button type="button" class="xpg-add" data-act="xpg-q" data-k="'+a.k+'" data-d="1"><span>'+a.i+' '+esc(a.l)+'</span><small>+'+a.x+' XP</small></button>'+(n?'<span class="xpg-n"><button type="button" class="btn small" data-act="xpg-q" data-k="'+a.k+'" data-d="-1" aria-label="Retirer">−</button><b>×'+n+'</b></span>':'')+'</div>'; }).join('');
+  var vis = xpgVisible();
+  L.innerHTML = PLAT.members.length ? (vis.length ? vis.map(function(m){ var on = !!XPG.sel[m.id], last = (PLAT.last||{})[normPseudo(m.pseudo)];
+    return '<label class="qk-item xpg-m'+(on?' on':'')+'"><input type="checkbox" data-xpg-m="'+esc(m.id)+'"'+(on?' checked':'')+'><div style="flex:1;min-width:0"><b>@'+esc(m.pseudo)+'</b><small>'+esc([m.prenom,m.nom].filter(Boolean).join(' '))+(last?' · vu '+ago(last):'')+'</small></div><span class="sub">'+fmtN(m.xp||0)+' XP</span></label>'; }).join('') : '<p class="note" style="margin:0">Aucun membre trouvé.</p>') : '<p class="note" style="margin:0">Chargement des membres…</p>';
+  var nSel = Object.keys(XPG.sel).length, tot = xpTotal();
+  $('#xpgN').textContent = nSel ? nSel+' sélectionné'+(nSel>1?'s':'') : '';
+  $('#xpgT').textContent = tot && nSel ? '+'+fmtN(tot)+' XP × '+nSel+' membre'+(nSel>1?'s':'') : '';
+  var b = $('[data-act="xpg-ok"]'); if(b && !XPG.busy){ b.disabled = !(tot && nSel); b.textContent = tot && nSel ? 'Donner +'+fmtN(tot)+' XP à '+nSel : 'Valider'; }
+}
 function xpValidate(){
-  var c = S.clients.filter(function(x){ return x.id===XPC.clientId; })[0], m = memberOf(c); if(!m) return;
-  var tot = xpTotal(); if(!tot){ toast('Choisis au moins une action.'); return; }
-  var lignes = []; XP_ACTIONS.forEach(function(a){ for(var n=0;n<(XPC.q[a.k]||0);n++) lignes.push(a.i+' '+a.l+' (+'+a.x+' XP)'); });
+  var tot = xpTotal(), ids = Object.keys(XPG.sel);
+  var ms = PLAT.members.filter(function(m){ return XPG.sel[m.id]; });
+  if(!tot){ toast('Choisis au moins une action.'); return; }
+  if(!ms.length){ toast('Coche au moins un membre.'); return; }
+  var lignes = []; XP_ACTIONS.forEach(function(a){ for(var n=0;n<(XPG.q[a.k]||0);n++) lignes.push(a.i+' '+a.l+' (+'+a.x+' XP)'); });
   var note = ($('#xpNote').value||'').trim().replace(/\s*·\s*/g,' - ');
   var raison = lignes.join(' · ')+(note?' · 📝 '+note:'');
-  var btn = $('[data-act="xp-ok"]'); if(btn) btn.disabled = true;
-  DHA.admin('dha_admin_add_xp', {p_id:m.id, p_amount:tot, p_raison:raison, p_action_key:'man-'+XP_ACTIONS.filter(function(a){ return XPC.q[a.k]>0; }).map(function(a){ return a.k; }).join('-')+'-'+Date.now()})
-    .then(function(nv){ m.xp = nv; }, function(e){ throw {code:'http_'+(e.status||0)}; })
-    .then(function(){ closeDlg(); toast('+'+fmtN(tot)+' XP pour @'+m.pseudo); loadPlatform(); schedule(); })
-    .catch(function(e){ if(btn) btn.disabled = false; toast(errCopy(e)); });
+  var base = 'man-'+XP_ACTIONS.filter(function(a){ return XPG.q[a.k]>0; }).map(function(a){ return a.k; }).join('-')+'-'+Date.now();
+  var btn = $('[data-act="xpg-ok"]'); XPG.busy = true; if(btn) btn.disabled = true;
+  var ok = [], ko = [], i = 0;
+  (function next(){
+    if(i>=ms.length){
+      XPG.busy = false;
+      if(ko.length){ toast('+'+fmtN(tot)+' XP pour '+ok.length+' membre'+(ok.length>1?'s':'')+'. Échec pour : @'+ko.join(', @')); ms.forEach(function(m){ if(ok.indexOf(m.pseudo)>=0) delete XPG.sel[m.id]; }); paintXpg(); }
+      else { closeDlg(); toast('+'+fmtN(tot)+' XP pour '+(ok.length===1?'@'+ok[0]:ok.length+' membres')); }
+      loadPlatform(); schedule(); return;
+    }
+    var m = ms[i]; if(btn) btn.textContent = 'Envoi '+(i+1)+'/'+ms.length+'…';
+    DHA.admin('dha_admin_add_xp', {p_id:m.id, p_amount:tot, p_raison:raison, p_action_key:base+'-'+i})
+      .then(function(nv){ m.xp = nv; ok.push(m.pseudo); }, function(){ ko.push(m.pseudo); })
+      .then(function(){ i++; next(); });
+  })();
 }
 
 /* ---------- vue : prospects perdus ---------- */
@@ -1820,7 +1876,7 @@ function paintContent(){
 
 /* ---------- vue : clients ---------- */
 function skelClients(){
-  return '<div class="stack"><div id="cash"></div><div id="relance"></div><div id="linkBanner"></div><div class="toolbar" style="margin:0"><div id="cfilt" style="display:flex;flex-wrap:wrap;gap:8px"></div><button type="button" class="btn primary" data-act="new-client">Nouveau membre</button></div><div class="grid" id="cg"></div>'
+  return '<div class="stack"><div id="cash"></div><div id="relance"></div><div id="linkBanner"></div><div class="qk-row"><input type="search" id="mq" autocomplete="off" value="'+esc(S.mq||'')+'" placeholder="Rechercher un membre (pseudo, nom, email, tél.)" aria-label="Rechercher un membre"><button type="button" class="btn primary" data-act="xpg-open">⚡ XP en groupe</button></div><div class="toolbar" style="margin:0"><div id="cfilt" style="display:flex;flex-wrap:wrap;gap:8px"></div><button type="button" class="btn" data-act="new-client">+ Nouvelle fiche</button></div><div class="grid" id="cg"></div>'
     +'<details class="card tools" id="ctools"><summary><b>🛠️ Outils</b> <span class="sub" id="ctoolsN">perfs, lives, copy trading, parrainages</span></summary><div class="stack" style="margin-top:14px"><div id="perfsv"></div><div id="lives"></div><div id="copycfg"></div><span style="display:flex;gap:10px;flex-wrap:wrap"><button type="button" class="btn" data-act="tab" data-tab="membres">🤝 Parrainages &amp; comptes</button><span id="clexp"></span></span></div></details></div>';
 }
 function paintClients(){
@@ -1834,12 +1890,16 @@ function paintClients(){
   paintRelance(); paintPerfs(); paintLives(); paintCopy();
   var cf = $('#cfilt');
   var nUn = S.clients.filter(function(c){ return !c.pseudo; }).length;
-  if(cf) cf.innerHTML = [['all','Tous',S.clients.length],['owe','Me doivent de l\'argent',owe.length],['unlinked','Pas reliés',nUn]].map(function(f){ return '<button type="button" class="chip" data-act="cf" data-v="'+f[0]+'" aria-pressed="'+((S.cliF||'all')===f[0])+'">'+f[1]+'<small>'+f[2]+'</small></button>'; }).join('');
-  var list = S.clients.filter(function(c){ var f = S.cliF||'all'; return f==='all' || (f==='owe' ? (c.status!=='perdu' && remainingOf(c)>0) : !c.pseudo); }).sort(function(a,b){ return (S.cliF==='owe') ? remainingOf(b)-remainingOf(a) : (b.startAt||0)-(a.startAt||0); });
+  var sansFiche = platSansFiche();
+  if(cf) cf.innerHTML = [['all','Tous',S.clients.length+sansFiche.length],['owe','Me doivent de l\'argent',owe.length],['unlinked','Fiches pas reliées',nUn],['nofiche','Comptes sans fiche',sansFiche.length]].map(function(f){ return '<button type="button" class="chip" data-act="cf" data-v="'+f[0]+'" aria-pressed="'+((S.cliF||'all')===f[0])+'">'+f[1]+'<small>'+f[2]+'</small></button>'; }).join('');
+  var mq = normName(S.mq||''), F = S.cliF||'all';
+  var hit = function(parts){ return !mq || normName(parts.filter(Boolean).join(' ')).indexOf(mq)>=0; };
+  var list = F==='nofiche' ? [] : S.clients.filter(function(c){ return F==='all' || (F==='owe' ? (c.status!=='perdu' && remainingOf(c)>0) : !c.pseudo); }).filter(function(c){ var m = memberOf(c)||{}; return hit([c.name,c.pseudo,c.offer,m.prenom,m.nom,m.email,m.telephone,m.ville]); }).sort(function(a,b){ return (S.cliF==='owe') ? remainingOf(b)-remainingOf(a) : (b.startAt||0)-(a.startAt||0); });
+  var plats = (F==='all' || F==='nofiche') ? sansFiche.filter(function(m){ return hit([m.pseudo,m.prenom,m.nom,m.email,m.telephone,m.ville]); }) : [];
   var unlinked = S.clients.filter(function(c){ return !c.pseudo && (c.status||'actif')!=='perdu'; }).length;
   var lb = $('#linkBanner');
   if(lb) lb.innerHTML = unlinked ? '<div class="callout" style="display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between"><span><strong>'+unlinked+' client'+(unlinked>1?'s':'')+' pas encore relié'+(unlinked>1?'s à leur compte':' à son compte')+'</strong><span class="sub" style="display:block">Relie-les pour que leurs modules « Fait » se cochent tout seuls.</span></span><button type="button" class="btn primary" data-act="auto-link"'+(PLAT.members.length?'':' disabled')+'>Relier automatiquement</button></div>' : '';
-  if(!list.length){ $('#cg').innerHTML = '<div class="card empty" style="grid-column:1/-1">Aucun membre pour le moment. Passe un prospect en « Client » pour créer sa fiche.</div>'; return; }
+  if(!list.length && !plats.length){ $('#cg').innerHTML = '<div class="card empty" style="grid-column:1/-1">'+(mq?'Aucun membre ne correspond à « '+esc(S.mq)+' ».':'Aucun membre pour le moment.')+'</div>'; return; }
   $('#cg').innerHTML = list.map(function(c){
     var st = c.status||'actif', active = st==='actif';
     var stLabel = (CLIENT_STATUS.filter(function(x){return x[0]===st;})[0]||[0,'Actif'])[1];
@@ -1857,7 +1917,7 @@ function paintClients(){
       +'<div class="prog"><span>'+md+'/'+MODULES+' modules</span><div class="bar"><i style="width:'+Math.round(md/MODULES*100)+'%"></i></div></div>'
       +((money||alert)?'<div>'+money+(alert?'<span class="badge">'+esc(alert)+'</span>':'')+'</div>':'')
       +'<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:auto">'+(m?'<button type="button" class="btn small primary" data-act="xp-open" data-id="'+esc(c.id)+'">⚡ Ajouter de l\'XP</button>':'')+'<button type="button" class="btn small" data-act="open-client" data-id="'+esc(c.id)+'">Voir les détails</button></div></div>';
-  }).join('');
+  }).join('') + plats.map(platCard).join('');
 }
 
 
@@ -2340,8 +2400,13 @@ document.addEventListener('click', function(ev){
       DHA.admin('dha_admin_update_membre',{p_id:cm.id, p:{copy_trading:nv}}).then(function(r){ if(r){ cm.copy_trading = !!r.copy_trading; toast(nv?'Copy trading activé pour @'+cm.pseudo:'Copy trading désactivé'); openClient(cc); schedule(); } else toast('Échec'); }).catch(function(){ toast('Échec'); });
       break;
     case 'pw-reset': ev.stopPropagation(); var pc = byId(S.clients), pmm = pc && memberOf(pc); if(pmm) DHA.resetPasswordUI(pmm); break;
-    case 'xp-q': var k = el.getAttribute('data-k'); XPC.q[k] = Math.max(0, (XPC.q[k]||0)+Number(el.getAttribute('data-d'))); $('#xq_'+k).textContent = XPC.q[k]; $('#xpTot').textContent = 'Total : +'+fmtN(xpTotal())+' XP'; break;
-    case 'xp-ok': xpValidate(); break;
+    case 'xpg-open': openXpGroup([]); break;
+    case 'xpm-open': openXpGroup([el.getAttribute('data-v')]); break;
+    case 'xpg-q': var k = el.getAttribute('data-k'); XPG.q[k] = Math.max(0, (XPG.q[k]||0)+Number(el.getAttribute('data-d'))); if(!XPG.q[k]) delete XPG.q[k]; paintXpg(); break;
+    case 'xpg-all': xpgVisible().forEach(function(m){ XPG.sel[m.id] = 1; }); paintXpg(); break;
+    case 'xpg-none': XPG.sel = {}; paintXpg(); break;
+    case 'xpg-ok': xpValidate(); break;
+    case 'mk-fiche': var fm = PLAT.members.filter(function(x){ return String(x.id)===el.getAttribute('data-v'); })[0]; if(fm) openClient({id:uid(), name:[fm.prenom,fm.nom].filter(Boolean).join(' ')||fm.pseudo, pseudo:fm.pseudo, status:'actif', price:0, goal:'', offer:'', startAt:fm.created_at?new Date(fm.created_at).getTime():Date.now(), checkins:[], onb:{}, mil:{}, demoGoal:'', rdv:false, prospectId:null}); break;
     case 'cf': S.cliF = el.getAttribute('data-v'); S.tab = 'clients'; render(); break;
     case 'relink': var rc = byId(S.clients); if(rc){ openClient(rc); setTimeout(function(){ var f = $('#cdPseudo'); if(f){ f.scrollIntoView({block:'center'}); f.select(); } }, 60); } break;
     case 'unlink-f': var f2 = $('#cdPseudo'); if(f2){ f2.value = ''; toast('Compte délié : clique sur « Enregistrer » pour valider.'); } break;
@@ -2439,6 +2504,7 @@ document.addEventListener('click', function(ev){
 });
 document.addEventListener('change', function(ev){
   var el = ev.target;
+  if(el && el.getAttribute && el.getAttribute('data-xpg-m')){ var mid = el.getAttribute('data-xpg-m'); if(el.checked) XPG.sel[mid] = 1; else delete XPG.sel[mid]; paintXpg(); return; }
   if(el && el.id==='psort'){ S.sort = el.value; S.limit = 60; savePf(); paintProspects(); return; }
   if(el.getAttribute && el.getAttribute('data-act')==='num'){
     var c = S.content.filter(function(x){ return x.id===el.getAttribute('data-id'); })[0]; if(!c) return;
@@ -2452,6 +2518,8 @@ document.addEventListener('change', function(ev){
 });
 document.addEventListener('input', function(ev){
   if(ev.target && ev.target.id==='pq'){ S.q = ev.target.value; S.limit = 60; paintProspects(); }
+  if(ev.target && ev.target.id==='mq'){ S.mq = ev.target.value; paintClients(); }
+  if(ev.target && ev.target.id==='xpgS'){ XPG.s = ev.target.value; paintXpg(); }
   if(ev.target && ev.target.id==='aiQ'){ /* rien */ }
 });
 document.addEventListener('keydown', function(ev){
@@ -2480,6 +2548,7 @@ function paintQuick(){
       + tile('adv','➡️','Faire avancer',qkActive().length+' en cours')
       + tile('content','🎬','Contenu publié','En 2 taps')
       + tile('pay','💶','Paiement reçu',nDeb ? nDeb+' te doi'+(nDeb>1?'vent':'t')+' de l\'argent' : 'Personne ne te doit rien')
+      + '<button type="button" class="qk-tile" data-act="xpg-open"><span class="qk-ic">⚡</span><b>XP en groupe</b><small>Live, appel, sortie…</small></button>'
       + '<button type="button" class="qk-tile" data-act="goto-relance"><span class="qk-ic">🔔</span><b>À relancer</b><small>'+nRel+' prospect'+(nRel>1?'s':'')+'</small></button>'
       + '</div>';
   }else if(QK.v==='dm'){
