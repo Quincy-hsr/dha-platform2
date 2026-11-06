@@ -2444,7 +2444,6 @@ dlNs = {save:function(o){
   setTimeout(function(){ URL.revokeObjectURL(url); a.remove(); }, 1000);
   return Promise.resolve();
 }};
-var PASS = '050876';
 function start(){
   $('#gate').remove();
   render();
@@ -2452,17 +2451,8 @@ function start(){
   loadCand(); loadSig(); loadLives(); loadCopy();
   setInterval(loadPlatform, 60000);
 }
-// Plus de mot de passe (comme l'admin) : le Cerveau s'ouvre directement
-var okSession = true;
-if(okSession) DHA.adminGate(start);
-else {
-  $('#gatePwd').focus();
-  $('#gateForm').addEventListener('submit', function(ev){
-    ev.preventDefault();
-    if($('#gatePwd').value===PASS){ try{ sessionStorage.setItem('dha_admin','1'); }catch(e){} start(); }
-    else { $('#gateErr').textContent = 'Mot de passe incorrect.'; $('#gatePwd').select(); }
-  });
-}
+// Accès protégé côté serveur par le code admin (DHA.adminGate)
+DHA.adminGate(start);
 })();
 </script>
 </body>
