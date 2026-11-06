@@ -719,6 +719,8 @@ function allLogs(){
   return S.dmlogs.concat(v);
 }
 function logsIn(){ var s = since(), u = until(); return allLogs().filter(function(l){ var v = l.date||0; return v>=s && v<u; }); }
+// Fiches créées pour des comptes déjà existants : ne comptent pas comme nouveaux clients signés
+function signes(){ return S.clients.filter(function(c){ return !c.importe; }); }
 function monthOf(c){ return Math.floor((Date.now()-(c.startAt||Date.now()))/(30*DAY))+1; }
 function stepsDone(c){ var n = 0; ONB.forEach(function(k){ if((c.onb||{})[k[0]]) n++; }); MILES.forEach(function(k){ if((c.mil||{})[k[0]]) n++; }); return n; }
 function paidOf(c){ return c.payMulti ? (c.payments||[]).reduce(function(t,x){ return t+(Number(x.amount)||0); },0) : (Number(c.price)||0); }
@@ -857,7 +859,7 @@ function paintFunnel(){
 
   var contents = contentIn(), views = contents.reduce(function(s,c){return s+(Number(c.views)||0);},0);
   var s0 = since(), u0 = until();
-  var ca = S.clients.filter(function(c){ var v = c.startAt||0; return v>=s0 && v<u0; }).reduce(function(s,c){return s+(Number(c.price)||0);},0);
+  var ca = signes().filter(function(c){ var v = c.startAt||0; return v>=s0 && v<u0; }).reduce(function(s,c){return s+(Number(c.price)||0);},0);
   var restAll = S.clients.filter(function(c){ return c.status!=='perdu'; }).reduce(function(t,c){ return t+remainingOf(c); },0);
   var activeN = S.clients.filter(function(c){ return (c.status||'actif')==='actif'; }).length;
   var relance = S.prospects.filter(needsFollowUp).length;
@@ -918,7 +920,7 @@ function paintFunnel(){
   $('#insights').innerHTML = by('Résultats selon la source', groupBy(a.list, a.logs, function(p){return p.source;}))
     + by('Résultats selon le script', groupBy(a.list, a.logs, function(p){return p.variant;})) + fmt;
 
-  var cohort = S.clients.filter(function(c){ var v = c.startAt||0; return v>=s0 && v<u0; });
+  var cohort = signes().filter(function(c){ var v = c.startAt||0; return v>=s0 && v<u0; });
   var mrows = [['Membres entrés',cohort.length]].concat(ONB.map(function(k){ return [k[1], cohort.filter(function(c){return (c.onb||{})[k[0]];}).length]; })).concat(MILES.map(function(k){ return [k[1], cohort.filter(function(c){return (c.mil||{})[k[0]];}).length]; })).concat([['Partis',cohort.filter(function(c){return c.status==='perdu';}).length]]);
   $('#members').innerHTML = '<h2>Parcours des membres</h2><p class="sub" style="margin-bottom:10px">Combien de membres franchissent chaque étape, pour les clients entrés '+periodLabel()+'. C\'est ici que tu vois où ils décrochent après la vente.</p>'
     + (cohort.length ? '<div class="scroll"><table><thead><tr><th>Étape</th><th class="num">Membres</th><th class="num">Part des membres entrés</th></tr></thead><tbody>'+mrows.map(function(r){ var pc = rate(r[1],cohort.length); return '<tr><td>'+esc(r[0])+'</td><td class="num">'+r[1]+'</td><td class="num"><span class="mini"><i style="width:'+Math.min(100,pc||0)+'%"></i></span>'+pct(pc)+'</td></tr>'; }).join('')+'</tbody></table></div>' : '<div class="empty" style="padding:14px">Aucun membre sur la période. Passe un prospect en « Client » pour démarrer son parcours.</div>');
@@ -957,7 +959,7 @@ function goalCount(k, a, b){
   if(k==='content') return S.content.filter(function(c){ return inr(c.date||0); }).length;
   if(k==='dm') return sumLogs(S.dmlogs.filter(function(l){ return inr(l.date||0); }));
   if(k==='held') return S.prospects.filter(function(p){ return p.heldAt && inr(p.heldAt); }).length;
-  if(k==='clients') return S.clients.filter(function(c){ return c.startAt && inr(c.startAt); }).length;
+  if(k==='clients') return signes().filter(function(c){ return c.startAt && inr(c.startAt); }).length;
 }
 function dayTs(ws, i){ var d = new Date(ws); d.setDate(d.getDate()+i); return d.getTime(); }
 function weekGoalsPct(){
@@ -1546,7 +1548,7 @@ function encaisse(a, b){
   var inr = function(t){ t = Number(t)||0; return t>=a && t<b; }, tot = 0;
   S.clients.forEach(function(c){
     if(c.payMulti) (c.payments||[]).forEach(function(x){ if(inr(x.at)) tot += Number(x.amount)||0; });
-    else if(inr(c.startAt)) tot += Number(c.price)||0;
+    else if(!c.importe && inr(c.startAt)) tot += Number(c.price)||0;
   });
   return tot;
 }
@@ -1608,7 +1610,7 @@ function paintStats(){
   var cts = S.content.filter(function(c){ return inr(c.date); }), vues = cts.reduce(function(t,c){ return t+(Number(c.views)||0); },0);
   var rs = paintRes(a, b), nbPosts = cts.length, subPosts = vues?fmtN(vues)+' vues':'&nbsp;';
   if(rs && rs.ig && rs.tt){ nbPosts = (rs.ig.posts||0)+(rs.tt.posts||0); subPosts = fmtN(rs.ig.posts||0)+' Insta · '+fmtN(rs.tt.posts||0)+' TikTok'; }
-  var cls = S.clients.filter(function(c){ return inr(c.startAt); }), offres = {};
+  var cls = signes().filter(function(c){ return inr(c.startAt); }), offres = {};
   cls.forEach(function(c){ var o = c.offer||'Autre'; offres[o] = (offres[o]||0)+1; });
   var ca = encaisse(a,b), signe = cls.reduce(function(t,c){ return t+(Number(c.price)||0); },0);
   var tile = function(ic, lbl, val, sub){ return '<div class="ktile">'+(ic?'<span class="ki" aria-hidden="true">'+ic+'</span>':'')+'<span class="kl">'+lbl+'</span><span class="kv">'+val+'</span>'+(sub!=null?'<span class="ks">'+sub+'</span>':'')+'</div>'; };
@@ -2166,8 +2168,8 @@ function buildStats(){
     contenu:{posts:contents.length, vues:contents.reduce(function(s,c){return s+(Number(c.views)||0);},0), leads:contents.reduce(function(s,c){return s+(Number(c.leads)||0);},0), par_format:Object.keys(fm).map(function(k){return fm[k];}), par_cta:(function(){ var m={}; contents.forEach(function(c){ var k=c.cta||'Non renseigné'; var o=m[k]=m[k]||{cta:k,posts:0,vues:0,ebooks:0}; o.posts++; o.vues+=Number(c.views)||0; o.ebooks+=Number(c.leads)||0; }); return Object.keys(m).map(function(k){return m[k];}); })(), par_plateforme:(function(){ var m={}; contents.forEach(function(c0){ platParts(c0).forEach(function(c){ var k=c.platform||'Non renseigné'; var o=m[k]=m[k]||{plateforme:k,posts:0,vues:0,ebooks:0}; o.posts++; o.vues+=Number(c.views)||0; o.ebooks+=Number(c.leads)||0; }); }); return Object.keys(m).map(function(k){return m[k];}); })()},
     raisons_de_perte:Object.keys(lost).map(function(k){return {raison:k, n:lost[k]};}),
     reponses_a_relancer:S.prospects.filter(needsFollowUp).length,
-    clients:{actifs:act.length, ca_signe_periode:S.clients.filter(function(c){var v=c.startAt||0; return v>=s0 && v<u0;}).reduce(function(t,c){return t+(Number(c.price)||0);},0), etapes_validees_moyenne_sur_7: act.length?Math.round(act.reduce(function(t,c){return t+stepsDone(c);},0)/act.length*10)/10:null, sans_interaction_depuis_3j: act.filter(function(c){ return Date.now()-lastTouch(c)>3*DAY; }).length, en_retard: act.filter(function(c){ return lateInfo(c); }).length, partis: S.clients.filter(function(c){return c.status==='perdu';}).length, reste_a_encaisser: S.clients.filter(function(c){return c.status!=='perdu';}).reduce(function(t,c){return t+remainingOf(c);},0)},
-    parcours_membres:(function(){ var co = S.clients.filter(function(c){var v=c.startAt||0; return v>=s0 && v<u0;}); var o = {entres:co.length}; ONB.forEach(function(k){ o[k[0]] = co.filter(function(c){return (c.onb||{})[k[0]];}).length; }); MILES.forEach(function(k){ o[k[0]] = co.filter(function(c){return (c.mil||{})[k[0]];}).length; }); o.modules_maitrises_par_numero = []; for(var mn=1; mn<=MODULES; mn++){ (function(mn){ o.modules_maitrises_par_numero.push(co.filter(function(c){return (c.mods||{})['x'+mn];}).length); })(mn); } return o; })(),
+    clients:{actifs:act.length, ca_signe_periode:signes().filter(function(c){var v=c.startAt||0; return v>=s0 && v<u0;}).reduce(function(t,c){return t+(Number(c.price)||0);},0), etapes_validees_moyenne_sur_7: act.length?Math.round(act.reduce(function(t,c){return t+stepsDone(c);},0)/act.length*10)/10:null, sans_interaction_depuis_3j: act.filter(function(c){ return Date.now()-lastTouch(c)>3*DAY; }).length, en_retard: act.filter(function(c){ return lateInfo(c); }).length, partis: S.clients.filter(function(c){return c.status==='perdu';}).length, reste_a_encaisser: S.clients.filter(function(c){return c.status!=='perdu';}).reduce(function(t,c){return t+remainingOf(c);},0)},
+    parcours_membres:(function(){ var co = signes().filter(function(c){var v=c.startAt||0; return v>=s0 && v<u0;}); var o = {entres:co.length}; ONB.forEach(function(k){ o[k[0]] = co.filter(function(c){return (c.onb||{})[k[0]];}).length; }); MILES.forEach(function(k){ o[k[0]] = co.filter(function(c){return (c.mil||{})[k[0]];}).length; }); o.modules_maitrises_par_numero = []; for(var mn=1; mn<=MODULES; mn++){ (function(mn){ o.modules_maitrises_par_numero.push(co.filter(function(c){return (c.mods||{})['x'+mn];}).length); })(mn); } return o; })(),
     interactions_30j:(function(){ var o = {}; S.clients.forEach(function(c){ (c.checkins||[]).forEach(function(k){ if(Date.now()-k.at<=30*DAY){ var t = k.type||'Message'; o[t] = (o[t]||0)+1; } }); }); return o; })(),
     semaines:weeks
   };
@@ -2237,7 +2239,7 @@ function localAnswer(q){
   }
   else if(has('encaiss','chiffre','ca ','ca?','gagne','revenu','vente')){
     var n = new Date(), a0 = new Date(n.getFullYear(), n.getMonth(), 1).getTime(), b0 = new Date(n.getFullYear(), n.getMonth()+1, 1).getTime();
-    var cls = S.clients.filter(function(c){ return c.startAt>=a0 && c.startAt<b0; });
+    var cls = signes().filter(function(c){ return c.startAt>=a0 && c.startAt<b0; });
     out.push('## Ce mois-ci');
     out.push('- Encaissé : **'+euro(encaisse(a0,b0))+'**');
     out.push('- Signé : '+euro(cls.reduce(function(x,c){ return x+(Number(c.price)||0); },0))+' ('+cls.length+' client'+(cls.length>1?'s':'')+')');
@@ -2374,6 +2376,7 @@ function openClient(c){
     +'<div class="two"><div><label for="cdPayDate">Date du paiement</label><input id="cdPayDate" type="date"></div><div style="align-self:end"><button type="button" class="btn" data-act="add-pay" style="width:100%">Ajouter le paiement</button></div></div>'
     +'<p class="paysum" id="cdPaySum"></p><div class="tl" id="cdPayList"></div></div>'
     +'<div><label for="cdStart">Date d\'entrée dans la DHA</label><input id="cdStart" type="date" value="'+ymd(c.startAt||Date.now())+'"></div>'
+    +chk('cdImp','Membre déjà existant (ne compte pas comme nouveau client signé)', c.importe)
     +'<details class="section"><summary>Prise en main ('+ONB.filter(function(k){ return (draft.onb||{})[k[0]]; }).length+'/'+ONB.length+')</summary><div class="checks">'+ONB.map(function(k){ return chk('ob_'+k[0], k[1], (draft.onb||{})[k[0]]); }).join('')+'</div></details>'
     +monthsHtml(draft, chk)
     +'</div><div class="dlg-foot"><button type="button" class="btn danger" data-act="del-arm" data-kind="c">Supprimer</button><div class="r"><button type="button" class="btn" data-act="close">Annuler</button><button type="button" class="btn primary" data-act="save-c">Enregistrer</button></div></div>');
@@ -2429,7 +2432,7 @@ function saveClient(){
   if(d.pseudo && PLAT.members.length && !PLAT.members.some(function(m){ return normPseudo(m.pseudo)===normPseudo(d.pseudo); })){ toast('Aucun compte DHA avec le pseudo @'+d.pseudo+'. Choisis-le dans la liste.'); var pf = $('#cdPseudo'); if(pf) pf.focus(); return; }
   var dup = d.pseudo && S.clients.filter(function(x){ return x.id!==d.id && normPseudo(x.pseudo)===normPseudo(d.pseudo); })[0];
   if(dup){ toast('@'+d.pseudo+' est déjà relié à '+(dup.name||'un autre client')+'.'); return; }
-  d.price = Number($('#cdPrice').value)||0; d.startAt = fromYmd($('#cdStart').value); 
+  d.price = Number($('#cdPrice').value)||0; d.startAt = fromYmd($('#cdStart').value); d.importe = !!($('#cdImp')||{}).checked; 
   d.payMulti = $('#cdMulti').checked; d.payN = Number($('#cdN').value)||0;
   d.payments = (draft.payments||[]).slice();
   var pend = Number($('#cdPayAmt').value)||0;
@@ -2548,7 +2551,7 @@ document.addEventListener('click', function(ev){
     case 'xpg-all': xpgVisible().forEach(function(m){ XPG.sel[m.id] = 1; }); paintXpg(); break;
     case 'xpg-none': XPG.sel = {}; paintXpg(); break;
     case 'xpg-ok': xpValidate(); break;
-    case 'mk-fiche': var fm = PLAT.members.filter(function(x){ return String(x.id)===el.getAttribute('data-v'); })[0]; if(fm) openClient({id:uid(), name:[fm.prenom,fm.nom].filter(Boolean).join(' ')||fm.pseudo, pseudo:fm.pseudo, status:'actif', price:0, goal:'', offer:'', startAt:fm.created_at?new Date(fm.created_at).getTime():Date.now(), checkins:[], onb:{}, mil:{}, demoGoal:'', rdv:false, prospectId:null}); break;
+    case 'mk-fiche': var fm = PLAT.members.filter(function(x){ return String(x.id)===el.getAttribute('data-v'); })[0]; if(fm) openClient({id:uid(), name:[fm.prenom,fm.nom].filter(Boolean).join(' ')||fm.pseudo, pseudo:fm.pseudo, importe:true, status:'actif', price:0, goal:'', offer:'', startAt:fm.created_at?new Date(fm.created_at).getTime():Date.now(), checkins:[], onb:{}, mil:{}, demoGoal:'', rdv:false, prospectId:null}); break;
     case 'cf': S.cliF = el.getAttribute('data-v'); S.tab = 'clients'; render(); break;
     case 'relink': var rc = byId(S.clients); if(rc){ openClient(rc); setTimeout(function(){ var f = $('#cdPseudo'); if(f){ f.scrollIntoView({block:'center'}); f.select(); } }, 60); } break;
     case 'unlink-f': var f2 = $('#cdPseudo'); if(f2){ f2.value = ''; toast('Compte délié : clique sur « Enregistrer » pour valider.'); } break;
