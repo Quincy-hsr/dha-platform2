@@ -358,6 +358,13 @@ input[type=range]{padding:0;border:0;accent-color:var(--gain)}
 .tools summary{cursor:pointer;list-style:none}
 .tools summary::-webkit-details-marker{display:none}
 .tools .card{border:0;padding:0;background:transparent;box-shadow:none}
+.kmore{display:block;margin-top:10px;font-size:12.5px;color:var(--muted)}
+.ktile:hover .kmore{color:var(--ink)}
+.det-list{max-height:60vh}
+.det-btn{all:unset;box-sizing:border-box;display:flex;align-items:center;gap:10px;width:100%;padding:12px 0;border-bottom:1px solid var(--line);cursor:pointer}
+.det-btn:focus-visible{outline:2px solid var(--focus)}
+.det-r{white-space:nowrap}
+.det-sum{display:flex;flex-wrap:wrap;gap:6px;padding:8px 0}
 .xpg-acts{display:grid;grid-template-columns:1fr 1fr;gap:6px}
 .xpg-a{display:flex;align-items:center;gap:4px;border:1px solid var(--line);border-radius:10px;background:var(--bg);padding:2px 4px 2px 0}
 .xpg-a.on{border-color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink)}
@@ -1622,14 +1629,15 @@ function paintStats(){
   var cls = signes().filter(function(c){ return inr(c.startAt); }), offres = {};
   cls.forEach(function(c){ var o = c.offer||'Autre'; offres[o] = (offres[o]||0)+1; });
   var ca = encaisse(a,b), signe = cls.reduce(function(t,c){ return t+(Number(c.price)||0); },0);
-  var tile = function(ic, lbl, val, sub){ return '<div class="ktile">'+(ic?'<span class="ki" aria-hidden="true">'+ic+'</span>':'')+'<span class="kl">'+lbl+'</span><span class="kv">'+val+'</span>'+(sub!=null?'<span class="ks">'+sub+'</span>':'')+'</div>'; };
-  $('#skpi').innerHTML = tile('🎬','Contenus partagés',fmtN(nbPosts), subPosts)
-    + tile('🎓','Clients signés',fmtN(cls.length), Object.keys(offres).map(function(o){ return offres[o]+' × '+esc(o); }).join(' · ')||'&nbsp;')
-    + tile('💶',"Chiffre d'affaires",eur(ca),'encaissé · '+eur(signe)+' signés');
+  STATD = {a:a, b:b};
+  var tile = function(ic, lbl, val, sub, k){ return '<button type="button" class="ktile" data-act="stat-det" data-v="'+k+'" aria-label="'+esc(lbl)+' : voir le détail">'+(ic?'<span class="ki" aria-hidden="true">'+ic+'</span>':'')+'<span class="kl">'+lbl+'</span><span class="kv">'+val+'</span>'+(sub!=null?'<span class="ks">'+sub+'</span>':'')+'<span class="kmore">Voir le détail ›</span></button>'; };
+  $('#skpi').innerHTML = tile('🎬','Contenus partagés',fmtN(nbPosts), subPosts, 'content')
+    + tile('🎓','Clients signés',fmtN(cls.length), Object.keys(offres).map(function(o){ return offres[o]+' × '+esc(o); }).join(' · ')||'&nbsp;', 'clients')
+    + tile('💶',"Chiffre d'affaires",eur(ca),'encaissé · '+eur(signe)+' signés', 'ca');
   var dm = sumLogs(S.dmlogs.filter(function(l){ return inr(l.date); }));
   var calls = S.prospects.filter(function(p){ return inr(p.heldAt); }).length;
   var cn = CAND.list.filter(function(c){ return inr(new Date(c.created_at).getTime()); }).length;
-  $('#skpi2').innerHTML = tile('','DM envoyés',fmtN(dm)) + tile('','Calls faits',fmtN(calls)) + tile('','Candidatures',CAND.ok?fmtN(cn):'—');
+  $('#skpi2').innerHTML = tile('','DM envoyés',fmtN(dm),null,'dm') + tile('','Calls faits',fmtN(calls),null,'calls') + tile('','Candidatures',CAND.ok?fmtN(cn):'—',null,'cand');
   var jours = Math.round((b-a)/DAY);
   if(S.statPer==='day'){ $('#schart').hidden = true; return; }
   $('#schart').hidden = false;
@@ -1640,6 +1648,62 @@ function paintStats(){
   $('#sbars').innerHTML = pts.map(function(p){ var l = parMois ? new Date(p.a).toLocaleDateString('fr-FR',{month:'long'}) : dShort(p.a); return '<i class="'+(p.v?'':'z')+'" style="height:'+(p.v/mx*100)+'%" title="'+esc(l)+' : '+eur(p.v)+'"></i>'; }).join('');
   var f2 = function(t){ return parMois ? new Date(t).toLocaleDateString('fr-FR',{month:'short'}) : dShort(t); };
   $('#sl0').textContent = f2(pts[0].a); $('#sl1').textContent = f2(pts[pts.length-1].a);
+}
+
+/* ---------- Mes stats : d'où viennent les chiffres ---------- */
+var STATD = {a:0, b:0};
+function origine(c){
+  var p = c.prospectId ? S.prospects.filter(function(x){ return x.id===c.prospectId; })[0] : null, m = memberOf(c), out = [];
+  if(p) out.push('Prospect @'+p.handle+' · '+(p.platform||'')+(p.source?' · '+p.source:''));
+  else if(c.importe) out.push('Membre déjà existant');
+  else out.push('Fiche ajoutée à la main');
+  if(m && m.parraine_par) out.push('🤝 parrainé par @'+String(m.parraine_par).replace(/^@+/,''));
+  return out.join(' · ');
+}
+function detRow(titre, sous, droite, act, id){
+  var inner = '<div style="flex:1;min-width:0"><b>'+titre+'</b>'+(sous?'<small>'+sous+'</small>':'')+'</div>'+(droite?'<b class="det-r">'+droite+'</b>':'');
+  return act ? '<button type="button" class="qk-item det-btn" data-act="'+act+'" data-id="'+esc(id)+'">'+inner+'<span class="sub" aria-hidden="true">›</span></button>' : '<div class="qk-item">'+inner+'</div>';
+}
+function openStatDet(k){
+  var a = STATD.a, b = STATD.b, inr = function(t){ t = Number(t)||0; return t>=a && t<b; };
+  var per = $('#spd') ? $('#spd').textContent : '', titre = '', h = '', tot = '';
+  if(k==='ca'){
+    var rows = [];
+    S.clients.forEach(function(c){
+      if(c.payMulti){ var pays = (c.payments||[]).slice().sort(function(x,y){ return (x.at||0)-(y.at||0); });
+        pays.forEach(function(x, i){ if(inr(x.at)) rows.push({c:c, at:x.at, v:Number(x.amount)||0, t:'Paiement '+(i+1)+(Number(c.payN)?'/'+c.payN:'')}); }); }
+      else if(!c.importe && inr(c.startAt)) rows.push({c:c, at:c.startAt, v:Number(c.price)||0, t:'Paiement en une fois'});
+    });
+    rows = rows.filter(function(r){ return r.v; }).sort(function(x,y){ return y.at-x.at; });
+    var sum = rows.reduce(function(t,r){ return t+r.v; },0);
+    titre = "💶 Chiffre d'affaires encaissé"; tot = eur(sum);
+    h = rows.length ? rows.map(function(r){ return detRow(esc(r.c.name||'Sans nom')+(r.c.pseudo?' <span class="sub">@'+esc(r.c.pseudo)+'</span>':''), esc(dShort(r.at)+' · '+r.t+(r.c.offer?' · '+r.c.offer:''))+'<br>'+esc(origine(r.c)), '+'+eur(r.v), 'open-client', r.c.id); }).join('') : '<p class="note">Aucun paiement encaissé sur cette période.</p>';
+  }else if(k==='clients'){
+    var cls = signes().filter(function(c){ return inr(c.startAt); }).sort(function(x,y){ return (y.startAt||0)-(x.startAt||0); });
+    titre = '🎓 Clients signés'; tot = cls.length+' client'+(cls.length>1?'s':'');
+    h = cls.length ? cls.map(function(c){ return detRow(esc(c.name||'Sans nom')+(c.pseudo?' <span class="sub">@'+esc(c.pseudo)+'</span>':''), esc(dShort(c.startAt)+' · '+(c.offer||'Offre non renseignée'))+'<br>'+esc(origine(c)), c.price?eur(c.price):'', 'open-client', c.id); }).join('') : '<p class="note">Aucun client signé sur cette période.</p>';
+  }else if(k==='content'){
+    var cts = S.content.filter(function(c){ return inr(c.date); }).sort(function(x,y){ return (y.date||0)-(x.date||0); });
+    titre = '🎬 Contenus partagés'; tot = cts.length+' noté'+(cts.length>1?'s':'')+' dans le Cerveau';
+    h = cts.length ? cts.map(function(c){ var v = Number(c.views)||0, l = Number(c.leads)||0, cl = Number(c.clients)||0;
+      return detRow(esc(c.hook||c.title||'Sans titre'), esc(dShort(c.date)+' · '+(c.platform||'')+' · '+(c.format||''))+(l||cl?'<br>'+esc((l?l+' ebook'+(l>1?'s':'')+' / leads':'')+(l&&cl?' · ':'')+(cl?cl+' client'+(cl>1?'s':''):'')):''), v?fmtN(v)+' vues':'', '', ''); }).join('') : '<p class="note">Aucun contenu noté dans le Cerveau sur cette période.</p>';
+    h += '<p class="note" style="margin:8px 0 0">Le chiffre de la tuile vient directement d\'Instagram et TikTok quand ils sont reliés. Ici, ce sont les contenus que tu as notés dans le Cerveau.</p>';
+  }else if(k==='dm'){
+    var logs = S.dmlogs.filter(function(l){ return inr(l.date); }).sort(function(x,y){ return (y.date||0)-(x.date||0); }), by = {};
+    logs.forEach(function(l){ var key = (l.platform||'?')+' · '+(l.source||''); by[key] = (by[key]||0)+(Number(l.count)||0); });
+    titre = '📨 DM envoyés'; tot = fmtN(sumLogs(logs))+' DM';
+    h = logs.length ? '<div class="det-sum">'+Object.keys(by).sort(function(x,y){ return by[y]-by[x]; }).map(function(key){ return '<span class="chip" style="cursor:default">'+esc(key)+'<small>'+fmtN(by[key])+'</small></span>'; }).join('')+'</div>'
+      + logs.map(function(l){ return detRow(esc(fmtN(l.count)+' DM · '+(l.platform||'')), esc(dShort(l.date)+(l.source?' · '+l.source:'')+(l.variant&&l.variant!=='Sans script'?' · '+l.variant:'')), '', '', ''); }).join('') : '<p class="note">Aucun DM noté sur cette période.</p>';
+  }else if(k==='calls'){
+    var ps = S.prospects.filter(function(p){ return inr(p.heldAt); }).sort(function(x,y){ return (y.heldAt||0)-(x.heldAt||0); });
+    titre = '📞 Calls faits'; tot = ps.length+' call'+(ps.length>1?'s':'');
+    h = ps.length ? ps.map(function(p){ return detRow((p.prenom?esc(p.prenom)+' · ':'')+'@'+esc(p.handle), esc(dShort(p.heldAt)+' · '+(p.platform||'')+(p.source?' · '+p.source:'')), esc(STAGE_LABEL[p.status]||''), 'details-p', p.id); }).join('') : '<p class="note">Aucun call fait sur cette période.</p>';
+  }else if(k==='cand'){
+    var cs = CAND.list.filter(function(c){ return inr(new Date(c.created_at).getTime()); });
+    titre = '📝 Candidatures'; tot = cs.length+' candidature'+(cs.length>1?'s':'');
+    h = cs.length ? cs.map(function(c){ var st = CST[c.statut||'nouvelle']||CST.nouvelle; return detRow(esc(c.prenom||'Sans prénom')+(c.chaleur&&CHAL[c.chaleur]?' <span class="sub">'+CHAL[c.chaleur][0]+'</span>':''), esc(candWhen(c)+' · '+(c.contact_canal||'')+(c.ville?' · '+c.ville:'')), esc(st[0]), 'cand-det', c.id); }).join('') : '<p class="note">Aucune candidature sur cette période.</p>';
+  }
+  openDlg('<div class="dlg-body"><h2 id="dlgTitle">'+titre+'</h2><p class="sub" style="margin:0">'+esc(per)+(tot?' · <b style="color:var(--ink)">'+tot+'</b>':'')+'</p><div class="qk-list det-list">'+h+'</div></div><div class="dlg-foot"><span></span><div class="r"><button type="button" class="btn" data-act="close">Fermer</button></div></div>');
 }
 
 /* ---------- vues : candidatures et membres (page admin intégrée) ---------- */
@@ -2554,6 +2618,7 @@ document.addEventListener('click', function(ev){
       DHA.admin('dha_admin_update_membre',{p_id:cm.id, p:{copy_trading:nv}}).then(function(r){ if(r){ cm.copy_trading = !!r.copy_trading; toast(nv?'Copy trading activé pour @'+cm.pseudo:'Copy trading désactivé'); openClient(cc); schedule(); } else toast('Échec'); }).catch(function(){ toast('Échec'); });
       break;
     case 'pw-reset': ev.stopPropagation(); var pc = byId(S.clients), pmm = pc && memberOf(pc); if(pmm) DHA.resetPasswordUI(pmm); break;
+    case 'stat-det': openStatDet(el.getAttribute('data-v')); break;
     case 'xpg-open': openXpGroup([]); break;
     case 'xpm-open': openXpGroup([el.getAttribute('data-v')]); break;
     case 'xpg-q': var k = el.getAttribute('data-k'); XPG.q[k] = Math.max(0, (XPG.q[k]||0)+Number(el.getAttribute('data-d'))); if(!XPG.q[k]) delete XPG.q[k]; paintXpg(); break;
