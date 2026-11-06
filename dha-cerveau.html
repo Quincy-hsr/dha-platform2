@@ -470,8 +470,17 @@ var S = {
   ai:{loading:false, text:'', error:'', note:''},
   error:''
 };
-// Lien direct vers un onglet depuis l'admin : dha-cerveau.html#prospects, #clients, #launches…
-try{ var h0 = location.hash.replace('#',''); if(['perdus','home','objectifs','funnel','prospects','clients','content','launches','stats','cand','membres','brain'].indexOf(h0)>-1) S.tab = h0; }catch(e){}
+// À l'ouverture, le Cerveau démarre toujours sur l'Accueil
+S.tab = 'home';
+try{ if(location.hash) history.replaceState(null, '', location.pathname + location.search); }catch(e){}
+// Appli restée ouverte en arrière-plan plus de 10 min : retour sur l'Accueil
+(function(){ var cache = 0;
+  document.addEventListener('visibilitychange', function(){
+    if(document.hidden){ cache = Date.now(); return; }
+    if(cache && Date.now()-cache > 10*60*1000 && S.tab!=='home' && !(document.getElementById('dlg')||{}).open){ S.tab = 'home'; schedule(); window.scrollTo(0,0); }
+    cache = 0;
+  });
+})();
 var dbh = null, sampleFn = null, dlNs = null, aiCtl = null, skeletonTab = null, raf = 0;
 var local = {prospects:{}, content:{}, clients:{}, dmlogs:{}, settings:{}};
 var LS = 'cerveau-v1', LSQ = 'cerveau-qa';
