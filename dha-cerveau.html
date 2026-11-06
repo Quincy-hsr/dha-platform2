@@ -1556,7 +1556,46 @@ function skelStats(){
     +'<div class="custp" id="scust" hidden><label for="sA">Du</label><input type="date" id="sA"><label for="sB">au</label><input type="date" id="sB"></div>'
     +'<p class="sub" id="spd" style="margin:0"></p>'
     +'<div class="skpi" id="skpi"></div><div class="skpi2" id="skpi2"></div>'
+    +'<section class="card" id="sres" aria-label="Réseaux sociaux"></section>'
     +'<section class="card" id="schart"><h2 id="scht">Chiffre d\'affaires encaissé</h2><div class="bars" id="sbars"></div><div class="bxl"><span id="sl0"></span><span id="sl1"></span></div></section></div>';
+}
+/* ---------- réseaux (Instagram + TikTok automatiques) sur la période de « Mes stats » ---------- */
+var RES = {key:null, d:null, loading:false};
+function loadRes(deb, fin, key){
+  if(!DHA.adminKey() || RES.loading) return;
+  RES.loading = true; RES.key = key; RES.d = null;
+  DHA.admin('dha_admin_reseaux', {p_debut:deb, p_fin:fin})
+    .then(function(d){ if(RES.key===key){ RES.d = d || {erreur:true}; } RES.loading = false; schedule(); })
+    .catch(function(){ if(RES.key===key){ RES.d = {erreur:true}; } RES.loading = false; schedule(); });
+}
+function paintRes(a, b){
+  var box = $('#sres'); if(!box) return null;
+  var deb = ymd(a), fin = ymd(b), key = deb+'|'+fin;
+  if(RES.key!==key && !RES.loading) loadRes(deb, fin, key);
+  var h = '<h2 style="margin:0 0 4px">📱 Réseaux sociaux</h2><p class="sub" style="margin:0 0 10px">Automatique (Instagram et TikTok), sur la même période. Rien à saisir.</p>';
+  var d = RES.key===key ? RES.d : null;
+  if(!d){ box.innerHTML = h+'<p class="sub">Chargement…</p>'; return null; }
+  if(d.erreur){ box.innerHTML = h+'<p class="sub">Impossible de charger les stats des réseaux.</p>'; return null; }
+  var ig = d.ig||{}, tt = d.tt||{};
+  var row = function(lbl, x, y, bold){
+    var tot = (Number(x)||0)+(Number(y)||0);
+    return '<tr><th scope="row" style="text-align:left;font-weight:600;color:var(--muted);padding:9px 8px 9px 0">'+lbl+'</th>'
+      +'<td style="text-align:right;padding:9px 6px;font-variant-numeric:tabular-nums">'+(x==null?'–':fmtN(x))+'</td>'
+      +'<td style="text-align:right;padding:9px 6px;font-variant-numeric:tabular-nums">'+(y==null?'–':fmtN(y))+'</td>'
+      +'<td style="text-align:right;padding:9px 0 9px 6px;font-variant-numeric:tabular-nums;font-weight:700'+(bold?';font-size:17px':'')+'">'+fmtN(tot)+'</td></tr>';
+  };
+  h += '<div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:14.5px"><thead><tr style="border-bottom:1px solid var(--line)"><th></th>'
+    +'<th style="text-align:right;padding:6px;font-size:13px">📸 Insta</th><th style="text-align:right;padding:6px;font-size:13px">🎵 TikTok</th><th style="text-align:right;padding:6px 0 6px 6px;font-size:13px">Total</th></tr></thead><tbody>'
+    + row('Posts publiés', ig.posts, tt.posts, true)
+    + row('Vues', ig.vues, tt.vues, true)
+    + row('Nouveaux abonnés', ig.nouveaux_abonnes, tt.nouveaux_abonnes, true)
+    + row('Interactions', ig.interactions, tt.interactions)
+    + row('Commentaires « DHA »', ig.dha, tt.dha)
+    + row('Abonnés aujourd\'hui', ig.abonnes, tt.abonnes)
+    + '</tbody></table></div>';
+  if(ig.posts) h += '<p class="sub" style="margin:8px 0 0;font-size:12.5px">Insta : '+fmtN(ig.reels||0)+' reel'+((ig.reels||0)>1?'s':'')+', '+fmtN(ig.carrousels||0)+' carrousel'+((ig.carrousels||0)>1?'s':'')+'. Les vues comptent tout ce qui a été vu sur la période, même d\'anciens posts.</p>';
+  box.innerHTML = h;
+  return d;
 }
 function paintStats(){
   if(!$('#skpi')) return;
@@ -1567,11 +1606,13 @@ function paintStats(){
   var fl = function(t){ return new Date(t).toLocaleDateString('fr-FR',{day:'numeric', month:'long', year:'numeric'}); };
   $('#spd').textContent = S.statPer==='day' ? "Aujourd'hui, "+fl(a) : 'Du '+fl(a)+' au '+fl(b-1);
   var cts = S.content.filter(function(c){ return inr(c.date); }), vues = cts.reduce(function(t,c){ return t+(Number(c.views)||0); },0);
+  var rs = paintRes(a, b), nbPosts = cts.length, subPosts = vues?fmtN(vues)+' vues':'&nbsp;';
+  if(rs && rs.ig && rs.tt){ nbPosts = (rs.ig.posts||0)+(rs.tt.posts||0); subPosts = fmtN(rs.ig.posts||0)+' Insta · '+fmtN(rs.tt.posts||0)+' TikTok'; }
   var cls = S.clients.filter(function(c){ return inr(c.startAt); }), offres = {};
   cls.forEach(function(c){ var o = c.offer||'Autre'; offres[o] = (offres[o]||0)+1; });
   var ca = encaisse(a,b), signe = cls.reduce(function(t,c){ return t+(Number(c.price)||0); },0);
   var tile = function(ic, lbl, val, sub){ return '<div class="ktile">'+(ic?'<span class="ki" aria-hidden="true">'+ic+'</span>':'')+'<span class="kl">'+lbl+'</span><span class="kv">'+val+'</span>'+(sub!=null?'<span class="ks">'+sub+'</span>':'')+'</div>'; };
-  $('#skpi').innerHTML = tile('🎬','Contenus partagés',fmtN(cts.length), vues?fmtN(vues)+' vues':'&nbsp;')
+  $('#skpi').innerHTML = tile('🎬','Contenus partagés',fmtN(nbPosts), subPosts)
     + tile('🎓','Clients signés',fmtN(cls.length), Object.keys(offres).map(function(o){ return offres[o]+' × '+esc(o); }).join(' · ')||'&nbsp;')
     + tile('💶',"Chiffre d'affaires",eur(ca),'encaissé · '+eur(signe)+' signés');
   var dm = sumLogs(S.dmlogs.filter(function(l){ return inr(l.date); }));
