@@ -335,6 +335,30 @@ input[type=range]{padding:0;border:0;accent-color:var(--gain)}
   .embed{height:calc(100vh - 200px)}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+/* ===== saisie rapide ===== */
+.fab{position:fixed;right:18px;bottom:22px;z-index:30;width:58px;height:58px;border-radius:50%;border:0;background:var(--ink);color:var(--on-ink);font-size:30px;line-height:1;cursor:pointer;box-shadow:0 6px 20px rgba(0,0,0,.25)}
+.qk{gap:12px}
+.qk-back{justify-self:start;padding-left:0}
+.qk-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.qk-tile{display:grid;gap:2px;justify-items:start;text-align:left;padding:14px;border:1px solid var(--line);border-radius:12px;background:var(--bg);color:var(--ink);cursor:pointer;font:inherit}
+.qk-tile:hover{border-color:var(--muted)}
+.qk-tile b{font-size:15px}.qk-tile small{color:var(--muted);font-size:12.5px}
+.qk-ic{font-size:22px;margin-bottom:4px}
+.qk-chips{margin:0}
+.qk-nums{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.qk-nums .btn{padding:14px 0;font-size:17px}
+.qk-row{display:flex;gap:8px}.qk-row input{flex:1;min-width:0}
+.qk-list{display:grid;gap:0;max-height:55vh;overflow:auto}
+.qk-item{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 0;border-bottom:1px solid var(--line)}
+.qk-item:last-child{border-bottom:0}
+.qk-item small{display:block;color:var(--muted);font-size:12.5px}
+.qk-acts{display:flex;gap:6px;align-items:center;flex-shrink:0}
+.qk-ok{color:var(--gain);font-weight:700;font-size:13px}
+.pmore{display:grid;gap:8px;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--bg)}
+.tools summary{cursor:pointer;list-style:none}
+.tools summary::-webkit-details-marker{display:none}
+.tools .card{border:0;padding:0;background:transparent;box-shadow:none}
+@media (max-width:860px){.fab{bottom:calc(78px + env(safe-area-inset-bottom,0px));right:14px;width:54px;height:54px}}
 </style>
 <script src="dha-api.js"></script>
 </head>
@@ -350,6 +374,7 @@ input[type=range]{padding:0;border:0;accent-color:var(--gain)}
   </main>
 </div>
 <dialog id="dlg" aria-labelledby="dlgTitle"></dialog>
+<button type="button" class="fab" data-act="quick" aria-label="Saisie rapide">＋</button>
 <datalist id="dhaMembers"></datalist>
 <div class="gate" id="gate"><form id="gateForm" autocomplete="off"><div style="font-size:34px">🧠</div><h1>Cerveau DHA</h1><p class="sub">Accès réservé. Même mot de passe que l'admin.</p><label for="gatePwd">Mot de passe</label><input id="gatePwd" type="password" inputmode="numeric" autocomplete="current-password"><div class="err" id="gateErr" role="alert"></div><button type="submit" class="btn primary">Ouvrir le Cerveau</button></form></div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
@@ -754,17 +779,18 @@ function groupBy(list, logs, keyFn){
 function schedule(){ if(raf) return; raf = requestAnimationFrame(function(){ raf = 0; render(); }); }
 
 var TABS = {
-  home:'Accueil', perdus:'Prospects perdus', stats:'Mes stats', cand:'Candidatures', membres:'Parrainages & comptes de la plateforme',
+  more:'Plus', home:'Accueil', perdus:'Prospects perdus', stats:'Mes stats', cand:'Candidatures', membres:'Parrainages & comptes de la plateforme',
   funnel:'Entonnoir', content:'Contenu', prospects:'Prospects', launches:'Lancements programmés', clients:'Membres', objectifs:'Objectifs', brain:'Analyse IA', retours:'Retours des membres'
 };
 
-var NAV_TABS = ['home','objectifs','prospects','launches','clients','cand','retours','content','brain'];
-var NAV_ICON = {perdus:'🚫', home:'🏠', stats:'📊', cand:'📝', membres:'👥', objectifs:'🎯', funnel:'📉', prospects:'💬', clients:'🎓', content:'🎬', launches:'🚀', brain:'🤖', retours:'🛠️'};
-var NAV_SHORT = {perdus:'Perdus', home:'Accueil', stats:'Stats', cand:'Candid.', membres:'Membres', objectifs:'Objectifs', funnel:'Entonnoir', prospects:'Prospects', clients:'Membres', content:'Contenu', launches:'Lancements', brain:'IA', retours:'Retours'};
+var NAV_TABS = ['home','prospects','clients','cand','more'];
+var NAV_ICON = {more:'☰', perdus:'🚫', home:'🏠', stats:'📊', cand:'📝', membres:'👥', objectifs:'🎯', funnel:'📉', prospects:'💬', clients:'🎓', content:'🎬', launches:'🚀', brain:'🤖', retours:'🛠️'};
+var NAV_SHORT = {more:'Plus', perdus:'Perdus', home:'Accueil', stats:'Stats', cand:'Candid.', membres:'Membres', objectifs:'Objectifs', funnel:'Entonnoir', prospects:'Prospects', clients:'Membres', content:'Contenu', launches:'Lancements', brain:'IA', retours:'Retours'};
 function paintNav(){
   $('#nav').innerHTML = NAV_TABS.map(function(k){
-    var n = k==='prospects' ? S.prospects.filter(function(p){ return needsFollowUp(p) || prospectDue(p); }).length : k==='cand' ? CAND.list.filter(function(c){ return (c.statut||'nouvelle')==='nouvelle'; }).length : k==='retours' ? SIG.list.filter(function(x){ return x.statut==='nouveau'; }).length : 0;
-    return '<button type="button" data-act="tab" data-tab="'+k+'"'+(S.tab===k?' aria-current="page"':'')+'><span class="ni" aria-hidden="true">'+NAV_ICON[k]+'</span><span class="nl">'+(k==='launches'?'Lancements':TABS[k])+'</span><span class="ns">'+NAV_SHORT[k]+'</span>'+(n?'<span class="count" title="À contacter ou à relancer">'+n+'</span>':'')+'</button>';
+    var n = k==='prospects' ? S.prospects.filter(function(p){ return needsFollowUp(p) || prospectDue(p); }).length : k==='cand' ? CAND.list.filter(function(c){ return (c.statut||'nouvelle')==='nouvelle'; }).length : k==='more' ? SIG.list.filter(function(x){ return x.statut==='nouveau'; }).length : 0;
+    var cur = S.tab===k || (k==='more' && NAV_TABS.indexOf(S.tab)<0);
+    return '<button type="button" data-act="tab" data-tab="'+k+'"'+(cur?' aria-current="page"':'')+'><span class="ni" aria-hidden="true">'+NAV_ICON[k]+'</span><span class="nl">'+(k==='launches'?'Lancements':TABS[k])+'</span><span class="ns">'+NAV_SHORT[k]+'</span>'+(n?'<span class="count" title="À contacter ou à relancer">'+n+'</span>':'')+'</button>';
   }).join('');
 }
 
@@ -1149,6 +1175,7 @@ function paintPerfs(){
   if(!PERFS.ok){ box.innerHTML = ''; return; }
   var att = PERFS.list.filter(function(p){ return p.statut==='attente'; });
   var L = PERFS.all ? PERFS.list : att;
+  var tn = $('#ctoolsN'); if(tn) tn.innerHTML = att.length ? '<span class="badge" style="margin:0">'+att.length+' perf'+(att.length>1?'s':'')+' à vérifier</span>' : 'perfs, lives, copy trading, parrainages';
   box.innerHTML = '<section class="card"><div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap"><h3 style="margin:0">🏆 Perfs à vérifier <span class="badge" style="margin:0">'+att.length+'</span></h3><button type="button" class="btn small" data-act="perf-all">'+(PERFS.all?'Voir seulement à vérifier':'Voir toutes les perfs ('+PERFS.list.length+')')+'</button></div>'
     + '<p class="sub" style="font-size:13px;margin:8px 0 10px">Les membres ajoutent leurs perfs sur leur fiche joueur. Regarde la preuve puis valide : la carte passe en « ✔ Vérifié ».</p>'
     + (L.length ? '<div style="display:flex;flex-direction:column;gap:10px">'+L.map(function(p){
@@ -1520,17 +1547,19 @@ function openDmLogDialog(){
   $('#dlCount').focus();
 }
 function openReplyDialog(){
+  var pre = ($('#qkH')||{}).value || '';
   openDlg('<div class="dlg-body"><h2 id="dlgTitle">Ajouter un prospect</h2>'
-    +'<div class="two"><div><label for="qaPrenom">Prénom</label><input id="qaPrenom" autocomplete="off" placeholder="Ex. Lucas"></div><div><label for="qaHandles">Pseudo</label><input id="qaHandles" autocomplete="off" placeholder="@pseudo"></div></div>'
-    +'<div class="two"><div><label for="qaPlat">Réseau</label><select id="qaPlat">'+opts(PLATFORMS,S.qa.platform)+'</select></div><div><label for="qaVille">Ville</label><input id="qaVille" autocomplete="off" placeholder="Ex. Sarcelles"></div></div>'
+    +'<div class="two"><div><label for="qaHandles">Pseudo</label><input id="qaHandles" autocomplete="off" autocapitalize="off" placeholder="@pseudo"></div><div><label for="qaPlat">Réseau</label><select id="qaPlat">'+opts(PLATFORMS,S.qa.platform)+'</select></div></div>'
+    +'<details><summary class="sub" style="cursor:pointer">+ Prénom, ville, situation, objectif, note…</summary><div style="display:grid;gap:14px;margin-top:10px">'
+    +'<div class="two"><div><label for="qaPrenom">Prénom</label><input id="qaPrenom" autocomplete="off" placeholder="Ex. Lucas"></div><div><label for="qaVille">Ville</label><input id="qaVille" autocomplete="off" placeholder="Ex. Sarcelles"></div></div>'
     +'<div class="two"><div><label for="qaSit">Situation</label><select id="qaSit"><option value="">Non renseignée</option>'+opts(SITUATIONS,'')+'</select></div><div><label for="qaRev">Revenus</label><select id="qaRev"><option value="">Non renseigné</option><option value="sdr">Avec revenus</option><option value="sr">Sans revenus</option></select></div></div>'
     +'<div><label for="qaObj">Son objectif</label><input id="qaObj" placeholder="Ex. Générer un complément de revenu en 6 mois"></div>'
-    +'<div><label for="qaNotes">Note (facultatif)</label><textarea id="qaNotes" rows="3" placeholder="Tout ce que tu veux retenir : contexte, objections, prochaine étape…"></textarea></div>'
-    +'<details><summary class="sub" style="cursor:pointer">Plus d\'options (source, date du 1er contact)</summary><div class="two" style="margin-top:10px"><div><label for="qaSrc">Source</label><select id="qaSrc">'+opts(SOURCES,S.qa.source)+'</select></div><div><label for="qaDate">Date du 1er contact</label><input type="date" id="qaDate"></div></div></details>'
+    +'<div><label for="qaNotes">Note</label><textarea id="qaNotes" rows="2" placeholder="Contexte, objections, prochaine étape…"></textarea></div>'
+    +'<div class="two"><div><label for="qaSrc">Source</label><select id="qaSrc">'+opts(SOURCES,S.qa.source)+'</select></div><div><label for="qaDate">Date du 1er contact</label><input type="date" id="qaDate"></div></div></div></details>'
     +'<p class="note" id="qaHint" style="margin:0"></p></div>'
     +'<div class="dlg-foot"><span></span><div class="r"><button type="button" class="btn" data-act="close">Annuler</button><button type="button" class="btn primary" data-act="submit-reply">Ajouter le prospect</button></div></div>');
   $('#qaDate').value = ymd(Date.now());
-  $('#qaPrenom').focus();
+  var qh = $('#qaHandles'); if(qh){ if(pre) qh.value = pre; if(window.innerWidth>860) qh.focus(); }
 }
 function rememberQa(o){
   S.qa = {platform:o.platform, source:o.source, variant:o.variant};
@@ -1660,8 +1689,7 @@ function prow(p){
   var revCls = 'rev-badge'+(p.revenu==='sdr'?' sdr':p.revenu==='sr'?' sr':'');
   var revBtn = '<button type="button" class="'+revCls+'" data-act="cycle-rev" data-id="'+esc(p.id)+'" title="Source de revenus : clique pour changer">'+revLabel+'</button>';
   var fu = needsFollowUp(p);
-  var relInner = (p.status==='perdu' || p.status==='close') ? '' : '<button type="button" class="btn small" data-act="relance" data-id="'+esc(p.id)+'">'+(fu?'Relancé':'À relancer')+'</button>';
-  var relBtn = '<div class="p-actions">'+relInner+'<button type="button" class="btn small" data-act="details-p" data-id="'+esc(p.id)+'">Voir les détails</button><button type="button" class="iconbtn" data-act="del-p" data-id="'+esc(p.id)+'">Supprimer</button></div>';
+  var relBtn = fu && p.status!=='perdu' && p.status!=='close' ? '<button type="button" class="btn small" data-act="relance" data-id="'+esc(p.id)+'">✓ Relancé</button>' : '';
   var due = prospectDue(p), active = prospectActive(p), left = prospectCadenceLeft(p);
   var cadence = '';
   if(p.launchAt){
@@ -1669,14 +1697,16 @@ function prow(p){
   }else if(active){
     cadence = '<div class="pcadence"><div class="gauge small'+(due?' late':'')+'"><i style="width:'+Math.max(0,Math.min(100,left/7*100))+'%"></i></div><span>'+(due?'À contacter aujourd\'hui':'Prochain contact dans '+left+' j')+'</span></div>';
   }
-  var when = (fu?'<span class="badge">À relancer</span>':'') + (due?'<span class="badge">À contacter</span>':'') + (p.clientId && p.status==='close'?'<span class="badge ok">Fiche client</span>':'') + relBtn;
+  var when = (fu?'<span class="badge">À relancer</span>':'') + (due&&!fu?'<span class="badge">À contacter</span>':'') + (p.clientId && p.status==='close'?'<span class="badge ok">Fiche client</span>':'') + relBtn;
   var ns = p.status==='perdu' ? null : nextStage(p.status);
   var expanded = !!S.expandedSteps[p.id];
   var quickStep = '<div class="stepwrap">'
-    + (ns ? '<button type="button" class="btn primary small" data-act="stage" data-id="'+esc(p.id)+'" data-stage="'+ns+'">'+esc(STAGE_LABEL[ns])+'</button>' : '<span class="stage-done">'+esc(STAGE_LABEL[p.status])+'</span>')
+    + (ns ? '<button type="button" class="btn primary small" data-act="stage" data-id="'+esc(p.id)+'" data-stage="'+ns+'">→ '+esc(STAGE_LABEL[ns])+'</button>' : '<span class="stage-done">'+esc(STAGE_LABEL[p.status])+'</span>')
     + (p.status!=='perdu' && p.status!=='close' ? '<button type="button" class="iconbtn" data-act="stage" data-id="'+esc(p.id)+'" data-stage="perdu">Perdu</button>' : '')
-    + '<button type="button" class="iconbtn" data-act="toggle-steps" data-id="'+esc(p.id)+'">'+(expanded?'Masquer les étapes':'Modifier l\'étape')+'</button></div>';
-  var stepsBlock = expanded ? '<div class="steps" role="group" aria-label="Étape de @'+esc(p.handle)+'">'+btns+'</div>' : '';
+    + '<button type="button" class="iconbtn" data-act="toggle-steps" data-id="'+esc(p.id)+'" aria-expanded="'+expanded+'" aria-label="Plus d\'actions">'+(expanded?'✕':'⋯')+'</button></div>';
+  var stepsBlock = expanded ? '<div class="pmore"><span class="sub">Étape actuelle : '+esc(STAGE_LABEL[p.status]||'')+'</span><div class="steps" role="group" aria-label="Étape de @'+esc(p.handle)+'">'+btns+'</div><div class="p-actions">'
+    + (p.status!=='perdu' && p.status!=='close' && !fu ? '<button type="button" class="btn small" data-act="relance" data-id="'+esc(p.id)+'">À relancer</button>' : '')
+    + '<button type="button" class="btn small" data-act="details-p" data-id="'+esc(p.id)+'">Détails et notes</button><button type="button" class="iconbtn" data-act="del-p" data-id="'+esc(p.id)+'">Supprimer</button></div></div>' : '';
   return '<article class="prow"><div><button type="button" class="p-handle" data-act="edit-p" data-id="'+esc(p.id)+'">'+(p.prenom?esc(p.prenom)+' · ':'')+'@'+esc(p.handle)+'</button>'+revBtn+'</div>'
     +quickStep+stepsBlock+'<div class="p-when">'+when+'</div></article>';
 }
@@ -1790,7 +1820,8 @@ function paintContent(){
 
 /* ---------- vue : clients ---------- */
 function skelClients(){
-  return '<div class="stack"><div id="cash"></div><div id="relance"></div><div id="perfsv"></div><div id="lives"></div><div id="copycfg"></div><div id="linkBanner"></div><div id="cfilt" style="display:flex;flex-wrap:wrap;gap:8px"></div><div class="toolbar" style="margin:0"><p class="sub">Un prospect passé en « Client » crée sa fiche automatiquement.</p><span style="display:flex;gap:10px;flex-wrap:wrap"><button type="button" class="btn" data-act="tab" data-tab="membres">🤝 Parrainages &amp; comptes</button><span id="clexp"></span><button type="button" class="btn primary" data-act="new-client">Nouveau membre</button></span></div><div class="grid" id="cg"></div></div>';
+  return '<div class="stack"><div id="cash"></div><div id="relance"></div><div id="linkBanner"></div><div class="toolbar" style="margin:0"><div id="cfilt" style="display:flex;flex-wrap:wrap;gap:8px"></div><button type="button" class="btn primary" data-act="new-client">Nouveau membre</button></div><div class="grid" id="cg"></div>'
+    +'<details class="card tools" id="ctools"><summary><b>🛠️ Outils</b> <span class="sub" id="ctoolsN">perfs, lives, copy trading, parrainages</span></summary><div class="stack" style="margin-top:14px"><div id="perfsv"></div><div id="lives"></div><div id="copycfg"></div><span style="display:flex;gap:10px;flex-wrap:wrap"><button type="button" class="btn" data-act="tab" data-tab="membres">🤝 Parrainages &amp; comptes</button><span id="clexp"></span></span></div></details></div>';
 }
 function paintClients(){
   if(!$('#cg')) return;
@@ -2270,7 +2301,7 @@ document.addEventListener('click', function(ev){
   var act = el.getAttribute('data-act'), id = el.getAttribute('data-id');
   var byId = function(list){ return list.filter(function(x){ return x.id===id; })[0]; };
   switch(act){
-    case 'tab': S.tab = el.getAttribute('data-tab'); render(); window.scrollTo(0,0); break;
+    case 'tab': if(el.getAttribute('data-tab')==='more'){ openMore(); break; } closeDlg(); S.tab = el.getAttribute('data-tab'); render(); window.scrollTo(0,0); break;
     case 'period': S.period = el.getAttribute('data-v'); render(); break;
     case 'gper': S.goalPer = el.getAttribute('data-v'); S.weekOffset = S.goalPer==='lweek' ? -1 : 0; render(); break;
     case 'sper': S.statPer = el.getAttribute('data-v'); render(); break;
@@ -2327,7 +2358,7 @@ document.addEventListener('click', function(ev){
     case 'submit-dmlog': submitDmLog(); break;
     case 'submit-reply': submitReplies(); break;
     case 'del-log': if(el.getAttribute('data-armed')){ safe(del('dmlogs', id)).catch(function(){}); } else { el.setAttribute('data-armed','1'); el.textContent = 'Confirmer'; clearTimeout(armT); armT = setTimeout(function(){ el.removeAttribute('data-armed'); el.textContent = 'Supprimer'; }, 4000); } break;
-    case 'goto-relance': S.tab = 'prospects'; S.pf = {act:['relance'], stage:[], rev:[], src:[]}; S.funnelView = null; savePf(); S.limit = 60; render(); break;
+    case 'goto-relance': closeDlg(); S.tab = 'prospects'; S.pf = {act:['relance'], stage:[], rev:[], src:[]}; S.funnelView = null; savePf(); S.limit = 60; render(); break;
     case 'goto-stage': S.tab = 'prospects'; S.funnelView = el.getAttribute('data-stage'); S.limit = 60; render(); break;
     case 'all-prospects': S.tab = 'prospects'; S.funnelView = null; S.limit = 60; render(); break;
     case 'pf':
@@ -2427,6 +2458,139 @@ document.addEventListener('keydown', function(ev){
   if(ev.key==='Enter' && ev.target && ev.target.id==='aiQ'){ ev.preventDefault(); var v = ev.target.value.trim(); if(sampleFn){ if(v) runAI(v); } else runAI(v, true); }
   if(ev.key==='Enter' && ev.target && ev.target.id==='cdPayAmt'){ ev.preventDefault(); var pb = $('[data-act="add-pay"]'); if(pb) pb.click(); }
   if(ev.key==='Enter' && ev.target && ev.target.id==='cdNote'){ ev.preventDefault(); var b = $('[data-act="add-checkin"]'); if(b) b.click(); }
+});
+
+/* ---------- saisie rapide (bouton ＋) ---------- */
+var QK = {v:'menu', plat:null, fmt:'Reel', cplat:'Instagram', q:''};
+var QK_DM = [5,10,15,20,30,50];
+function qkDmToday(){ var a = dayStart(Date.now()); return S.dmlogs.filter(function(l){ return (l.date||0)>=a; }).reduce(function(t,l){ return t+(Number(l.count)||0); },0); }
+function qkActive(){ return S.prospects.filter(function(p){ return prospectActive(p); }); }
+function qkDebtors(){ return S.clients.filter(function(c){ return c.status!=='perdu' && remainingOf(c)>0; }).sort(function(a,b){ return remainingOf(b)-remainingOf(a); }); }
+function qkNextPay(c){ var r = remainingOf(c), n = Number(c.payN)||0; return Math.round(n>0 ? Math.min(r, (Number(c.price)||0)/n) : r); }
+function qkChips(list, cur, act){ return '<div class="chips qk-chips">'+list.map(function(p){ return '<button type="button" class="chip" data-act="'+act+'" data-v="'+esc(p)+'" aria-pressed="'+(cur===p)+'">'+esc(p)+'</button>'; }).join('')+'</div>'; }
+function openQuick(v){ QK.v = v||'menu'; if(!QK.plat) QK.plat = PLATFORMS.indexOf(S.qa.platform)>=0 ? S.qa.platform : 'Instagram'; QK.q = ''; paintQuick(); }
+function paintQuick(){
+  var back = '<button type="button" class="iconbtn qk-back" data-act="q" data-v="menu">← Saisie rapide</button>', h = '', focus = null;
+  if(QK.v==='menu'){
+    var nRel = S.prospects.filter(function(p){ return needsFollowUp(p) || prospectDue(p); }).length, nDeb = qkDebtors().length;
+    var tile = function(v, ic, t, s){ return '<button type="button" class="qk-tile" data-act="q" data-v="'+v+'"><span class="qk-ic">'+ic+'</span><b>'+t+'</b><small>'+s+'</small></button>'; };
+    h = '<h2 id="dlgTitle">⚡ Saisie rapide</h2><div class="qk-grid">'
+      + tile('dm','📨','DM envoyés',"Aujourd'hui : "+fmtN(qkDmToday()))
+      + tile('pros','💬','Nouveau prospect','Juste son pseudo')
+      + tile('adv','➡️','Faire avancer',qkActive().length+' en cours')
+      + tile('content','🎬','Contenu publié','En 2 taps')
+      + tile('pay','💶','Paiement reçu',nDeb ? nDeb+' te doi'+(nDeb>1?'vent':'t')+' de l\'argent' : 'Personne ne te doit rien')
+      + '<button type="button" class="qk-tile" data-act="goto-relance"><span class="qk-ic">🔔</span><b>À relancer</b><small>'+nRel+' prospect'+(nRel>1?'s':'')+'</small></button>'
+      + '</div>';
+  }else if(QK.v==='dm'){
+    h = back+'<h2 id="dlgTitle">📨 DM envoyés</h2>'+qkChips(PLATFORMS.slice(0,2), QK.plat, 'q-plat')
+      + '<p class="sub" style="margin:0">Tape le nombre envoyé : c\'est enregistré direct. Aujourd\'hui : <b id="qkDmT">'+fmtN(qkDmToday())+'</b></p>'
+      + '<div class="qk-nums">'+QK_DM.map(function(n){ return '<button type="button" class="btn" data-act="q-dm" data-n="'+n+'">+'+n+'</button>'; }).join('')+'</div>'
+      + '<div class="qk-row"><input id="qkN" type="number" min="1" inputmode="numeric" placeholder="Autre nombre"><button type="button" class="btn primary" data-act="q-dm">Ajouter</button></div>';
+  }else if(QK.v==='pros'){
+    h = back+'<h2 id="dlgTitle">💬 Nouveau prospect</h2>'+qkChips(PLATFORMS.slice(0,2), QK.plat, 'q-plat')
+      + '<div class="qk-row"><input id="qkH" autocomplete="off" autocapitalize="off" placeholder="@pseudo (ou plusieurs, séparés par une virgule)"><button type="button" class="btn primary" data-act="q-pros">Ajouter</button></div>'
+      + '<button type="button" class="iconbtn" data-act="open-reply" style="justify-self:start">+ Ajouter avec tous les détails (prénom, ville, objectif…)</button>';
+    focus = '#qkH';
+  }else if(QK.v==='adv'){
+    h = back+'<h2 id="dlgTitle">➡️ Faire avancer un prospect</h2><input id="qkS" type="search" autocomplete="off" placeholder="Rechercher un pseudo" value="'+esc(QK.q)+'"><div id="qkL" class="qk-list"></div>';
+    focus = '#qkS';
+  }else if(QK.v==='content'){
+    h = back+'<h2 id="dlgTitle">🎬 Contenu publié</h2>'+qkChips(CONTENT_PLATFORMS, QK.cplat, 'q-cplat')+qkChips(FORMATS.slice(0,4), QK.fmt, 'q-fmt')
+      + '<div class="qk-row"><input id="qkHook" autocomplete="off" placeholder="Sujet ou accroche (facultatif)"><button type="button" class="btn primary" data-act="q-content">Ajouter</button></div>'
+      + '<p class="note" style="margin:0">Les vues et les ebooks se complètent plus tard dans l\'onglet Contenu.</p>';
+    focus = '#qkHook';
+  }else if(QK.v==='pay'){
+    var deb = qkDebtors();
+    h = back+'<h2 id="dlgTitle">💶 Paiement reçu</h2><div class="qk-list">'+(deb.length ? deb.map(function(c){
+      var n = qkNextPay(c);
+      return '<div class="qk-item"><div><b>'+esc(c.name||'Sans nom')+'</b><small>Reste '+euro(remainingOf(c))+' sur '+euro(c.price)+'</small></div><span class="qk-acts"><button type="button" class="btn primary small" data-act="q-pay" data-id="'+esc(c.id)+'" data-n="'+n+'">+'+euro(n)+' reçu</button><button type="button" class="iconbtn" data-act="open-client" data-id="'+esc(c.id)+'">Autre</button></span></div>';
+    }).join('') : '<p class="note" style="margin:0">Personne ne te doit d\'argent pour l\'instant.</p>')+'</div>';
+  }
+  openDlg('<div class="dlg-body qk">'+h+'</div>');
+  if(QK.v==='adv') paintQuickAdv();
+  if(focus && window.innerWidth>860){ var f = $(focus); if(f) f.focus(); }
+}
+function paintQuickAdv(){
+  var box = $('#qkL'); if(!box) return;
+  var q = normPseudo(QK.q);
+  var list = qkActive().filter(function(p){ return !q || normPseudo([p.handle,p.prenom].join(' ')).indexOf(q)>=0; })
+    .sort(function(a,b){ return prospectLastTouch(b)-prospectLastTouch(a); }).slice(0,30);
+  box.innerHTML = list.length ? list.map(function(p){
+    var ns = nextStage(p.status);
+    return '<div class="qk-item"><div><b>'+(p.prenom?esc(p.prenom)+' · ':'')+'@'+esc(p.handle)+'</b><small>'+esc(STAGE_LABEL[p.status]||'')+'</small></div><span class="qk-acts">'
+      + (ns ? '<button type="button" class="btn primary small" data-act="q-adv" data-id="'+esc(p.id)+'" data-stage="'+ns+'">→ '+esc(STAGE_LABEL[ns])+'</button>' : '')
+      + '<button type="button" class="iconbtn" data-act="q-adv" data-id="'+esc(p.id)+'" data-stage="perdu">Perdu</button></span></div>';
+  }).join('') : '<p class="note" style="margin:0">'+(q?'Aucun prospect trouvé.':'Aucun prospect en cours.')+'</p>';
+}
+function quickDm(n){
+  n = Math.floor(Number(n)||0); if(n<1){ var f = $('#qkN'); if(f) f.focus(); return; }
+  var src = DM_SOURCES.indexOf(S.qa.source)>=0 ? S.qa.source : DM_SOURCES[1];
+  var o = {id:uid(), count:n, platform:QK.plat, source:src, variant:'Sans script', date:Date.now()};
+  rememberQa({platform:QK.plat, source:S.qa.source, variant:S.qa.variant});
+  var inp = $('#qkN'); if(inp) inp.value = '';
+  S.dmlogs = S.dmlogs.concat([o]); var t = $('#qkDmT'); if(t) t.textContent = fmtN(qkDmToday());
+  safe(put('dmlogs', o)).then(function(){ toast('+'+n+' DM ('+QK.plat+')'); }).catch(function(){});
+}
+function quickProspect(){
+  var handles = parseHandles(($('#qkH')||{}).value||'');
+  if(!handles.length){ toast('Écris son pseudo.'); return; }
+  var exist = {}; S.prospects.forEach(function(p){ exist[(p.platform||'')+'|'+String(p.handle).toLowerCase()] = 1; });
+  var now = Date.now(), fresh = handles.filter(function(h){ return !exist[QK.plat+'|'+h.toLowerCase()]; });
+  if(!fresh.length){ toast('Déjà dans tes prospects.'); return; }
+  rememberQa({platform:QK.plat, source:S.qa.source, variant:S.qa.variant});
+  $('#qkH').value = '';
+  Promise.all(fresh.map(function(h){
+    return put('prospects', {id:uid(), handle:h, platform:QK.plat, source:S.qa.source, variant:'Sans script', status:'reponse', dmAt:now, repliedAt:now, callAt:null, wonAt:null, lostAt:null, lostStage:null, lostReason:'', notes:'', objectif:'', clientId:null, revenu:null, prenom:'', ville:'', situation:''});
+  })).then(function(){ toast(fresh.length===1 ? '@'+fresh[0]+' ajouté' : fresh.length+' prospects ajoutés'); }).catch(function(e){ toast(errCopy(e)); });
+}
+function quickContent(){
+  var o = {id:uid(), date:Date.now(), platform:QK.cplat, format:QK.fmt, cta:CTAS[0], hook:(($('#qkHook')||{}).value||'').trim(), views:0, saves:0, leads:0, clients:0};
+  if(o.platform==='Les deux'){ o.ig = {views:0, saves:0, leads:0, clients:0}; o.tt = {views:0, saves:0, leads:0, clients:0}; }
+  safe(put('content', o)).then(function(){ toast('Contenu ajouté'); closeDlg(); }).catch(function(){});
+}
+function quickPay(id, n){
+  var c = S.clients.filter(function(x){ return x.id===id; })[0]; n = Number(n)||0; if(!c || n<=0) return;
+  var pays = [{at:Date.now(), amount:n}].concat(c.payments||[]);
+  safe(put('clients', Object.assign({}, c, {payMulti:true, payments:pays}))).then(function(){
+    toast('+'+euro(n)+' de '+(c.name||'ce membre')); c.payments = pays; paintQuick();
+  }).catch(function(){});
+}
+function openMore(){
+  var items = [['objectifs','Objectifs'],['launches','Lancements programmés'],['content','Contenu'],['retours','Retours des membres'],['stats','Mes stats'],['funnel','Entonnoir'],['perdus','Prospects perdus'],['membres','Parrainages & comptes'],['brain','Analyse IA']];
+  var nSig = SIG.list.filter(function(x){ return x.statut==='nouveau'; }).length;
+  openDlg('<div class="dlg-body"><h2 id="dlgTitle">Plus</h2><div class="qk-grid">'+items.map(function(k){
+    return '<button type="button" class="qk-tile" data-act="tab" data-tab="'+k[0]+'"><span class="qk-ic">'+NAV_ICON[k[0]]+'</span><b>'+esc(k[1])+'</b>'+(k[0]==='retours'&&nSig?'<small>'+nSig+' nouveau'+(nSig>1?'x':'')+'</small>':'')+'</button>';
+  }).join('')+'</div></div>');
+}
+document.addEventListener('input', function(ev){ if(ev.target && ev.target.id==='qkS'){ QK.q = ev.target.value; paintQuickAdv(); } });
+document.addEventListener('keydown', function(ev){
+  if(ev.key!=='Enter' || !ev.target) return;
+  var id = ev.target.id;
+  if(id==='qkN'){ ev.preventDefault(); quickDm(ev.target.value); }
+  if(id==='qkH'){ ev.preventDefault(); quickProspect(); }
+  if(id==='qkHook'){ ev.preventDefault(); quickContent(); }
+});
+document.addEventListener('click', function(ev){
+  var el = ev.target.closest('[data-act]'); if(!el) return;
+  var act = el.getAttribute('data-act');
+  switch(act){
+    case 'quick': openQuick('menu'); break;
+    case 'q': openQuick(el.getAttribute('data-v')); break;
+    case 'q-plat': QK.plat = el.getAttribute('data-v'); paintQuick(); break;
+    case 'q-cplat': QK.cplat = el.getAttribute('data-v'); paintQuick(); break;
+    case 'q-fmt': QK.fmt = el.getAttribute('data-v'); paintQuick(); break;
+    case 'q-dm': quickDm(el.getAttribute('data-n') || ($('#qkN')||{}).value); break;
+    case 'q-pros': quickProspect(); break;
+    case 'q-content': quickContent(); break;
+    case 'q-pay': quickPay(el.getAttribute('data-id'), el.getAttribute('data-n')); break;
+    case 'q-adv':
+      var pid = el.getAttribute('data-id'), stg = el.getAttribute('data-stage');
+      if(stg==='close'){ closeDlg(); changeStage(pid, stg); break; }
+      changeStage(pid, stg);
+      var row = el.closest('.qk-item'); if(row) row.querySelector('.qk-acts').innerHTML = '<span class="qk-ok">✓ '+esc(STAGE_LABEL[stg])+'</span>';
+      break;
+  }
 });
 
 /* ---------- démarrage ---------- */
