@@ -1391,9 +1391,30 @@ function openCand(id){
     +'<dl class="pinfo">'+rows.map(function(r){ return '<dt>'+r[0]+'</dt><dd>'+esc(r[1])+'</dd>'; }).join('')+'</dl>'
     +'<div><label>Statut</label><div class="seg" role="group" aria-label="Statut">'+Object.keys(CST).map(function(k){ return '<button type="button" data-act="cand-st" data-id="'+esc(c.id)+'" data-v="'+k+'" aria-pressed="'+((c.statut||'nouvelle')===k)+'">'+CST[k][0]+'</button>'; }).join('')+'</div></div>'
     +'<div><label for="cnNote">Ajouter une note</label><textarea id="cnNote" rows="2" placeholder="Ex. appelé, intéressé par le 500€, rappeler vendredi"></textarea></div>'
-    +'<div><label>Historique</label>'+(c.note?'<div class="tl">'+String(c.note).split('\n').filter(Boolean).map(function(l){ return '<div>'+esc(l)+'</div>'; }).join('')+'</div>':'<p class="sub" style="margin:0">Aucune note pour l\'instant.</p>')+'</div></div>'
+    +'<div><label>Historique</label>'+(c.note?'<div class="tl">'+String(c.note).split('\n').filter(Boolean).map(function(l){ return '<div>'+esc(l)+'</div>'; }).join('')+'</div>':'<p class="sub" style="margin:0">Aucune note pour l\'instant.</p>')+'</div>'
+    +'<button type="button" class="btn danger" data-act="cand-del" data-id="'+esc(c.id)+'" style="justify-self:start">🗑️ Supprimer la candidature</button></div>'
     +'<div class="dlg-foot">'+(pr?'<span class="sub">✓ Déjà dans tes prospects</span>':'<button type="button" class="btn" data-act="cand-pros" data-id="'+esc(c.id)+'">➜ Passer en prospect</button>')
     +'<div class="r"><button type="button" class="btn" data-act="close">Fermer</button><button type="button" class="btn primary" data-act="cand-save" data-id="'+esc(c.id)+'">Ajouter la note</button></div></div>');
+}
+function askDelCand(id){
+  var c = candById(id); if(!c) return;
+  var pr = candProspect(c);
+  openDlg('<div class="dlg-body"><h2 id="dlgTitle">Supprimer cette candidature ?</h2>'
+    +'<p style="margin:0">La candidature de <b>'+esc(c.prenom||'ce prospect')+'</b>'+(c.created_at?' (reçue le '+esc(candWhen(c))+')':'')+' et ses notes seront supprimées <b>définitivement</b>.</p>'
+    +(pr?'<p class="note" style="margin:0">Le prospect @'+esc(pr.handle)+' créé depuis cette candidature reste dans tes prospects.</p>':'')
+    +'</div><div class="dlg-foot"><button type="button" class="btn" data-act="cand-det" data-id="'+esc(c.id)+'">← Non, garder</button><div class="r"><button type="button" class="btn danger" data-act="cand-del-ok" data-id="'+esc(c.id)+'">Oui, supprimer</button></div></div>');
+}
+function delCand(id){
+  var c = candById(id); if(!c) return;
+  var b = $('[data-act="cand-del-ok"]'); if(b){ b.disabled = true; b.textContent = 'Suppression…'; }
+  DHA.admin('dha_admin_delete_candidature', {p_id:c.id}).then(function(){
+    CAND.list = CAND.list.filter(function(x){ return String(x.id)!==String(id); });
+    closeDlg(); schedule(); toast('Candidature de '+(c.prenom||'ce prospect')+' supprimée');
+  }).catch(function(e){
+    if(b){ b.disabled = false; b.textContent = 'Oui, supprimer'; }
+    var absente = e && (e.status===404 || /PGRST202|Could not find the function/i.test(e.message||''));
+    toast(absente ? 'La suppression n\'est pas encore activée dans Supabase (sql/candidature-supprimer.sql).' : 'Suppression impossible : '+((e&&e.message)||'erreur'));
+  });
 }
 function patchCandDb(c, body){
   return DHA.admin('dha_admin_update_candidature', {p_id:c.id, p:body})
@@ -2489,6 +2510,8 @@ document.addEventListener('click', function(ev){
       var d0 = new Date(), stamp = ('0'+d0.getDate()).slice(-2)+'/'+('0'+(d0.getMonth()+1)).slice(-2)+' '+('0'+d0.getHours()).slice(-2)+'h'+('0'+d0.getMinutes()).slice(-2);
       var full = stamp+' — '+nt.replace(/\s*\n\s*/g,' ')+(cn.note?'\n'+cn.note:'');
       safe(patchCandDb(cn,{note:full})).then(function(){ openCand(id); toast('Note ajoutée'); }).catch(function(){}); } break;
+    case 'cand-del': askDelCand(id); break;
+    case 'cand-del-ok': delCand(id); break;
     case 'cand-pros': var cp = candById(id); if(cp) candToProspect(cp); break;
     case 'add-dm': S.tab = 'prospects'; render(); setTimeout(function(){ openDmLogDialog(); }, 30); break;
     case 'open-dmlog': openDmLogDialog(); break;
