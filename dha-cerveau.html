@@ -1858,7 +1858,7 @@ function changeStage(id, stage){
 
 /* ---------- vue : contenu ---------- */
 function skelContent(){
-  return '<div class="stack"><section class="card" id="igstats" aria-label="Stats Instagram"></section><form class="card" id="cf" autocomplete="off"><h2>Noter un contenu publié</h2><p class="sub" style="margin-bottom:14px">Ajoute le post, puis complète ses chiffres dans la liste. Les ebooks demandés comptent automatiquement comme DM envoyés dans ton entonnoir.</p><div class="cf">'
+  return '<div class="stack"><section class="card" id="igstats" aria-label="Stats Instagram"></section><section class="card" id="ttstats" aria-label="Stats TikTok"></section><form class="card" id="cf" autocomplete="off"><h2>Noter un contenu publié</h2><p class="sub" style="margin-bottom:14px">Ajoute le post, puis complète ses chiffres dans la liste. Les ebooks demandés comptent automatiquement comme DM envoyés dans ton entonnoir.</p><div class="cf">'
     +'<div><label for="cfDate">Date</label><input type="date" id="cfDate"></div>'
     +'<div><label for="cfPlat">Plateforme</label><select id="cfPlat">'+opts(CONTENT_PLATFORMS,'Instagram')+'</select></div>'
     +'<div><label for="cfFmt">Format</label><select id="cfFmt">'+opts(FORMATS,'Reel')+'</select></div>'
@@ -1877,47 +1877,52 @@ function initContentForm(){
     safe(put('content', o)).then(function(){ toast('Contenu ajouté'); }).catch(function(){});
   });
 }
-/* ---------- stats Instagram automatiques (Windsor → Supabase, mises à jour 2 fois par jour) ---------- */
-var IG = {per:30, d:null, loading:false, sort:'date', all:false};
-function loadIg(){
-  if(!DHA.adminKey() || IG.loading) return Promise.resolve();
-  IG.loading = true;
-  return DHA.admin('dha_admin_instagram', {p_jours:IG.per})
-    .then(function(d){ IG.d = d || {erreur:true}; IG.loading = false; schedule(); })
-    .catch(function(){ IG.d = {erreur:true}; IG.loading = false; schedule(); });
+/* ---------- stats Instagram / TikTok automatiques (Windsor → Supabase, mises à jour 2 fois par jour) ---------- */
+var SOC = {
+  ig: {per:30, d:null, loading:false, sort:'date', all:false, rpc:'dha_admin_instagram', box:'#igstats', titre:'📸 Instagram', sql:'sql/instagram-stats.sql', unite:'posts', save:'enreg.'},
+  tt: {per:30, d:null, loading:false, sort:'date', all:false, rpc:'dha_admin_tiktok', box:'#ttstats', titre:'🎵 TikTok', sql:'sql/tiktok-stats.sql', unite:'vidéos', save:'favoris'}
+};
+function loadSoc(k){
+  var S2 = SOC[k];
+  if(!DHA.adminKey() || S2.loading) return Promise.resolve();
+  S2.loading = true;
+  return DHA.admin(S2.rpc, {p_jours:S2.per})
+    .then(function(d){ S2.d = d || {erreur:true}; S2.loading = false; schedule(); })
+    .catch(function(){ S2.d = {erreur:true}; S2.loading = false; schedule(); });
 }
-function igDelta(cur, prev){
+function socDelta(cur, prev, per){
   if(!prev) return '';
   var r = Math.round((cur-prev)/prev*100);
-  return '<small style="color:'+(r>=0?'var(--gain)':'var(--leak)')+'">'+(r>=0?'+':'')+r+' % vs '+IG.per+' j d\'avant</small>';
+  return '<small style="color:'+(r>=0?'var(--gain)':'var(--leak)')+'">'+(r>=0?'+':'')+r+' % vs '+per+' j d\'avant</small>';
 }
-function igAgo(t){
+function socAgo(t){
   if(!t) return 'jamais';
   var h = Math.round((Date.now()-new Date(t).getTime())/3600000);
   return h<1 ? 'il y a moins d\'une heure' : h<48 ? 'il y a '+h+' h' : 'il y a '+Math.round(h/24)+' jours';
 }
-var IG_FMT = {REELS:'Reel', CAROUSEL_ALBUM:'Carrousel', IMAGE:'Photo', VIDEO:'Vidéo'};
-function paintIg(){
-  var box = $('#igstats'); if(!box) return;
-  if(!IG.d && !IG.loading) loadIg();
+var SOC_FMT = {REELS:'Reel', CAROUSEL_ALBUM:'Carrousel', IMAGE:'Photo', VIDEO:'Vidéo'};
+function paintSoc(k){
+  var S2 = SOC[k], box = $(S2.box); if(!box) return;
+  if(!S2.d && !S2.loading) loadSoc(k);
   var chips = [[7,'7 jours'],[30,'30 jours'],[90,'90 jours']].map(function(f){
-    return '<button type="button" class="chip" data-act="ig-per" data-v="'+f[0]+'" aria-pressed="'+(IG.per===f[0])+'">'+f[1]+'</button>';
+    return '<button type="button" class="chip" data-act="soc-per" data-k="'+k+'" data-v="'+f[0]+'" aria-pressed="'+(S2.per===f[0])+'">'+f[1]+'</button>';
   }).join('');
-  var h = '<div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap"><h2 style="margin:0">📸 Instagram</h2><div style="display:flex;gap:6px;flex-wrap:wrap">'+chips+'</div></div>';
-  var d = IG.d;
+  var h = '<div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap"><h2 style="margin:0">'+S2.titre+'</h2><div style="display:flex;gap:6px;flex-wrap:wrap">'+chips+'</div></div>';
+  var d = S2.d;
   if(!d){ box.innerHTML = h+'<p class="sub">Chargement…</p>'; return; }
-  if(d.erreur){ box.innerHTML = h+'<p class="sub">Impossible de charger les stats Instagram. Lance sql/instagram-stats.sql dans Supabase si ce n\'est pas déjà fait.</p>'; return; }
+  if(d.erreur){ box.innerHTML = h+'<p class="sub">Impossible de charger ces stats. Lance '+S2.sql+' dans Supabase si ce n\'est pas déjà fait.</p>'; return; }
   var pr = d.profil || {}, t = d.total || {}, pv = d.precedent || {};
   if(!pr.abonnes && !(d.par_jour||[]).length){ box.innerHTML = h+'<p class="sub">Pas encore de données. La première mise à jour automatique arrive dans quelques minutes.</p>'; return; }
-  h += '<p class="sub" style="margin:4px 0 0">Automatique, mis à jour '+igAgo(d.maj)+'. Rien à saisir.</p>';
+  h += '<p class="sub" style="margin:4px 0 0">Automatique, mis à jour '+socAgo(d.maj)+'. Rien à saisir.</p>';
   var kp = [
     ['Abonnés', pr.abonnes, ''],
-    ['Nouveaux abonnés', t.nouveaux_abonnes, igDelta(t.nouveaux_abonnes||0, pv.nouveaux_abonnes||0)],
-    ['Vues', t.vues, igDelta(t.vues||0, pv.vues||0)],
-    ['Interactions', t.interactions, ''],
-    ['Commentaires « DHA »', d.dha, '<small>sur les posts de la période</small>']
+    ['Nouveaux abonnés', t.nouveaux_abonnes, socDelta(t.nouveaux_abonnes||0, pv.nouveaux_abonnes||0, S2.per)],
+    ['Vues', t.vues, socDelta(t.vues||0, pv.vues||0, S2.per)],
+    ['Interactions', t.interactions, '']
   ];
-  h += '<div class="kpis" style="margin-top:10px">'+kp.map(function(k){ return '<div class="kpi"><span>'+k[0]+(k[2]?'<br>'+k[2]:'')+'</span><b>'+fmtN(k[1]||0)+'</b></div>'; }).join('')+'</div>';
+  if(t.vues_profil!=null) kp.push(['Visites de ton profil', t.vues_profil, '']);
+  kp.push(['Commentaires « DHA »', d.dha, '<small>sur les '+S2.unite+' de la période</small>']);
+  h += '<div class="kpis" style="margin-top:10px">'+kp.map(function(x){ return '<div class="kpi"><span>'+x[0]+(x[2]?'<br>'+x[2]:'')+'</span><b>'+fmtN(x[1]||0)+'</b></div>'; }).join('')+'</div>';
   var pj = d.par_jour || [];
   if(pj.length){
     var mx = Math.max.apply(null, pj.map(function(x){ return x.v||0; }).concat([1]));
@@ -1927,27 +1932,29 @@ function paintIg(){
   }
   var posts = (d.posts||[]).slice();
   if(posts.length){
-    var key = {date:null, vues:'vues', partages:'partages', dha:'commentaires_dha'}[IG.sort];
+    var key = {date:null, vues:'vues', partages:'partages', dha:'commentaires_dha', abonnes:'nouveaux_abonnes'}[S2.sort];
     posts.sort(function(a,b){ return key ? ((b[key]||0)-(a[key]||0)) : String(b.publie_le).localeCompare(String(a.publie_le)); });
-    var sc = [['date','Récents'],['vues','Plus vus'],['partages','Plus partagés'],['dha','Plus de « DHA »']].map(function(f){
-      return '<button type="button" class="chip" data-act="ig-sort" data-v="'+f[0]+'" aria-pressed="'+(IG.sort===f[0])+'">'+f[1]+'</button>';
+    var tris = [['date','Récents'],['vues','Plus vus'],['partages','Plus partagés'],['dha','Plus de « DHA »']];
+    if(posts.some(function(p){ return p.nouveaux_abonnes!=null; })) tris.push(['abonnes','Plus d\'abonnés']);
+    var sc = tris.map(function(f){
+      return '<button type="button" class="chip" data-act="soc-sort" data-k="'+k+'" data-v="'+f[0]+'" aria-pressed="'+(S2.sort===f[0])+'">'+f[1]+'</button>';
     }).join('');
-    var shown = IG.all ? posts : posts.slice(0, 6);
-    h += '<div style="margin-top:16px"><b style="font-size:14px">Tes posts (90 derniers jours)</b><div style="display:flex;gap:6px;flex-wrap:wrap;margin:8px 0">'+sc+'</div>'
+    var shown = S2.all ? posts : posts.slice(0, 6);
+    h += '<div style="margin-top:16px"><b style="font-size:14px">Tes '+S2.unite+' (90 derniers jours)</b><div style="display:flex;gap:6px;flex-wrap:wrap;margin:8px 0">'+sc+'</div>'
       + shown.map(function(p){
           var cap = String(p.legende||'').replace(/\s+/g,' ').trim() || 'Sans légende';
           return '<a href="'+esc(p.lien||'#')+'" target="_blank" rel="noopener" style="display:block;padding:9px 0;border-bottom:1px solid var(--line);color:inherit;text-decoration:none">'
             + '<div style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:600;font-size:14px">'+esc(cap)+'</div>'
-            + '<div class="sub" style="font-size:12.5px;margin-top:2px">'+esc(dShort(new Date(p.publie_le).getTime()))+' · '+esc(IG_FMT[p.format]||p.format||'')+' · '+fmtN(p.vues||0)+' vues · '+fmtN(p.enregistrements||0)+' enreg. · '+fmtN(p.partages||0)+' partages'+(p.commentaires_dha?' · <b style="color:var(--ink)">'+fmtN(p.commentaires_dha)+' « DHA »</b>':'')+'</div></a>';
+            + '<div class="sub" style="font-size:12.5px;margin-top:2px">'+esc(dShort(new Date(p.publie_le).getTime()))+' · '+esc(SOC_FMT[p.format]||p.format||'')+' · '+fmtN(p.vues||0)+' vues · '+fmtN(p.enregistrements||0)+' '+S2.save+' · '+fmtN(p.partages||0)+' partages'+(p.nouveaux_abonnes!=null?' · +'+fmtN(p.nouveaux_abonnes)+' abonnés':'')+(p.commentaires_dha?' · <b style="color:var(--ink)">'+fmtN(p.commentaires_dha)+' « DHA »</b>':'')+'</div></a>';
         }).join('')
-      + (posts.length>6 ? '<button type="button" class="btn small" style="margin-top:10px" data-act="ig-all">'+(IG.all?'Voir moins':'Voir les '+posts.length+' posts')+'</button>' : '')
+      + (posts.length>6 ? '<button type="button" class="btn small" style="margin-top:10px" data-act="soc-all" data-k="'+k+'">'+(S2.all?'Voir moins':'Voir les '+posts.length+' '+S2.unite)+'</button>' : '')
       + '</div>';
   }
-  h += '<p class="sub" style="margin-top:12px;font-size:12.5px">Les DM reçus ne sont pas transmis par Instagram : continue de noter tes DM et tes prospects ici.</p>';
+  if(k==='ig') h += '<p class="sub" style="margin-top:12px;font-size:12.5px">Les DM reçus ne sont pas transmis par Instagram : continue de noter tes DM et tes prospects ici.</p>';
   box.innerHTML = h;
 }
 function paintContent(){
-  paintIg();
+  paintSoc('ig'); paintSoc('tt');
   if(!$('#cl')) return;
   var ce = $('#cexp'); if(ce) ce.innerHTML = dlNs ? '<button type="button" class="btn small" data-act="export" data-kind="content">Exporter en CSV</button>' : '';
   var list = S.content.slice().sort(function(a,b){ return (b.date||0)-(a.date||0); });
@@ -2459,9 +2466,9 @@ document.addEventListener('click', function(ev){
     case 'obj-edit': ev.stopPropagation(); openObjectif(); return;
     case 'save-obj': saveObjectif(); break;
     case 'candf': CANDF = el.getAttribute('data-v'); schedule(); break;
-    case 'ig-per': IG.per = Number(el.getAttribute('data-v')) || 30; IG.d = null; schedule(); loadIg(); break;
-    case 'ig-sort': IG.sort = el.getAttribute('data-v'); schedule(); break;
-    case 'ig-all': IG.all = !IG.all; schedule(); break;
+    case 'soc-per': (function(k){ var S2 = SOC[k]; if(!S2) return; S2.per = Number(el.getAttribute('data-v')) || 30; S2.d = null; S2.loading = false; schedule(); loadSoc(k); })(el.getAttribute('data-k')); break;
+    case 'soc-sort': if(SOC[el.getAttribute('data-k')]){ SOC[el.getAttribute('data-k')].sort = el.getAttribute('data-v'); schedule(); } break;
+    case 'soc-all': if(SOC[el.getAttribute('data-k')]){ SOC[el.getAttribute('data-k')].all = !SOC[el.getAttribute('data-k')].all; schedule(); } break;
     case 'lnd-per': LND.per = el.getAttribute('data-v'); LND.d = null; schedule(); loadLanding(); break;
     case 'sigf': SIGF = el.getAttribute('data-v'); schedule(); break;
     case 'perf-all': PERFS.all = !PERFS.all; schedule(); return;
