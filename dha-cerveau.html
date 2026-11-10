@@ -808,13 +808,13 @@ function groupBy(list, logs, keyFn){
 function schedule(){ if(raf) return; raf = requestAnimationFrame(function(){ raf = 0; render(); }); }
 
 var TABS = {
-  more:'Plus', home:'Accueil', perdus:'Prospects perdus', stats:'Mes stats', cand:'Candidatures', membres:'Parrainages & comptes de la plateforme',
+  more:'Plus', home:'Accueil', perdus:'Prospects perdus', stats:'Mes stats', cand:'Candidatures', membres:'Parrainages & comptes de la plateforme', copy:'Copy trading',
   funnel:'Entonnoir', content:'Contenu', prospects:'Prospects', launches:'Lancements programmés', clients:'Membres', objectifs:'Objectifs', brain:'Analyse IA', retours:'Retours des membres'
 };
 
 var NAV_TABS = ['home','prospects','clients','cand','more'];
-var NAV_ICON = {more:'☰', perdus:'🚫', home:'🏠', stats:'📊', cand:'📝', membres:'👥', objectifs:'🎯', funnel:'📉', prospects:'💬', clients:'🎓', content:'🎬', launches:'🚀', brain:'🤖', retours:'🛠️'};
-var NAV_SHORT = {more:'Plus', perdus:'Perdus', home:'Accueil', stats:'Stats', cand:'Candid.', membres:'Membres', objectifs:'Objectifs', funnel:'Entonnoir', prospects:'Prospects', clients:'Membres', content:'Contenu', launches:'Lancements', brain:'IA', retours:'Retours'};
+var NAV_ICON = {copy:'📡', more:'☰', perdus:'🚫', home:'🏠', stats:'📊', cand:'📝', membres:'👥', objectifs:'🎯', funnel:'📉', prospects:'💬', clients:'🎓', content:'🎬', launches:'🚀', brain:'🤖', retours:'🛠️'};
+var NAV_SHORT = {copy:'Copy', more:'Plus', perdus:'Perdus', home:'Accueil', stats:'Stats', cand:'Candid.', membres:'Membres', objectifs:'Objectifs', funnel:'Entonnoir', prospects:'Prospects', clients:'Membres', content:'Contenu', launches:'Lancements', brain:'IA', retours:'Retours'};
 function paintNav(){
   $('#nav').innerHTML = NAV_TABS.map(function(k){
     var n = k==='prospects' ? S.prospects.filter(function(p){ return needsFollowUp(p) || prospectDue(p); }).length : k==='cand' ? CAND.list.filter(function(c){ return (c.statut||'nouvelle')==='nouvelle'; }).length : k==='more' ? SIG.list.filter(function(x){ return x.statut==='nouveau'; }).length : 0;
@@ -1173,23 +1173,108 @@ function paintCopy(){
   var c = COPY.cfg||{}, manque = COPY_CHAMPS.filter(function(f){ return f[0]!=='periode' && !c[f[0]]; }).length;
   var actifs = PLAT.members.filter(function(m){ return m.copy_trading; });
   box.innerHTML = '<section class="card"><div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap"><h3 style="margin:0">📡 Copy trading</h3><button type="button" class="btn small" data-act="copy-cfg">⚙️ Liens &amp; réglages</button></div>'
-    + '<p class="sub" style="font-size:13px;margin:8px 0 0">'+actifs.length+' membre'+(actifs.length>1?'s':'')+' avec l\'accès'+(actifs.length?' : '+actifs.slice(0,8).map(function(m){ return '@'+esc(m.pseudo); }).join(', ')+(actifs.length>8?'…':''):'')+'. Pour activer quelqu\'un : ouvre sa fiche → « 📡 Copy trading ».'
+    + '<p class="sub" style="font-size:13px;margin:8px 0 0">'+actifs.length+' membre'+(actifs.length>1?'s':'')+' avec l\'accès'+(actifs.length?' : '+actifs.slice(0,8).map(function(m){ return '@'+esc(m.pseudo); }).join(', ')+(actifs.length>8?'…':''):'')+'. Tout le suivi est dans l\'onglet <button type="button" class="btn small" data-act="tab" data-tab="copy">📡 Copy trading</button>'
     + (manque ? ' <b style="color:var(--leak,#c0392b)">· '+manque+' lien'+(manque>1?'s':'')+' à remplir</b>' : '')+'</p></section>';
 }
 function openCopyCfg(){
   var c = COPY.cfg||{};
   openDlg('<div class="dlg-body"><h2 id="dlgTitle">Réglages copy trading</h2><p class="sub" style="margin:0">Tout s\'affiche directement sur la page Copy trading des membres. Laisse vide ce que tu n\'as pas encore.</p>'
-    + COPY_CHAMPS.map(function(f){ return '<div><label for="cp_'+f[0]+'">'+f[1]+'</label><input id="cp_'+f[0]+'" maxlength="300" placeholder="'+esc(f[2])+'" value="'+esc(c[f[0]]||'')+'"></div>'; }).join('')
+    + '<h3 style="margin-top:6px">Canaux Telegram</h3><p class="sub" style="margin:0">Visibles seulement par les membres que tu as activés. Laisse le nom vide pour retirer un canal.</p>'
+    + [0,1,2,3,4,5].map(function(i){ var k=(c.canaux||[])[i]||{}; return '<div class="two"><div><label for="cpc_n'+i+'">Canal '+(i+1)+' : nom</label><input id="cpc_n'+i+'" maxlength="80" value="'+esc(k.nom||'')+'" placeholder="ex. KLEOS GOLD VIP"></div><div><label for="cpc_l'+i+'">Lien d\'invitation</label><input id="cpc_l'+i+'" maxlength="300" value="'+esc(k.lien||'')+'" placeholder="https://t.me/…"></div></div><div><label for="cpc_d'+i+'">Description courte (optionnel)</label><input id="cpc_d'+i+'" maxlength="120" value="'+esc(k.desc||'')+'"></div>'; }).join('')
+    + '<h3 style="margin-top:6px">Liens et réglages</h3>'
+    + COPY_CHAMPS.filter(function(f){ return f[0]!=='canal_nom' && f[0]!=='canal_lien'; }).map(function(f){ return '<div><label for="cp_'+f[0]+'">'+f[1]+'</label><input id="cp_'+f[0]+'" maxlength="300" placeholder="'+esc(f[2])+'" value="'+esc(c[f[0]]||'')+'"></div>'; }).join('')
     + '</div><div class="dlg-foot"><span></span><div class="r"><button type="button" class="btn" data-act="close">Annuler</button><button type="button" class="btn primary" data-act="copy-save">Enregistrer</button></div></div>');
 }
 function saveCopyCfg(){
-  var p = {};
-  COPY_CHAMPS.forEach(function(f){ p[f[0]] = $('#cp_'+f[0]).value.trim(); });
+  var p = Object.assign({}, COPY.cfg||{});
+  COPY_CHAMPS.forEach(function(f){ var e=$('#cp_'+f[0]); if(e) p[f[0]] = e.value.trim(); });
+  p.canaux = [0,1,2,3,4,5].map(function(i){ var n=$('#cpc_n'+i), l=$('#cpc_l'+i), d=$('#cpc_d'+i); return n ? {nom:n.value.trim(), lien:l.value.trim(), desc:d.value.trim()} : null; }).filter(function(c){ return c && c.nom; });
+  if(p.canaux.some(function(c){ return c.lien && !/^https:\/\//.test(c.lien); })){ toast('Les liens des canaux doivent commencer par https://'); return; }
   var bad = COPY_CHAMPS.filter(function(f){ return /^(lien|canal_lien|pay)/.test(f[0]) && p[f[0]] && !/^https?:\/\//.test(p[f[0]]); });
   if(bad.length){ toast('Vérifie le lien : « '+bad[0][1]+' » doit commencer par https://'); return; }
   DHA.admin('dha_admin_copy_set',{p:p}).then(function(ok){ if(ok){ COPY.cfg = p; closeDlg(); schedule(); toast('Réglages enregistrés'); } else toast('Échec de l\'enregistrement'); }).catch(function(){ toast('Échec de l\'enregistrement'); });
 }
 
+
+/* ---------- vue : copy trading (abonnés « Copy seul » et accès aux canaux) ---------- */
+var CPL = {list:[], ok:false, f:'all'};
+function loadCopyListe(){
+  if(!DHA.adminKey()) return Promise.resolve();
+  return DHA.admin('dha_admin_copy_liste').then(function(d){ if(Array.isArray(d)){ CPL.list = d; CPL.ok = true; schedule(); } }).catch(function(){});
+}
+loadCopyListe();
+var CP_ABO = {'':['À activer','soft'], actif:['Actif','gain'], echec:['Paiement échoué','leak'], resilie:['Résilié','soft']};
+var CP_PACK = {copy:'Copy seul', '180':'Essentiel', '500':'Groupe', '750':'1:1', medium:'Ancien forfait'};
+function cpPill(t,k){ var st = k==='gain'?'background:var(--gain-bg);color:var(--gain)':k==='leak'?'background:var(--leak-bg);color:var(--leak)':k==='warn'?'background:rgba(255,179,0,.16);color:#B7791F':'background:var(--soft);color:var(--muted)'; return '<span style="display:inline-block;padding:3px 10px;border-radius:999px;font-size:12px;font-weight:700;white-space:nowrap;'+st+'">'+t+'</span>'; }
+function cpEtat(m){
+  if(m.acces) return ['dans','Dans les canaux','gain'];
+  if(m.preuve==='attente') return ['valider','Preuve à valider','warn'];
+  if(m.preuve==='refuse') return ['refuse','Preuve refusée','leak'];
+  return ['etapes', (m.etapes||0)+' / 5 étapes','soft'];
+}
+function skelCopy(){
+  return '<div class="stack"><div id="cpAlerts"></div><section class="card"><div class="kpis" id="cpKpis" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px"></div></section>'
+    +'<section class="card"><div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:12px"><h2 style="margin:0">Abonnés et accès aux canaux</h2><span style="display:flex;gap:8px;flex-wrap:wrap"><button type="button" class="btn small" data-act="copy-cfg">⚙️ Canaux, liens &amp; réglages</button><button type="button" class="btn small" data-act="cp-refresh">↻ Actualiser</button></span></div>'
+    +'<div id="cpF" style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px"></div><div class="scroll"><table><thead><tr><th>Membre</th><th>Offre</th><th>Activation</th><th>Abonnement</th><th class="num">Dernier résultat</th><th class="num">Total déclaré</th><th></th></tr></thead><tbody id="cpRows"></tbody></table></div>'
+    +'<p class="sub" style="margin-top:12px;font-size:13px">Tous ceux qui envoient une preuve depuis la plateforme apparaissent ici (Copy seul, Essentiel à 20 €/mois, Groupe et 1:1 inclus). Pour passer quelqu\'un en « Copy seul » ou lui ouvrir la formation : bouton <b>Offre et accès</b>. Un abonné Copy seul ne voit que son Espace Copy ; dès que tu changes son offre, toute la plateforme s\'ouvre.</p></section></div>';
+}
+function paintCopyTab(){
+  if(!$('#cpRows')) return;
+  if(!CPL.ok){ $('#cpRows').innerHTML = '<tr><td colspan="7" class="sub">Chargement…</td></tr>'; return; }
+  var L = CPL.list, now = Date.now();
+  var aValider = L.filter(function(m){ return !m.acces && m.preuve==='attente'; });
+  var echec = L.filter(function(m){ return cpPaye(m) && m.abo==='echec'; });
+  var silence = L.filter(function(m){ return m.acces && m.pack==='copy' && (!m.dernier || (now - new Date(m.dernier.semaine).getTime()) > 15*864e5); });
+  var al = [];
+  if(aValider.length) al.push(['⏳', aValider.length+' preuve'+(aValider.length>1?'s':'')+' à valider', aValider.map(function(m){ return '@'+esc(m.pseudo); }).join(', ')+' attend'+(aValider.length>1?'ent':'')+' l\'accès aux canaux', 'valider']);
+  if(echec.length) al.push(['💳', echec.length+' paiement'+(echec.length>1?'s':'')+' échoué'+(echec.length>1?'s':''), echec.map(function(m){ return '@'+esc(m.pseudo); }).join(', ')+' : accès à couper, retire-'+(echec.length>1?'les':'le')+' des canaux Telegram', 'echec']);
+  if(silence.length) al.push(['💤', silence.length+' abonné'+(silence.length>1?'s':'')+' silencieux', silence.slice(0,6).map(function(m){ return '@'+esc(m.pseudo); }).join(', ')+' : rien déclaré depuis plus de 2 semaines', 'silence']);
+  $('#cpAlerts').innerHTML = al.length ? '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px">'+al.map(function(a){ return '<button type="button" class="card" data-act="cp-f" data-v="'+a[3]+'" style="text-align:left;cursor:pointer;display:flex;gap:12px;align-items:flex-start;border-left:4px solid '+(a[3]==='echec'?'var(--leak)':a[3]==='valider'?'#E0A100':'var(--focus)')+'"><span style="font-size:22px">'+a[0]+'</span><span><b style="display:block">'+a[1]+'</b><span class="sub" style="font-size:13px">'+a[2]+'</span></span></button>'; }).join('')+'</div>' : '<section class="card" style="display:flex;gap:10px;align-items:center"><span style="font-size:20px">✅</span><span>Rien à faire pour l\'instant : aucune preuve en attente, aucun paiement échoué.</span></section>';
+  var seuls = L.filter(function(m){ return m.pack==='copy'; }), actifs = L.filter(function(m){ return cpPaye(m) && m.abo==='actif'; });
+  var decl = L.filter(function(m){ return m.dernier; }), moy = decl.length ? Math.round(decl.reduce(function(t,m){ return t+Number(m.dernier.montant||0); },0)/decl.length) : null;
+  var kp = function(l,v,sub){ return '<div class="kpi" style="display:flex;flex-direction:column;gap:2px"><span class="sub" style="font-size:13px">'+l+'</span><b style="font:700 26px var(--f-display)">'+v+'</b>'+(sub?'<span class="sub" style="font-size:12px">'+sub+'</span>':'')+'</div>'; };
+  $('#cpKpis').innerHTML = kp('Abonnés Copy seul', fmtN(seuls.length), actifs.length+' abonnement'+(actifs.length>1?'s':'')+' actif'+(actifs.length>1?'s':''))
+    + kp('Revenu mensuel', euro(actifs.reduce(function(t,m){ return t+cpPrix(m); },0)), '30 € Copy seul · 20 € Essentiel')
+    + kp('Dans les canaux', fmtN(L.filter(function(m){ return m.acces; }).length), 'toutes offres confondues')
+    + kp('Résultat moyen déclaré', moy==null?'—':(moy>=0?'+':'')+euro(moy), 'dernière semaine déclarée');
+  var F = CPL.f;
+  var filt = [['all','Tous',L.length],['valider','Preuve à valider',aValider.length],['seul','Copy seul',seuls.length],['echec','Paiement échoué',echec.length],['silence','Silencieux',silence.length]];
+  $('#cpF').innerHTML = filt.map(function(f){ return '<button type="button" class="chip" data-act="cp-f" data-v="'+f[0]+'" aria-pressed="'+(F===f[0])+'">'+f[1]+'<small>'+f[2]+'</small></button>'; }).join('');
+  var rows = L.filter(function(m){ return F==='all' || (F==='valider'&&aValider.indexOf(m)>=0) || (F==='seul'&&m.pack==='copy') || (F==='echec'&&m.abo==='echec') || (F==='silence'&&silence.indexOf(m)>=0); });
+  $('#cpRows').innerHTML = rows.length ? rows.map(function(m){
+    var e = cpEtat(m), ab = cpPaye(m) ? (CP_ABO[m.abo||'']||CP_ABO['']) : ['Inclus dans l\'offre','soft'];
+    var d = m.dernier, act = '';
+    if(m.preuve_id) act += '<button type="button" class="btn small'+(e[0]==='valider'?' primary':'')+'" data-act="cp-preuve" data-id="'+esc(m.id)+'">'+(e[0]==='valider'?'Voir et valider':'Voir la preuve')+'</button> ';
+    act += '<button type="button" class="btn small" data-act="cp-edit" data-id="'+esc(m.id)+'">Offre et accès</button>';
+    return '<tr><td><b>@'+esc(m.pseudo)+'</b><div class="sub" style="font-size:12px">'+esc([m.prenom,m.nom].filter(Boolean).join(' '))+(m.telephone?' · '+esc(m.telephone):'')+'</div></td>'
+      +'<td>'+cpPill(CP_PACK[m.pack]||esc(m.pack||'—'), m.pack==='copy'?'warn':'soft')+'</td><td>'+cpPill(e[1],e[2])+'</td><td>'+cpPill(ab[0],ab[1])+(m.abo_fin&&cpPaye(m)?'<div class="sub" style="font-size:12px">jusqu\'au '+esc(new Date(m.abo_fin).toLocaleDateString('fr-FR'))+'</div>':'')+'</td>'
+      +'<td class="num" style="color:'+(d?(Number(d.montant)<0?'var(--leak)':'var(--gain)'):'var(--muted)')+';font-weight:700">'+(d?(Number(d.montant)>=0?'+':'')+euro(Number(d.montant))+'<div class="sub" style="font-size:12px;font-weight:400">sem. du '+esc(new Date(d.semaine).toLocaleDateString('fr-FR',{day:'numeric',month:'short'}))+'</div>':'—')+'</td>'
+      +'<td class="num">'+(Number(m.total)?(Number(m.total)>=0?'+':'')+euro(Number(m.total)):'—')+'</td><td style="white-space:nowrap;text-align:right">'+act+'</td></tr>';
+  }).join('') : '<tr><td colspan="7" class="sub">Personne dans cette liste. Pour ajouter un abonné Copy seul : il s\'inscrit en choisissant « Copy trading seul », ou tu passes un membre existant en « Copy seul » avec le bouton Offre.</td></tr>';
+}
+function cpPaye(m){ return m.pack==='copy' || m.pack==='180'; }
+function cpPrix(m){ return m.pack==='180' ? 20 : 30; }
+function cpById(id){ return CPL.list.filter(function(m){ return m.id===id; })[0]; }
+function openCpPreuve(m){
+  openDlg('<div class="dlg-body"><h2 id="dlgTitle">Preuve de @'+esc(m.pseudo)+'</h2><p class="sub" style="margin:0">Vérifie que le compte Vantage a bien été ouvert avec ton lien et que le dépôt est fait.</p><div id="cpImg" class="sub" style="margin-top:10px">Chargement de l\'image…</div></div>'
+    +'<div class="dlg-foot"><button type="button" class="btn" data-act="cp-val" data-id="'+esc(m.id)+'" data-v="0">Refuser</button><div class="r"><button type="button" class="btn" data-act="close">Fermer</button>'+(m.acces?'':'<button type="button" class="btn primary" data-act="cp-val" data-id="'+esc(m.id)+'" data-v="1">✓ Valider et donner l\'accès</button>')+'</div></div>');
+  DHA.admin('dha_admin_copy_preuve',{p_id:m.preuve_id}).then(function(p){ var b=$('#cpImg'); if(!b) return; b.innerHTML = p&&p.image ? '<img src="'+p.image+'" alt="Preuve envoyée par @'+esc(m.pseudo)+'" style="width:100%;border-radius:10px;border:1px solid var(--line)"><p class="sub" style="font-size:12px;margin-top:6px">Envoyée le '+esc(new Date(p.created_at).toLocaleString('fr-FR'))+'</p>' : 'Image introuvable.'; }).catch(function(){ var b=$('#cpImg'); if(b) b.textContent='Impossible de charger l\'image.'; });
+}
+function openCpEdit(m){
+  var packs = [['copy','Copy seul (30 €/mois) : Espace Copy uniquement'],['180','Essentiel : formation'],['500','Accompagnement en groupe : copy inclus'],['750','Accompagnement 1:1 : copy inclus']];
+  openDlg('<div class="dlg-body"><h2 id="dlgTitle">@'+esc(m.pseudo)+' · offre et accès</h2>'
+    +'<div><label for="cpPack">Offre</label><select id="cpPack">'+packs.map(function(p){ return '<option value="'+p[0]+'"'+(m.pack===p[0]?' selected':'')+'>'+p[1]+'</option>'; }).join('')+(['copy','180','500','750'].indexOf(m.pack)<0?'<option value="'+esc(m.pack||'')+'" selected>'+esc(CP_PACK[m.pack]||m.pack||'Aucune')+'</option>':'')+'</select><p class="note" style="margin-top:6px">Passer de « Copy seul » à une autre offre lui ouvre toute la plateforme (formation, lives, groupe…) à sa prochaine visite.</p></div>'
+    +'<div><label for="cpAbo">Abonnement copy trading ('+(m.pack==='180'?'20':m.pack==='copy'?'30':'inclus avec Groupe / 1:1, laisse « À activer »')+(cpPaye(m)?' €/mois':'')+')</label><select id="cpAbo">'+Object.keys(CP_ABO).map(function(k){ return '<option value="'+k+'"'+((m.abo||'')===k?' selected':'')+'>'+CP_ABO[k][0]+'</option>'; }).join('')+'</select></div>'
+    +'<div><label for="cpFin">Payé jusqu\'au (optionnel)</label><input id="cpFin" type="date" value="'+esc(m.abo_fin||'')+'"></div>'
+    +'<label class="check"><input type="checkbox" id="cpAcc"'+(m.acces?' checked':'')+'>Accès aux canaux Telegram (affichés dans son espace)</label>'
+    +'</div><div class="dlg-foot"><span></span><div class="r"><button type="button" class="btn" data-act="close">Annuler</button><button type="button" class="btn primary" data-act="cp-save" data-id="'+esc(m.id)+'">Enregistrer</button></div></div>');
+}
+function saveCpEdit(m){
+  var p = {pack:$('#cpPack').value, copy_abo:$('#cpAbo').value, copy_trading:$('#cpAcc').checked};
+  if($('#cpFin').value) p.copy_abo_fin = $('#cpFin').value;
+  if(p.copy_trading && !m.acces && !confirm('Donner l\'accès aux canaux à @'+m.pseudo+' ? (dépôt et preuve vérifiés)')) return;
+  DHA.admin('dha_admin_update_membre',{p_id:m.id, p:p}).then(function(r){ if(r){ closeDlg(); toast('@'+m.pseudo+' mis à jour'); loadCopyListe(); } else toast('Échec de l\'enregistrement'); }).catch(function(){ toast('Échec de l\'enregistrement'); });
+}
 
 /* ---------- perfs des fiches joueurs : vérification des preuves ---------- */
 var PERFS = {list:[], ok:false, all:false};
@@ -2626,6 +2711,13 @@ document.addEventListener('click', function(ev){
     case 'perf-img': var pi = PERFS.list.filter(function(x){ return x.id===el.getAttribute('data-id'); })[0]; if(pi && pi.preuve) openDlg('<div class="dlg-body"><h2 id="dlgTitle">Preuve de @'+esc(pi.pseudo)+'</h2><img src="'+pi.preuve+'" alt="Preuve" style="width:100%;border-radius:12px"></div><div class="dlg-foot"><span></span><div class="r"><button type="button" class="btn" data-act="close">Fermer</button></div></div>'); return;
     case 'copy-cfg': openCopyCfg(); return;
     case 'copy-save': saveCopyCfg(); return;
+    case 'cp-f': CPL.f = el.getAttribute('data-v'); if(S.tab!=='copy'){ S.tab='copy'; render(); } else paintCopyTab(); return;
+    case 'cp-refresh': loadCopyListe(); toast('Liste actualisée'); return;
+    case 'cp-preuve': var cpm = cpById(el.getAttribute('data-id')); if(cpm) openCpPreuve(cpm); return;
+    case 'cp-edit': var cpe = cpById(el.getAttribute('data-id')); if(cpe) openCpEdit(cpe); return;
+    case 'cp-save': var cps = cpById(el.getAttribute('data-id')); if(cps) saveCpEdit(cps); return;
+    case 'cp-val': var cpv = cpById(el.getAttribute('data-id')), okv = el.getAttribute('data-v')==='1'; if(!cpv) return;
+      DHA.admin('dha_admin_copy_valider',{p_id:cpv.id, p_ok:okv}).then(function(r){ if(r&&r.ok){ closeDlg(); toast(okv?'✅ @'+cpv.pseudo+' a maintenant accès aux canaux':'Preuve refusée : @'+cpv.pseudo+' devra en renvoyer une'); loadCopyListe(); } else toast('Échec'); }).catch(function(){ toast('Échec'); }); return;
     case 'lv-plan': openPlanning(); return;
     case 'lv-plan-save': savePlanning(); return;
     case 'lv-add': openReplay(); return;
@@ -2882,7 +2974,7 @@ function quickPay(id, n){
   }).catch(function(){});
 }
 function openMore(){
-  var items = [['objectifs','Objectifs'],['launches','Lancements programmés'],['content','Contenu'],['retours','Retours des membres'],['stats','Mes stats'],['funnel','Entonnoir'],['perdus','Prospects perdus'],['membres','Parrainages & comptes'],['brain','Analyse IA']];
+  var items = [['copy','Copy trading'],['objectifs','Objectifs'],['launches','Lancements programmés'],['content','Contenu'],['retours','Retours des membres'],['stats','Mes stats'],['funnel','Entonnoir'],['perdus','Prospects perdus'],['membres','Parrainages & comptes'],['brain','Analyse IA']];
   var nSig = SIG.list.filter(function(x){ return x.statut==='nouveau'; }).length;
   openDlg('<div class="dlg-body"><h2 id="dlgTitle">Plus</h2><div class="qk-grid">'+items.map(function(k){
     return '<button type="button" class="qk-tile" data-act="tab" data-tab="'+k[0]+'"><span class="qk-ic">'+NAV_ICON[k[0]]+'</span><b>'+esc(k[1])+'</b>'+(k[0]==='retours'&&nSig?'<small>'+nSig+' nouveau'+(nSig>1?'x':'')+'</small>':'')+'</button>';
@@ -2919,8 +3011,8 @@ document.addEventListener('click', function(ev){
 });
 
 /* ---------- démarrage ---------- */
-var SKEL = {retours:skelRetours, cand:skelCand, perdus:skelLost, home:skelHome, stats:skelStats, membres:skelEmbed, funnel:skelFunnel, objectifs:skelGoals, launches:skelLaunches, prospects:skelProspects, content:skelContent, clients:skelClients, brain:skelBrain};
-var PAINT = {retours:paintRetours, cand:paintCand, perdus:paintLost, home:paintHome, stats:paintStats, membres:function(){}, funnel:paintFunnel, objectifs:paintGoals, launches:paintLaunches, prospects:paintProspects, content:paintContent, clients:paintClients, brain:function(){}};
+var SKEL = {copy:skelCopy, retours:skelRetours, cand:skelCand, perdus:skelLost, home:skelHome, stats:skelStats, membres:skelEmbed, funnel:skelFunnel, objectifs:skelGoals, launches:skelLaunches, prospects:skelProspects, content:skelContent, clients:skelClients, brain:skelBrain};
+var PAINT = {copy:paintCopyTab, retours:paintRetours, cand:paintCand, perdus:paintLost, home:paintHome, stats:paintStats, membres:function(){}, funnel:paintFunnel, objectifs:paintGoals, launches:paintLaunches, prospects:paintProspects, content:paintContent, clients:paintClients, brain:function(){}};
 
 function use(name){
   try{ if(window.claude && typeof window.claude.use==='function') return Promise.resolve(window.claude.use(name)).catch(function(){ return null; }); }catch(e){}

@@ -206,4 +206,12 @@
 
   window.DHA = { rpc: rpc, local: local, save: save, clear: clear, token: token, me: me, login: login, logout: logout,
     historique: historique, award: award, admin: admin, adminKey: adminKey, adminGate: adminGate, resetPasswordUI: resetPasswordUI, changePasswordUI: changePasswordUI, choosePasswordUI: choosePasswordUI, URL: URL_, KEY: KEY_ };
+
+  // Abonné « Copy seul » : il n'a accès qu'à son Espace Copy (pas à la formation ni à l'accompagnement)
+  try {
+    var page = (location.pathname.split('/').pop() || '').toLowerCase();
+    var LIBRES = ['dha-espace-copy.html', 'dha-connexion.html', 'dha-inscription.html', 'dha-candidature.html', 'dha-video.html', 'dha-cgv.html', 'dha-appli.html', 'dha-admin.html', 'dha-cerveau.html', 'index.html'];
+    var mm = local();
+    if (mm && mm.pack === 'copy' && /^dha-.*\.html$/.test(page) && LIBRES.indexOf(page) < 0) location.replace('dha-espace-copy.html');
+  } catch (e) {}
 })();

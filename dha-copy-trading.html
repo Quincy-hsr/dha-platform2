@@ -173,8 +173,8 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
       <div class="ct-p">Télécharge l'application <b>MetaTrader 5</b>, cherche le courtier <b>Vantage Markets</b> et connecte-toi avec les identifiants reçus par mail (numéro de compte, mot de passe, serveur).</div>
       <div class="ct-vid"><div class="ct-vid-h">🎥 TUTO VIDÉO · CONNECTER SON COMPTE À MT5 · 1 MIN 33</div><video controls playsinline preload="none" poster="videos/vantage-4-connexion.jpg" aria-label="Comment connecter son compte Vantage à MetaTrader 5"><source src="videos/vantage-4-connexion.mp4" type="video/mp4"></video></div></div></div>
     <div class="ct-step"><div class="ct-num">6</div><div><div class="ct-t">ENVOIE TA PREUVE</div>
-      <div class="ct-p">Envoie-moi la capture de ton dépôt (et ton identifiant de compte Vantage). Je vérifie et je t'active l'accès au canal.</div>
-      <a class="ct-btn wa" href="https://wa.me/qr/OCPS7DRIVP76L1" target="_blank" rel="noopener">💬 ENVOYER MA PREUVE À QUINCY</a></div></div>
+      <div class="ct-p">Envoie une capture de ton compte Vantage qui montre ton dépôt (et ton numéro de compte). Je vérifie que le compte a bien été ouvert avec mon lien, puis je t'active l'accès aux canaux.</div>
+      <div id="ct-preuve"></div></div></div>
     <div class="ct-step" id="ct-canal"><div class="ct-num">7</div><div><div class="ct-t">REJOINS LE CANAL</div><div class="ct-p">Chargement…</div></div></div>
     <div class="ct-step"><div class="ct-num">8</div><div><div class="ct-t">PRENDS UN TRADE DU SIGNAL</div>
       <div class="ct-p">Chaque signal ressemble à ça :</div>
@@ -189,6 +189,18 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
 function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
 var WA='https://wa.me/qr/OCPS7DRIVP76L1';
 function okUrl(u){return /^https?:\/\//.test(String(u||''));}
+function lireImage(file,cb){ if(!file) return; var r=new FileReader(); r.onload=function(){ var im=new Image(); im.onload=function(){ var s=Math.min(1,1280/Math.max(im.width,im.height)), cv=document.createElement('canvas'); cv.width=Math.round(im.width*s); cv.height=Math.round(im.height*s); cv.getContext('2d').drawImage(im,0,0,cv.width,cv.height); cb(cv.toDataURL('image/jpeg',0.8)); }; im.src=r.result; }; r.readAsDataURL(file); }
+function rendrePreuve(c){
+  var el=document.getElementById('ct-preuve'); if(!el) return;
+  if(c.acces){ el.innerHTML='<div class="ct-p" style="margin-top:10px;color:var(--green)">✅ Preuve validée.</div>'; return; }
+  var etat = c.preuve==='attente' ? '<div class="ct-p" style="margin-top:10px">⏳ <b>Preuve envoyée.</b> Je vérifie ton compte et je t\'active l\'accès sous 24 h.</div>'
+    : c.preuve==='refuse' ? '<div class="ct-p" style="margin-top:10px;color:var(--red)">❌ Ta dernière preuve n\'a pas été validée (compte pas ouvert avec mon lien ou dépôt pas visible). Renvoie une capture claire, ou écris-moi.</div>' : '';
+  el.innerHTML = etat + (c.preuve==='attente' ? '' : '<label class="ct-btn" style="cursor:pointer;position:relative">📸 ENVOYER MA PREUVE<input type="file" accept="image/*" id="ct-preuve-f" style="position:absolute;opacity:0;width:1px;height:1px"></label>');
+  var f=document.getElementById('ct-preuve-f');
+  if(f) f.onchange=function(){ var lab=f.parentNode; lab.firstChild.textContent='⏳ ENVOI…'; lireImage(f.files[0], async function(img){
+    try{ var r=await DHA.rpc('dha_copy_preuve',{p_token:await DHA.token(),p_image:img}); if(r&&r.ok){ c.preuve='attente'; rendrePreuve(c); return; } }catch(e){}
+    lab.firstChild.textContent='📸 ENVOYER MA PREUVE'; var er=document.createElement('div'); er.className='ct-p'; er.style.cssText='margin-top:8px;color:var(--red)'; er.textContent='Envoi impossible, réessaie dans un instant.'; el.appendChild(er); }); };
+}
 function rendre(c,member){
   c=c||{};
   document.getElementById('ct-vantage').innerHTML=okUrl(c.lien_vantage)?'<a class="ct-btn" href="'+esc(c.lien_vantage)+'" target="_blank" rel="noopener">🔗 OUVRIR MON COMPTE VANTAGE</a>':'<div class="ct-p" style="margin-top:10px;color:var(--dim)">🔗 Le lien d\'inscription arrive très bientôt ici.</div>';
@@ -197,20 +209,23 @@ function rendre(c,member){
   var mien=pack==='180'?'180':pack==='500'?'500':pack==='750'?'750':(pack?'750':'seul');
   var P=[['seul','Canal seul','30 €/mois'],['180','Essentiel','20 €/mois'],['500','Groupe','Inclus'],['750','1:1','Inclus']];
   var box=document.getElementById('ct-canal');
+  rendrePreuve(c);
   if(c.acces){
     box.classList.remove('lock');
-    box.innerHTML='<div class="ct-num">✓</div><div><div class="ct-t">REJOINS LE CANAL</div><div class="ct-p">✅ <b>Ton accès est activé.</b> Rejoins le canal'+(c.canal_nom?' '+esc(c.canal_nom):'')+' : les signaux arrivent là-bas.</div>'+(okUrl(c.canal_lien)?'<a class="ct-btn" href="'+esc(c.canal_lien)+'" target="_blank" rel="noopener">📡 REJOINDRE LE CANAL</a>':'<a class="ct-btn wa" href="'+WA+'" target="_blank" rel="noopener">💬 DEMANDER LE LIEN À QUINCY</a>')+'</div>';
+    var cx=(c.canaux&&c.canaux.length)?c.canaux:(c.canal_lien?[{nom:c.canal_nom||'Canal',lien:c.canal_lien}]:[]);
+    box.innerHTML='<div class="ct-num">✓</div><div><div class="ct-t">REJOINS LES CANAUX</div><div class="ct-p">✅ <b>Ton accès est activé.</b> Rejoins '+(cx.length>1?'chaque canal':'le canal')+' : les signaux arrivent là-bas.</div>'
+      +(cx.length?'<div style="display:flex;flex-direction:column;gap:8px;margin-top:12px">'+cx.map(function(k){ return '<div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;padding:10px 12px;border-radius:12px;border:1px solid rgba(0,255,136,0.25);background:rgba(0,255,136,0.04)"><b style="font-family:Orbitron,sans-serif;font-size:12px;letter-spacing:1px">'+esc(k.nom)+'</b>'+(okUrl(k.lien)?'<a class="ct-btn" style="margin-top:0" href="'+esc(k.lien)+'" target="_blank" rel="noopener">📡 REJOINDRE</a>':'<span style="font-size:12px;color:var(--gold)">Lien bientôt ici</span>')+'</div>'; }).join('')+'</div>':'<a class="ct-btn wa" href="'+WA+'" target="_blank" rel="noopener">💬 DEMANDER LE LIEN À QUINCY</a>')+'</div>';
     return;
   }
   box.classList.add('lock');
   if(mien==='500'||mien==='750'){
-    box.innerHTML='<div class="ct-num">🎁</div><div><div class="ct-t">REJOINS LE CANAL</div><div class="ct-p">✅ <b>Le copy trading est inclus dans ton offre</b>, tu n\'as rien à payer. Ouvre ton compte Vantage <b>avec mon lien</b> (étape 1), puis envoie-moi la preuve (étape 6) : je t\'active l\'accès au canal.</div>'
-      +'<a class="ct-btn wa" href="'+WA+'" target="_blank" rel="noopener">💬 ACTIVER MON ACCÈS</a>'
+    box.innerHTML='<div class="ct-num">🎁</div><div><div class="ct-t">REJOINS LE CANAL</div><div class="ct-p">✅ <b>Le copy trading est inclus dans ton offre</b>, tu n\'as rien à payer. Ouvre ton compte Vantage <b>avec mon lien</b> (étape 1), puis envoie ta preuve à l\'étape 6 : je la valide et les canaux s\'affichent ici.</div>'
+      +'<a class="ct-btn wa" href="'+WA+'" target="_blank" rel="noopener">💬 UNE QUESTION ? ÉCRIS-MOI</a>'
       +'<div class="ct-p" style="margin-top:10px;font-size:13px;color:var(--dim)">Une fois activé, le bouton « Rejoindre le canal » apparaît ici.</div></div>';
     return;
   }
   var lien=c['pay_'+mien];
-  box.innerHTML='<div class="ct-num">🔒</div><div><div class="ct-t">REJOINS LE CANAL</div><div class="ct-p">L\'accès au canal se débloque une fois ton paiement et ta preuve validés. Inclus avec les offres Groupe et 1:1, sinon :</div>'
+  box.innerHTML='<div class="ct-num">🔒</div><div><div class="ct-t">REJOINS LE CANAL</div><div class="ct-p">L\'accès aux canaux se débloque une fois ton abonnement payé et ta preuve (étape 6) validée. Inclus avec les offres Groupe et 1:1, sinon :</div>'
     +'<div class="ct-prix">'+P.map(function(x){return '<div'+(x[0]===mien?' class="moi"':'')+'>'+x[1]+'<b>'+x[2]+'</b>'+(x[0]===mien?per:'')+'</div>';}).join('')+'</div>'
     +'<a class="ct-btn gold" href="'+(okUrl(lien)?esc(lien):WA)+'" target="_blank" rel="noopener">🔓 DÉBLOQUER MON ACCÈS</a>'
     +'<div class="ct-p" style="margin-top:10px;font-size:13px;color:var(--dim)">Une fois activé, le bouton « Rejoindre le canal » apparaît ici.</div></div>';

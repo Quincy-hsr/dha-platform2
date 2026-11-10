@@ -611,6 +611,7 @@ body {
           <option value="180">Essentiel — 180€ (paiement unique)</option>
           <option value="500">Accompagnement en groupe — 500€ (copy trading inclus)</option>
           <option value="750">Accompagnement 1:1 — 750€ (copy trading inclus)</option>
+          <option value="copy">Copy trading seul — 30€/mois (accès aux canaux uniquement)</option>
         </select>
       </div>
 
@@ -904,7 +905,7 @@ async function goStep3() {
       const cleNotif = 'dha_notif_ceo_' + (userData.email || '').toLowerCase();
       let dejaNotifie = false;
       try { dejaNotifie = !!localStorage.getItem(cleNotif); localStorage.setItem(cleNotif, '1'); } catch(e) {}
-      const packLabels = { '180': 'Essentiel (180€)', '500': 'Accompagnement en groupe (500€)', '750': 'Accompagnement 1:1 (750€)' };
+      const packLabels = { '180': 'Essentiel (180€)', '500': 'Accompagnement en groupe (500€)', '750': 'Accompagnement 1:1 (750€)', 'copy': 'Copy trading seul (30€/mois)' };
       const classeLabels = { trading:'Trading 📈', ugc:'UGC Creator 🎬', marketing:'Marketing Digital 🚀', ecommerce:'E-Commerce 🛒' };
       if(!dejaNotifie) emailjs.send('service_4wng58y', 'template_5zg1ys4', {
         prenom: userData.prenom,
@@ -963,7 +964,7 @@ function shake() {
   // Sauvegarde le ref d'affiliation
 const urlRef=new URLSearchParams(window.location.search).get('ref')||localStorage.getItem('dha_ref')||'';
 if(urlRef){document.getElementById('parrain').value=urlRef;document.getElementById('parrain-hint').textContent='Rempli automatiquement grâce à ton lien d\'invitation.';}
-(function(){const pk=new URLSearchParams(window.location.search).get('pack');if(pk&&['180','500','750'].includes(pk))document.getElementById('offre').value=pk;})();
+(function(){const pk=new URLSearchParams(window.location.search).get('pack');if(pk&&['180','500','750','copy'].includes(pk))document.getElementById('offre').value=pk;})();
 if(urlRef){
   localStorage.setItem('dha_ref',urlRef);
   document.getElementById('parrain-banner').style.display='block';

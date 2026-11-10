@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<script src="dha-api.js"></script>
+<script src="dha-theme.js"></script>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>DHA — Espace Copy</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600;700&display=swap" rel="stylesheet"/>
+<style>
+:root{--bg:#050914;--card:#080e1f;--blue:#1E64FF;--cyan:#00D4FF;--gold:#FFD700;--green:#00FF88;--red:#FF4466;--white:#E8F4FF;--dim:rgba(232,244,255,0.45);--border:rgba(30,100,255,0.15);--sidebar-w:240px;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-height:100vh;display:flex;}
+.bg-grid{position:fixed;inset:0;z-index:0;background-image:linear-gradient(rgba(30,100,255,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(30,100,255,0.03) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;}
+.sidebar{position:fixed;left:0;top:0;bottom:0;width:var(--sidebar-w);background:rgba(8,14,31,0.97);border-right:1px solid var(--border);display:flex;flex-direction:column;z-index:100;padding:24px 0;}
+.sidebar-logo{padding:0 24px 24px;border-bottom:1px solid var(--border);margin-bottom:16px;}
+.sidebar-logo-text{font-family:'Orbitron',sans-serif;font-size:28px;font-weight:900;letter-spacing:4px;color:var(--white);text-shadow:0 0 20px rgba(30,100,255,0.6);}
+.sidebar-logo-sub{font-family:'Orbitron',sans-serif;font-size:6px;letter-spacing:3px;color:rgba(0,212,255,0.5);margin-top:2px;}
+.sidebar-section{padding:8px 24px 4px;font-family:'Orbitron',sans-serif;font-size:7px;letter-spacing:3px;color:rgba(255,255,255,0.2);margin-top:8px;}
+.nav-item{display:flex;align-items:center;gap:12px;padding:11px 24px;cursor:pointer;transition:all .2s;font-size:13px;color:var(--dim);text-decoration:none;}
+.nav-item:hover{background:rgba(30,100,255,0.08);color:var(--white);}
+.nav-item.active{background:rgba(30,100,255,0.12);color:var(--cyan);border-right:2px solid var(--cyan);}
+.nav-icon{font-size:16px;width:20px;text-align:center;flex-shrink:0;}
+.sidebar-bottom{margin-top:auto;padding:16px 24px;border-top:1px solid var(--border);}
+.sidebar-member{display:flex;align-items:center;gap:12px;}
+.sidebar-avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--cyan));display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;}
+.sidebar-member-name{font-family:'Orbitron',sans-serif;font-size:10px;font-weight:900;color:var(--white);}
+.sidebar-member-rang{font-size:10px;color:var(--dim);margin-top:2px;}
+.main{margin-left:var(--sidebar-w);flex:1;padding:32px;position:relative;z-index:1;}
+.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:32px;}
+.topbar-title{font-family:'Orbitron',sans-serif;font-size:20px;font-weight:900;color:var(--white);letter-spacing:2px;}
+.topbar-title span{color:var(--cyan);}
+.header-card{background:linear-gradient(135deg,#0a1428,#080e1f);border:1px solid rgba(30,100,255,0.25);border-radius:20px;padding:32px;margin-bottom:28px;position:relative;overflow:hidden;}
+.header-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--cyan),transparent);}
+.header-glow{position:absolute;top:-60px;right:-60px;width:300px;height:300px;background:radial-gradient(ellipse,rgba(30,100,255,0.15) 0%,transparent 70%);pointer-events:none;}
+.header-tag{font-family:'Orbitron',sans-serif;font-size:8px;letter-spacing:3px;color:var(--cyan);margin-bottom:10px;}
+.header-title{font-family:'Orbitron',sans-serif;font-size:26px;font-weight:900;color:var(--white);margin-bottom:8px;}
+.header-desc{font-size:14px;color:var(--dim);line-height:1.7;}
+.info-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-top:24px;}
+.info-item{padding:16px;border-radius:12px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);text-align:center;}
+.info-icon{font-size:24px;margin-bottom:8px;}
+.info-label{font-family:'Orbitron',sans-serif;font-size:8px;letter-spacing:2px;color:var(--dim);margin-bottom:4px;}
+.info-val{font-size:13px;color:var(--white);font-weight:600;}
+.calendly-wrap{background:var(--card);border:1px solid var(--border);border-radius:20px;overflow:hidden;min-height:700px;}
+.ct-vid{margin-top:14px;border-radius:14px;overflow:hidden;border:1px solid rgba(0,212,255,0.25);background:#000}.ct-vid-h{padding:8px 12px;font-family:'Orbitron',sans-serif;font-size:10px;letter-spacing:1.5px;color:var(--cyan);background:rgba(0,212,255,0.08)}.ct-vid video{display:block;width:100%;height:auto;aspect-ratio:4/3;background:#000}
+.ct-must{margin-top:12px;padding:12px 14px;border-radius:12px;background:rgba(255,215,0,0.08);border:1px solid rgba(255,215,0,0.45);color:#FFE9A8;font-size:13.5px;line-height:1.55}.ct-must b{color:#FFD700}
+.ct-warn{padding:14px 16px;border-radius:14px;border:1px solid rgba(255,140,0,0.4);background:rgba(255,140,0,0.07);font-size:13px;line-height:1.6;color:rgba(232,244,255,0.8);margin-bottom:22px;}
+.ct-steps{display:flex;flex-direction:column;gap:14px;}
+.ct-step{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:20px;display:grid;grid-template-columns:44px 1fr;gap:16px;}
+.ct-num{width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,var(--blue),var(--cyan));display:flex;align-items:center;justify-content:center;font-family:'Orbitron',sans-serif;font-weight:900;color:#020610;font-size:16px;}
+.ct-step.lock .ct-num{background:rgba(255,215,0,0.15);color:#FFD700;border:1px solid rgba(255,215,0,0.5);}
+.ct-t{font-family:'Orbitron',sans-serif;font-size:14px;font-weight:700;letter-spacing:1px;margin-bottom:8px;}
+.ct-p{font-size:14px;color:rgba(232,244,255,0.75);line-height:1.65;}
+.ct-p b{color:#E8F4FF;}
+.ct-list{margin:10px 0 0;padding-left:18px;font-size:14px;color:rgba(232,244,255,0.75);line-height:1.7;}
+.ct-btn{display:inline-flex;align-items:center;gap:8px;margin-top:12px;padding:12px 16px;border-radius:12px;background:linear-gradient(135deg,var(--blue),var(--cyan));color:#020610;font-family:'Orbitron',sans-serif;font-size:10px;font-weight:700;letter-spacing:1px;text-decoration:none;}
+.ct-btn.gold{background:linear-gradient(135deg,#FFD700,#FF9F00);color:#1a1200;}
+.ct-btn.wa{background:#25D366;color:#04210f;}
+.sig{margin-top:12px;border-radius:14px;border:1px solid rgba(0,212,255,0.3);background:#050914;padding:14px 16px;font-family:monospace;font-size:13px;line-height:1.8;max-width:420px;}
+.sig .buy{color:#00FF88;font-weight:700;}
+.sig small{color:rgba(232,244,255,0.45);}
+.ct-prix{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px;}
+.ct-prix div{padding:10px;border-radius:10px;border:1px solid rgba(255,255,255,0.08);text-align:center;font-size:12px;color:var(--dim);}
+.ct-prix div b{display:block;font-size:20px;color:#E8F4FF;font-family:'Orbitron',sans-serif;}
+.ct-prix div.moi{border-color:rgba(255,215,0,0.6);background:rgba(255,215,0,0.06);}
+@media(max-width:600px){.ct-step{grid-template-columns:1fr;gap:10px}.ct-prix{grid-template-columns:1fr 1fr}}
+.rs-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:16px;}
+.rs{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:22px;display:flex;flex-direction:column;gap:8px;}
+.rs-ico{font-size:30px;}
+.rs-t{font-family:'Orbitron',sans-serif;font-size:13px;font-weight:700;letter-spacing:1px;}
+.rs-d{font-size:13px;color:var(--dim);line-height:1.6;flex:1;}
+.rs-m{font-size:11px;color:var(--cyan);font-family:'Orbitron',sans-serif;letter-spacing:1px;}
+.rs-b{display:inline-flex;justify-content:center;align-items:center;gap:8px;padding:12px 14px;border-radius:12px;background:linear-gradient(135deg,var(--blue),var(--cyan));color:#020610;font-family:'Orbitron',sans-serif;font-size:10px;font-weight:700;letter-spacing:1px;text-decoration:none;margin-top:6px;}
+.rs-b.gold{background:linear-gradient(135deg,#FFD700,#FF9F00);color:#1a1200;}
+.lv-card{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:24px;margin-bottom:22px;}
+.lv-h{font-family:'Orbitron',sans-serif;font-size:11px;letter-spacing:2px;color:var(--cyan);margin-bottom:14px;}
+.lv-slots{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-bottom:14px;}
+.lv-slot{padding:16px;border-radius:14px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);}
+.lv-slot.today{border-color:rgba(0,255,136,0.5);background:rgba(0,255,136,0.06);}
+.lv-day{font-family:'Orbitron',sans-serif;font-size:14px;font-weight:700;}
+.lv-time{font-size:22px;font-weight:700;color:var(--cyan);margin:4px 0;}
+.lv-what{font-size:13px;color:var(--dim);}
+.lv-tag{display:inline-block;font-size:10px;font-family:'Orbitron',sans-serif;letter-spacing:1px;color:var(--green);margin-top:6px;}
+.lv-note{font-size:13px;color:var(--dim);margin-bottom:16px;}
+.lv-btn{display:inline-flex;align-items:center;gap:8px;padding:13px 20px;border-radius:12px;background:linear-gradient(135deg,#5865F2,#7983f5);color:#fff;font-family:'Orbitron',sans-serif;font-size:11px;font-weight:700;letter-spacing:1px;text-decoration:none;}
+.lv-btn.alt{background:linear-gradient(135deg,var(--blue),var(--cyan));color:#020610;}
+.rp-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;}
+.rp{background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.07);border-radius:16px;overflow:hidden;display:flex;flex-direction:column;}
+.rp-media{position:relative;aspect-ratio:16/9;background:#000;cursor:pointer;border:none;padding:0;width:100%;display:block;}
+.rp-media img{width:100%;height:100%;object-fit:cover;display:block;opacity:.85;}
+.rp-media .play{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:44px;text-shadow:0 4px 20px rgba(0,0,0,.6);}
+.rp-media iframe{width:100%;height:100%;border:0;display:block;}
+.rp-body{padding:14px 16px;}
+.rp-date{font-size:11px;color:var(--dim);font-family:'Orbitron',sans-serif;letter-spacing:1px;}
+.rp-title{font-weight:700;font-size:15px;margin:4px 0;}
+.rp-desc{font-size:13px;color:var(--dim);line-height:1.5;}
+.rp-link{display:inline-block;margin-top:8px;color:var(--cyan);font-size:13px;}
+.lv-empty{color:var(--dim);font-size:14px;padding:10px 0;}
+.lv-lock{text-align:center;padding:34px 22px;}
+@media(max-width:768px){.sidebar{display:none;}.main{margin-left:0;padding:16px;}.info-grid{grid-template-columns:1fr;}}
+
+/* ── MOBILE MENU ── */
+.hamburger{display:none;position:fixed;top:14px;left:14px;z-index:500;width:42px;height:42px;border-radius:10px;background:rgba(8,14,31,0.95);border:1px solid rgba(30,100,255,0.3);cursor:pointer;align-items:center;justify-content:center;flex-direction:column;gap:5px;}
+.hamburger span{display:block;width:20px;height:2px;background:var(--cyan);border-radius:2px;transition:all .3s;}
+.sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:150;backdrop-filter:blur(4px);}
+.sidebar-overlay.show{display:block;}
+@media(max-width:768px){
+  .hamburger{display:flex;}
+  .sidebar{transform:translateX(-100%);transition:transform .3s ease;z-index:200;}
+  .sidebar.open{transform:translateX(0);}
+  .main{margin-left:0 !important;padding:16px;padding-top:70px;}
+}
+
+/* ── ESPACE COPY ── */
+.ec-hello{display:flex;flex-wrap:wrap;gap:16px;align-items:center;justify-content:space-between;}
+.ec-pills{display:flex;gap:8px;flex-wrap:wrap;}
+.ec-pill{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:99px;font-size:12px;font-weight:700;}
+.ec-pill.g{background:rgba(0,255,136,0.12);color:var(--green);border:1px solid rgba(0,255,136,0.3);}
+.ec-pill.y{background:rgba(255,215,0,0.1);color:var(--gold);border:1px solid rgba(255,215,0,0.3);}
+.ec-pill.r{background:rgba(255,68,102,0.12);color:var(--red);border:1px solid rgba(255,68,102,0.35);}
+.ec-pill.n{background:rgba(255,255,255,0.05);color:var(--dim);border:1px solid rgba(255,255,255,0.08);}
+.ec-canal{display:flex;flex-wrap:wrap;gap:16px;align-items:center;justify-content:space-between;background:linear-gradient(135deg,rgba(0,255,136,0.1),rgba(0,212,255,0.05));border:1px solid rgba(0,255,136,0.35);border-radius:20px;padding:24px;margin-bottom:22px;}
+.ec-canal .header-tag{color:var(--green);}
+.ec-cx{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;}@media(max-width:700px){.ec-cx{grid-template-columns:1fr;}}
+.ec-c{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 16px;border-radius:14px;background:rgba(5,9,20,0.55);border:1px solid rgba(0,255,136,0.25);}
+.ec-c b{display:block;font-family:'Orbitron',sans-serif;font-size:12px;letter-spacing:1px;}.ec-c small{display:block;font-size:12.5px;color:var(--dim);margin-top:3px;}
+.ec-grid{display:grid;grid-template-columns:1.25fr 1fr;gap:20px;align-items:start;}
+@media(max-width:980px){.ec-grid{grid-template-columns:1fr;}}
+.ec-card{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:22px;min-width:0;margin-bottom:20px;}
+.ec-h{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+.ec-ht{font-family:'Orbitron',sans-serif;font-size:13px;font-weight:700;letter-spacing:1px;}
+.ec-chart{width:100%;height:auto;display:block;margin-bottom:14px;}
+.ec-chart text{fill:rgba(232,244,255,0.4);font:600 10px 'Exo 2',sans-serif;}
+.ec-decl{display:flex;flex-wrap:wrap;gap:10px;align-items:flex-end;}
+.ec-decl>div{flex:1;min-width:150px;}
+.ec-decl label{display:block;font-size:12px;color:var(--dim);margin-bottom:6px;font-weight:600;}
+.ec-in{width:100%;padding:12px 14px;border-radius:12px;border:1px solid rgba(30,100,255,0.3);background:rgba(255,255,255,0.03);color:var(--white);font:600 15px 'Exo 2',sans-serif;}
+.ec-in:focus-visible,.ec-up:focus-within,.ct-btn:focus-visible{outline:2px solid var(--gold);outline-offset:2px;}
+.ec-btn{border:0;cursor:pointer;}
+.ec-up{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:12px;padding:12px;border:1px dashed rgba(0,212,255,0.4);border-radius:12px;font-size:13px;color:var(--dim);cursor:pointer;text-align:center;}
+.ec-up input{position:absolute;opacity:0;width:1px;height:1px;}
+.ec-hist{margin-top:14px;display:flex;flex-direction:column;gap:6px;}
+.ec-row{display:flex;justify-content:space-between;font-size:13px;padding:8px 12px;border-radius:10px;background:rgba(255,255,255,0.03);font-variant-numeric:tabular-nums;}
+.ec-row b.p{color:var(--green);} .ec-row b.m{color:var(--red);}
+.ec-tuto{display:flex;flex-direction:column;gap:10px;}
+.ec-tuto details{border:1px solid rgba(0,212,255,0.2);border-radius:14px;overflow:hidden;background:rgba(0,212,255,0.03);}
+.ec-tuto summary{cursor:pointer;padding:12px 14px;font-size:13.5px;font-weight:700;list-style:none;display:flex;justify-content:space-between;gap:10px;}
+.ec-tuto summary::-webkit-details-marker{display:none;}
+.ec-tuto summary span{color:var(--cyan);font-size:12px;font-family:'Orbitron',sans-serif;}
+.ec-tuto video{display:block;width:100%;aspect-ratio:4/3;background:#000;}
+.ec-up2{background:linear-gradient(135deg,rgba(30,100,255,0.2),rgba(255,215,0,0.07));border:1px solid rgba(255,215,0,0.35);}
+.ec-locks{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0;}
+.ec-locks span{padding:7px 11px;border-radius:10px;background:rgba(255,255,255,0.05);color:rgba(232,244,255,0.4);font-size:12.5px;font-weight:600;}
+.ec-chk{display:flex;flex-direction:column;gap:10px;}
+.ec-st{display:grid;grid-template-columns:40px 1fr auto;gap:12px;align-items:center;padding:14px;border-radius:14px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.07);}
+.ec-st .n{width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-family:'Orbitron',sans-serif;font-weight:900;background:rgba(255,255,255,0.06);color:var(--dim);}
+.ec-st.ok{border-color:rgba(0,255,136,0.3);} .ec-st.ok .n{background:var(--green);color:#03150D;}
+.ec-st.cur{border-color:rgba(0,212,255,0.5);} .ec-st.cur .n{background:linear-gradient(135deg,var(--blue),var(--cyan));color:#020610;}
+.ec-st b{display:block;font-size:14px;} .ec-st small{font-size:12.5px;color:var(--dim);}
+.ec-st button{border:0;border-radius:10px;padding:9px 12px;font-family:'Orbitron',sans-serif;font-size:9px;font-weight:700;letter-spacing:1px;cursor:pointer;background:linear-gradient(135deg,var(--blue),var(--cyan));color:#020610;}
+.ec-prog{height:8px;border-radius:99px;background:rgba(255,255,255,0.07);overflow:hidden;margin:6px 0 14px;}
+.ec-prog i{display:block;height:100%;background:linear-gradient(90deg,var(--blue),var(--cyan));transition:width .5s;}
+.ec-toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:#0a1428;border:1px solid rgba(0,255,136,0.5);padding:12px 16px;border-radius:12px;font-weight:700;font-size:14px;z-index:9000;box-shadow:0 10px 30px rgba(0,0,0,.5);}
+@media(max-width:600px){.ec-st{grid-template-columns:40px 1fr;}.ec-st button{grid-column:1/-1;}}
+</style>
+</head>
+<body>
+<div class="bg-grid"></div>
+<button class="hamburger" onclick="toggleSidebar()" id="hamburger-btn">
+  <span></span><span></span><span></span>
+</button>
+
+<div class="sidebar-overlay" id="sidebar-overlay" onclick="closeSidebar()"></div>
+<aside class="sidebar">
+  <div class="sidebar-logo"><div class="sidebar-logo-text">DHA</div><div class="sidebar-logo-sub">DIGITAL HUSTLER ACADEMY</div></div>
+  <div class="sidebar-section">COPY</div>
+  <a class="nav-item active" href="dha-espace-copy.html"><span class="nav-icon">📡</span> Espace Copy</a>
+  <a class="nav-item" href="#suivi"><span class="nav-icon">📊</span> Mon suivi</a>
+  <a class="nav-item" href="#tutos"><span class="nav-icon">🎥</span> Tutos</a>
+  <div class="sidebar-section">FORMATION</div>
+  <a class="nav-item" href="#formation" style="opacity:.6"><span class="nav-icon">📈</span> Formation Trading <span style="margin-left:auto;font-size:11px">🔒</span></a>
+  <div class="sidebar-bottom">
+    <div class="sidebar-member">
+      <div class="sidebar-avatar" id="sb-avatar">📡</div>
+      <div><div class="sidebar-member-name" id="sb-pseudo">HUSTLER</div><div class="sidebar-member-rang">ABONNÉ COPY</div></div>
+    </div>
+    <a href="#" onclick="DHA.logout&&DHA.logout();localStorage.removeItem('dha_member');location.href='dha-connexion.html';return false;" style="display:block;margin-top:14px;font-family:Orbitron,sans-serif;font-size:9px;letter-spacing:1px;color:var(--red);text-decoration:none">DÉCONNEXION</a>
+  </div>
+</aside>
+<main class="main">
+  <div class="topbar">
+    <div><div class="topbar-title">ESPACE <span>COPY</span></div><div style="font-size:12px;color:var(--dim);margin-top:2px;">Ton accès au canal de signaux</div></div>
+  </div>
+
+  <div class="header-card ec-hello">
+    <div class="header-glow"></div>
+    <div><div class="header-tag">📡 ABONNÉ COPY</div><div class="header-title" id="ec-hi">Salut 👋</div><div class="header-desc" id="ec-since">Bienvenue dans ton espace.</div></div>
+    <div class="ec-pills" id="ec-abo"></div>
+  </div>
+
+  <div id="ec-activation"></div>
+  <div id="ec-canal"></div>
+
+  <div class="ec-grid">
+    <div>
+      <div class="ec-card" id="suivi" style="scroll-margin-top:80px">
+        <div class="ec-h"><div><div class="header-tag" style="margin:0 0 4px">📊 MON SUIVI</div><div class="ec-ht">TES RÉSULTATS, SEMAINE PAR SEMAINE</div></div><span class="ec-pill g" id="ec-tot">—</span></div>
+        <svg class="ec-chart" id="ec-chart" viewBox="0 0 420 170" role="img" aria-label="Courbe de tes résultats cumulés"></svg>
+        <div class="ec-decl">
+          <div><label for="ec-res">Ton résultat de cette semaine (€)</label><input class="ec-in" id="ec-res" type="number" inputmode="decimal" step="1" placeholder="ex. 95 ou -40"></div>
+          <button class="ct-btn ec-btn" id="ec-decl" type="button" style="margin-top:0">DÉCLARER</button>
+        </div>
+        <label class="ec-up" for="ec-cap"><input id="ec-cap" type="file" accept="image/*">📸 <span id="ec-cap-t">Ajoute une capture MT5 (optionnel), ça m'aide à vérifier</span></label>
+        <div class="ec-hist" id="ec-hist"></div>
+      </div>
+      <div class="ct-warn">⚠️ Les signaux sont partagés à but pédagogique, ce n'est pas un conseil en investissement. Le trading comporte un risque élevé de perte en capital : 1 % de risque max par trade et n'investis que ce que tu peux te permettre de perdre.</div>
+    </div>
+    <div>
+      <div class="ec-card" id="tutos" style="scroll-margin-top:80px">
+        <div class="header-tag">🎥 TUTOS</div>
+        <div class="ec-tuto">
+          <details><summary>Créer son compte + vérification <span>1 MIN 48</span></summary><video controls playsinline preload="none" poster="videos/vantage-1-compte.jpg"><source src="videos/vantage-1-compte.mp4" type="video/mp4"></video></details>
+          <details><summary>Ouvrir son compte MT5 <span>48 S</span></summary><video controls playsinline preload="none" poster="videos/vantage-2-mt5.jpg"><source src="videos/vantage-2-mt5.mp4" type="video/mp4"></video></details>
+          <details><summary>Activer la promotion <span>1 MIN 10</span></summary><video controls playsinline preload="none" poster="videos/vantage-3-promotion.jpg"><source src="videos/vantage-3-promotion.mp4" type="video/mp4"></video></details>
+          <details><summary>Connecter son compte à MT5 <span>1 MIN 33</span></summary><video controls playsinline preload="none" poster="videos/vantage-4-connexion.jpg"><source src="videos/vantage-4-connexion.mp4" type="video/mp4"></video></details>
+        </div>
+      </div>
+      <div class="ec-card ec-up2" id="formation" style="scroll-margin-top:80px">
+        <div class="header-tag" style="color:var(--gold)">🚀 VA PLUS LOIN</div>
+        <div class="ec-ht">APPRENDS À PRENDRE TES PROPRES TRADES</div>
+        <div class="ec-locks"><span>🔒 17 modules</span><span>🔒 Lives 2×/sem</span><span>🔒 Groupe</span><span>🔒 Carte joueur</span></div>
+        <div class="ct-p">Avec l'accompagnement en groupe, le copy trading est <b>inclus</b> : tu arrêtes de payer le canal à part.</div>
+        <a class="ct-btn gold" href="dha-candidature.html?src=copy">🎓 JE VEUX LA FORMATION</a>
+      </div>
+    </div>
+  </div>
+</main>
+<div class="ec-toast" id="ec-toast" hidden></div>
+<script>
+var WA='https://wa.me/qr/OCPS7DRIVP76L1', D=null, capData=null;
+function esc(t){return String(t==null?'':t).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+function okUrl(u){return /^https:\/\//.test(u||'');}
+var tt;function toast(m){var e=document.getElementById('ec-toast');e.textContent=m;e.hidden=false;clearTimeout(tt);tt=setTimeout(function(){e.hidden=true;},2600);}
+function dateFr(d){try{return new Date(d).toLocaleDateString('fr-FR',{day:'numeric',month:'short'});}catch(e){return d;}}
+var ETAPES=[['Ouvre ton compte Vantage','Avec mon lien + vérifie ton identité · 🎥 tuto 1'],['Active la promotion','Avant ton dépôt · 🎥 tuto 3'],['Fais ton dépôt','Uniquement de l\'argent dont tu n\'as pas besoin'],['Connecte MT5','Avec les identifiants reçus par mail · 🎥 tuto 4'],['Envoie ta preuve','Une capture de ton compte Vantage']];
+function rendreAbo(){
+  var a=D.abo||{}, h='';
+  if(a.statut==='actif') h='<span class="ec-pill g">● Abonnement actif</span>'+(a.prochain?'<span class="ec-pill n">Prochain prélèvement : '+esc(dateFr(a.prochain))+' · 30 €</span>':'');
+  else if(a.statut==='echec') h='<span class="ec-pill r">Paiement échoué</span><a class="ec-pill y" href="'+(okUrl(a.lien)?esc(a.lien):WA)+'" target="_blank" rel="noopener" style="text-decoration:none">Mettre à jour ma carte</a>';
+  else h='<span class="ec-pill y">Abonnement à activer</span>';
+  document.getElementById('ec-abo').innerHTML=h;
+}
+function rendreActivation(){
+  var box=document.getElementById('ec-activation'), can=document.getElementById('ec-canal');
+  if(D.acces){ box.innerHTML='';
+    var cx=(D.canaux&&D.canaux.length)?D.canaux:[{nom:D.canal_nom||'Canal DHA Signaux',lien:D.canal_lien,desc:''}];
+    can.innerHTML='<div class="ec-canal" style="display:block"><div class="header-tag">✅ TES ACCÈS · '+cx.length+' CANA'+(cx.length>1?'UX':'L')+' TELEGRAM</div><div class="header-desc" style="margin-bottom:14px">Rejoins chaque canal et active les notifications pour ne rater aucun trade.</div><div class="ec-cx">'
+      +cx.map(function(c){ return '<div class="ec-c"><div><b>'+esc(c.nom)+'</b>'+(c.desc?'<small>'+esc(c.desc)+'</small>':'')+'</div>'+(okUrl(c.lien)?'<a class="ct-btn" style="margin-top:0" href="'+esc(c.lien)+'" target="_blank" rel="noopener">📡 REJOINDRE</a>':'<span class="ec-pill y">Bientôt</span>')+'</div>'; }).join('')+'</div></div>';
+    return; }
+  can.innerHTML='';
+  var n=Math.min(D.etapes||0,5), h='<div class="ec-card"><div class="ec-h"><div><div class="header-tag" style="margin:0 0 4px">🔓 ACTIVATION</div><div class="ec-ht">ENCORE QUELQUES ÉTAPES AVANT LE CANAL</div></div><span class="ec-pill n">'+n+' / 5</span></div><div class="ec-prog"><i style="width:'+(n/5*100)+'%"></i></div>'
+   +'<div class="ct-must" style="margin:0 0 14px">🔑 <b>Inscris-toi chez Vantage uniquement avec mon lien.</b> Sinon je ne vois pas ton compte et tu n\'auras pas accès au canal.</div><div class="ec-chk">';
+  ETAPES.forEach(function(e,i){ var c=i<n?'ok':(i===n?'cur':''); var b='';
+    if(i===n){ if(i===0) b='<a class="ct-btn" style="margin:0" href="'+(okUrl(D.lien_vantage)?esc(D.lien_vantage):WA)+'" target="_blank" rel="noopener" data-et="0">OUVRIR VANTAGE</a>';
+      else if(i===4) b=D.preuve==='attente'?'<span class="ec-pill y">⏳ En vérification</span>':'<label class="ct-btn" style="margin:0;cursor:pointer">ENVOYER<input type="file" accept="image/*" id="ec-preuve" style="position:absolute;opacity:0;width:1px;height:1px"></label>';
+      else b='<button type="button" data-et="'+i+'">C\'EST FAIT</button>'; }
+    h+='<div class="ec-st '+c+'"><div class="n">'+(i<n?'✓':i+1)+'</div><div><b>'+ETAPES[i][0]+'</b><small>'+ETAPES[i][1]+'</small></div><div>'+b+'</div></div>'; });
+  h+='</div>'+(D.preuve==='refuse'?'<div class="ct-p" style="margin-top:12px;color:var(--red)">❌ Ta dernière preuve n\'a pas été validée (compte pas ouvert avec mon lien ou dépôt pas visible). Renvoie une capture claire, ou écris-moi.</div>':'')+(D.preuve==='attente'?'<div class="ct-p" style="margin-top:12px">⏳ Ta preuve est envoyée. Je vérifie ton compte et je t\'active l\'accès au canal sous 24 h.</div>':'')+'</div>';
+  box.innerHTML=h;
+  box.querySelectorAll('[data-et]').forEach(function(b){ b.addEventListener('click',function(){ var i=+b.dataset.et; setTimeout(function(){ etape(i+1); }, i===0?600:0); }); });
+  var f=document.getElementById('ec-preuve'); if(f) f.onchange=function(){ lireImage(f.files[0],function(d){ envoyerPreuve(d); }); };
+}
+async function etape(n){ D.etapes=Math.max(D.etapes||0,n); rendreActivation(); try{ await DHA.rpc('dha_copy_etape',{p_token:await DHA.token(),p_etape:n}); }catch(e){} }
+async function envoyerPreuve(img){ try{ var r=await DHA.rpc('dha_copy_preuve',{p_token:await DHA.token(),p_image:img}); if(r&&r.ok){ D.preuve='attente'; D.etapes=5; rendreActivation(); toast('✅ Preuve envoyée'); return; } }catch(e){} toast('Envoi impossible, réessaie'); }
+function lireImage(file,cb){ if(!file) return; var r=new FileReader(); r.onload=function(){ var im=new Image(); im.onload=function(){ var s=Math.min(1,1280/Math.max(im.width,im.height)), c=document.createElement('canvas'); c.width=Math.round(im.width*s); c.height=Math.round(im.height*s); c.getContext('2d').drawImage(im,0,0,c.width,c.height); cb(c.toDataURL('image/jpeg',0.8)); }; im.src=r.result; }; r.readAsDataURL(file); }
+function rendreSuivi(){
+  var L=(D.resultats||[]).slice().sort(function(a,b){return a.semaine<b.semaine?-1:1;}), svg=document.getElementById('ec-chart');
+  var cum=[],s=0; L.forEach(function(r){ s+=Number(r.montant)||0; cum.push(s); });
+  document.getElementById('ec-tot').textContent=L.length?((s>=0?'+':'')+s.toLocaleString('fr-FR')+' € depuis le début'):'Aucun résultat déclaré';
+  document.getElementById('ec-tot').className='ec-pill '+(s<0?'r':'g');
+  if(L.length<2){ svg.innerHTML='<text x="210" y="90" text-anchor="middle" style="font-size:13px">Déclare ton premier résultat pour voir ta courbe</text>'; }
+  else{
+    var min=Math.min(0,Math.min.apply(null,cum)), max=Math.max(0,Math.max.apply(null,cum)), Lx=40,R=410,T=12,B=146;
+    function y(v){return B-(v-min)/((max-min)||1)*(B-T);} function x(i){return Lx+i*(R-Lx)/(cum.length-1);}
+    var g='', ticks=[min,0,max].filter(function(v,i,a){return a.indexOf(v)===i;});
+    ticks.forEach(function(v){ g+='<line x1="'+Lx+'" x2="'+R+'" y1="'+y(v)+'" y2="'+y(v)+'" stroke="rgba(140,170,255,0.12)"/><text x="'+(Lx-6)+'" y="'+(y(v)+3)+'" text-anchor="end">'+Math.round(v)+' €</text>'; });
+    var p=cum.map(function(v,i){return (i?'L':'M')+x(i).toFixed(1)+' '+y(v).toFixed(1);}).join(' ');
+    var lab=''; L.forEach(function(r,i){ if(i===0||i===L.length-1||(L.length<=8)) lab+='<text x="'+x(i)+'" y="164" text-anchor="middle">'+esc(dateFr(r.semaine))+'</text>'; });
+    var k=cum.length-1;
+    svg.innerHTML='<defs><linearGradient id="ecg" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#00D4FF" stop-opacity=".35"/><stop offset="1" stop-color="#00D4FF" stop-opacity="0"/></linearGradient></defs>'+g+'<path d="'+p+' L'+x(k)+' '+y(min)+' L'+x(0)+' '+y(min)+' Z" fill="url(#ecg)"/><path d="'+p+'" fill="none" stroke="#00D4FF" stroke-width="2.5" stroke-linejoin="round"/><circle cx="'+x(k)+'" cy="'+y(cum[k])+'" r="5" fill="#00FF88" stroke="#050914" stroke-width="2"/>'+lab;
+  }
+  document.getElementById('ec-hist').innerHTML=L.slice(-4).reverse().map(function(r){ var m=Number(r.montant)||0; return '<div class="ec-row"><span>Semaine du '+esc(dateFr(r.semaine))+(r.capture?' · 📸':'')+'</span><b class="'+(m<0?'m':'p')+'">'+(m>=0?'+':'')+m.toLocaleString('fr-FR')+' €</b></div>'; }).join('');
+}
+document.getElementById('ec-cap').onchange=function(){ var f=this.files[0]; lireImage(f,function(d){ capData=d; document.getElementById('ec-cap-t').textContent='Capture ajoutée ✓ ('+f.name+')'; }); };
+document.getElementById('ec-decl').onclick=async function(){
+  var v=parseFloat(String(document.getElementById('ec-res').value).replace(',','.'));
+  if(isNaN(v)){ toast('Indique un montant, ex. 95 ou -40'); return; }
+  try{ var r=await DHA.rpc('dha_copy_resultat',{p_token:await DHA.token(),p_montant:v,p_capture:capData}); if(r&&r.ok){ D.resultats=r.resultats||D.resultats; rendreSuivi(); document.getElementById('ec-res').value=''; capData=null; document.getElementById('ec-cap-t').textContent='Ajoute une capture MT5 (optionnel), ça m\'aide à vérifier'; toast('Résultat déclaré : '+(v>=0?'+':'')+v+' €'); return; } }catch(e){}
+  toast('Envoi impossible, réessaie');
+};
+async function init(){
+  var stored=localStorage.getItem('dha_member'); if(!stored){location.href='dha-connexion.html';return;}
+  var m=JSON.parse(stored);
+  document.getElementById('sb-pseudo').textContent=('@'+(m.pseudo||'HUSTLER')).toUpperCase();
+  document.getElementById('ec-hi').textContent='Salut '+(m.prenom||m.pseudo||'')+' 👋';
+  try{ D=await DHA.rpc('dha_copy_espace',{p_token:await DHA.token()}); }catch(e){}
+  if(!D){ D={acces:false,etapes:0,resultats:[],abo:{}}; }
+  // Il est passé à la formation / l'accompagnement : toute la plateforme s'ouvre
+  if(D.pack && D.pack!=='copy'){ try{ m.pack=D.pack; localStorage.setItem('dha_member',JSON.stringify(m)); }catch(e){} location.replace('dha-dashboard.html'); return; }
+  if(D.depuis) document.getElementById('ec-since').textContent='Abonné Copy depuis le '+dateFr(D.depuis);
+  rendreAbo(); rendreActivation(); rendreSuivi();
+}
+init();
+function toggleSidebar(){document.querySelector('.sidebar').classList.toggle('open');document.getElementById('sidebar-overlay').classList.toggle('show');}
+function closeSidebar(){document.querySelector('.sidebar').classList.remove('open');document.getElementById('sidebar-overlay').classList.remove('show');}
+document.querySelectorAll('.nav-item').forEach(function(a){a.addEventListener('click',closeSidebar);});
+</script>
+<script src="dha-mobile-menu.js"></script>
+</body>
+</html>
