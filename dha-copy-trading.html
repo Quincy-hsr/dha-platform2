@@ -47,6 +47,25 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
 .ct-must{margin-top:12px;padding:12px 14px;border-radius:12px;background:rgba(255,215,0,0.08);border:1px solid rgba(255,215,0,0.45);color:#FFE9A8;font-size:13.5px;line-height:1.55}.ct-must b{color:#FFD700}
 .ct-warn{padding:14px 16px;border-radius:14px;border:1px solid rgba(255,140,0,0.4);background:rgba(255,140,0,0.07);font-size:13px;line-height:1.6;color:rgba(232,244,255,0.8);margin-bottom:22px;}
 .ct-steps{display:flex;flex-direction:column;gap:14px;}
+.cp-regles{margin:0 0 16px;padding:14px 16px;border-radius:14px;background:rgba(255,159,0,0.08);border:1px solid rgba(255,159,0,0.5);}.cp-rt{font-family:'Orbitron',sans-serif;font-size:11px;font-weight:700;letter-spacing:1.5px;color:#FFB347;margin-bottom:8px;}.cp-regles ol{margin:0;padding-left:20px;font-size:14px;line-height:1.65;color:rgba(232,244,255,0.85);}.cp-regles b{color:#FFD27A;}
+.ct-tabs{display:flex;gap:8px;padding:6px;border-radius:16px;background:var(--card);border:1px solid var(--border);margin-bottom:22px;}
+.ct-tab{flex:1;border:0;background:none;color:var(--dim);font-family:'Orbitron',sans-serif;font-size:11px;font-weight:700;letter-spacing:1px;padding:14px 10px;border-radius:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;}
+.ct-tab[aria-selected="true"]{background:linear-gradient(135deg,rgba(30,100,255,0.35),rgba(0,212,255,0.18));color:var(--white);box-shadow:inset 0 0 0 1px rgba(0,212,255,0.4);}
+.ct-tab:focus-visible{outline:2px solid var(--gold);outline-offset:2px;}
+.ta-dot{display:inline-block;width:8px;height:8px;border-radius:50%;}
+.ta-lock{text-align:center;padding:40px 22px;background:var(--card);border:1px solid rgba(255,215,0,0.35);border-radius:20px;}
+.ta-lock .ic{font-size:44px;margin-bottom:10px;}
+.ta-lock h2{font-family:'Orbitron',sans-serif;font-size:17px;letter-spacing:1.5px;margin-bottom:10px;}
+.ta-card{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:22px;margin-bottom:20px;}
+.ta-ok{background:linear-gradient(135deg,rgba(0,255,136,0.1),rgba(0,212,255,0.05));border-color:rgba(0,255,136,0.35);}
+.ta-cx{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;}
+@media(max-width:700px){.ta-cx{grid-template-columns:1fr;}.ct-tab{font-size:10px;padding:12px 6px;}}
+.ta-c{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 16px;border-radius:14px;background:rgba(5,9,20,0.55);border:1px solid rgba(0,255,136,0.25);}
+.ta-c b{font-family:'Orbitron',sans-serif;font-size:12px;letter-spacing:1px;}
+.ta-chart{width:100%;height:auto;display:block;margin:6px 0 14px;}
+.ta-chart text{fill:rgba(232,244,255,0.4);font:600 10px 'Exo 2',sans-serif;}
+.ta-in{width:100%;padding:12px 14px;border-radius:12px;border:1px solid rgba(30,100,255,0.3);background:rgba(255,255,255,0.03);color:var(--white);font:600 15px 'Exo 2',sans-serif;}
+.ta-row{display:flex;justify-content:space-between;font-size:13px;padding:8px 12px;border-radius:10px;background:rgba(255,255,255,0.03);margin-top:6px;font-variant-numeric:tabular-nums;}
 .ct-step{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:20px;display:grid;grid-template-columns:44px 1fr;gap:16px;}
 .ct-num{width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,var(--blue),var(--cyan));display:flex;align-items:center;justify-content:center;font-family:'Orbitron',sans-serif;font-weight:900;color:#020610;font-size:16px;}
 .ct-step.lock .ct-num{background:rgba(255,215,0,0.15);color:#FFD700;border:1px solid rgba(255,215,0,0.5);}
@@ -147,6 +166,11 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
   <div class="topbar">
     <div><div class="topbar-title">COPY <span>TRADING</span></div><div style="font-size:12px;color:var(--dim);margin-top:2px;">Le canal de signaux, étape par étape</div></div>
   </div>
+  <div class="ct-tabs" role="tablist" aria-label="Copy trading">
+    <button type="button" class="ct-tab" role="tab" id="tab-compte" aria-controls="pane-compte" data-p="compte">🧭 OUVRIR MON COMPTE</button>
+    <button type="button" class="ct-tab" role="tab" id="tab-acces" aria-controls="pane-acces" data-p="acces">🔑 TES ACCÈS <span id="tab-acces-b"></span></button>
+  </div>
+  <div id="pane-compte" role="tabpanel" aria-labelledby="tab-compte">
   <div class="header-card">
     <div class="header-glow"></div>
     <div class="header-tag">📡 CANAL DE SIGNAUX</div>
@@ -182,7 +206,12 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
       <ol class="ct-list"><li>Ouvre MetaTrader 5 (module 8) et cherche la paire.</li><li><b>Calcule ta taille de lot</b> pour risquer 1 % de ton capital maximum (module 9).</li><li>Place l'ordre avec <b>exactement</b> l'entrée, le Stop Loss et le Take Profit du signal.</li><li>Si le prix est déjà loin de l'entrée, <b>ne cours pas après</b> : tu attends le suivant.</li><li>Note le trade dans ton journal (module 12).</li></ol>
 </div></div>
     <div class="ct-step"><div class="ct-num">9</div><div><div class="ct-t">LES RÈGLES DU CANAL</div>
+      <div class="cp-regles" role="note"><div class="cp-rt">⚠️ 3 RÈGLES TRÈS FORTEMENT RECOMMANDÉES</div><ol><li><b>Commence sur un compte démo</b> pour apprendre à bien trader avec les signaux, avant de passer en réel.</li><li><b>Choisis un seul canal à suivre</b> dans la journée, pas plusieurs en même temps.</li><li><b>Risque des lots de 0.01 au début</b> pour limiter le risque et t'habituer au copy trading.</li></ol></div>
       <ul class="ct-list" style="margin-top:0"><li><b>Jamais plus de 1 %</b> de risque par trade, même si tu es sûr de toi.</li><li><b>Toujours un Stop Loss</b>, placé dès l'ouverture.</li><li>Tu restes <b>seul responsable</b> de tes trades : le signal t'aide, il ne décide pas pour toi.</li><li>Les pertes font partie du jeu : pas de revenge trading, pas de lot doublé pour « se refaire ».</li><li>Une question ? Pose-la pendant le live du mardi.</li></ul></div></div>
+  </div>
+  </div>
+  <div id="pane-acces" role="tabpanel" aria-labelledby="tab-acces" hidden>
+    <div id="ta-box"><div class="ct-p">Chargement…</div></div>
   </div>
 </main>
 <script>
@@ -213,8 +242,7 @@ function rendre(c,member){
   if(c.acces){
     box.classList.remove('lock');
     var cx=(c.canaux&&c.canaux.length)?c.canaux:(c.canal_lien?[{nom:c.canal_nom||'Canal',lien:c.canal_lien}]:[]);
-    box.innerHTML='<div class="ct-num">✓</div><div><div class="ct-t">REJOINS LES CANAUX</div><div class="ct-p">✅ <b>Ton accès est activé.</b> Rejoins '+(cx.length>1?'chaque canal':'le canal')+' : les signaux arrivent là-bas.</div>'
-      +(cx.length?'<div style="display:flex;flex-direction:column;gap:8px;margin-top:12px">'+cx.map(function(k){ return '<div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;padding:10px 12px;border-radius:12px;border:1px solid rgba(0,255,136,0.25);background:rgba(0,255,136,0.04)"><b style="font-family:Orbitron,sans-serif;font-size:12px;letter-spacing:1px">'+esc(k.nom)+'</b>'+(okUrl(k.lien)?'<a class="ct-btn" style="margin-top:0" href="'+esc(k.lien)+'" target="_blank" rel="noopener">📡 REJOINDRE</a>':'<span style="font-size:12px;color:var(--gold)">Lien bientôt ici</span>')+'</div>'; }).join('')+'</div>':'<a class="ct-btn wa" href="'+WA+'" target="_blank" rel="noopener">💬 DEMANDER LE LIEN À QUINCY</a>')+'</div>';
+    box.innerHTML='<div class="ct-num">✓</div><div><div class="ct-t">REJOINS LES CANAUX</div><div class="ct-p">✅ <b>Ton accès est activé.</b> Tes canaux, les règles et ton suivi sont dans l\'onglet <b>Tes accès</b>.</div><a class="ct-btn" href="#acces">🔑 VOIR TES ACCÈS</a></div>';
     return;
   }
   box.classList.add('lock');
@@ -239,10 +267,67 @@ async function init(){
   try{ var c=await DHA.rpc('dha_copy',{p_token:await DHA.token()}); var me=null; try{me=await DHA.me();}catch(e){} rendre(c,me||member); }catch(e){}
 }
 init();
+
+/* ── Onglet « Tes accès » ── */
+var TA=null;
+function ouvrir(p){ if(p!=='acces') p='compte';
+  ['compte','acces'].forEach(function(x){ document.getElementById('pane-'+x).hidden = x!==p; document.getElementById('tab-'+x).setAttribute('aria-selected', x===p?'true':'false'); });
+  if(p==='acces') rendreAcces(); }
+document.querySelectorAll('.ct-tab').forEach(function(t){ t.addEventListener('click',function(){ history.replaceState(null,'','#'+t.dataset.p); ouvrir(t.dataset.p); window.scrollTo(0,0); }); });
+window.addEventListener('hashchange',function(){ ouvrir(location.hash.slice(1)); });
+function dateFr(d){ try{ return new Date(d).toLocaleDateString('fr-FR',{day:'numeric',month:'short'}); }catch(e){ return d; } }
+var REGLES='<div class="cp-regles" role="note"><div class="cp-rt">⚠️ 3 RÈGLES TRÈS FORTEMENT RECOMMANDÉES</div><ol><li><b>Commence sur un compte démo</b> pour apprendre à bien trader avec les signaux, avant de passer en réel.</li><li><b>Choisis un seul canal à suivre</b> dans la journée, pas plusieurs en même temps.</li><li><b>Risque des lots de 0.01 au début</b> pour limiter le risque et t\'habituer au copy trading.</li></ol></div>';
+function badgeAcces(){ var b=document.getElementById('tab-acces-b'); if(!b||!TA) return; b.innerHTML=(TA.acces&&!TA.uid)?'<span style="background:var(--green);color:#03150D;border-radius:99px;padding:2px 7px;font-size:9px">NOUVEAU</span>':'<i class="ta-dot" style="background:'+(TA.acces?'var(--green)':'var(--gold)')+'"></i>'; }
+function rendreAcces(){
+  var box=document.getElementById('ta-box'); if(!TA){ box.innerHTML='<div class="ct-p">Chargement…</div>'; return; }
+  if(!TA.acces){
+    var etat = TA.preuve==='attente' ? '⏳ <b>Ta preuve est en cours de vérification.</b> Dès que je la valide, tes canaux apparaissent ici.'
+      : TA.preuve==='refuse' ? '❌ <b>Ta dernière preuve n\'a pas été validée.</b> Renvoie une capture claire à l\'étape 6.'
+      : 'Termine les étapes de l\'onglet <b>Ouvrir mon compte</b>, puis envoie ta preuve à l\'étape 6.';
+    box.innerHTML='<div class="ta-lock"><div class="ic">🔒</div><h2>ACCÈS PAS ENCORE AUTORISÉ</h2><div class="ct-p" style="max-width:460px;margin:0 auto 18px">'+etat+'</div><button type="button" class="ct-btn" id="ta-go">🧭 OUVRIR MON COMPTE</button></div>'
+      +'<div class="ta-card" style="margin-top:20px">'+REGLES.replace('margin:0 0 16px','margin:0')+'</div>';
+    document.getElementById('ta-go').onclick=function(){ history.replaceState(null,'','#compte'); ouvrir('compte'); window.scrollTo(0,0); };
+    return;
+  }
+  if(!TA.uid){
+    box.innerHTML='<div class="ta-lock" style="border-color:rgba(0,255,136,0.4)"><div class="ic">✅</div><h2>TON ACCÈS EST VALIDÉ</h2><div class="ct-p" style="max-width:460px;margin:0 auto 18px">Il te reste juste à indiquer ton <b>numéro UID Vantage</b> pour débloquer tes canaux.</div><button type="button" class="ct-btn" id="ta-uid">🔑 INDIQUER MON UID</button></div>';
+    var go=function(){ if(window.DHACopyUid) DHACopyUid.ouvrir(function(){ chargerAcces(); }); };
+    document.getElementById('ta-uid').onclick=go;
+    if(!window.__taCine){ window.__taCine=true; go(); }
+    return;
+  }
+  var cx=TA.canaux||[];
+  box.innerHTML='<div class="ta-card ta-ok"><div class="header-tag" style="color:var(--green)">✅ TES ACCÈS · '+cx.length+' CANA'+(cx.length>1?'UX':'L')+' TELEGRAM</div><div class="ct-p" style="margin-bottom:14px">Rejoins le canal que tu veux suivre et active les notifications pour ne rater aucun trade.</div>'+REGLES
+    +'<div class="ta-cx">'+cx.map(function(k){ return '<div class="ta-c"><b>'+esc(k.nom)+'</b>'+(okUrl(k.lien)?'<a class="ct-btn" style="margin-top:0" href="'+esc(k.lien)+'" target="_blank" rel="noopener">📡 REJOINDRE</a>':'<span style="font-size:12px;color:var(--gold)">Bientôt</span>')+'</div>'; }).join('')+'</div></div>'
+    +'<div class="ta-card"><div class="header-tag">📊 MON SUIVI</div><div class="ct-t">TES RÉSULTATS, SEMAINE PAR SEMAINE <span id="ta-tot" style="float:right;color:var(--green)"></span></div><svg class="ta-chart" id="ta-chart" viewBox="0 0 420 170" role="img" aria-label="Courbe de tes résultats cumulés"></svg>'
+    +'<div style="display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end"><div style="flex:1;min-width:150px"><label for="ta-res" style="display:block;font-size:12px;color:var(--dim);margin-bottom:6px">Ton résultat de cette semaine (€)</label><input class="ta-in" id="ta-res" type="number" inputmode="decimal" step="1" placeholder="ex. 95 ou -40"></div><button type="button" class="ct-btn" id="ta-decl" style="margin-top:0;border:0;cursor:pointer">DÉCLARER</button></div><div id="ta-msg" class="ct-p" style="margin-top:8px"></div><div id="ta-hist"></div></div>';
+  suivi();
+  document.getElementById('ta-decl').onclick=async function(){
+    var v=parseFloat(String(document.getElementById('ta-res').value).replace(',','.')), msg=document.getElementById('ta-msg');
+    if(isNaN(v)){ msg.textContent='Indique un montant, ex. 95 ou -40.'; return; }
+    try{ var r=await DHA.rpc('dha_copy_resultat',{p_token:await DHA.token(),p_montant:v,p_capture:null}); if(r&&r.ok){ TA.resultats=r.resultats; suivi(); document.getElementById('ta-res').value=''; msg.textContent='✅ Résultat déclaré : '+(v>=0?'+':'')+v+' €'; return; } }catch(e){}
+    msg.textContent='Envoi impossible, réessaie.';
+  };
+}
+function suivi(){
+  var L=(TA.resultats||[]).slice().sort(function(a,b){return a.semaine<b.semaine?-1:1;}), svg=document.getElementById('ta-chart'); if(!svg) return;
+  var cum=[],s=0; L.forEach(function(r){ s+=Number(r.montant)||0; cum.push(s); });
+  document.getElementById('ta-tot').textContent=L.length?((s>=0?'+':'')+s.toLocaleString('fr-FR')+' €'):'';
+  if(L.length<2){ svg.innerHTML='<text x="210" y="90" text-anchor="middle" style="font-size:13px">Déclare tes résultats chaque semaine pour voir ta courbe</text>'; }
+  else{ var min=Math.min(0,Math.min.apply(null,cum)), max=Math.max(0,Math.max.apply(null,cum)), Lx=40,R=410,T=12,B=146;
+    function y(v){return B-(v-min)/((max-min)||1)*(B-T);} function x(i){return Lx+i*(R-Lx)/(cum.length-1);}
+    var g=''; [min,0,max].filter(function(v,i,a){return a.indexOf(v)===i;}).forEach(function(v){ g+='<line x1="'+Lx+'" x2="'+R+'" y1="'+y(v)+'" y2="'+y(v)+'" stroke="rgba(140,170,255,0.12)"/><text x="'+(Lx-6)+'" y="'+(y(v)+3)+'" text-anchor="end">'+Math.round(v)+' €</text>'; });
+    var p=cum.map(function(v,i){return (i?'L':'M')+x(i).toFixed(1)+' '+y(v).toFixed(1);}).join(' '), k=cum.length-1;
+    svg.innerHTML='<defs><linearGradient id="tag" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#00D4FF" stop-opacity=".35"/><stop offset="1" stop-color="#00D4FF" stop-opacity="0"/></linearGradient></defs>'+g+'<path d="'+p+' L'+x(k)+' '+y(min)+' L'+x(0)+' '+y(min)+' Z" fill="url(#tag)"/><path d="'+p+'" fill="none" stroke="#00D4FF" stroke-width="2.5"/><circle cx="'+x(k)+'" cy="'+y(cum[k])+'" r="5" fill="#00FF88" stroke="#050914" stroke-width="2"/><text x="'+x(0)+'" y="164" text-anchor="middle">'+esc(dateFr(L[0].semaine))+'</text><text x="'+x(k)+'" y="164" text-anchor="end">'+esc(dateFr(L[k].semaine))+'</text>'; }
+  document.getElementById('ta-hist').innerHTML=L.slice(-4).reverse().map(function(r){ var m=Number(r.montant)||0; return '<div class="ta-row"><span>Semaine du '+esc(dateFr(r.semaine))+'</span><b style="color:'+(m<0?'var(--red)':'var(--green)')+'">'+(m>=0?'+':'')+m.toLocaleString('fr-FR')+' €</b></div>'; }).join('');
+}
+async function chargerAcces(){ try{ TA=await DHA.rpc('dha_copy_espace',{p_token:await DHA.token()}); }catch(e){} if(!TA) TA={acces:false,preuve:'',canaux:[],resultats:[]}; badgeAcces(); if(!document.getElementById('pane-acces').hidden) rendreAcces(); }
+ouvrir(location.hash.slice(1)); chargerAcces();
 function toggleSidebar(){document.querySelector('.sidebar').classList.toggle('open');document.getElementById('sidebar-overlay').classList.toggle('show');}
 function closeSidebar(){document.querySelector('.sidebar').classList.remove('open');document.getElementById('sidebar-overlay').classList.remove('show');}
 document.querySelectorAll('.nav-item').forEach(function(a){a.addEventListener('click',closeSidebar);});
 </script>
+<script src="dha-copy-uid.js"></script>
 <script src="dha-mobile-menu.js"></script>
 <script src="dha-signaler.js"></script>
 <script src="dha-forfait.js"></script>
