@@ -418,6 +418,26 @@ body {
   box-shadow:0 8px 60px rgba(0,212,255,0.15);
   animation:fadeup .35s ease;overflow:hidden;
 }
+.pdp-pick{position:relative;display:flex;align-items:center;gap:14px;padding:12px 14px;border-radius:14px;border:1px dashed rgba(0,212,255,0.4);background:rgba(0,212,255,0.04);cursor:pointer;}
+.pdp-pick:focus-within{outline:2px solid #FFD700;outline-offset:2px;}
+.pdp-rond{flex-shrink:0;width:64px;height:64px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px;background:linear-gradient(135deg,rgba(30,100,255,0.35),rgba(0,212,255,0.25));border:2px solid rgba(0,212,255,0.5);background-size:cover;background-position:center;}
+.pdp-pick b{display:block;font-size:14px;color:var(--white,#E8F4FF);}
+.pdp-pick small{display:block;font-size:12px;color:rgba(232,244,255,0.55);line-height:1.4;margin-top:2px;}
+.pdp-ov{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px;background:rgba(2,5,14,0.88);backdrop-filter:blur(6px);}
+.pdp-ov[hidden]{display:none;}
+.pdp-box{width:min(360px,100%);background:#0a1226;border:1px solid rgba(0,212,255,0.35);border-radius:20px;padding:22px;text-align:center;display:flex;flex-direction:column;gap:14px;}
+.pdp-t{font-family:'Orbitron',sans-serif;font-size:13px;letter-spacing:2px;color:#E8F4FF;}
+.pdp-view{position:relative;width:260px;max-width:100%;aspect-ratio:1;margin:0 auto;border-radius:50%;overflow:hidden;box-shadow:0 0 0 3px rgba(0,212,255,0.6),0 0 30px rgba(0,212,255,0.25);}
+.pdp-view canvas{display:block;width:100%;height:100%;touch-action:none;cursor:grab;}
+.pdp-view canvas:active{cursor:grabbing;}
+.pdp-help{font-size:12.5px;color:rgba(232,244,255,0.6);line-height:1.45;}
+.pdp-zoom{display:flex;align-items:center;gap:10px;color:#00D4FF;font-weight:700;}
+.pdp-zoom input{flex:1;accent-color:#00D4FF;}
+.pdp-acts{display:flex;gap:10px;}
+.pdp-acts button{flex:1;padding:13px;border-radius:12px;border:0;cursor:pointer;font-weight:800;font-size:13px;}
+.pdp-b1{background:linear-gradient(135deg,#1E64FF,#00D4FF);color:#020610;font-family:'Orbitron',sans-serif;letter-spacing:1px;font-size:11px!important;}
+.pdp-b2{background:rgba(255,255,255,0.06);color:#E8F4FF;}
+.pdp-acts button:focus-visible,.pdp-zoom input:focus-visible{outline:2px solid #FFD700;outline-offset:2px;}
 .onboarding-step { display:none; }
 .onboarding-step.active { display:block; }
 
@@ -549,6 +569,15 @@ body {
   <div style="font-family:'Orbitron',sans-serif;font-size:16px;font-weight:900;color:var(--white);" id="parrain-pseudo">---</div>
   <div style="font-size:11px;color:var(--dim);margin-top:4px;">Bienvenue dans la DHA ! 🔥</div>
 </div>
+
+      <div class="form-group pdp-group" style="margin-bottom:14px">
+        <label class="form-label" for="pdp-input">PHOTO DE PROFIL <span style="opacity:.6">(OPTIONNEL)</span></label>
+        <label class="pdp-pick" for="pdp-input">
+          <span class="pdp-rond" id="pdp-rond">📷</span>
+          <span><b id="pdp-txt">Ajoute ta photo</b><small>Elle s'affiche sur ta carte joueur et dans le classement. Tu pourras la changer plus tard.</small></span>
+          <input type="file" id="pdp-input" accept="image/*" style="position:absolute;opacity:0;width:1px;height:1px">
+        </label>
+      </div>
 
       <div class="form-grid">
         <div class="form-group" style="margin-bottom:0">
@@ -887,6 +916,8 @@ async function goStep3() {
     const ins = await DHA.rpc('dha_signup', { p: membre });
     if (!ins || !ins.token) throw new Error((ins && ins.erreur) || 'inscription');
     DHA.save(Object.assign({}, ins.membre, { token: ins.token }));
+    // Photo de profil choisie pendant l'inscription
+    if (window.__pdp) { try { const ra = await DHA.rpc('dha_set_avatar', { p_token: ins.token, p_avatar: window.__pdp }); if (ra !== null) DHA.save(Object.assign({}, ins.membre, { token: ins.token, avatar: window.__pdp })); } catch (e) {} }
     bar.style.width = '100%';
 
     // Commission du parrain : plus de calcul automatique, Quincy la valide dans l'admin (mensualité par mensualité)
@@ -1117,5 +1148,47 @@ document.addEventListener('DOMContentLoaded', () => {
   </div>
 </div>
 
+<div class="pdp-ov" id="pdp-ov" hidden role="dialog" aria-modal="true" aria-label="Ajuster ta photo">
+  <div class="pdp-box">
+    <b class="pdp-t">AJUSTE TA PHOTO</b>
+    <div class="pdp-view" id="pdp-view"><canvas id="pdp-cv" width="560" height="560"></canvas></div>
+    <small class="pdp-help">Fais glisser la photo pour la centrer, et utilise le curseur pour zoomer.</small>
+    <label class="pdp-zoom"><span>−</span><input type="range" id="pdp-z" min="1" max="4" step="0.01" value="1" aria-label="Zoom"><span>+</span></label>
+    <div class="pdp-acts"><button type="button" class="pdp-b2" id="pdp-cancel">Annuler</button><button type="button" class="pdp-b1" id="pdp-ok">VALIDER</button></div>
+  </div>
+</div>
+<script>
+(function(){
+  var inp=document.getElementById('pdp-input'); if(!inp) return;
+  var ov=document.getElementById('pdp-ov'), cv=document.getElementById('pdp-cv'), cx=cv.getContext('2d'), z=document.getElementById('pdp-z');
+  var im=null, S=cv.width, base=1, zoom=1, ox=0, oy=0;
+  function borner(){ var w=im.width*base*zoom, h=im.height*base*zoom; ox=Math.min(0,Math.max(S-w,ox)); oy=Math.min(0,Math.max(S-h,oy)); }
+  function dessiner(){ borner(); cx.fillStyle='#000'; cx.fillRect(0,0,S,S); cx.drawImage(im,ox,oy,im.width*base*zoom,im.height*base*zoom); }
+  function zoomer(nz){ var c=S/2, k=nz/zoom; ox=c-(c-ox)*k; oy=c-(c-oy)*k; zoom=nz; dessiner(); }
+  inp.addEventListener('change',function(){
+    var f=inp.files[0]; inp.value=''; if(!f) return;
+    if(!/^image\//.test(f.type)){ document.getElementById('pdp-txt').textContent='Choisis une image (JPG, PNG…)'; return; }
+    var r=new FileReader(); r.onload=function(){ var i2=new Image(); i2.onload=function(){
+      im=i2; base=S/Math.min(im.width,im.height); zoom=1; z.value=1;
+      ox=(S-im.width*base)/2; oy=(S-im.height*base)/2; dessiner(); ov.hidden=false; document.getElementById('pdp-ok').focus();
+    }; i2.src=r.result; }; r.readAsDataURL(f);
+  });
+  z.addEventListener('input',function(){ zoomer(parseFloat(z.value)); });
+  var drag=null;
+  cv.addEventListener('pointerdown',function(e){ drag={x:e.clientX,y:e.clientY,ox:ox,oy:oy}; cv.setPointerCapture(e.pointerId); });
+  cv.addEventListener('pointermove',function(e){ if(!drag) return; var k=S/cv.getBoundingClientRect().width; ox=drag.ox+(e.clientX-drag.x)*k; oy=drag.oy+(e.clientY-drag.y)*k; dessiner(); });
+  cv.addEventListener('pointerup',function(){ drag=null; }); cv.addEventListener('pointercancel',function(){ drag=null; });
+  cv.addEventListener('wheel',function(e){ e.preventDefault(); var nz=Math.min(4,Math.max(1,zoom*(e.deltaY<0?1.08:0.92))); z.value=nz; zoomer(nz); },{passive:false});
+  function fermer(){ ov.hidden=true; }
+  document.getElementById('pdp-cancel').onclick=fermer;
+  document.addEventListener('keydown',function(e){ if(e.key==='Escape' && !ov.hidden) fermer(); });
+  document.getElementById('pdp-ok').onclick=function(){
+    var o=document.createElement('canvas'),T=200; o.width=o.height=T; o.getContext('2d').drawImage(cv,0,0,S,S,0,0,T,T);
+    var q=0.85,d=o.toDataURL('image/jpeg',q); while(d.length>60000&&q>0.4){ q-=0.1; d=o.toDataURL('image/jpeg',q); }
+    window.__pdp=d; var rd=document.getElementById('pdp-rond'); rd.textContent=''; rd.style.backgroundImage='url('+d+')';
+    document.getElementById('pdp-txt').textContent='Photo ajoutée ✓ (touche pour changer)'; fermer();
+  };
+})();
+</script>
 </body>
 </html>
