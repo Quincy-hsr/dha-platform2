@@ -79,6 +79,7 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
 .sig{margin-top:12px;border-radius:14px;border:1px solid rgba(0,212,255,0.3);background:#050914;padding:14px 16px;font-family:monospace;font-size:13px;line-height:1.8;max-width:420px;}
 .sig .buy{color:#00FF88;font-weight:700;}
 .sig small{color:rgba(232,244,255,0.45);}
+.sig .sl{color:#FF4466;font-weight:700;}
 .ct-prix{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px;}
 .ct-prix div{padding:10px;border-radius:10px;border:1px solid rgba(255,255,255,0.08);text-align:center;font-size:12px;color:var(--dim);}
 .ct-prix div b{display:block;font-size:20px;color:#E8F4FF;font-family:'Orbitron',sans-serif;}
@@ -201,9 +202,12 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
       <div id="ct-preuve"></div></div></div>
     <div class="ct-step" id="ct-canal"><div class="ct-num">7</div><div><div class="ct-t">REJOINS LE CANAL</div><div class="ct-p">Chargement…</div></div></div>
     <div class="ct-step"><div class="ct-num">8</div><div><div class="ct-t">PRENDS UN TRADE DU SIGNAL</div>
+      <div class="ct-vid" style="margin:0 0 14px"><div class="ct-vid-h">🎥 TUTO VIDÉO · COMMENT PRENDRE LES TRADES · 2 MIN</div><video controls playsinline preload="none" poster="videos/tuto-prendre-trades.jpg" aria-label="Tuto : comment prendre les trades du canal" style="aspect-ratio:9/16;max-width:360px;margin:0 auto"><source src="videos/tuto-prendre-trades.mp4" type="video/mp4"></video></div>
       <div class="ct-p">Chaque signal ressemble à ça :</div>
-      <div class="sig">📡 <b>EUR/USD</b> — <span class="buy">ACHAT</span><br>Entrée : 1.0850<br>Stop Loss : 1.0820<br>Take Profit : 1.0910<br><small>Exemple, pas un vrai signal</small></div>
-      <ol class="ct-list"><li>Ouvre MetaTrader 5 (module 8) et cherche la paire.</li><li><b>Calcule ta taille de lot</b> pour risquer 1 % de ton capital maximum (module 9).</li><li>Place l'ordre avec <b>exactement</b> l'entrée, le Stop Loss et le Take Profit du signal.</li><li>Si le prix est déjà loin de l'entrée, <b>ne cours pas après</b> : tu attends le suivant.</li><li>Note le trade dans ton journal (module 12).</li></ol>
+      <div class="sig">📡 <b>XAUUSD</b> — <span class="buy">BUY NOW</span><br>Entrée : 4050 – 4046<br>TP1 : 4054<br>TP2 : 4058<br>TP3 : 4065<br><span class="sl">SL : 4040</span><br><small>Exemple, pas un vrai signal</small></div>
+      <div class="ct-p" style="margin-top:14px"><b>Comment le lire :</b></div>
+      <ul class="ct-list" style="margin-top:6px"><li><b>Entrée 4050 – 4046</b> : tu peux acheter <b>dès que tu reçois le signal</b>, ou <b>un peu plus tard</b>, du moment que le prix est <b>entre ces 2 prix</b>. Si le prix est sorti de la zone, ne cours pas après : tu attends le signal suivant.</li><li><b>SL 4040</b> : ton Stop Loss, à placer dès l'ouverture, toujours.</li><li><b>TP1, TP2, TP3</b> : les objectifs. Tu peux <b>t'arrêter au TP que tu veux</b> : TP1 pour sécuriser rapidement, TP2 ou TP3 pour viser plus loin. Tu peux aussi fermer une partie au TP1 et laisser courir le reste.</li></ul>
+      <ol class="ct-list"><li>Ouvre MetaTrader 5 (module 8) et cherche <b>XAUUSD</b>.</li><li><b>Choisis ta taille de lot</b> : 0.01 au début, puis jamais plus de 1 % de risque (module 9).</li><li>Achète dans la zone d'entrée, puis place ton <b>SL</b> et ton ou tes <b>TP</b>.</li><li>Note le trade dans ton journal (module 12).</li></ol>
 </div></div>
     <div class="ct-step"><div class="ct-num">9</div><div><div class="ct-t">LES RÈGLES DU CANAL</div>
       <div class="cp-regles" role="note"><div class="cp-rt">⚠️ 3 RÈGLES TRÈS FORTEMENT RECOMMANDÉES</div><ol><li><b>Commence sur un compte démo</b> pour apprendre à bien trader avec les signaux, avant de passer en réel.</li><li><b>Choisis un seul canal à suivre</b> dans la journée, pas plusieurs en même temps.</li><li><b>Risque des lots de 0.01 au début</b> pour limiter le risque et t'habituer au copy trading.</li></ol></div>
