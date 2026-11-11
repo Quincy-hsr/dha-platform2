@@ -369,6 +369,13 @@
   .tier-monthly{font-family:'Rajdhani',sans-serif;font-size:14px;font-weight:600;color:var(--cyan);margin-bottom:10px;}
   .tier-card.featured .tier-monthly{color:var(--gold);}
   .tier-card.featured-red .tier-monthly{color:var(--orange);}
+  .tier-col{display:flex;flex-direction:column;gap:18px;min-width:0;}
+  .tier-col>.tier-card{flex:1;}
+  .tier-copy{border-color:rgba(0,255,136,0.35);background:linear-gradient(160deg,rgba(0,255,136,0.06),var(--card2) 55%);}
+  .tier-copy .tier-name{color:var(--green,#00FF88);}
+  .copy-next{display:block;margin-top:10px;text-align:center;font-size:13px;font-weight:700;color:var(--green);text-decoration:none;}
+  .copy-next:hover{text-decoration:underline;}
+  .tier-copy .tier-btn{background:linear-gradient(135deg,#00C46A,#00FF88);color:#03150D;}
   .tier-sub{font-size:12px;color:var(--dimmer);margin-bottom:18px;line-height:1.5;min-height:32px;}
   .tier-features{display:flex;flex-direction:column;gap:9px;margin-bottom:20px;flex:1;}
   .tier-feature{display:flex;align-items:flex-start;gap:8px;font-size:13px;color:var(--dim);line-height:1.4;}
@@ -772,7 +779,8 @@
 
   <div class="pricing-grid pricing-3">
 
-    <div class="tier-card reveal">
+    <div class="tier-col">
+      <div class="tier-card reveal">
       <div class="tier-name">ESSENTIEL</div>
       <div class="tier-price">180<span>€</span></div>
       <div class="tier-sub">Formation complète, en autonomie · Paiement unique</div>
@@ -785,6 +793,21 @@
       </div>
       <a href="https://buy.stripe.com/00w28sb8CcXs0v5a0c6g80e" target="_blank" class="tier-btn">PAYER — 180€</a>
       <button type="button" class="copy-pill" aria-expanded="false">📡 OPTION COPY TRADING <span class="copy-ch">▾</span></button><div class="copy-drop" hidden><div class="copy-dv">+20<span>€/mois</span></div><div class="copy-dt">Accès au canal de signaux en plus de l'offre Essentiel : tu reçois mes prises de position en direct et tu apprends à les exécuter sur ton compte, étape par étape. Sans engagement.</div><div class="copy-dw">Signaux partagés à but pédagogique, pas un conseil en investissement. Le trading comporte un risque de perte en capital.</div></div>
+    </div>
+      <div class="tier-card tier-copy reveal" style="transition-delay:.05s">
+        <div class="tier-name">COPY TRADING SEUL</div>
+        <div class="tier-price">30<span>€/mois</span></div>
+        <div class="tier-sub">Accès uniquement aux canaux de signaux · Sans engagement</div>
+        <div class="tier-features">
+          <div class="tier-feature"><span class="tier-check">✓</span>Accès aux canaux de signaux Gold</div>
+          <div class="tier-feature"><span class="tier-check">✓</span>Tutos vidéo : ouvrir ton compte et prendre les trades</div>
+          <div class="tier-feature"><span class="tier-check">✓</span>Ton espace pour suivre tes résultats</div>
+          <div class="tier-feature" style="color:var(--dimmer)"><span class="tier-check" style="color:var(--dimmer)">✗</span>Pas de formation ni d'accompagnement</div>
+        </div>
+        <a href="https://revolut.me/quincyhsr?currency=EUR&amp;amount=3000&amp;note=Acc%C3%A8s%20au%20CopyTrading%F0%9F%AA%BD" target="_blank" rel="noopener" class="tier-btn">PAYER — 30€/MOIS</a>
+        <a href="dha-inscription.html?pack=copy" class="copy-next">Paiement fait ? Crée ton accès →</a>
+        <div class="copy-dw" style="margin-top:10px">Signaux partagés à but pédagogique, pas un conseil en investissement. Le trading comporte un risque de perte en capital.</div>
+      </div>
     </div>
 
     <div class="tier-card featured reveal" style="transition-delay:.1s">
@@ -823,7 +846,6 @@
     </div>
 
   </div>
-  <p class="copy-seul reveal">📡 <b>Tu veux juste le canal de signaux, sans la formation ?</b> Accès au copy trading seul : <b>30 €/mois</b>, sans engagement. <a href="https://wa.me/qr/OCPS7DRIVP76L1" target="_blank" rel="noopener">Écris-moi →</a></p>
   <p class="pricing-guarantee-note reveal">🛡️ <strong style="color:var(--green)">Garantie de l'offre Accompagnement 1:1 :</strong> si au bout de 2 mois tu n'es pas satisfait, et que malgré ton travail et le respect de nos conseils tu n'as obtenu aucun résultat, tu es remboursé. Voir conditions complètes dans les <a href="dha-cgv.html" style="color:var(--cyan)">CGV</a>.<br/><br/>💳 En cliquant, tu es redirigé vers un paiement sécurisé Stripe. Une fois le paiement confirmé, tu recevras tes accès et les prochaines étapes par email.</p>
   <p class="reveal" style="text-align:center;margin-top:22px;font-size:14px;color:var(--dim, rgba(232,244,255,0.55));">Pas encore sûr ? <a href="dha-inscription-demo.html" style="color:#FFD700;font-weight:700;text-decoration:none;">🎮 Teste la plateforme gratuitement avec la version démo →</a></p>
 </section>
