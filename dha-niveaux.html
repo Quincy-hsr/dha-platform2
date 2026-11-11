@@ -117,7 +117,7 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
         <span id="prog-pct">0%</span>
       </div>
       <div class="progress-bar"><div class="progress-fill" id="prog-fill" style="width:0%"></div></div>
-      <div class="progress-next" id="prog-next">Il te manque <strong>5 000 XP</strong> pour atteindre le rang suivant.</div>
+      <div class="progress-next" id="prog-next">Il te manque <strong>2 000 XP</strong> pour atteindre le rang suivant.</div>
     </div>
   </div>
 
@@ -131,12 +131,12 @@ const SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSI
 
 const RANGS=[
   {
-    name:'NEW HUSTLER',icon:'🎮',min:0,max:4999,
+    name:'NEW HUSTLER',icon:'🎮',min:0,max:1999,
     color:'rgba(200,200,200,0.8)',bg:'rgba(200,200,200,0.08)',border:'rgba(200,200,200,0.2)',
     avantages:['Accès à la formation Trading','Accès au dashboard gamifié','Accès au leaderboard','Accès au chat Squad']
   },
   {
-    name:'HUSTLER',icon:'⚡',min:5000,max:15499,
+    name:'HUSTLER',icon:'⚡',min:2000,max:15499,
     color:'#1E64FF',bg:'rgba(30,100,255,0.08)',border:'rgba(30,100,255,0.3)',
     avantages:['Tous les avantages NEW HUSTLER','Badge exclusif ⚡ sur ton profil','Accès prioritaire aux lives','1 appel mentor offert']
   },

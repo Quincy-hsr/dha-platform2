@@ -106,7 +106,7 @@
         liste: [['🧠', 'Les attributs : Connaissance, Régularité, Discipline, Rigueur, Communauté'], ['🏆', 'Les perfs : prop firm, payout, meilleur trade…', '✔ vérifiées'], ['👊', 'Le bouton GG pour donner du respect'], ['⚔️', 'Le mode VS : tes attributs contre les siens'], ['💬', 'WhatsApp, si le membre l\'a activé']] },
       { cible: null, titre: '✨ DÉBLOQUE DES EFFETS',
         texte: 'Plus tu grind, plus ta carte claque :',
-        liste: [['💡', 'Cadre néon', '5 000 XP'], ['🌈', 'Bannière animée', 'série 30 j'], ['✨', 'Particules', '15 500 XP'], ['🪩', 'Holographique', '30 000 XP'], ['🔥', 'Flammes', 'série 100 j'], ['⚡', 'Éclairs', 'top 3 du mois'], ['💎', 'Aura LEGEND', '60 000 XP']] },
+        liste: [['💡', 'Cadre néon', '2 000 XP'], ['🌈', 'Bannière animée', 'série 30 j'], ['✨', 'Particules', '15 500 XP'], ['🪩', 'Holographique', '30 000 XP'], ['🔥', 'Flammes', 'série 100 j'], ['⚡', 'Éclairs', 'top 3 du mois'], ['💎', 'Aura LEGEND', '60 000 XP']] },
       { cible: null, final: true, titre: '🪪 À TOI DE CRÉER TA CARTE',
         texte: 'Ajoute ta <b>bio</b>, ton <b>style</b>, tes <b>actifs</b> et tes <b>perfs</b> (avec une capture, je les vérifie). Ensuite, partage ta carte en <b>story Insta</b> 📸' }
     ];

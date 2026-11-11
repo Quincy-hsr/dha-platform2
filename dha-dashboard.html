@@ -296,8 +296,8 @@ const SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSI
 const classeIcons={trading:'📈',ugc:'🎬',marketing:'🚀',ecommerce:'🛒'};
 const classeNames={trading:'TRADING',ugc:'UGC CREATOR',marketing:'MARKETING DIGITAL',ecommerce:'E-COMMERCE'};
 const rangs=[
-  {min:0,    max:4999,  name:'NEW HUSTLER',icon:'🎮',color:'rgba(200,200,200,0.6)'},
-  {min:5000, max:15499, name:'HUSTLER',    icon:'⚡',color:'#1E64FF'},
+  {min:0,    max:1999,  name:'NEW HUSTLER',icon:'🎮',color:'rgba(200,200,200,0.6)'},
+  {min:2000, max:15499, name:'HUSTLER',    icon:'⚡',color:'#1E64FF'},
   {min:15500,max:29999, name:'PRO HUSTLER',icon:'🚀',color:'#00D4FF'},
   {min:30000,max:59999, name:'AMBASSADEUR',icon:'👑',color:'#FFD700'},
   {min:60000,max:999999,name:'LEGEND',     icon:'💎',color:'#9D4EDD'}
@@ -458,7 +458,7 @@ async function loadLeaderboard(){
 function showRangsModal(){
   const rangsData=[
     {icon:'🎮',name:'NEW HUSTLER',xp:'0 XP',    color:'rgba(200,200,200,0.6)',glow:'rgba(200,200,200,0.15)',badge:null},
-    {icon:'⚡',name:'HUSTLER',    xp:'5 000 XP', color:'#1E64FF',             glow:'rgba(30,100,255,0.15)', badge:{icon:'⚡',label:'HUSTLER',bg:'rgba(30,100,255,0.15)',border:'rgba(30,100,255,0.5)',shadow:'0 0 18px rgba(30,100,255,0.5)'}},
+    {icon:'⚡',name:'HUSTLER',    xp:'2 000 XP', color:'#1E64FF',             glow:'rgba(30,100,255,0.15)', badge:{icon:'⚡',label:'HUSTLER',bg:'rgba(30,100,255,0.15)',border:'rgba(30,100,255,0.5)',shadow:'0 0 18px rgba(30,100,255,0.5)'}},
     {icon:'🚀',name:'PRO HUSTLER',xp:'15 500 XP',color:'#00D4FF',             glow:'rgba(0,212,255,0.15)',  badge:{icon:'🚀',label:'PRO',    bg:'rgba(0,212,255,0.15)', border:'rgba(0,212,255,0.5)', shadow:'0 0 18px rgba(0,212,255,0.5)'}},
     {icon:'👑',name:'AMBASSADEUR',xp:'30 000 XP',color:'#FFD700',             glow:'rgba(255,215,0,0.15)',  badge:{icon:'👑',label:'AMBASS.',bg:'rgba(255,215,0,0.15)', border:'rgba(255,215,0,0.5)', shadow:'0 0 18px rgba(255,215,0,0.5)'}},
     {icon:'💎',name:'LEGEND',     xp:'60 000 XP',color:'#9D4EDD',             glow:'rgba(157,78,221,0.15)',badge:{icon:'💎',label:'LEGEND', bg:'rgba(157,78,221,0.15)',border:'rgba(157,78,221,0.5)',shadow:'0 0 18px rgba(157,78,221,0.5)'}},
@@ -621,7 +621,7 @@ function showGuideXP(){
   <div style="font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:3px;color:rgba(0,212,255,0.6);margin-top:28px;margin-bottom:14px;">RANGS & BADGES</div>
   ${[
     {icon:'🎮',name:'NEW HUSTLER',xp:'0 XP',color:'rgba(200,200,200,0.8)',desc:'Rang de départ — bienvenue dans la DHA'},
-    {icon:'⚡',name:'HUSTLER',xp:'5 000 XP',color:'#1E64FF',desc:'Badge ⚡ exclusif sur ton profil'},
+    {icon:'⚡',name:'HUSTLER',xp:'2 000 XP',color:'#1E64FF',desc:'Badge ⚡ exclusif sur ton profil'},
     {icon:'🚀',name:'PRO HUSTLER',xp:'15 500 XP',color:'#00D4FF',desc:'Badge 🚀 sur ton profil'},
     {icon:'👑',name:'AMBASSADEUR',xp:'30 000 XP',color:'#FFD700',desc:'Badge 👑 sur ton profil'},
     {icon:'💎',name:'LEGEND',xp:'60 000 XP',color:'#9D4EDD',desc:'Badge 💎 légendaire sur ton profil'},

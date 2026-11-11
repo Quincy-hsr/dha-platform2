@@ -11,7 +11,7 @@
 
   var RANGS = [
     { min: 0, name: 'NEW HUSTLER', icon: '🎮', k: 'new', r: '#C8CDD8', r2: '#7D8597', ban: ['#141a28', '#3a4256', '#8a93a8'] },
-    { min: 5000, name: 'HUSTLER', icon: '⚡', k: 'hus', r: '#3D85FF', r2: '#0b3db3', ban: ['#06123a', '#0b3db3', '#3D85FF'] },
+    { min: 2000, name: 'HUSTLER', icon: '⚡', k: 'hus', r: '#3D85FF', r2: '#0b3db3', ban: ['#06123a', '#0b3db3', '#3D85FF'] },
     { min: 15500, name: 'PRO HUSTLER', icon: '🚀', k: 'pro', r: '#00D4FF', r2: '#1E64FF', ban: ['#0b1d4f', '#1E64FF', '#00D4FF'] },
     { min: 30000, name: 'AMBASSADEUR', icon: '👑', k: 'amb', r: '#FFD700', r2: '#FF9F00', ban: ['#2b1d00', '#c78a00', '#FFD700'] },
     { min: 60000, name: 'LEGEND', icon: '💎', k: 'leg', r: '#C77DFF', r2: '#7B2CBF', ban: ['#1a0b3d', '#7B2CBF', '#C77DFF'] }
@@ -21,7 +21,7 @@
   var STYLES = { scalper: 'Scalper', day: 'Day trader', swing: 'Swing' };
   var SESSIONS = { asie: 'Session Asie', londres: 'Session Londres', ny: 'Session New York' };
   var FX = [
-    { k: 'neon', e: '💡', n: 'Cadre néon', c: 'Rang HUSTLER (5 000 XP)' },
+    { k: 'neon', e: '💡', n: 'Cadre néon', c: 'Rang HUSTLER (2 000 XP)' },
     { k: 'banniere', e: '🌈', n: 'Bannière animée', c: 'Série de 30 jours' },
     { k: 'particules', e: '✨', n: 'Particules', c: 'Rang PRO HUSTLER (15 500 XP)' },
     { k: 'holo', e: '🪩', n: 'Holographique', c: 'Rang AMBASSADEUR (30 000 XP)' },
