@@ -241,12 +241,12 @@ footer a{color:rgba(169,184,214,0.8);margin:0 6px;}
 
   <section class="vid" id="video" aria-label="Vidéo de présentation">
     <div class="vid-in" id="vid-in">
-      <img class="poster" src="call-1.jpg" alt="Quincy te présente la DHA"/>
+      <img class="poster" src="videos/vsl-dha.jpg" alt="Quincy te présente la DHA"/>
       <button type="button" class="play" id="play" aria-label="Lancer la vidéo de présentation">
         <svg width="34" height="34" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M8 5.5v13a1 1 0 0 0 1.5.87l11-6.5a1 1 0 0 0 0-1.74l-11-6.5A1 1 0 0 0 8 5.5Z"/></svg>
       </button>
       <div class="vid-tag"><small>LA PRÉSENTATION</small><b>Quincy te présente la DHA.</b></div>
-      <div class="vid-dur">05:35</div>
+      <div class="vid-dur">04:37</div>
     </div>
   </section>
 
@@ -467,7 +467,7 @@ footer a{color:rgba(169,184,214,0.8);margin:0 6px;}
 <script>
 /* ─── Lien de la vidéo de présentation ───
    Colle ici le lien YouTube (non répertorié) ou le lien direct d'un fichier .mp4 */
-var VIDEO_URL = '';
+var VIDEO_URL = 'videos/vsl-dha.mp4';
 
 /* ─── Suivi des visites → Supabase (table landing_events) ───
    Fonctionne sur digitalhustleracademy.digital.  */
@@ -503,7 +503,7 @@ var SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZ
     track('play', 'video');
     var id = ytId(VIDEO_URL);
     if (id) box.innerHTML = '<iframe src="https://www.youtube-nocookie.com/embed/' + id + '?autoplay=1&rel=0&modestbranding=1&playsinline=1" title="Quincy te présente la DHA" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>';
-    else if (/^https?:\/\/.+\.(mp4|webm|mov)(\?.*)?$/i.test(VIDEO_URL)) box.innerHTML = '<video src="' + VIDEO_URL + '" controls autoplay playsinline></video>';
+    else if (/\.(mp4|webm|mov)(\?.*)?$/i.test(VIDEO_URL)) { box.innerHTML = '<video src="' + VIDEO_URL + '" controls autoplay playsinline poster="videos/vsl-dha.jpg" style="position:absolute;inset:0;width:100%;height:100%;background:#000"></video>'; }
     else box.insertAdjacentHTML('beforeend', '<div style="position:absolute;inset:auto 12px 70px 12px;padding:12px 14px;border-radius:12px;background:rgba(5,9,20,0.9);border:1px solid rgba(255,215,0,0.5);color:#FFE58A;font-size:13px;text-align:center">Vidéo bientôt disponible. En attendant, découvre tout juste en dessous.</div>');
     ouvrir();
     setTimeout(function(){ document.getElementById('video').scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 50);
