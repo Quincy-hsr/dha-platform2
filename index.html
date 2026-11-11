@@ -352,6 +352,9 @@
   .pricing{padding:90px 40px;background:linear-gradient(180deg,transparent,rgba(30,100,255,0.04),transparent);}
   .pricing-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;max-width:1200px;margin:0 auto;align-items:stretch;}
   .pricing-grid.pricing-3{grid-template-columns:repeat(3,1fr);max-width:1080px;}
+  .pricing-grid.pricing-4{grid-template-columns:repeat(4,minmax(0,1fr));max-width:1320px;gap:18px;}
+  @media(max-width:1200px){.pricing-grid.pricing-4{grid-template-columns:repeat(2,minmax(0,1fr));max-width:900px;}}
+  @media(max-width:640px){.pricing-grid.pricing-4{grid-template-columns:1fr;}}
   .tier-card{padding:26px 22px;border-radius:18px;background:var(--card2);border:1px solid var(--border);display:flex;flex-direction:column;position:relative;}
   .tier-card.featured{border-color:rgba(255,215,0,0.4);background:linear-gradient(135deg,#0a1228,#0d1428);box-shadow:0 0 40px rgba(255,215,0,0.08);}
   .tier-card.featured-red{border-color:rgba(255,140,0,0.4);background:linear-gradient(135deg,#0a1228,#0d1428);box-shadow:0 0 40px rgba(255,68,102,0.1);}
@@ -421,7 +424,7 @@
     nav{padding:14px 20px;}
     .nav-links{display:none;}
     .pricing-grid,.pricing-grid.pricing-3{grid-template-columns:1fr;}
-    .pricing-3 .tier-card.featured-red{order:1;}.pricing-3 .tier-card.featured{order:2;}.pricing-3 .tier-card:not(.featured):not(.featured-red){order:3;}
+    
     .bridge-list{flex-direction:column;align-items:center;}
     footer{flex-direction:column;text-align:center;}
   }
@@ -778,37 +781,23 @@
   <div class="section-title reveal">Choisis ton niveau d'accompagnement</div>
   <p class="section-desc reveal">3 offres. L'accès n'est pas automatique : chaque candidature passe par un entretien pour vérifier que le programme te correspond et préserver le niveau du groupe.</p>
 
-  <div class="pricing-grid pricing-3">
+  <div class="pricing-grid pricing-4">
 
-    <div class="tier-col">
-      <div class="tier-card reveal">
-      <div class="tier-name">ESSENTIEL</div>
-      <div class="tier-price">180<span>€</span></div>
-      <div class="tier-sub">Formation complète, en autonomie · Paiement unique</div>
+    <div class="tier-card featured-red reveal" style="transition-delay:.2s">
+      <div class="tier-badge badge-red">LE PLUS COMPLET</div>
+      <div class="tier-name" style="margin-top:6px;">ACCOMPAGNEMENT 1:1</div>
+      <div class="tier-price">750<span>€</span></div>
+      <div class="tier-monthly">ou en 3 fois avec Klarna (250€/mois)</div>
+      <div class="tier-sub">Formation + groupe + 1:1</div>
       <div class="tier-features">
-        <div class="tier-feature"><span class="tier-check">✓</span>Modules de formation complets</div>
-        <div class="tier-feature"><span class="tier-check">✓</span>Module Mindset inclus</div>
-        <div class="tier-feature"><span class="tier-check">✓</span>Service disponible 24/24 pour tes questions</div>
-        <div class="tier-feature" style="color:var(--dimmer)"><span class="tier-check" style="color:var(--dimmer)">✗</span>Pas de garantie de résultat</div>
-        <div class="tier-feature" style="color:var(--dimmer)"><span class="tier-check" style="color:var(--dimmer)">✗</span>Pas d'accompagnement physique</div>
+        <div class="tier-feature"><span class="tier-check">✓</span>Tout le pack Accompagnement en groupe</div>
+        <div class="tier-feature"><span class="tier-check">✓</span>Accompagnement individuel en 1:1</div>
+        <div class="tier-feature"><span class="tier-check">✓</span>Appel possible n'importe quand si tu bloques sur un module</div>
+        <div class="tier-feature"><span class="tier-check">✓</span>Garanti ou remboursé</div>
+        <div class="tier-feature" style="color:#00FF88;font-weight:700"><span class="tier-check">✓</span>📡 Copy trading inclus</div>
       </div>
-      <a href="https://buy.stripe.com/00w28sb8CcXs0v5a0c6g80e" target="_blank" class="tier-btn">PAYER — 180€</a>
-      <button type="button" class="copy-pill" aria-expanded="false">📡 OPTION COPY TRADING <span class="copy-ch">▾</span></button><div class="copy-drop" hidden><div class="copy-dv">+20<span>€/mois</span></div><div class="copy-dt">Accès au canal de signaux en plus de l'offre Essentiel : tu reçois mes prises de position en direct et tu apprends à les exécuter sur ton compte, étape par étape. Sans engagement.</div><a href="https://buy.stripe.com/00w14oekO3mSb9Ja0c6g80i" target="_blank" rel="noopener" class="copy-add">AJOUTER L'OPTION — 20€/MOIS</a><div class="copy-dw">Signaux partagés à but pédagogique, pas un conseil en investissement. Le trading comporte un risque de perte en capital.</div></div>
-    </div>
-      <div class="tier-card tier-copy reveal" style="transition-delay:.05s">
-        <div class="tier-name">COPY TRADING SEUL</div>
-        <div class="tier-price">30<span>€/mois</span></div>
-        <div class="tier-sub">Accès uniquement aux canaux de signaux · Sans engagement</div>
-        <div class="tier-features">
-          <div class="tier-feature"><span class="tier-check">✓</span>Accès aux canaux de signaux Gold</div>
-          <div class="tier-feature"><span class="tier-check">✓</span>Tutos vidéo : ouvrir ton compte et prendre les trades</div>
-          <div class="tier-feature"><span class="tier-check">✓</span>Ton espace pour suivre tes résultats</div>
-          <div class="tier-feature" style="color:var(--dimmer)"><span class="tier-check" style="color:var(--dimmer)">✗</span>Pas de formation ni d'accompagnement</div>
-        </div>
-        <a href="https://buy.stripe.com/eVq00kb8C8Hc6Tt8W86g80h" target="_blank" rel="noopener" class="tier-btn">PAYER — 30€/MOIS</a>
-        <a href="dha-inscription.html?pack=copy" class="copy-next">Paiement fait ? Crée ton accès →</a>
-        <div class="copy-dw" style="margin-top:10px">Signaux partagés à but pédagogique, pas un conseil en investissement. Le trading comporte un risque de perte en capital.</div>
-      </div>
+      <a href="https://buy.stripe.com/7sY3cw2C69Lg2Dd4FS6g80g" target="_blank" rel="noopener" class="tier-btn">PAYER — 750€ (ou en 3× avec Klarna)</a>
+      <div class="copy-inc"><b>📡 COPY TRADING INCLUS</b><span>Accès au canal de signaux compris dans l'offre, sans supplément : mes prises de position en direct, à exécuter sur ton compte.</span></div>
     </div>
 
     <div class="tier-card featured reveal" style="transition-delay:.1s">
@@ -829,21 +818,33 @@
       <div class="copy-inc"><b>📡 COPY TRADING INCLUS</b><span>Accès au canal de signaux compris dans l'offre, sans supplément : mes prises de position en direct, à exécuter sur ton compte.</span></div>
     </div>
 
-    <div class="tier-card featured-red reveal" style="transition-delay:.2s">
-      <div class="tier-badge badge-red">LE PLUS COMPLET</div>
-      <div class="tier-name" style="margin-top:6px;">ACCOMPAGNEMENT 1:1</div>
-      <div class="tier-price">750<span>€</span></div>
-      <div class="tier-monthly">ou en 3 fois avec Klarna (250€/mois)</div>
-      <div class="tier-sub">Formation + groupe + 1:1</div>
+    <div class="tier-card reveal">
+    <div class="tier-name">ESSENTIEL</div>
+    <div class="tier-price">180<span>€</span></div>
+    <div class="tier-sub">Formation complète, en autonomie · Paiement unique</div>
+    <div class="tier-features">
+      <div class="tier-feature"><span class="tier-check">✓</span>Modules de formation complets</div>
+      <div class="tier-feature"><span class="tier-check">✓</span>Module Mindset inclus</div>
+      <div class="tier-feature"><span class="tier-check">✓</span>Service disponible 24/24 pour tes questions</div>
+      <div class="tier-feature" style="color:var(--dimmer)"><span class="tier-check" style="color:var(--dimmer)">✗</span>Pas de garantie de résultat</div>
+      <div class="tier-feature" style="color:var(--dimmer)"><span class="tier-check" style="color:var(--dimmer)">✗</span>Pas d'accompagnement physique</div>
+    </div>
+    <a href="https://buy.stripe.com/00w28sb8CcXs0v5a0c6g80e" target="_blank" class="tier-btn">PAYER — 180€</a>
+    <button type="button" class="copy-pill" aria-expanded="false">📡 OPTION COPY TRADING <span class="copy-ch">▾</span></button><div class="copy-drop" hidden><div class="copy-dv">+20<span>€/mois</span></div><div class="copy-dt">Accès au canal de signaux en plus de l'offre Essentiel : tu reçois mes prises de position en direct et tu apprends à les exécuter sur ton compte, étape par étape. Sans engagement.</div><a href="https://buy.stripe.com/00w14oekO3mSb9Ja0c6g80i" target="_blank" rel="noopener" class="copy-add">AJOUTER L'OPTION — 20€/MOIS</a><div class="copy-dw">Signaux partagés à but pédagogique, pas un conseil en investissement. Le trading comporte un risque de perte en capital.</div></div>
+  </div>
+    <div class="tier-card tier-copy reveal" style="transition-delay:.05s">
+      <div class="tier-name">COPY TRADING SEUL</div>
+      <div class="tier-price">30<span>€/mois</span></div>
+      <div class="tier-sub">Accès uniquement aux canaux de signaux · Sans engagement</div>
       <div class="tier-features">
-        <div class="tier-feature"><span class="tier-check">✓</span>Tout le pack Accompagnement en groupe</div>
-        <div class="tier-feature"><span class="tier-check">✓</span>Accompagnement individuel en 1:1</div>
-        <div class="tier-feature"><span class="tier-check">✓</span>Appel possible n'importe quand si tu bloques sur un module</div>
-        <div class="tier-feature"><span class="tier-check">✓</span>Garanti ou remboursé</div>
-        <div class="tier-feature" style="color:#00FF88;font-weight:700"><span class="tier-check">✓</span>📡 Copy trading inclus</div>
+        <div class="tier-feature"><span class="tier-check">✓</span>Accès aux canaux de signaux Gold</div>
+        <div class="tier-feature"><span class="tier-check">✓</span>Tutos vidéo : ouvrir ton compte et prendre les trades</div>
+        <div class="tier-feature"><span class="tier-check">✓</span>Ton espace pour suivre tes résultats</div>
+        <div class="tier-feature" style="color:var(--dimmer)"><span class="tier-check" style="color:var(--dimmer)">✗</span>Pas de formation ni d'accompagnement</div>
       </div>
-      <a href="https://buy.stripe.com/7sY3cw2C69Lg2Dd4FS6g80g" target="_blank" rel="noopener" class="tier-btn">PAYER — 750€ (ou en 3× avec Klarna)</a>
-      <div class="copy-inc"><b>📡 COPY TRADING INCLUS</b><span>Accès au canal de signaux compris dans l'offre, sans supplément : mes prises de position en direct, à exécuter sur ton compte.</span></div>
+      <a href="https://buy.stripe.com/eVq00kb8C8Hc6Tt8W86g80h" target="_blank" rel="noopener" class="tier-btn">PAYER — 30€/MOIS</a>
+      <a href="dha-inscription.html?pack=copy" class="copy-next">Paiement fait ? Crée ton accès →</a>
+      <div class="copy-dw" style="margin-top:10px">Signaux partagés à but pédagogique, pas un conseil en investissement. Le trading comporte un risque de perte en capital.</div>
     </div>
 
   </div>
