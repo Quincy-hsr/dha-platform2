@@ -1,7 +1,7 @@
 /* =========================================================
    DHA — Accès selon le forfait
    Inclus sur toutes les pages membres (après dha-api.js).
-   - Essentiel (180 €)            : pas de Lives & Replays, pas d'Appel Mentor, pas de Discord
+   - Essentiel (180 €)            : pas de Lives & Replays, pas de Squad, pas d'Appel Mentor, pas de Discord
    - Accompagnement groupe (500 €): pas d'Appel Mentor
    - Accompagnement 1:1 (750 €)   : tout
    - Anciens forfaits (medium…)   : tout (ils ont payé avant ce découpage)
@@ -23,7 +23,10 @@
       offre: 'Inclus dans les offres Accompagnement en groupe (500 €) et 1:1 (750 €).' },
     { page: 'dha-mentor.html', acces: 'unUn', icon: '📞', titre: 'APPEL MENTOR',
       msg: 'Si tu veux un appel individuel avec Quincy, augmente ton forfait.',
-      offre: 'Inclus dans l\'offre Accompagnement 1:1 (750 €).' }
+      offre: 'Inclus dans l\'offre Accompagnement 1:1 (750 €).' },
+    { page: 'dha-squad.html', acces: 'groupe', icon: '👥', titre: 'MON SQUAD',
+      msg: 'Si tu veux rejoindre le squad (groupe, appels et rencontres), augmente ton forfait.',
+      offre: 'Inclus dans les offres Accompagnement en groupe (500 €) et 1:1 (750 €).' }
   ];
   window.DHAForfait = { acces: ACCES, verrous: VERROUS, lienQuincy: LIEN_QUINCY };
 
@@ -59,7 +62,8 @@
     ov.classList.add('show');
     var b = ov.querySelector('.dfo-up'); if (b) b.focus();
   }
-  function fermer() { ov.classList.remove('show'); }
+  var pageBloquee = false;
+  function fermer() { ov.classList.remove('show'); if (pageBloquee) location.replace('dha-dashboard.html'); }
   ov.addEventListener('click', function (e) { if (e.target === ov || e.target.closest('[data-dfo-close]')) fermer(); });
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape') fermer(); });
 
@@ -81,6 +85,9 @@
   function appliquer() {
     photo();
     // Cadenas dans le menu
+    // Page ouverte directement (lien, favori) alors qu'elle est verrouillée : pop-up puis retour au dashboard
+    var ici = verrouPour(location.pathname);
+    if (ici && bloque(ici) && !pageBloquee) { pageBloquee = true; boite(ici); var sec = ov.querySelector('.dfo-sec'); if (sec) sec.textContent = 'RETOUR AU DASHBOARD'; }
     document.querySelectorAll('a.nav-item').forEach(function (a) {
       var v = verrouPour(a.getAttribute('href')); if (!v) return;
       var l = a.querySelector('.dfo-lock');
