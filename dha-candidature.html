@@ -121,7 +121,7 @@ h2{font-family:'Chakra Petch',sans-serif;font-size:clamp(22px,5.4vw,29px);line-h
 .vid{display:flex;align-items:center;justify-content:center;gap:10px;margin-top:6px;text-decoration:none}
 @media (max-width:420px){.socials,.feats{grid-template-columns:1fr}}
 footer{text-align:center;font-family:'Chakra Petch',sans-serif;font-size:11px;letter-spacing:2px;color:var(--faint);padding-top:10px}
-@media (max-width:420px){.chips{grid-template-columns:repeat(3,1fr)}.chip{font-size:11px;letter-spacing:.5px}.opt{font-size:17px;padding:14px}}
+@media (max-width:420px){.chips{grid-template-columns:repeat(2,1fr)}.chip{font-size:11px;letter-spacing:.5px}.opt{font-size:17px;padding:14px}}
 @media (prefers-reduced-motion:reduce){.step,.step.back-anim{animation:none}.bar i{transition:none}}
 </style>
 </head>
@@ -288,10 +288,9 @@ footer{text-align:center;font-family:'Chakra Petch',sans-serif;font-size:11px;le
     <!-- 7 -->
     <section class="step" data-id="contact" data-q>
       <h2>Où est-ce que je peux te contacter ?</h2>
-      <p class="sub">Choisis WhatsApp, Instagram ou téléphone, puis laisse ton contact. C'est là que je t'écrirai.</p>
+      <p class="sub">Choisis WhatsApp ou téléphone, puis laisse ton numéro. C'est là que je t'écrirai.</p>
       <div class="chips" role="radiogroup" aria-label="Réseau de contact">
         <button class="chip" role="radio" aria-checked="false" data-c="WhatsApp"><b>💬</b>WHATSAPP</button>
-        <button class="chip" role="radio" aria-checked="false" data-c="Instagram"><b>📸</b>INSTAGRAM</button>
         <button class="chip" role="radio" aria-checked="false" data-c="Téléphone"><b>📞</b>TÉLÉPHONE</button>
       </div>
       <input class="field" id="f-contact" type="text" maxlength="80" placeholder="Choisis d'abord un réseau" disabled>
