@@ -388,6 +388,7 @@ input[type=range]{padding:0;border:0;accent-color:var(--gain)}
   </aside>
   <main>
     <header class="top" id="top"></header>
+    <div id="avBanner"></div>
     <div id="view"></div>
   </main>
 </div>
@@ -839,7 +840,7 @@ function paintTop(){
 }
 
 function render(){
-  paintNav(); paintTop();
+  paintNav(); paintTop(); paintAV();
   var v = $('#view');
   if(S.mode==='loading'){ v.innerHTML = '<div class="empty">Chargement de tes données…</div>'; skeletonTab = null; return; }
   if(skeletonTab !== S.tab){
@@ -1195,6 +1196,31 @@ function saveCopyCfg(){
   DHA.admin('dha_admin_copy_set',{p:p}).then(function(ok){ if(ok){ COPY.cfg = p; closeDlg(); schedule(); toast('Réglages enregistrés'); } else toast('Échec de l\'enregistrement'); }).catch(function(){ toast('Échec de l\'enregistrement'); });
 }
 
+
+/* ---------- nouveaux inscrits : offre à confirmer (le membre choisit son offre lui-même à l'inscription) ---------- */
+var AV = {list:[], ok:false};
+var AV_PACK = {copy:'Copy trading seul · 30 €/mois','180':'Essentiel · 180 €','500':'Groupe · 500 €','750':'1:1 · 750 €'};
+function loadAV(){
+  if(!DHA.adminKey()) return Promise.resolve();
+  return DHA.admin('dha_admin_a_valider').then(function(d){ if(Array.isArray(d)){ AV.list = d; AV.ok = true; paintAV(); var dl=$('#avList'); if(dl) dl.innerHTML = avRows(); } }).catch(function(){});
+}
+loadAV(); setInterval(function(){ if(document.visibilityState==='visible') loadAV(); }, 60000);
+function paintAV(){
+  var b = $('#avBanner'); if(!b || !AV) return;
+  var n = AV.list.length;
+  b.innerHTML = n ? '<button type="button" class="card" data-act="av-open" style="width:100%;margin-bottom:16px;display:flex;align-items:center;gap:12px;text-align:left;cursor:pointer;border-left:4px solid #E0A100"><span style="font-size:22px">🧾</span><span style="flex:1"><b style="display:block">'+n+' nouvel'+(n>1?'s':'')+' inscrit'+(n>1?'s':'')+' à vérifier</b><span class="sub" style="font-size:13px">Vérifie que l\'offre choisie correspond bien à ce qu\'ils ont payé. En attendant, ils sont sur une page d\'attente.</span></span><span class="btn small primary">Vérifier</span></button>' : '';
+}
+function avRows(){
+  if(!AV.list.length) return '<p class="sub">Tout est vérifié ✅</p>';
+  return AV.list.map(function(m){
+    return '<div class="card" style="display:flex;flex-direction:column;gap:10px;margin-bottom:10px"><div><b>@'+esc(m.pseudo)+'</b> <span class="sub">· '+esc([m.prenom,m.nom].filter(Boolean).join(' '))+'</span><div class="sub" style="font-size:13px">'+esc(m.email||'')+(m.telephone?' · '+esc(m.telephone):'')+(m.date?' · inscrit le '+esc(new Date(m.date).toLocaleDateString('fr-FR')):'')+'</div></div>'
+      +'<div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center"><label for="avp_'+esc(m.id)+'" class="sub" style="font-size:13px">Offre :</label><select id="avp_'+esc(m.id)+'">'+Object.keys(AV_PACK).map(function(k){ return '<option value="'+k+'"'+(m.pack===k?' selected':'')+'>'+AV_PACK[k]+(m.pack===k?' (choisie)':'')+'</option>'; }).join('')+'</select>'
+      +'<button type="button" class="btn small primary" data-act="av-ok" data-id="'+esc(m.id)+'">✓ Confirmer</button></div></div>';
+  }).join('');
+}
+function openAV(){
+  openDlg('<div class="dlg-body"><h2 id="dlgTitle">Nouveaux inscrits à vérifier</h2><p class="sub" style="margin:0 0 6px">Compare l\'offre choisie avec ton paiement reçu (Stripe, Klarna…). Si ce n\'est pas la bonne, change-la avant de confirmer. Tant que tu n\'as pas confirmé, le membre voit « Accès en cours de validation ».</p><div id="avList">'+avRows()+'</div></div><div class="dlg-foot"><span></span><div class="r"><button type="button" class="btn" data-act="close">Fermer</button></div></div>');
+}
 
 /* ---------- vue : copy trading (abonnés « Copy seul » et accès aux canaux) ---------- */
 var CPL = {list:[], ok:false, f:'all'};
@@ -2711,6 +2737,9 @@ document.addEventListener('click', function(ev){
     case 'perf-img': var pi = PERFS.list.filter(function(x){ return x.id===el.getAttribute('data-id'); })[0]; if(pi && pi.preuve) openDlg('<div class="dlg-body"><h2 id="dlgTitle">Preuve de @'+esc(pi.pseudo)+'</h2><img src="'+pi.preuve+'" alt="Preuve" style="width:100%;border-radius:12px"></div><div class="dlg-foot"><span></span><div class="r"><button type="button" class="btn" data-act="close">Fermer</button></div></div>'); return;
     case 'copy-cfg': openCopyCfg(); return;
     case 'copy-save': saveCopyCfg(); return;
+    case 'av-open': openAV(); return;
+    case 'av-ok': var avm = AV.list.filter(function(x){ return x.id===el.getAttribute('data-id'); })[0]; if(!avm) return; var avp = $('#avp_'+avm.id).value;
+      DHA.admin('dha_admin_valider_pack',{p_id:avm.id, p_pack:avp}).then(function(r){ if(r&&r.ok){ toast('✅ @'+avm.pseudo+' : '+AV_PACK[avp]+' confirmé'); AV.list = AV.list.filter(function(x){ return x.id!==avm.id; }); paintAV(); var dl=$('#avList'); if(dl) dl.innerHTML = avRows(); loadCopyListe(); } else toast('Échec'); }).catch(function(){ toast('Échec'); }); return;
     case 'cp-f': CPL.f = el.getAttribute('data-v'); if(S.tab!=='copy'){ S.tab='copy'; render(); } else paintCopyTab(); return;
     case 'cp-refresh': loadCopyListe(); toast('Liste actualisée'); return;
     case 'cp-preuve': var cpm = cpById(el.getAttribute('data-id')); if(cpm) openCpPreuve(cpm); return;

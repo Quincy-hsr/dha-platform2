@@ -210,8 +210,11 @@
   // Abonné « Copy seul » : il n'a accès qu'à son Espace Copy (pas à la formation ni à l'accompagnement)
   try {
     var page = (location.pathname.split('/').pop() || '').toLowerCase();
-    var LIBRES = ['dha-espace-copy.html', 'dha-connexion.html', 'dha-inscription.html', 'dha-candidature.html', 'dha-video.html', 'dha-cgv.html', 'dha-appli.html', 'dha-admin.html', 'dha-cerveau.html', 'index.html'];
+    var LIBRES = ['dha-attente.html', 'dha-espace-copy.html', 'dha-connexion.html', 'dha-inscription.html', 'dha-candidature.html', 'dha-video.html', 'dha-cgv.html', 'dha-appli.html', 'dha-admin.html', 'dha-cerveau.html', 'index.html'];
     var mm = local();
-    if (mm && mm.pack === 'copy' && /^dha-.*\.html$/.test(page) && LIBRES.indexOf(page) < 0) location.replace('dha-espace-copy.html');
+    var protegee = /^dha-.*\.html$/.test(page) && LIBRES.indexOf(page) < 0;
+    // Offre choisie à l'inscription pas encore confirmée par Quincy → page d'attente
+    if (mm && mm.pack_valide === false && mm.plan !== 'demo' && (protegee || page === 'dha-espace-copy.html')) location.replace('dha-attente.html');
+    else if (mm && mm.pack === 'copy' && protegee) location.replace('dha-espace-copy.html');
   } catch (e) {}
 })();
