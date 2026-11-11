@@ -253,7 +253,7 @@ function corps(m,c){
   h+='<div class="meta"><span>Rang <b>'+esc(rang(m.xp))+'</b></span>'
     +(S.lastOk?'<span>Vu <b>'+esc(ilya(lastSeen(m)))+'</b></span>':'')
     +(m.created_at?'<span>Inscrit le <b>'+esc(dCourt(m.created_at))+'</b></span>':'')
-    +(m.pack&&!demo(m)?'<span>Pack <b>'+esc(m.pack)+' €</b></span>':'')+'</div>';
+    +(m.pack&&!demo(m)?'<span>Pack <b>'+(m.pack==='copy'?'Copy seul':esc(m.pack)+' €')+'</b>'+(m.pack_valide===false?' ⏳':'')+'</span>':'')+'</div>';
 
   if(demo(m))h+='<div class="box mu" style="margin-top:10px">Compte démo : seul le Module 01 est débloqué. Contact : '+esc(m.telephone||'non renseigné')+'. S\'il paie, il se réinscrit normalement.</div>';
 
@@ -302,7 +302,15 @@ function corps(m,c){
     ?'<div class="row" style="justify-content:space-between"><span class="rib">RIB : '+esc(S.rib[m.id]?rib:masque(rib))+'</span><span class="row"><button type="button" class="btn b-ghost" data-rib="'+id+'">'+(S.rib[m.id]?'Masquer':'Afficher')+'</button><button type="button" class="btn b-ghost" data-copy="'+id+'">Copier</button></span></div>'
     :'<span class="mu">Aucun RIB enregistré</span>')+'</div>';
 
-  if(!demo(m))h+='<h4>🔑 Compte</h4><button type="button" class="btn" data-pwd="'+id+'">Nouveau mot de passe</button>';
+  if(!demo(m)){
+    var PK=[['copy','📡 Copy trading seul (30 €/mois)'],['180','📘 Essentiel (180 €)'],['500','👥 Accompagnement en groupe (500 €)'],['750','👑 Accompagnement 1:1 (750 €)']];
+    h+='<h4>📦 Offre</h4><div class="row" style="flex-wrap:wrap;gap:8px;align-items:center"><select id="pk-'+id+'" aria-label="Offre de @'+esc(m.pseudo)+'" style="padding:9px 10px;border-radius:10px;background:#0a1226;color:#E8F4FF;border:1px solid rgba(0,212,255,0.3)">'
+      +PK.map(function(p){return '<option value="'+p[0]+'"'+(String(m.pack)===p[0]?' selected':'')+'>'+p[1]+'</option>';}).join('')
+      +(['copy','180','500','750'].indexOf(String(m.pack))<0?'<option value="" selected>'+esc(m.pack?('Ancien forfait ('+m.pack+')'):'Aucune')+'</option>':'')
+      +'</select><button type="button" class="btn" data-pack="'+id+'">Changer l\'offre</button></div>'
+      +(m.pack_valide===false?'<p class="mu" style="margin-top:6px">⏳ Offre pas encore confirmée : le membre est sur la page d\'attente.</p>':'');
+    h+='<h4>🔑 Compte</h4><button type="button" class="btn" data-pwd="'+id+'">Nouveau mot de passe</button>';
+  }
   return h;
 }
 
@@ -385,7 +393,7 @@ document.addEventListener('click',function(e){
   if(d.rm){var p2=S.pan[d.rm]||{};if(p2[d.k]>1)p2[d.k]--;else delete p2[d.k];redraw(d.rm);return;}
   if(d.clr){delete S.pan[d.clr];redraw(d.clr);return;}
   if(d.rib){S.rib[d.rib]=!S.rib[d.rib];redraw(d.rib);return;}
-  m=get(d.val||d.corr||d.com||d.enc||d.pay||d.copy||d.pwd);if(!m)return;
+  m=get(d.val||d.corr||d.com||d.enc||d.pay||d.copy||d.pwd||d.pack);if(!m)return;
   if(d.val)validerPanier(m);
   else if(d.corr)corriger(m);
   else if(d.com)validerCom(m);
@@ -393,6 +401,16 @@ document.addEventListener('click',function(e){
   else if(d.pay)toutVerse(m);
   else if(d.copy){navigator.clipboard.writeText(String(m.rib||'').trim()).then(function(){toast('RIB copié','ok');},function(){toast('Copie impossible','err');});}
   else if(d.pwd)DHA.resetPasswordUI(m);
+  else if(d.pack){
+    var nv=$('pk-'+m.id).value, NOMS={copy:'Copy trading seul','180':'Essentiel','500':'Accompagnement en groupe','750':'Accompagnement 1:1'};
+    if(!nv){toast('Choisis une offre','err');return;}
+    if(String(m.pack)===nv&&m.pack_valide!==false){toast('C\'est déjà son offre','err');return;}
+    ask('📦 Changer l\'offre ?','Passer @'+(m.pseudo||'')+' en « '+NOMS[nv]+' » ?\n\nTu as bien reçu le paiement ? Le changement est immédiat : il verra son nouvel accès à sa prochaine page.',false,function(){
+      DHA.admin('dha_admin_update_membre',{p_id:m.id,p:{pack:nv,pack_valide:true}}).then(function(r){
+        if(r){Object.assign(m,{pack:nv,pack_valide:true});redraw(m.id);toast('@'+m.pseudo+' est passé en '+NOMS[nv],'ok');}else toast('Échec du changement','err');
+      }).catch(function(){toast('Échec du changement','err');});
+    });
+  }
 });
 
 DHA.adminGate(load);
