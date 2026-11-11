@@ -238,12 +238,12 @@ footer{text-align:center;font-family:'Chakra Petch',sans-serif;font-size:11px;le
 
     <section class="step" data-id="budget" data-q data-single>
       <h2>Pour te former et être accompagné, tu as prévu quel budget ?</h2>
-      <p class="sub">Nos offres vont de 180 € à 750 € (paiement en 3 fois possible).</p>
+      <p class="sub">Pour commencer avec moi, il faut un budget de <b style="color:var(--white,#fff)">80 € minimum</b>. Les offres vont ensuite de 180 € à 750 € (paiement en 3 fois possible).</p>
       <div class="opts">
         <button class="opt" data-v="Plus de 750 €"><span class="k">A</span>Plus de 750 €</button>
         <button class="opt" data-v="Entre 500 et 750 €"><span class="k">B</span>Entre 500 et 750 €</button>
         <button class="opt" data-v="Entre 180 et 500 €"><span class="k">C</span>Entre 180 et 500 €</button>
-        <button class="opt" data-v="Moins de 180 €"><span class="k">D</span>Moins de 180 €</button>
+        <button class="opt" data-v="Entre 80 et 180 €"><span class="k">D</span>Entre 80 et 180 €</button>
         <button class="opt" data-v="Je préfère en parler pendant l'appel"><span class="k">E</span>Je préfère en parler pendant l'appel</button>
       </div>
       <div class="nav"><button class="back" data-back aria-label="Question précédente">←</button></div>
@@ -527,7 +527,7 @@ footer{text-align:center;font-family:'Chakra Petch',sans-serif;font-size:11px;le
   });
 
   function chaleur(){
-    var P={demarrage:{'Dès cette semaine':25,'Dans le mois':18,'Dans 1 à 3 mois':8},budget:{'Plus de 750 €':30,'Entre 500 et 750 €':25,'Entre 180 et 500 €':15,"Je préfère en parler pendant l'appel":10},motivation:{'Je veux changer de vie, sortir de ma situation actuelle':15,"Je trade déjà mais je n'arrive pas à être régulier":15,'Je veux un revenu en plus à côté':12,'Par curiosité':3},temps_dispo:{'Plus de 2 h':10,'1 h à 2 h':10,'30 min à 1 h':8,'Moins de 30 min':2}};
+    var P={demarrage:{'Dès cette semaine':25,'Dans le mois':18,'Dans 1 à 3 mois':8},budget:{'Plus de 750 €':30,'Entre 500 et 750 €':25,'Entre 180 et 500 €':15,'Entre 80 et 180 €':6,"Je préfère en parler pendant l'appel":10},motivation:{'Je veux changer de vie, sortir de ma situation actuelle':15,"Je trade déjà mais je n'arrive pas à être régulier":15,'Je veux un revenu en plus à côté':12,'Par curiosité':3},temps_dispo:{'Plus de 2 h':10,'1 h à 2 h':10,'30 min à 1 h':8,'Moins de 30 min':2}};
     var sc=0; Object.keys(P).forEach(function(k){sc+=P[k][R[k]]||0;});
     return sc>=60?'chaud':sc>=35?'tiede':'froid';
   }
