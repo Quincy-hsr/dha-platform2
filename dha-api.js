@@ -218,3 +218,48 @@
     else if (mm && mm.pack === 'copy' && protegee) location.replace('dha-espace-copy.html');
   } catch (e) {}
 })();
+
+/* ─── Œil pour afficher / masquer les mots de passe (toutes les pages qui chargent dha-api.js) ───
+   Remplace les anciens petits yeux par un vrai bouton, assez grand pour le doigt. */
+(function () {
+  if (window.__dhaPwEye) return; window.__dhaPwEye = true;
+  var OUVERT = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg>';
+  var FERME = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.9 4.2A10 10 0 0 1 12 4c6.4 0 10 8 10 8a17 17 0 0 1-2.2 3.3M6.6 6.6C3.9 8.4 2 12 2 12s3.6 8 10 8a9.6 9.6 0 0 0 5.4-1.6"/><path d="M14.1 14.1a3 3 0 0 1-4.2-4.2"/><path d="m2 2 20 20"/></svg>';
+  function css() {
+    if (document.getElementById('dha-pwe-css')) return;
+    var st = document.createElement('style'); st.id = 'dha-pwe-css';
+    st.textContent = '.pwe-wrap{position:relative;display:block;width:100%}.pwe-wrap>input{padding-right:54px!important;width:100%;box-sizing:border-box}' +
+      '.pwe-btn{position:absolute;right:4px;top:50%;transform:translateY(-50%);width:46px;height:46px;display:flex;align-items:center;justify-content:center;border:0;border-radius:10px;background:transparent;color:rgba(232,244,255,.6);cursor:pointer;z-index:3;-webkit-tap-highlight-color:transparent;touch-action:manipulation;padding:0}' +
+      '.pwe-btn[aria-pressed="true"]{color:#00D4FF}.pwe-btn:focus-visible{outline:2px solid #FFD700;outline-offset:-2px}';
+    (document.head || document.documentElement).appendChild(st);
+  }
+  function equiper(inp) {
+    if (inp.getAttribute('data-pwe')) return; inp.setAttribute('data-pwe', '1'); css();
+    var par = inp.parentNode; if (!par) return;
+    /* enlève l'ancien œil s'il y en a un à côté */
+    [].slice.call(par.children).forEach(function (el) {
+      if (el !== inp && (el.classList.contains('eye-toggle') || /togglePwd/.test(el.getAttribute('onclick') || ''))) el.remove();
+    });
+    var w = document.createElement('span'); w.className = 'pwe-wrap';
+    par.insertBefore(w, inp); w.appendChild(inp);
+    var b = document.createElement('button'); b.type = 'button'; b.className = 'pwe-btn';
+    function maj() { var vu = inp.type === 'text'; b.innerHTML = vu ? FERME : OUVERT; b.setAttribute('aria-pressed', vu ? 'true' : 'false'); b.setAttribute('aria-label', vu ? 'Masquer le mot de passe' : 'Afficher le mot de passe'); }
+    b.addEventListener('mousedown', function (e) { e.preventDefault(); });
+    b.addEventListener('click', function (e) {
+      e.preventDefault(); e.stopPropagation();
+      var focus = document.activeElement === inp, a = inp.selectionStart, z = inp.selectionEnd;
+      inp.type = inp.type === 'password' ? 'text' : 'password'; maj();
+      if (focus) { try { inp.focus(); inp.setSelectionRange(a, z); } catch (er) {} }
+    });
+    w.appendChild(b); maj();
+    /* si un autre bouton (case « afficher ») change le type, l'icône suit */
+    new MutationObserver(maj).observe(inp, { attributes: true, attributeFilter: ['type'] });
+  }
+  function scan(root) { (root.querySelectorAll ? root : document).querySelectorAll('input[type="password"]:not([data-pwe])').forEach(equiper); }
+  function go() {
+    scan(document);
+    new MutationObserver(function (ms) { ms.forEach(function (m) { m.addedNodes.forEach(function (n) { if (n.nodeType !== 1) return; if (n.matches && n.matches('input[type="password"]')) equiper(n); else scan(n); }); }); })
+      .observe(document.body, { childList: true, subtree: true });
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', go); else go();
+})();
