@@ -58,8 +58,25 @@ h1 em,h2 em{font-style:normal;background:linear-gradient(90deg,#4F8BFF,#00D4FF 6
 .vid-dur{position:absolute;right:16px;bottom:16px;padding:6px 10px;border-radius:10px;background:rgba(5,9,20,0.82);border:1px solid var(--line);font-family:Sora,sans-serif;font-size:13px;}
 .cta-zone{text-align:center;margin:26px 0 8px;}
 .cta-zone p{margin-top:12px;color:var(--dim);font-size:14px;}
-.hint{display:none;text-align:center;margin-top:18px;color:var(--cyan);font-family:Sora,sans-serif;font-weight:700;font-size:13px;letter-spacing:2px;}
-.hint.on{display:block;animation:open .6s ease both;}
+.proof-strip{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:18px;}
+.proof-strip span{padding:8px 12px;border-radius:999px;background:rgba(0,255,136,0.07);border:1px solid rgba(0,255,136,0.3);font-size:13px;color:var(--dim);}
+.proof-strip b{color:#00FF88;font-family:Sora,sans-serif;margin-right:4px;}
+.hint{display:block;width:100%;margin:26px 0 0;padding:18px 16px;border-radius:18px;border:1px dashed rgba(0,212,255,0.45);background:rgba(0,212,255,0.05);cursor:pointer;text-align:center;font-family:inherit;color:var(--white);}
+.hint span{display:block;font-size:16px;color:var(--dim);margin-bottom:6px;}
+.hint b{font-family:Sora,sans-serif;font-size:15px;letter-spacing:1.5px;color:var(--cyan);text-transform:uppercase;}
+.hint i{display:inline-block;font-style:normal;animation:hintB 1.4s ease-in-out infinite;}
+.hint:focus-visible{outline:3px solid var(--gold);outline-offset:3px;}
+@keyframes hintB{0%,100%{transform:translateY(0)}50%{transform:translateY(5px)}}
+/* CTA qui attirent l'oeil */
+.cta-zone .btn,.cta-band .btn,.final .btn,.sticky-cta .btn{position:relative;overflow:hidden;isolation:isolate;animation:ctaGlow 2.2s ease-in-out infinite;}
+.cta-zone .btn::after,.cta-band .btn::after,.final .btn::after,.sticky-cta .btn::after{content:"";position:absolute;top:0;bottom:0;left:-60%;width:45%;background:linear-gradient(105deg,transparent,rgba(255,255,255,0.75),transparent);transform:skewX(-20deg);animation:ctaShine 3s ease-in-out infinite;z-index:-1;pointer-events:none;}
+.cta-zone .btn svg,.cta-band .btn svg,.final .btn svg{animation:ctaArrow 1.2s ease-in-out infinite;}
+.cta-band{position:relative;border:1px solid transparent!important;background:linear-gradient(120deg,rgba(18,30,66,0.95),rgba(8,16,38,0.95)) padding-box,linear-gradient(var(--ang,0deg),var(--blue),var(--cyan),var(--gold),var(--cyan),var(--blue)) border-box!important;animation:ctaBorder 4s linear infinite;}
+@property --ang{syntax:"<angle>";initial-value:0deg;inherits:false}
+@keyframes ctaBorder{to{--ang:360deg}}
+@keyframes ctaGlow{0%,100%{box-shadow:0 0 22px rgba(0,212,255,0.45),0 0 0 0 rgba(0,212,255,0.45)}50%{box-shadow:0 0 46px rgba(0,212,255,0.9),0 0 0 10px rgba(0,212,255,0)}}
+@keyframes ctaShine{0%,55%{left:-60%}85%,100%{left:130%}}
+@keyframes ctaArrow{0%,100%{transform:translate(0,0)}50%{transform:translate(3px,-3px)}}
 
 /* sections révélées après le clic sur la vidéo */
 #suite{display:none;}
@@ -200,6 +217,29 @@ footer a{color:rgba(169,184,214,0.8);margin:0 6px;}
 .sticky-cta .in span b{color:var(--white);font-family:Sora,sans-serif;}
 .sticky-cta .btn{padding:14px 22px;font-size:15px;}
 
+.cta-acts{display:flex;flex-shrink:0}
+.gal{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:14px;}
+.gal img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:14px;border:1px solid var(--line);display:block;}
+.gal.plat{grid-template-columns:repeat(2,minmax(0,1fr));margin-top:22px}.gal.plat img{aspect-ratio:16/10;object-fit:cover;object-position:top}
+.gal.four{grid-template-columns:repeat(2,minmax(0,1fr))}.gal.four img{aspect-ratio:4/3}
+.gal.two{grid-template-columns:repeat(2,minmax(0,1fr));max-width:440px}.gal.two img{aspect-ratio:9/16}
+.glabel{font-family:Sora,sans-serif;font-weight:700;font-size:12px;letter-spacing:2px;color:var(--gold);margin-top:26px;}
+.mini{font-size:13px!important;color:var(--dim);margin-top:14px;opacity:.8}
+.formules{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:22px}
+.fo{padding:18px}.fo small{display:block;font-family:Sora,sans-serif;font-size:11px;font-weight:700;letter-spacing:1.5px;color:var(--cyan);margin-bottom:8px}.fo b{display:block;font-size:16px;margin-bottom:6px}.fo span{font-size:14px;color:var(--dim);line-height:1.55}
+.fo.hot{border-color:rgba(255,215,0,.5);box-shadow:0 0 30px rgba(255,215,0,.12)}.fo.hot small{color:var(--gold)}
+.demo-box{margin-top:26px;padding:22px;display:flex;align-items:center;gap:16px;border-color:rgba(255,215,0,.45);background:linear-gradient(120deg,rgba(255,215,0,.10),rgba(10,18,40,.7))}
+.demo-ic{font-size:34px}.demo-box b{display:block;font-family:Sora,sans-serif;font-size:17px}.demo-box span{display:block;font-size:14px;color:var(--dim);margin-top:4px;line-height:1.5}
+.btn-demo{flex-shrink:0;padding:14px 20px;border-radius:999px;border:1px solid rgba(255,215,0,.6);color:var(--gold);font-family:Sora,sans-serif;font-weight:700;font-size:14px;text-decoration:none;text-align:center}
+.btn-demo:hover{background:rgba(255,215,0,.1)}.btn-demo:focus-visible,.vlog-play:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+.vlog{position:relative;margin-top:22px;border-radius:20px;overflow:hidden;aspect-ratio:16/9;background:#000;border:1px solid var(--line)}
+.vlog img{width:100%;height:100%;object-fit:cover;display:block;filter:brightness(.7)}
+.vlog iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.vlog-play{position:absolute;left:50%;top:50%;width:72px;height:72px;margin:-36px 0 0 -36px;border-radius:50%;border:0;cursor:pointer;background:#FF0033;display:flex;align-items:center;justify-content:center;box-shadow:0 0 40px rgba(255,0,51,.5)}
+.vlog-tag{position:absolute;left:14px;bottom:14px;padding:10px 14px;border-radius:12px;background:rgba(5,9,20,.8)}.vlog-tag small{display:block;font-size:11px;font-weight:700;letter-spacing:1.5px;color:#FF5470}.vlog-tag b{font-size:15px}
+.garantie{padding:30px 24px;text-align:center;border-color:rgba(0,255,136,.45);background:linear-gradient(140deg,rgba(0,255,136,.10),rgba(10,18,40,.7))}
+.g-ic{font-size:44px;margin-bottom:8px}.garantie p{color:var(--dim);font-size:16px;line-height:1.7;max-width:600px;margin:12px auto 0}.mini-link{display:inline-block;margin-top:12px;font-size:13px;color:var(--cyan)}
+@media(max-width:700px){.formules{grid-template-columns:1fr}.demo-box{flex-direction:column;text-align:center}.btn-demo{width:100%}.cta-acts .btn{width:100%}.cta-acts{display:block}.gal.plat{grid-template-columns:1fr}}
 @media(max-width:700px){
   .grid2,.compare,.story-me{grid-template-columns:1fr}
   .grid3{grid-template-columns:1fr}
@@ -234,8 +274,8 @@ footer a{color:rgba(169,184,214,0.8);margin:0 6px;}
 <main class="wrap" id="top">
   <section class="vhero">
     <div class="pill"><i></i>DIGITAL HUSTLER ACADEMY · PAR QUINCY</div>
-    <h1>DHA Trading.<br/>Un plan clair pour <em>apprendre les marchés.</em></h1>
-    <p class="lead">Une méthode, un mentor, une communauté. Je t'explique tout dans la vidéo ci-dessous, la candidature se fait juste après.</p>
+    <h1>Arrête d'apprendre le trading au hasard.<br/><em>Suis un plan qui marche.</em></h1>
+    <p class="lead">Regarde la vidéo jusqu'au bout. En 4 minutes, je te montre comment mes membres sont passés de zéro à de vrais résultats, et comment toi aussi tu peux le faire.</p>
     <a class="down" href="#video" aria-label="Aller à la vidéo"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12l7 7 7-7"/></svg></a>
   </section>
 
@@ -251,34 +291,38 @@ footer a{color:rgba(169,184,214,0.8);margin:0 6px;}
   </section>
 
   <div class="cta-zone">
-    <a class="btn btn-lg" href="dha-candidature.html?src=video" data-candid="sous-video">Poser ma candidature pour rejoindre la DHA
+    <a class="btn btn-lg" href="dha-candidature.html?src=video" data-candid="sous-video">Je veux rejoindre la DHA
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
-    <p>3 minutes. Aucun engagement à ce stade.</p>
+    <p>Candidature gratuite · 3 minutes · je la lis moi-même</p>
+    <div class="proof-strip"><span><b>100k</b> challenge prop firm validé</span><span><b>+1 800 €</b> sur la semaine</span><span><b>0 → 20 €/jour</b> en 1 mois</span></div>
   </div>
-  <div class="hint" id="hint">↓ TOUT LE DÉTAIL EST JUSTE EN DESSOUS</div>
+  <button type="button" class="hint" id="hint"><span>Besoin d'en savoir plus avant de passer à l'action ?</span><b>Regarde la suite <i aria-hidden="true">↓</i></b></button>
 
   <!-- Tout ce qui suit s'ouvre quand la personne lance la vidéo -->
   <div id="suite" aria-live="polite">
 
-    <!-- 1. Ce que tu rejoins -->
+    <!-- A. Résultats membres -->
     <section class="sec">
-      <div class="kick">CE QUE TU REJOINS</div>
-      <h2>Pas juste une formation. <em>Un cadre pour avancer.</em></h2>
-      <p>Seul devant ton écran, tu te perds entre les vidéos YouTube et les stratégies contradictoires. Ici, tu as un ordre, des règles et des gens qui avancent avec toi.</p>
-      <div class="grid2">
-        <div class="card feat"><div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg></div><b>17 modules, dans l'ordre</b><span>Des bases jusqu'à ma stratégie complète en Smart Money Concepts. Vidéo, quiz et exercice à chaque étape.</span></div>
-        <div class="card feat"><div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="2" y="7" width="20" height="15" rx="2"/><path d="m17 2-5 5-5-5"/></svg></div><b>Lives 2 fois par semaine</b><span>Mardi trading, jeudi mindset et bilan. Tu poses tes questions en direct, les replays restent dispo.</span></div>
-        <div class="card feat"><div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><b>Une vraie communauté</b><span>Un groupe qui partage ses analyses, des sorties en équipe et des séminaires. Personne n'avance seul.</span></div>
-        <div class="card feat"><div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 12h4M8 10v4M15 13h.01M18 11h.01"/><rect x="2" y="6" width="20" height="12" rx="2"/></svg></div><b>Une plateforme qui te fait avancer</b><span>XP, niveaux, quêtes du jour et classement : tu vois ta progression chaque jour et tu restes régulier.</span></div>
+      <div class="kick">ILS SONT PASSÉS PAR LÀ</div>
+      <h2>Des parcours de membres, <em>pas des promesses.</em></h2>
+      <div class="stories">
+        <div class="card story"><img src="avis-noah.jpg" alt="Noah"/><div><b>Noah</b><div class="steps"><div><strong>Avant :</strong> il tradait déjà, mais sans stratégie stable.</div><div><strong>1 mois :</strong> du travail en démo pour maîtriser la méthode.</div><div><strong>Aujourd'hui :</strong> <span class="res">challenge prop firm 100k validé.</span></div></div></div></div>
+        <div class="card story"><img src="avis-loid.jpg" alt="Loïd"/><div><b>Loïd</b><div class="steps"><div><strong>Avant :</strong> il ne connaissait rien au trading.</div><div><strong>Quelques semaines :</strong> premiers résultats, 1 à 3 € par jour.</div><div><strong>1 mois après :</strong> <span class="res">16 à 20 € par jour.</span></div></div></div></div>
+        <div class="card story"><img src="avis-akim.jpg" alt="Akim"/><div><b>Akim</b><div class="steps"><div><strong>Avant :</strong> il avait tout essayé et stagnait.</div><div><strong>Le déclic :</strong> il rejoint la DHA et suit la méthode.</div><div><strong>Aujourd'hui :</strong> <span class="res">il a repris goût au trading, analyses structurées.</span></div></div></div></div>
       </div>
+      <div class="proofs"><img src="avis-7.jpg" alt="Résultat de trading d'un membre DHA : +483 € et 460 € retirés" loading="lazy"/><img src="avis-8.jpg" alt="Résultat d'un membre DHA : +747 € de profit" loading="lazy"/><img src="avis-9.jpg" alt="Gains du jour d'un membre DHA" loading="lazy"/><img src="avis-10.jpg" alt="Retours de membres DHA : 1 800 € de bénéfice sur la semaine, +180 € sur la matinée" loading="lazy"/><img src="avis-11.jpg" alt="Résultat d'un membre DHA sur le canal : +197 €" loading="lazy"/><img src="avis-12.jpg" alt="Story d'un membre DHA : +12,97 % sur la journée" loading="lazy"/><img src="avis-1.jpg" alt="Preuve de résultat d'un membre" loading="lazy"/><img src="avis-2.jpg" alt="Preuve de résultat d'un membre" loading="lazy"/><img src="avis-3.jpg" alt="Message d'un membre" loading="lazy"/></div>
     </section>
+    <div class="card cta-band">
+      <div><b>Noah, Loïd et Akim ont commencé par cette candidature.</b><span>Le prochain parcours affiché ici, ça peut être le tien. 3 minutes, aucun engagement.</span></div>
+      <div class="cta-acts"><a class="btn btn-md" href="dha-candidature.html?src=video" data-candid="bande-resultats">Je me lance <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></a></div>
+    </div>
 
-    <!-- 2. Mon histoire -->
+    <!-- B. Qui je suis -->
     <section class="sec">
       <div class="kick">QUI JE SUIS</div>
       <h2>Moi c'est Quincy. <em>J'ai fait toutes les erreurs avant toi.</em></h2>
       <div class="story-me">
-        <img src="call-2.jpg" alt="Quincy pendant un appel avec les membres DHA" loading="lazy"/>
+        <img src="quincy-studio.jpg" alt="Quincy dans le studio" loading="lazy" style="object-position:72% 62%"/>
         <div class="txt">
           <p>J'ai 21 ans. Fast-food, intérim, petits taffs : je savais que je voulais pas faire ça toute ma vie. Pas de métier qui me passionnait, et j'ai même raté mon bac la première fois.</p>
           <div class="timeline">
@@ -291,15 +335,27 @@ footer a{color:rgba(169,184,214,0.8);margin:0 6px;}
       <div class="txt" style="margin-top:22px"><p>Tout ce que j'aurais aimé avoir à mes débuts, je l'ai réuni au même endroit. Et j'ai appelé ça la DHA, parce que c'est exactement ce qui fait la différence en trading :</p></div>
       <div class="dha-acr"><span><b>D</b>Discipline</span><span><b>H</b>Habitude</span><span><b>A</b>Action</span></div>
     </section>
-
     <div class="card cta-band">
-      <div><b>Tu veux qu'on avance ensemble ?</b><span>La candidature prend 3 minutes. Je la lis moi-même.</span></div>
-      <a class="btn btn-md" href="dha-candidature.html?src=video" data-candid="bande-1">Poser ma candidature</a>
+      <div><b>J'ai galéré seul pendant des mois. Toi, t'es pas obligé.</b><span>La candidature prend 3 minutes. Je la lis moi-même.</span></div>
+      <div class="cta-acts"><a class="btn btn-md" href="dha-candidature.html?src=video" data-candid="bande-histoire">Je veux avancer avec toi <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></a></div>
     </div>
 
-    <!-- 3. Le programme -->
+    <!-- C. Programme d'accompagnement -->
+    
     <section class="sec">
-      <div class="kick">LE PROGRAMME</div>
+      <div class="kick">LE PROGRAMME D'ACCOMPAGNEMENT</div>
+      <h2>Pas juste des vidéos. <em>Un cadre qui t'empêche de lâcher.</em></h2>
+      <p>Seul devant ton écran, tu te perds entre les vidéos YouTube et les stratégies contradictoires. Ici, tu as un ordre, des règles et des gens qui avancent avec toi.</p>
+      <div class="grid2">
+        <div class="card feat"><div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg></div><b>17 modules, dans l'ordre</b><span>Des bases jusqu'à ma stratégie complète en Smart Money Concepts. Vidéo, quiz et exercice à chaque étape.</span></div>
+        <div class="card feat"><div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="2" y="7" width="20" height="15" rx="2"/><path d="m17 2-5 5-5-5"/></svg></div><b>Lives 2 fois par semaine</b><span>Mardi trading, jeudi mindset et bilan. Tu poses tes questions en direct, les replays restent dispo.</span></div>
+        <div class="card feat"><div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><b>Une vraie communauté</b><span>Un groupe qui partage ses analyses, des sorties en équipe et des séminaires. Personne n'avance seul.</span></div>
+        <div class="card feat"><div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 12h4M8 10v4M15 13h.01M18 11h.01"/><rect x="2" y="6" width="20" height="12" rx="2"/></svg></div><b>Une plateforme qui te fait avancer</b><span>XP, niveaux, quêtes du jour et classement : tu vois ta progression chaque jour et tu restes régulier.</span></div>
+      </div>
+    </section>
+    
+    <section class="sec">
+      <div class="kick">LA FORMATION</div>
       <h2>17 modules. <em>Tu passes au suivant quand tu maîtrises.</em></h2>
       <p>Chaque module débloque le suivant. Pas de raccourci, pas de chapitre sauté : c'est ce qui te permet de construire une méthode solide au lieu d'empiler des bouts de stratégies.</p>
       <div class="phases">
@@ -308,8 +364,17 @@ footer a{color:rgba(169,184,214,0.8);margin:0 6px;}
         <div class="card phase"><div class="n">PHASE 3</div><div><b>L'exécution, ensemble</b><p>On applique la stratégie ensemble sur les marchés jusqu'à ce que tu sois autonome. D'abord en démo, puis seulement quand c'est maîtrisé.</p><div class="tags"><span>Plan de trading</span><span>Journal</span><span>Psychologie</span><span>Autonomie</span></div></div></div>
       </div>
     </section>
-
-    <!-- 4. Ta semaine -->
+    <section class="sec">
+      <div class="kick">TA FORMULE</div>
+      <h2>3 façons d'être accompagné. <em>On choisit ensemble pendant l'appel.</em></h2>
+      <div class="formules">
+        <div class="card fo"><small>ESSENTIEL</small><b>La formation en autonomie</b><span>Les 17 modules, le module Mindset et tes questions par écrit 24h/24.</span></div>
+        <div class="card fo hot"><small>EN GROUPE · LE PLUS CHOISI</small><b>Formation + accompagnement</b><span>Appels 2 fois par semaine, sorties, séminaire en villa et copy trading inclus, jusqu'à tes premiers revenus réels.</span></div>
+        <div class="card fo"><small>1:1 · LE PLUS COMPLET</small><b>Tout le groupe + un suivi individuel</b><span>Tu m'appelles dès que tu bloques. Copy trading inclus et garantie satisfait ou remboursé.</span></div>
+      </div>
+      <div class="chips"><span>💳 Paiement possible en 3 fois avec Klarna</span></div>
+    </section>
+    
     <section class="sec">
       <div class="kick">TA SEMAINE TYPE</div>
       <h2>Pensé pour quelqu'un <em>qui bosse à côté.</em></h2>
@@ -329,8 +394,19 @@ footer a{color:rgba(169,184,214,0.8);margin:0 6px;}
         <span>🔁 Replays si tu rates un live</span>
       </div>
     </section>
+    <div class="card cta-band">
+      <div><b>Chaque semaine sans méthode, c'est une semaine à tourner en rond.</b><span>Pose ta candidature, je te recontacte personnellement pour choisir ta formule.</span></div>
+      <div class="cta-acts"><a class="btn btn-md" href="dha-candidature.html?src=video" data-candid="bande-programme">Je veux être accompagné <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></a></div>
+    </div>
 
-    <!-- 5. Progression -->
+    <!-- D. L'intérieur de la plateforme -->
+    <section class="sec">
+      <div class="kick">L'INTÉRIEUR DE LA PLATEFORME</div>
+      <h2>Regarde ce qui t'attend <em>à l'intérieur.</em></h2>
+      <p>Modules en vidéo, cours illustrés, quiz, questions directes : tout est au même endroit, sur ton téléphone ou ton ordi.</p>
+      <div class="gal plat"><img src="plateforme-1.jpg" alt="Dashboard : ton niveau, ton XP et tes quêtes du jour" loading="lazy"/><img src="plateforme-2.jpg" alt="Formation : tous les modules et ta progression" loading="lazy"/><img src="plateforme-3-video.jpg" alt="La vidéo de formation dans chaque module" loading="lazy"/><img src="plateforme-4.jpg" alt="Des cours illustrés avec des exemples concrets" loading="lazy"/><img src="plateforme-5.jpg" alt="Un quiz pour valider tes acquis" loading="lazy"/><img src="plateforme-6.jpg" alt="Une question ? Tu la poses directement" loading="lazy"/></div>
+    </section>
+    
     <section class="sec">
       <div class="kick">TA PROGRESSION</div>
       <h2>Tu vois exactement <em>où tu en es.</em></h2>
@@ -348,13 +424,78 @@ footer a{color:rgba(169,184,214,0.8);margin:0 6px;}
         <div class="card"><b>+50 XP</b><span>tu expliques en live</span></div>
       </div>
     </section>
-
+    <div class="card demo-box">
+      <div class="demo-ic">🎮</div>
+      <div><b>Tu veux tester avant de te décider ?</b><span>Crée ton compte démo gratuit et regarde la première vidéo de la formation. Tu vois par toi-même si la plateforme te plaît.</span></div>
+      <a class="btn-demo" href="dha-inscription-demo.html" data-candid="demo">Créer mon compte démo gratuit →</a>
+    </div>
     <div class="card cta-band">
-      <div><b>Prêt à commencer au rang New Hustler ?</b><span>Pose ta candidature, je te recontacte personnellement.</span></div>
-      <a class="btn btn-md" href="dha-candidature.html?src=video" data-candid="bande-2">Je candidate</a>
+      <div><b>Tu as vu l'intérieur. Maintenant, viens t'en servir.</b><span>Candidature en 3 minutes, je la lis moi-même.</span></div>
+      <div class="cta-acts"><a class="btn btn-md" href="dha-candidature.html?src=video" data-candid="bande-plateforme">Je veux mon accès <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></a></div>
     </div>
 
-    <!-- 6. Seul vs DHA -->
+    <!-- E. Copy trading -->
+    <section class="sec">
+      <div class="kick">📡 LE CANAL COPY TRADING</div>
+      <h2>Tu apprends, <em>et en même temps tu copies.</em></h2>
+      <p>Pendant que tu te formes, tu as accès aux canaux de signaux Gold : les prises de position arrivent en direct sur Telegram, avec l'entrée, le stop et les objectifs. Tu apprends à les exécuter sur ton compte, d'abord en démo.</p>
+      <div class="grid2">
+        <div class="card feat"><b>📲 Les trades en direct</b><span>Entrée, stop loss et 3 take profit. Tu reçois la notif, tu exécutes.</span></div>
+        <div class="card feat"><b>🎥 Tutos pas à pas</b><span>Ouvrir ton compte, installer MT5, prendre un trade : tout est expliqué en vidéo.</span></div>
+        <div class="card feat"><b>📊 Ton suivi de résultats</b><span>Un espace pour noter tes trades et voir ta progression.</span></div>
+        <div class="card feat"><b>✅ Inclus en groupe et en 1:1</b><span>Sans supplément. En option sur l'offre Essentiel.</span></div>
+      </div>
+      <div class="gal two"><img src="avis-11.jpg" alt="Résultat d'un membre sur le canal : +197 €" loading="lazy"/><img src="avis-9.jpg" alt="Gains du jour d'un membre DHA" loading="lazy"/></div>
+      <p class="mini">Signaux partagés à but pédagogique, pas un conseil en investissement.</p>
+    </section>
+    <div class="card cta-band">
+      <div><b>Le canal est inclus dans l'accompagnement.</b><span>Pose ta candidature, on regarde ensemble la formule qui te va.</span></div>
+      <div class="cta-acts"><a class="btn btn-md" href="dha-candidature.html?src=video" data-candid="bande-copy">Je veux accès au canal <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></a></div>
+    </div>
+
+    <!-- F. Communauté -->
+    <section class="sec">
+      <div class="kick">LA COMMUNAUTÉ EN VRAI</div>
+      <h2>On se voit aussi <em>en dehors des écrans.</em></h2>
+      <p>Appels de groupe 2 fois par semaine, sorties en équipe, séminaire en villa : un réseau de gens aussi ambitieux que toi. Regarde comment ça se passe vraiment.</p>
+      <div class="vlog" id="vlog"><img src="https://i.ytimg.com/vi/kK0IJdYV8Xs/hqdefault.jpg" alt="Vlog : une sortie avec l'équipe DHA" loading="lazy" onerror="this.onerror=null;this.src='sortie-1.jpg'"/><button type="button" class="vlog-play" id="vlog-play" aria-label="Regarder le vlog de la sortie avec l'équipe DHA"><svg width="28" height="28" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M8 5.5v13a1 1 0 0 0 1.5.87l11-6.5a1 1 0 0 0 0-1.74l-11-6.5A1 1 0 0 0 8 5.5Z"/></svg></button><div class="vlog-tag"><small>▶ VLOG YOUTUBE</small><b>Une sortie avec l'équipe DHA</b></div></div>
+      <div class="glabel">🏎️ SORTIE EN ÉQUIPE AU SPEED PARK</div>
+      <div class="gal four"><img src="sortie-1.jpg" alt="Karting entre membres DHA" loading="lazy"/><img src="sortie-2.jpg" alt="Bowling entre membres DHA" loading="lazy"/><img src="sortie-3.jpg" alt="Air hockey entre membres DHA" loading="lazy"/><img src="sortie-4.jpg" alt="Jeux d'arcade entre membres DHA" loading="lazy"/></div>
+      <div class="glabel">🏡 SÉMINAIRE EN VILLA (3 JOURS)</div>
+      <div class="gal "><img src="sem-3.jpg" alt="Session trading pendant le séminaire" loading="lazy"/><img src="sem-4.jpg" alt="Analyse de marché pendant le séminaire" loading="lazy"/><img src="sem-5.jpg" alt="Barbecue entre membres" loading="lazy"/><img src="sem-6.jpg" alt="Soirée entre membres" loading="lazy"/><img src="sem-1.jpg" alt="La villa du séminaire" loading="lazy"/><img src="sem-8.jpg" alt="Sortie en ville pendant le séminaire" loading="lazy"/></div>
+      <div class="glabel">📞 EN APPEL ET EN PRÉSENTIEL</div>
+      <div class="gal "><img src="call-1.jpg" alt="Live trading en appel de groupe" loading="lazy"/><img src="meetup-1.jpg" alt="Rencontre en présentiel" loading="lazy"/><img src="meetup-2.jpg" alt="Membres DHA réunis" loading="lazy"/></div>
+      <p class="mini">Et si tu préfères avancer seul de ton côté, c'est possible aussi : la communauté reste optionnelle.</p>
+    </section>
+    <div class="card cta-band">
+      <div><b>La prochaine sortie, tu peux y être.</b><span>Rejoins le groupe : candidature en 3 minutes.</span></div>
+      <div class="cta-acts"><a class="btn btn-md" href="dha-candidature.html?src=video" data-candid="bande-communaute">Je veux rejoindre l'équipe <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></a></div>
+    </div>
+
+    <!-- G. Avantages membres -->
+    <section class="sec">
+      <div class="kick">AVANTAGES MEMBRES</div>
+      <h2>Plus qu'une formation : <em>un style de vie.</em></h2>
+      <p>Grâce à notre partenariat avec une conciergerie de voyages, les membres de la DHA accèdent à des vols en classe Business et First jusqu'à 70 % moins chers.</p>
+      <div class="chips"><span>✈️ Vols Business jusqu'à -70 %</span><span>🥂 Vols First jusqu'à -70 %</span><span>🛎️ Conciergerie dédiée</span><span>🔒 Réservé aux membres</span></div>
+      <div class="gal "><img src="avantage-vol-1.jpg" alt="Offre vol Business ou First jusqu'à 70 % de réduction" loading="lazy"/><img src="avantage-vol-3.jpg" alt="Cabine Business" loading="lazy"/><img src="avantage-vol-4.jpg" alt="Voyage via la conciergerie" loading="lazy"/></div>
+    </section>
+    <div class="card cta-band">
+      <div><b>Ces avantages sont réservés aux membres.</b><span>Pose ta candidature pour en faire partie.</span></div>
+      <div class="cta-acts"><a class="btn btn-md" href="dha-candidature.html?src=video" data-candid="bande-avantages">Je deviens membre <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></a></div>
+    </div>
+
+    <!-- H. Garantie -->
+    <section class="sec">
+      <div class="kick">ZÉRO RISQUE</div>
+      <div class="card garantie">
+        <div class="g-ic">🛡️</div>
+        <h2>Satisfait <em>ou remboursé.</em></h2>
+        <p>Sur l'accompagnement 1:1 : si au bout de 2 mois tu n'es pas satisfait, et que malgré ton travail et le respect de nos conseils tu n'as obtenu aucun résultat, tu es remboursé. Le risque, c'est moi qui le prends.</p>
+        <a href="dha-cgv.html" class="mini-link">Voir les conditions dans les CGV</a>
+      </div>
+    </section>
+    
     <section class="sec">
       <div class="kick">LA DIFFÉRENCE</div>
       <h2>Apprendre seul <em>vs</em> apprendre à la DHA.</h2>
@@ -367,8 +508,7 @@ footer a{color:rgba(169,184,214,0.8);margin:0 6px;}
         <div class="vs-row"><div>Tu risques ton argent trop tôt</div><div>Démo d'abord, vrai compte quand c'est maîtrisé</div></div>
       </div>
     </section>
-
-    <!-- 7. Pour qui -->
+    
     <section class="sec">
       <div class="kick">SOYONS CLAIRS</div>
       <h2>La DHA, c'est pour toi si…</h2>
@@ -379,20 +519,12 @@ footer a{color:rgba(169,184,214,0.8);margin:0 6px;}
           <ul><li>Tu cherches de l'argent facile ou des signaux miracles</li><li>Tu veux des résultats sans faire les exercices</li><li>Tu n'es pas prêt à suivre des règles de gestion du risque</li></ul></div>
       </div>
     </section>
+    <div class="card cta-band">
+      <div><b>Tu te reconnais dans la colonne verte ?</b><span>Alors ta place est ici. 3 minutes, aucun engagement.</span></div>
+      <div class="cta-acts"><a class="btn btn-md" href="dha-candidature.html?src=video" data-candid="bande-garantie">Je pose ma candidature <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></a></div>
+    </div>
 
-    <!-- 8. Membres -->
-    <section class="sec">
-      <div class="kick">ILS SONT PASSÉS PAR LÀ</div>
-      <h2>Des parcours de membres, <em>pas des promesses.</em></h2>
-      <div class="stories">
-        <div class="card story"><img src="avis-noah.jpg" alt="Noah"/><div><b>Noah</b><div class="steps"><div><strong>Avant :</strong> il tradait déjà, mais sans stratégie stable.</div><div><strong>1 mois :</strong> du travail en démo pour maîtriser la méthode.</div><div><strong>Aujourd'hui :</strong> <span class="res">challenge prop firm 100k validé.</span></div></div></div></div>
-        <div class="card story"><img src="avis-loid.jpg" alt="Loïd"/><div><b>Loïd</b><div class="steps"><div><strong>Avant :</strong> il ne connaissait rien au trading.</div><div><strong>Quelques semaines :</strong> premiers résultats, 1 à 3 € par jour.</div><div><strong>1 mois après :</strong> <span class="res">16 à 20 € par jour.</span></div></div></div></div>
-        <div class="card story"><img src="avis-akim.jpg" alt="Akim"/><div><b>Akim</b><div class="steps"><div><strong>Avant :</strong> il avait tout essayé et stagnait.</div><div><strong>Le déclic :</strong> il rejoint la DHA et suit la méthode.</div><div><strong>Aujourd'hui :</strong> <span class="res">il a repris goût au trading, analyses structurées.</span></div></div></div></div>
-      </div>
-      <div class="proofs"><img src="avis-7.jpg" alt="Résultat de trading d'un membre DHA : +483 € et 460 € retirés" loading="lazy"/><img src="avis-8.jpg" alt="Résultat d'un membre DHA : +747 € de profit" loading="lazy"/><img src="avis-9.jpg" alt="Gains du jour d'un membre DHA" loading="lazy"/><img src="avis-10.jpg" alt="Retours de membres DHA : 1 800 € de bénéfice sur la semaine, +180 € sur la matinée" loading="lazy"/><img src="avis-11.jpg" alt="Résultat d'un membre DHA sur le canal : +197 €" loading="lazy"/><img src="avis-12.jpg" alt="Story d'un membre DHA : +12,97 % sur la journée" loading="lazy"/><img src="avis-1.jpg" alt="Preuve de résultat d'un membre" loading="lazy"/><img src="avis-2.jpg" alt="Preuve de résultat d'un membre" loading="lazy"/><img src="avis-3.jpg" alt="Message d'un membre" loading="lazy"/></div>
-    </section>
-
-    <!-- 9. Objection -->
+    <!-- I. Objection + étapes -->
     <section class="sec">
       <div class="kick">TU TE DIS PEUT-ÊTRE…</div>
       <div class="card quote">
@@ -401,21 +533,7 @@ footer a{color:rgba(169,184,214,0.8);margin:0 6px;}
         <p>Je vais pas te mentir : je te promets pas que tu deviendras millionnaire. Ce que je t'apporte, c'est des vraies connaissances, une méthode et un suivi.</p>
       </div>
     </section>
-
-    <div class="card cta-band">
-      <div><b>Le plus dur, c'est de commencer.</b><span>3 minutes, aucun engagement. On fait le point ensemble ensuite.</span></div>
-      <a class="btn btn-md" href="dha-candidature.html?src=video" data-candid="bande-3">Poser ma candidature</a>
-    </div>
-
-    <!-- 10. Communauté -->
-    <section class="sec">
-      <div class="kick">LA COMMUNAUTÉ EN VRAI</div>
-      <h2>On se voit aussi <em>en dehors des écrans.</em></h2>
-      <p>Groupe d'échange, sorties, séminaires : un réseau de gens aussi ambitieux que toi. Et si tu préfères avancer seul de ton côté, c'est possible aussi, la communauté reste optionnelle.</p>
-      <div class="photos"><img src="sortie-1.jpg" alt="Sortie karting DHA" loading="lazy"/><img src="vsl-cafe.jpg" alt="Session de travail entre membres DHA" loading="lazy"/><img src="vsl-maison.jpg" alt="Séjour en équipe DHA" loading="lazy"/><img class="wide" src="sem-1.jpg" alt="Séminaire DHA" loading="lazy"/><img src="call-1.jpg" alt="Appel de groupe DHA" loading="lazy"/></div>
-    </section>
-
-    <!-- 11. Étapes -->
+    
     <section class="sec">
       <div class="kick">COMMENT ÇA SE PASSE</div>
       <h2>3 étapes, <em>et tu commences.</em></h2>
@@ -426,10 +544,9 @@ footer a{color:rgba(169,184,214,0.8);margin:0 6px;}
       </div>
       <div class="txt" style="margin-top:16px"><p>Pourquoi une candidature ? Parce que chaque personne que j'accompagne me demande du temps et de l'énergie. Je travaille uniquement avec des gens motivés.</p></div>
     </section>
-
     <div class="card cta-band">
-      <div><b>Étape 1 : ta candidature.</b><span>C'est la seule chose à faire maintenant.</span></div>
-      <a class="btn btn-md" href="dha-candidature.html?src=video" data-candid="bande-4">Je commence</a>
+      <div><b>Étape 1 : ta candidature.</b><span>C'est la seule chose à faire maintenant. Le reste, on le fait ensemble.</span></div>
+      <div class="cta-acts"><a class="btn btn-md" href="dha-candidature.html?src=video" data-candid="bande-etapes">Je commence maintenant <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></a></div>
     </div>
 
     <!-- 12. FAQ -->
@@ -449,9 +566,9 @@ footer a{color:rgba(169,184,214,0.8);margin:0 6px;}
     </section>
 
     <section class="card final">
-      <h2>Dans 3 mois, tu seras content <em>d'avoir commencé aujourd'hui.</em></h2>
-      <p>Dans le pire des cas, tu repars avec plus de clarté. Dans le meilleur des cas, on commence à travailler ensemble.</p>
-      <a class="btn btn-lg" href="dha-candidature.html?src=video" data-candid="final">Je pose ma candidature
+      <h2>Dans 3 mois, tu peux être au même point qu'aujourd'hui. <em>Ou avoir enfin une vraie méthode.</em></h2>
+      <p>Ceux qui avancent ne sont pas plus doués que toi. Ils ont juste décidé de commencer. Dans le pire des cas, tu repars avec plus de clarté. Dans le meilleur, on commence à travailler ensemble cette semaine.</p>
+      <a class="btn btn-lg" href="dha-candidature.html?src=video" data-candid="final">Je passe à l'action maintenant
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
       <small>3 minutes · Aucun engagement · Je te recontacte personnellement</small>
     </section>
@@ -462,12 +579,15 @@ footer a{color:rgba(169,184,214,0.8);margin:0 6px;}
 
 <footer><a href="dha-mentions-legales.html">Mentions légales</a>·<a href="dha-cgv.html">CGV</a>·<a href="dha-confidentialite.html">Confidentialité</a><br/><br/>© 2026 Digital Hustler Academy</footer>
 
-<div class="sticky-cta" id="sticky"><div class="in"><span><b>DHA Trading</b> · candidature en 3 minutes</span><a class="btn" href="dha-candidature.html?src=video" data-candid="bouton-fixe">Poser ma candidature</a></div></div>
+<div class="sticky-cta" id="sticky"><div class="in"><span><b>Ta place à la DHA</b> · candidature en 3 minutes</span><a class="btn" href="dha-candidature.html?src=video" data-candid="bouton-fixe">Je veux ma place</a></div></div>
 
 <script>
 /* ─── Lien de la vidéo de présentation ───
    Colle ici le lien YouTube (non répertorié) ou le lien direct d'un fichier .mp4 */
 var VIDEO_URL = 'videos/vsl-dha.mp4';
+/* ─── Vlog YouTube de la sortie : colle ici le lien de la vidéo ─── */
+var VLOG_URL = 'https://youtu.be/kK0IJdYV8Xs';
+
 
 /* ─── Suivi des visites → Supabase (table landing_events) ───
    Fonctionne sur digitalhustleracademy.digital.  */
@@ -499,6 +619,7 @@ var SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZ
   function ouvrir(){
     if (!suite.classList.contains('on')) { suite.classList.add('on'); hint.classList.add('on'); try { sessionStorage.setItem('dha_vsl', '1'); } catch (e) {} }
   }
+  hint.addEventListener('click', function(){ ouvrir(); track('clic_cta','voir-suite'); var t=suite.querySelector('.sec'); if(t) t.scrollIntoView({behavior:'smooth',block:'start'}); });
   document.getElementById('play').addEventListener('click', function(){
     track('play', 'video');
     var id = ytId(VIDEO_URL);
@@ -507,6 +628,12 @@ var SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZ
     else box.insertAdjacentHTML('beforeend', '<div style="position:absolute;inset:auto 12px 70px 12px;padding:12px 14px;border-radius:12px;background:rgba(5,9,20,0.9);border:1px solid rgba(255,215,0,0.5);color:#FFE58A;font-size:13px;text-align:center">Vidéo bientôt disponible. En attendant, découvre tout juste en dessous.</div>');
     ouvrir();
     setTimeout(function(){ document.getElementById('video').scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 50);
+  });
+  document.getElementById('vlog-play').addEventListener('click', function(){
+    track('clic_cta', 'vlog');
+    var id = ytId(VLOG_URL), v = document.getElementById('vlog');
+    if (id) v.innerHTML = '<iframe src="https://www.youtube-nocookie.com/embed/' + id + '?autoplay=1&rel=0&playsinline=1" title="Vlog sortie équipe DHA" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>';
+    else window.open('https://www.youtube.com/@quincy_hsr', '_blank', 'noopener');
   });
   /* si la personne revient sur la page, la suite reste ouverte */
   try { if (sessionStorage.getItem('dha_vsl') === '1') { suite.classList.add('on'); hint.classList.add('on'); } } catch (e) {}
