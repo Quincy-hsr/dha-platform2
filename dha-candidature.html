@@ -66,6 +66,14 @@ h2{font-family:'Chakra Petch',sans-serif;font-size:clamp(22px,5.4vw,29px);line-h
 .field::placeholder{color:var(--faint);font-weight:500}
 .hint{font-size:15px;color:var(--faint);margin-top:10px}
 .err{font-size:15px;color:var(--red);margin-top:10px;min-height:20px}
+.tel-row{display:flex;gap:8px;align-items:stretch}.tel-row .field{min-width:0}
+.indic{position:relative;flex:0 0 auto;width:auto;display:flex;align-items:center;gap:6px;padding:16px 12px;cursor:pointer;white-space:nowrap}
+.indic[hidden]{display:none}.indic b{font-size:13px;color:var(--dim,#8fa3c0)}
+.indic select{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;font-size:16px}
+.indic:focus-within{border-color:var(--cyan,#00D4FF)}
+.indic option{background:#0b1226;color:#fff}
+.tel-ok{font-size:14px;color:var(--green,#00FF88);margin-top:8px;min-height:18px;font-weight:600}
+.field.bad{border-color:var(--red)}.field.good{border-color:var(--green,#00FF88)}
 
 .chips{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px}
 .chip{padding:12px 6px;border-radius:12px;border:1px solid var(--border);background:var(--card);color:var(--white);font-family:'Chakra Petch',sans-serif;font-size:13px;letter-spacing:.5px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px}
@@ -293,7 +301,11 @@ footer{text-align:center;font-family:'Chakra Petch',sans-serif;font-size:11px;le
         <button class="chip" role="radio" aria-checked="false" data-c="WhatsApp"><b>💬</b>WHATSAPP</button>
         <button class="chip" role="radio" aria-checked="false" data-c="Téléphone"><b>📞</b>TÉLÉPHONE</button>
       </div>
-      <input class="field" id="f-contact" type="text" maxlength="80" placeholder="Choisis d'abord un réseau" disabled>
+      <div class="tel-row" id="tel-row">
+        <label class="field indic" id="indic-wrap" hidden><span id="indic-txt">🇫🇷 +33</span><b aria-hidden="true">▾</b><select id="f-indic" aria-label="Indicatif du pays"></select></label>
+        <input class="field" id="f-contact" type="text" maxlength="80" placeholder="Choisis d'abord un réseau" disabled>
+      </div>
+      <div class="tel-ok" id="tel-ok" aria-live="polite"></div>
       <div class="err" id="e-contact"></div>
       <div class="nav"><button class="back" data-back aria-label="Question précédente">←</button><button class="btn" data-next>SUIVANT →</button></div>
     </section>
@@ -444,8 +456,9 @@ footer{text-align:center;font-family:'Chakra Petch',sans-serif;font-size:11px;le
       var c=R.contact_canal, val=document.getElementById('f-contact').value.trim();
       if(!c){err('contact','Choisis d\'abord un réseau.');return false;}
       if(c==='WhatsApp'||c==='Téléphone'){
-        var d=val.replace(/[^\d+]/g,'');
-        if(d.replace(/\D/g,'').length<9){err('contact','Numéro invalide. Ex : 06 12 34 56 78');return false;}
+        var t=TEL.check(val);
+        if(!t.ok){err('contact',t.msg);document.getElementById('f-contact').classList.add('bad');return false;}
+        val=t.e164;
       } else if(c==='Email'){
         if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(val)){err('contact','Adresse email invalide.');return false;}
       } else {
@@ -457,6 +470,53 @@ footer{text-align:center;font-family:'Chakra Petch',sans-serif;font-size:11px;le
     }
     return true;
   }
+
+  /* ─── Numéro de téléphone : indicatif du pays + vérification ─── */
+  var TEL=(function(){
+    /* [pays, indicatif, longueurs nationales acceptées (sans le 0 de début), on enlève le 0 de début ?, exemple] */
+    var L=[
+      ['France','33',[9],1,'6 12 34 56 78'],['Guadeloupe','590',[9],1,'690 12 34 56'],['Martinique','596',[9],1,'696 12 34 56'],['Guyane','594',[9],1,'694 12 34 56'],['La Réunion','262',[9],1,'692 12 34 56'],['Mayotte','262',[9],1,'639 12 34 56'],
+      ['Belgique','32',[8,9],1,'470 12 34 56'],['Suisse','41',[9],1,'78 123 45 67'],['Luxembourg','352',[6,7,8,9,10,11],0,'621 123 456'],['Canada','1',[10],0,'514 123 4567'],
+      ['Maroc','212',[9],1,'6 12 34 56 78'],['Algérie','213',[9],1,'5 51 23 45 67'],['Tunisie','216',[8],0,'20 123 456'],
+      ['Sénégal','221',[9],0,'77 123 45 67'],['Côte d\'Ivoire','225',[10],0,'07 12 34 56 78'],['Cameroun','237',[9],0,'6 71 23 45 67'],['Mali','223',[8],0,'70 12 34 56'],
+      ['RD Congo','243',[9],1,'81 234 5678'],['Congo','242',[9],0,'06 123 4567'],['Gabon','241',[7,8],0,'06 12 34 56'],['Guinée','224',[9],0,'621 12 34 56'],
+      ['Bénin','229',[8,10],0,'01 90 12 34 56'],['Togo','228',[8],0,'90 12 34 56'],['Burkina Faso','226',[8],0,'70 12 34 56'],['Niger','227',[8],0,'93 12 34 56'],
+      ['Madagascar','261',[9],1,'32 12 345 67'],['Comores','269',[7],0,'321 23 45'],['Maurice','230',[8],0,'5 123 4567'],['Haïti','509',[8],0,'34 12 3456'],
+      ['Royaume-Uni','44',[10],1,'7400 123456'],['Espagne','34',[9],0,'612 34 56 78'],['Portugal','351',[9],0,'912 345 678'],['Italie','39',[9,10,11],0,'312 345 6789'],
+      ['Allemagne','49',[10,11],1,'1512 3456789'],['Pays-Bas','31',[9],1,'6 12345678'],['États-Unis','1',[10],0,'202 555 0123'],['Émirats arabes unis','971',[9],1,'50 123 4567']
+    ];
+    var sel=document.getElementById('f-indic'), inp=document.getElementById('f-contact'), ok=document.getElementById('tel-ok');
+    function drap(n){var m={France:'🇫🇷',Guadeloupe:'🇬🇵',Martinique:'🇲🇶',Guyane:'🇬🇫','La Réunion':'🇷🇪',Mayotte:'🇾🇹',Belgique:'🇧🇪',Suisse:'🇨🇭',Luxembourg:'🇱🇺',Canada:'🇨🇦',Maroc:'🇲🇦','Algérie':'🇩🇿',Tunisie:'🇹🇳','Sénégal':'🇸🇳',"Côte d'Ivoire":'🇨🇮',Cameroun:'🇨🇲',Mali:'🇲🇱','RD Congo':'🇨🇩',Congo:'🇨🇬',Gabon:'🇬🇦','Guinée':'🇬🇳','Bénin':'🇧🇯',Togo:'🇹🇬','Burkina Faso':'🇧🇫',Niger:'🇳🇪',Madagascar:'🇲🇬',Comores:'🇰🇲',Maurice:'🇲🇺','Haïti':'🇭🇹','Royaume-Uni':'🇬🇧',Espagne:'🇪🇸',Portugal:'🇵🇹',Italie:'🇮🇹',Allemagne:'🇩🇪','Pays-Bas':'🇳🇱','États-Unis':'🇺🇸','Émirats arabes unis':'🇦🇪'};return m[n]||'🌍';}
+    sel.innerHTML=L.map(function(x,i){return '<option value="'+i+'">'+drap(x[0])+' +'+x[1]+' · '+x[0]+'</option>';}).join('')+'<option value="autre">🌍 Autre pays (+…)</option>';
+    function norm(s){return String(s||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-z]/g,'');}
+    var choisiMain=false; sel.addEventListener('change',function(){choisiMain=true;maj();inp.focus();});
+    function auto(){ if(choisiMain)return; var p=norm((document.getElementById('f-pays')||{}).value||'France'), k=0;
+      L.forEach(function(x,i){ if(norm(x[0])===p) k=i; }); if(p==='usa'||p==='etatsunis') k=L.findIndex(function(x){return x[0]==='États-Unis';}); sel.value=String(k); }
+    function pays(){ return sel.value==='autre'?null:L[+sel.value]; }
+    function ex(x){return (x[3]?'0':'')+x[4];}
+    function lab(){ var o=sel.options[sel.selectedIndex]; document.getElementById('indic-txt').textContent=o?o.text.split(' · ')[0].replace('🌍 Autre pays (+…)','🌍 +…'):''; }
+    function maj(){ lab(); var x=pays(); inp.placeholder=x?ex(x):'+indicatif et numéro'; if(inp.value) check(inp.value,true); }
+    function check(v,live){
+      var raw=String(v||'').trim(), d=raw.replace(/[^\d+]/g,''), x=pays();
+      if(/^(\+|00)/.test(d)){ /* il a tapé l'indicatif lui-même */
+        var n=d.replace(/^\+|^00/,''), best=null;
+        L.forEach(function(y,i){ if(n.indexOf(y[1])===0 && (!best||y[1].length>L[best][1].length)) best=i; });
+        if(best!==null){ x=L[best]; if(live!==2){sel.value=String(best);lab();} d=n.slice(x[1].length); }
+        else { if(n.length>=8&&n.length<=15) return res(true,'+'+n,'+'+n); return res(false,null,null,'Numéro invalide. Vérifie l\'indicatif et le numéro.'); }
+      } else if(!x){ return res(false,null,null,'Choisis ton pays ou écris ton numéro avec l\'indicatif, ex : +33 6 12 34 56 78'); }
+      var nat=d.replace(/\D/g,''); if(x[3]) nat=nat.replace(/^0/,'');
+      if(!nat) return res(false,null,null,'Indique ton numéro.');
+      if(x[2].indexOf(nat.length)<0){
+        var a=x[2][0]+x[3], z=x[2][x[2].length-1]+x[3], lg=a===z?a:a+' à '+z;
+        return res(false,null,null,(nat.length<x[2][0]?'Il manque des chiffres. ':'Il y a trop de chiffres. ')+'Un numéro '+(x[0]==='France'?'français':'pour '+x[0])+' fait '+lg+' chiffres'+(x[3]?' avec le 0':'')+'. Ex : '+ex(x)+'. Si ton numéro est étranger, change le pays à gauche.');
+      }
+      if(x[1]==='33' && !/^[1-79]/.test(nat)) return res(false,null,null,'Ce numéro français n\'existe pas. Ex : 06 12 34 56 78');
+      return res(true,'+'+x[1]+nat,'+'+x[1]+' '+nat.replace(/(\d{1,2})(?=(\d{2})+$)/g,'$1 ').trim());
+      function res(o,e,affiche,msg){ if(live){ inp.classList.toggle('good',o); inp.classList.toggle('bad',!o&&nat&&nat.length>=(x?Math.max.apply(null,x[2]):8)); ok.textContent=o?'✓ Numéro valide : '+affiche:''; } return {ok:o,e164:e,msg:msg}; }
+    }
+    inp.addEventListener('input',function(){ if(!document.getElementById('indic-wrap').hidden){ check(inp.value,true); if(document.getElementById('e-contact').textContent) err('contact'); } });
+    return {check:function(v){return check(v,true);},auto:auto,maj:maj};
+  })();
 
   function suivant(){
     var s=steps[cur];
@@ -488,6 +548,7 @@ footer{text-align:center;font-family:'Chakra Petch',sans-serif;font-size:11px;le
       var f=document.getElementById('f-contact'), p=PH[c];
       f.disabled=false; f.type=p[1]; f.placeholder=p[2]; f.setAttribute('aria-label',p[0]);
       f.setAttribute('inputmode',p[1]==='tel'?'tel':p[1]==='email'?'email':'text');
+      document.getElementById('indic-wrap').hidden=p[1]!=='tel'; if(p[1]==='tel'){TEL.auto();TEL.maj();}
       err('contact'); f.focus();
       return;
     }
