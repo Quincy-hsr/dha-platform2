@@ -61,6 +61,7 @@ h1 em,h2 em{font-style:normal;background:linear-gradient(90deg,#4F8BFF,#00D4FF 6
 .proof-strip{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:18px;}
 .proof-strip span{padding:8px 12px;border-radius:999px;background:rgba(0,255,136,0.07);border:1px solid rgba(0,255,136,0.3);font-size:13px;color:var(--dim);}
 .proof-strip b{color:#00FF88;font-family:Sora,sans-serif;margin-right:4px;}
+body:not(.vu) .proof-strip,body:not(.vu) .hint,body:not(.vu) .warn{display:none!important;}
 .hint{display:block;width:100%;margin:26px 0 0;padding:18px 16px;border-radius:18px;border:1px dashed rgba(0,212,255,0.45);background:rgba(0,212,255,0.05);cursor:pointer;text-align:center;font-family:inherit;color:var(--white);}
 .hint span{display:block;font-size:16px;color:var(--dim);margin-bottom:6px;}
 .hint b{font-family:Sora,sans-serif;font-size:15px;letter-spacing:1.5px;color:var(--cyan);text-transform:uppercase;}
@@ -617,7 +618,7 @@ var SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZ
   var suite = document.getElementById('suite'), box = document.getElementById('vid-in'), hint = document.getElementById('hint');
   function ytId(u){ var m = String(u).match(/(?:youtu\.be\/|youtube(?:-nocookie)?\.com\/(?:watch\?(?:.*&)?v=|embed\/|shorts\/|live\/))([\w-]{11})/); return m ? m[1] : null; }
   function ouvrir(){
-    if (!suite.classList.contains('on')) { suite.classList.add('on'); hint.classList.add('on'); try { sessionStorage.setItem('dha_vsl', '1'); } catch (e) {} }
+    document.body.classList.add('vu'); if (!suite.classList.contains('on')) { suite.classList.add('on'); hint.classList.add('on'); try { sessionStorage.setItem('dha_vsl', '1'); } catch (e) {} }
   }
   hint.addEventListener('click', function(){ ouvrir(); track('clic_cta','voir-suite'); var t=suite.querySelector('.sec'); if(t) t.scrollIntoView({behavior:'smooth',block:'start'}); });
   document.getElementById('play').addEventListener('click', function(){
@@ -636,7 +637,7 @@ var SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZ
     else window.open('https://www.youtube.com/@quincy_hsr', '_blank', 'noopener');
   });
   /* si la personne revient sur la page, la suite reste ouverte */
-  try { if (sessionStorage.getItem('dha_vsl') === '1') { suite.classList.add('on'); hint.classList.add('on'); } } catch (e) {}
+  try { if (sessionStorage.getItem('dha_vsl') === '1') { document.body.classList.add('vu'); suite.classList.add('on'); hint.classList.add('on'); } } catch (e) {}
   /* chaque clic vers la candidature est enregistré avec l'endroit du bouton */
   document.querySelectorAll('[data-candid]').forEach(function(a){ a.addEventListener('click', function(){ track('clic_cta', a.getAttribute('data-candid')); ouvrir(); }); });
   /* bouton fixe en bas, une fois la vidéo passée, caché quand le dernier CTA est visible */
