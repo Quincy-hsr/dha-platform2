@@ -227,7 +227,15 @@ footer a{color:rgba(169,184,214,0.8);margin:0 6px;}
 .glabel{font-family:Sora,sans-serif;font-weight:700;font-size:12px;letter-spacing:2px;color:var(--gold);margin-top:26px;}
 .mini{font-size:13px!important;color:var(--dim);margin-top:14px;opacity:.8}
 .formules{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:22px}
+.fo-wrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:18px;align-items:start;margin-top:22px}
+.fo-wrap .formules{grid-template-columns:1fr;margin-top:0}
+.fo-chart{display:block;text-decoration:none;border-radius:18px;overflow:hidden;border:1px solid rgba(255,215,0,.4);box-shadow:0 0 40px rgba(30,100,255,.18)}
+.fo-chart img{display:block;width:100%;height:auto}
+.fo-chart span{display:block;text-align:center;padding:8px;font-size:13px;color:var(--dim);background:#070c1c}
+.fo-chart:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+@media(max-width:700px){.fo-wrap{grid-template-columns:1fr}}
 .fo{padding:18px}.fo small{display:block;font-family:Sora,sans-serif;font-size:11px;font-weight:700;letter-spacing:1.5px;color:var(--cyan);margin-bottom:8px}.fo b{display:block;font-size:16px;margin-bottom:6px}.fo span{font-size:14px;color:var(--dim);line-height:1.55}
+.fo.top{border-color:rgba(255,140,0,.5);box-shadow:0 0 30px rgba(255,140,0,.12)}.fo.top small{color:#FF9A3D}
 .fo.hot{border-color:rgba(255,215,0,.5);box-shadow:0 0 30px rgba(255,215,0,.12)}.fo.hot small{color:var(--gold)}
 .demo-box{margin-top:26px;padding:22px;display:flex;align-items:center;gap:16px;border-color:rgba(255,215,0,.45);background:linear-gradient(120deg,rgba(255,215,0,.10),rgba(10,18,40,.7))}
 .demo-ic{font-size:34px}.demo-box b{display:block;font-family:Sora,sans-serif;font-size:17px}.demo-box span{display:block;font-size:14px;color:var(--dim);margin-top:4px;line-height:1.5}
@@ -367,10 +375,13 @@ footer a{color:rgba(169,184,214,0.8);margin:0 6px;}
     <section class="sec">
       <div class="kick">TA FORMULE</div>
       <h2>3 façons d'être accompagné. <em>On choisit ensemble pendant l'appel.</em></h2>
-      <div class="formules">
+      <div class="fo-wrap">
+        <div class="formules">
         <div class="card fo"><small>ESSENTIEL</small><b>La formation en autonomie</b><span>Les 17 modules, le module Mindset et tes questions par écrit 24h/24.</span></div>
         <div class="card fo hot"><small>EN GROUPE · LE PLUS CHOISI</small><b>Formation + accompagnement</b><span>Appels 2 fois par semaine, sorties, séminaire en villa et copy trading inclus, jusqu'à tes premiers revenus réels.</span></div>
-        <div class="card fo"><small>1:1 · LE PLUS COMPLET</small><b>Tout le groupe + un suivi individuel</b><span>Tu m'appelles dès que tu bloques. Copy trading inclus et garantie satisfait ou remboursé.</span></div>
+        <div class="card fo top"><small>1:1 · LE PLUS COMPLET</small><b>Tout le groupe + un suivi individuel</b><span>Tu m'appelles dès que tu bloques. Copy trading inclus et garantie satisfait ou remboursé.</span></div>
+      </div>
+        <a class="fo-chart" href="tarifs-dha.jpg" target="_blank" rel="noopener" data-candid="tarifs-zoom"><img src="tarifs-dha.jpg" alt="Tableau des tarifs : Essentiel 180 €, En groupe 500 €, 1:1 750 € satisfait ou remboursé, Copy trading seul 30 €/mois" loading="lazy" width="1200" height="1860"/><span>🔍 Touche pour agrandir</span></a>
       </div>
       <div class="chips"><span>💳 Paiement possible en 3 fois avec Klarna</span></div>
     </section>
