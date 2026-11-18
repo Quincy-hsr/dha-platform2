@@ -77,6 +77,7 @@ h2{font-family:'Orbitron',sans-serif;font-size:clamp(18px,5vw,24px);margin:48px 
 .sticky .btn{margin:0 auto;padding:15px;font-size:12px}
 @media(prefers-reduced-motion:reduce){.btn,.btn::after{animation:none}html{scroll-behavior:auto}.sticky{transition:none}}
 </style>
+<style>.tib{margin-top:14px;border-radius:14px;border:1px solid rgba(0,212,255,0.4);background:rgba(0,212,255,0.05);overflow:hidden}.tib>summary{cursor:pointer;list-style:none;padding:14px 16px;font-weight:700;color:#E8F4FF;display:flex;align-items:center;gap:10px}.tib>summary::-webkit-details-marker{display:none}.tib>summary::after{content:"▾";margin-left:auto;color:#00D4FF;transition:transform .2s}.tib[open]>summary::after{transform:rotate(180deg)}.tib>summary:focus-visible{outline:2px solid #FFD700;outline-offset:-2px}.tib-b{padding:0 16px 16px;font-size:14px;line-height:1.55;color:rgba(232,244,255,.75)}.tib-gal{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;padding:4px 2px 10px;margin:10px 0 4px;-webkit-overflow-scrolling:touch}.tib-gal img{flex:0 0 min(62%,260px);width:min(62%,260px);height:auto;border-radius:12px;border:1px solid rgba(255,255,255,.12);scroll-snap-align:start}.tib-hint{font-size:12px;color:rgba(232,244,255,.5);margin-bottom:12px}.tib-ib{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:10px 0;padding:12px 14px;border-radius:12px;background:#050914;border:1px solid rgba(255,215,0,.45)}.tib-ib b{font-family:Orbitron,sans-serif;font-size:20px;letter-spacing:2px;color:#FFD700}.tib-ib small{display:block;font-size:11px;letter-spacing:1px;color:rgba(232,244,255,.55)}.tib-ib button{margin-left:auto;padding:9px 14px;border-radius:10px;border:1px solid rgba(255,215,0,.5);background:rgba(255,215,0,.1);color:#FFD700;font-weight:700;cursor:pointer}.tib-ib button:focus-visible{outline:2px solid #00D4FF;outline-offset:2px}.tib ol{margin:8px 0 10px 18px}.tib ol li{margin-bottom:4px}.tib ol b{color:#fff}</style>
 </head>
 <body>
 <div class="wrap">
@@ -91,6 +92,20 @@ h2{font-family:'Orbitron',sans-serif;font-size:clamp(18px,5vw,24px);margin:48px 
     <div class="chips"><span>📱 <b>Appli mobile</b> + MetaTrader 5</span><span>🥇 <b>Or</b>, forex, indices</span><span>🎁 <b>Bonus</b> sur ton 1er dépôt</span></div>
     <div class="must" role="note">🔑 <b>Inscris-toi bien avec ce lien.</b> C'est grâce à lui que je vois ton compte et que je peux t'aider si tu bloques à une étape.</div>
   </section>
+
+  <details class="tib"><summary>🔁 Tu as déjà un compte Vantage ? Transfère-le vers la DHA</summary><div class="tib-b">
+  Pas besoin de recréer un compte : relie ton compte actuel à la DHA en 2 minutes depuis l'appli Vantage.
+  <div class="tib-gal" tabindex="0" aria-label="Tuto en images, fais défiler"><img src="videos/transfert-ib-1.jpg" alt="Étape 1 : sur l'accueil, touche ta photo de profil en haut à gauche" loading="lazy"><img src="videos/transfert-ib-2.jpg" alt="Étape 2 : descends et touche Transfert IB/CPA/Ventes" loading="lazy"><img src="videos/transfert-ib-3.jpg" alt="Étape 3 : remplis le formulaire, type IB, numéro 32376814, raison, coche les 2 cases" loading="lazy"><img src="videos/transfert-ib-4.jpg" alt="Étape 4 : touche Soumettre, le statut passe En cours" loading="lazy"></div>
+  <div class="tib-hint">👉 Fais défiler les images</div>
+  <ol>
+    <li>Sur l'accueil de l'appli, touche <b>ta photo de profil</b> en haut à gauche.</li>
+    <li>Descends et touche <b>« Transfert IB/CPA/Ventes »</b>.</li>
+    <li>Remplis le formulaire : type de partenariat <b>IB</b>, le <b>numéro IB DHA</b> ci-dessous, une raison (ex. « J'ai rejoint son écosystème »), puis <b>coche les 2 cases</b>.</li>
+    <li>Touche <b>« Soumettre »</b> : le statut passe « En cours », il n'y a plus qu'à attendre.</li>
+  </ol>
+  <div class="tib-ib"><div><small>NUMÉRO IB DHA</small><b>32376814</b></div><button type="button" onclick="(function(b){var ok=function(){b.textContent='✓ COPIÉ';setTimeout(function(){b.textContent='COPIER';},1800);};try{navigator.clipboard.writeText('32376814').then(ok,ok);}catch(e){ok();}})(this)">COPIER</button></div>
+  ⚠️ <b style="color:#fff">Ferme toutes tes positions ouvertes avant</b> de soumettre. Si la demande échoue, tu dois attendre 72 h avant de la refaire. Un souci ? Écris-moi sur WhatsApp.
+</div></details>
 
   <h2>Les 5 étapes</h2>
   <p class="sub">Suis-les dans l'ordre, chaque étape a sa vidéo.</p>
@@ -138,7 +153,7 @@ h2{font-family:'Orbitron',sans-serif;font-size:clamp(18px,5vw,24px);margin:48px 
     <details><summary>C'est quoi Vantage ?</summary><p>Un courtier (broker) : c'est chez lui que tu ouvres ton compte de trading pour passer tes ordres sur l'or, le forex ou les indices, depuis son appli ou depuis MetaTrader 5.</p></details>
     <details><summary>Combien je dois déposer ?</summary><p>Je te conseille <b style="color:var(--white)">au moins 200 €</b> : c'est plus avantageux, parce que le bonus est calculé sur ton dépôt et que tu as plus de marge pour bien gérer ton risque. Ce n'est pas obligatoire, tu peux commencer avec 50 €. Dans tous les cas, ne dépose jamais de l'argent dont tu as besoin.</p></details>
     <details><summary>Combien de temps prend la vérification ?</summary><p>En général quelques heures après l'envoi de tes documents. Tu peux faire l'étape 3 (la promo) pendant ce temps.</p></details>
-    <details><summary>J'ai déjà un compte Vantage, je fais comment ?</summary><p>Un compte ouvert sans mon lien n'est pas relié à moi, donc je ne peux pas le voir. Écris-moi sur WhatsApp et on regarde ensemble la meilleure solution.</p></details>
+    <details><summary>J'ai déjà un compte Vantage, je fais comment ?</summary><p>Pas besoin d'en recréer un : transfère ton compte vers la DHA avec le tuto « Tu as déjà un compte Vantage ? » en haut de la page (4 étapes, 2 minutes).</p></details>
     <details><summary>Je dois payer quelque chose pour ouvrir le compte ?</summary><p>Non, l'ouverture est gratuite. Tu déposes seulement l'argent avec lequel tu veux trader.</p></details>
   </section>
 

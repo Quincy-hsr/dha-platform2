@@ -134,6 +134,7 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
   .main{margin-left:0 !important;padding:16px;padding-top:70px;}
 }
 </style>
+<style>.tib{margin-top:14px;border-radius:14px;border:1px solid rgba(0,212,255,0.4);background:rgba(0,212,255,0.05);overflow:hidden}.tib>summary{cursor:pointer;list-style:none;padding:14px 16px;font-weight:700;color:#E8F4FF;display:flex;align-items:center;gap:10px}.tib>summary::-webkit-details-marker{display:none}.tib>summary::after{content:"▾";margin-left:auto;color:#00D4FF;transition:transform .2s}.tib[open]>summary::after{transform:rotate(180deg)}.tib>summary:focus-visible{outline:2px solid #FFD700;outline-offset:-2px}.tib-b{padding:0 16px 16px;font-size:14px;line-height:1.55;color:rgba(232,244,255,.75)}.tib-gal{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;padding:4px 2px 10px;margin:10px 0 4px;-webkit-overflow-scrolling:touch}.tib-gal img{flex:0 0 min(62%,260px);width:min(62%,260px);height:auto;border-radius:12px;border:1px solid rgba(255,255,255,.12);scroll-snap-align:start}.tib-hint{font-size:12px;color:rgba(232,244,255,.5);margin-bottom:12px}.tib-ib{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:10px 0;padding:12px 14px;border-radius:12px;background:#050914;border:1px solid rgba(255,215,0,.45)}.tib-ib b{font-family:Orbitron,sans-serif;font-size:20px;letter-spacing:2px;color:#FFD700}.tib-ib small{display:block;font-size:11px;letter-spacing:1px;color:rgba(232,244,255,.55)}.tib-ib button{margin-left:auto;padding:9px 14px;border-radius:10px;border:1px solid rgba(255,215,0,.5);background:rgba(255,215,0,.1);color:#FFD700;font-weight:700;cursor:pointer}.tib-ib button:focus-visible{outline:2px solid #00D4FF;outline-offset:2px}.tib ol{margin:8px 0 10px 18px}.tib ol li{margin-bottom:4px}.tib ol b{color:#fff}</style>
 </head>
 <body>
 <div class="bg-grid"></div>
@@ -185,7 +186,20 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
   <div class="ct-steps">
     <div class="ct-step"><div class="ct-num">1</div><div><div class="ct-t">OUVRE TON COMPTE VANTAGE</div>
       <div class="ct-p">Inscris-toi chez Vantage avec mon lien (c'est un lien partenaire). Remplis ton profil et valide ton identité (pièce d'identité + justificatif de domicile) : la validation prend en général quelques heures.</div>
-      <div class="ct-must" role="note">🔑 <b>Obligatoire : inscris-toi uniquement avec ce lien.</b> C'est grâce à lui que je vois ton compte. Si tu ouvres ton compte autrement (ou si tu as déjà un compte Vantage ouvert sans le lien), <b>tu n'auras pas accès au canal</b>. Dans ce cas, écris-moi avant de faire ton dépôt.</div>
+      <div class="ct-must" role="note">🔑 <b>Obligatoire : inscris-toi uniquement avec ce lien.</b> C'est grâce à lui que je vois ton compte. Si tu ouvres ton compte autrement, <b>tu n'auras pas accès au canal</b>. Tu as déjà un compte Vantage ? Transfère-le avec le tuto juste en dessous.</div>
+      <details class="tib"><summary>🔁 Tu as déjà un compte Vantage ? Transfère-le vers la DHA</summary><div class="tib-b">
+  Pas besoin de recréer un compte : relie ton compte actuel à la DHA en 2 minutes depuis l'appli Vantage.
+  <div class="tib-gal" tabindex="0" aria-label="Tuto en images, fais défiler"><img src="videos/transfert-ib-1.jpg" alt="Étape 1 : sur l'accueil, touche ta photo de profil en haut à gauche" loading="lazy"><img src="videos/transfert-ib-2.jpg" alt="Étape 2 : descends et touche Transfert IB/CPA/Ventes" loading="lazy"><img src="videos/transfert-ib-3.jpg" alt="Étape 3 : remplis le formulaire, type IB, numéro 32376814, raison, coche les 2 cases" loading="lazy"><img src="videos/transfert-ib-4.jpg" alt="Étape 4 : touche Soumettre, le statut passe En cours" loading="lazy"></div>
+  <div class="tib-hint">👉 Fais défiler les images</div>
+  <ol>
+    <li>Sur l'accueil de l'appli, touche <b>ta photo de profil</b> en haut à gauche.</li>
+    <li>Descends et touche <b>« Transfert IB/CPA/Ventes »</b>.</li>
+    <li>Remplis le formulaire : type de partenariat <b>IB</b>, le <b>numéro IB DHA</b> ci-dessous, une raison (ex. « J'ai rejoint son écosystème »), puis <b>coche les 2 cases</b>.</li>
+    <li>Touche <b>« Soumettre »</b> : le statut passe « En cours », il n'y a plus qu'à attendre.</li>
+  </ol>
+  <div class="tib-ib"><div><small>NUMÉRO IB DHA</small><b>32376814</b></div><button type="button" onclick="(function(b){var ok=function(){b.textContent='✓ COPIÉ';setTimeout(function(){b.textContent='COPIER';},1800);};try{navigator.clipboard.writeText('32376814').then(ok,ok);}catch(e){ok();}})(this)">COPIER</button></div>
+  ⚠️ <b style="color:#fff">Ferme toutes tes positions ouvertes avant</b> de soumettre. Si la demande échoue, tu dois attendre 72 h avant de la refaire. Un souci ? Écris-moi sur WhatsApp.
+</div></details>
       <span id="ct-vantage"></span>
       <div class="ct-vid"><div class="ct-vid-h">🎥 TUTO VIDÉO · CRÉER SON COMPTE + VÉRIFICATION · 1 MIN 48</div><video controls playsinline preload="none" poster="videos/vantage-1-compte.jpg" aria-label="Comment créer son compte Vantage et le vérifier"><source src="videos/vantage-1-compte.mp4" type="video/mp4"></video></div></div></div>
     <div class="ct-step"><div class="ct-num">2</div><div><div class="ct-t">OUVRE TON COMPTE MT5</div>
