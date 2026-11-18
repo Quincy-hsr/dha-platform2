@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<script src="dha-api.js"></script>
+<script src="dha-theme.js"></script>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>DHA — Ton avis</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Exo+2:wght@400;600;700&display=swap" rel="stylesheet"/>
+<style>
+:root{--bg:#050914;--card:#0a1128;--line:rgba(30,100,255,0.22);--blue:#1E64FF;--cyan:#00D4FF;--gold:#FFD700;--star:#FFB800;--green:#00FF88;--red:#FF4466;--white:#E8F4FF;--dim:rgba(232,244,255,0.62);}
+*{margin:0;padding:0;box-sizing:border-box}
+body{min-height:100vh;background:radial-gradient(900px 500px at 50% -10%,rgba(255,184,0,0.14),transparent 60%),var(--bg);color:var(--white);font-family:'Exo 2',sans-serif;line-height:1.55;padding:24px 16px 60px}
+.box{position:relative;z-index:5;width:min(620px,100%);margin:0 auto}
+.top{display:flex;align-items:center;justify-content:space-between;margin-bottom:22px}
+.logo{font-family:'Orbitron',sans-serif;font-weight:900;font-size:22px;letter-spacing:3px;background:linear-gradient(135deg,var(--blue),var(--cyan));-webkit-background-clip:text;background-clip:text;color:transparent;text-decoration:none}
+.back{color:var(--dim);font-size:14px;text-decoration:none}
+.hero{text-align:center;margin-bottom:22px}
+.hero .st{font-size:28px;letter-spacing:6px;color:var(--star);text-shadow:0 0 18px rgba(255,184,0,.5)}
+h1{font-family:'Orbitron',sans-serif;font-size:clamp(20px,5.5vw,26px);margin:8px 0}
+.hero p{color:var(--dim)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:20px;margin-top:14px}
+.card.main{border-color:rgba(255,184,0,.5)}
+fieldset{border:0}
+legend,.q{font-weight:700;font-size:16px;margin-bottom:4px;padding:0}
+.hint{font-size:13.5px;color:var(--dim);margin-bottom:10px}
+.rate{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.rate input{position:absolute;opacity:0;width:1px;height:1px}
+.rate label{font-size:34px;line-height:1;color:rgba(232,244,255,.18);cursor:pointer;padding:2px;border-radius:8px;transition:transform .12s,color .12s}
+.card.main .rate label{font-size:44px}
+.rate label.on{color:var(--star);text-shadow:0 0 14px rgba(255,184,0,.5)}
+.rate label:hover{transform:scale(1.12)}
+.rate input:focus-visible+label{outline:2px solid var(--cyan);outline-offset:2px}
+.rate .lbl{margin-left:8px;font-size:14px;color:var(--dim);min-width:90px}
+.na{margin-left:auto;font-size:13px;color:var(--dim);background:none;border:1px solid var(--line);border-radius:99px;padding:5px 10px;cursor:pointer}
+.na[aria-pressed="true"]{color:var(--white);border-color:var(--cyan)}
+.crit{padding:14px 0;border-top:1px solid rgba(255,255,255,.06)}.crit:first-of-type{border-top:0;padding-top:4px}
+.crit-h{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.rec{display:flex;gap:8px;flex-wrap:wrap}
+.rec input{position:absolute;opacity:0;width:1px;height:1px}
+.rec label{padding:11px 16px;border-radius:12px;border:1px solid var(--line);cursor:pointer;font-weight:600}
+.rec input:checked+label{border-color:var(--cyan);background:rgba(0,212,255,.1)}
+.rec input:focus-visible+label{outline:2px solid var(--cyan);outline-offset:2px}
+textarea{width:100%;min-height:110px;padding:14px;border-radius:14px;border:1px solid var(--line);background:#050914;color:var(--white);font:inherit;font-size:16px;resize:vertical}
+textarea:focus{outline:none;border-color:var(--cyan)}
+.cnt{font-size:12px;color:var(--dim);text-align:right;margin-top:4px}
+.chk{display:flex;gap:10px;align-items:flex-start;cursor:pointer;font-size:15px}
+.chk input{width:20px;height:20px;margin-top:2px;accent-color:var(--star);flex-shrink:0}
+.btn{display:block;width:100%;margin-top:18px;padding:17px;border:0;border-radius:14px;font-family:'Orbitron',sans-serif;font-size:13px;font-weight:900;letter-spacing:1.5px;cursor:pointer;color:#1a1200;background:linear-gradient(135deg,var(--star),var(--gold));box-shadow:0 0 30px rgba(255,184,0,.3)}
+.btn:disabled{opacity:.6;cursor:wait}
+.btn:focus-visible{outline:2px solid var(--cyan);outline-offset:3px}
+.err{color:var(--red);font-size:14px;min-height:20px;margin-top:10px;text-align:center}
+.merci{text-align:center;padding:40px 20px}
+.merci .ic{font-size:60px}
+.merci h2{font-family:'Orbitron',sans-serif;font-size:22px;margin:12px 0 10px}
+.merci p{color:var(--dim);margin-bottom:20px}
+.merci a{display:inline-block;padding:14px 22px;border-radius:12px;background:linear-gradient(135deg,var(--blue),var(--cyan));color:#020610;font-family:'Orbitron',sans-serif;font-size:11px;font-weight:700;letter-spacing:1px;text-decoration:none}
+@media(prefers-reduced-motion:reduce){.rate label{transition:none}}
+</style>
+</head>
+<body>
+<div class="box">
+  <div class="top"><a class="logo" href="dha-dashboard.html">DHA</a><a class="back" href="dha-dashboard.html">← Retour</a></div>
+  <div id="vue">
+    <div class="hero"><div class="st" aria-hidden="true">★★★★★</div><h1>Ton avis sur la DHA</h1><p>Réponds en 1 minute. Tout est lu, et ça m'aide vraiment à améliorer la DHA.</p></div>
+
+    <form id="f" novalidate>
+      <div class="card main">
+        <fieldset><legend>Globalement, tu donnes combien à la DHA ?</legend>
+          <div class="hint">Obligatoire</div>
+          <div class="rate" data-k="note" data-big="1"></div>
+        </fieldset>
+      </div>
+
+      <div class="card" id="crits">
+        <div class="q">Note chaque partie</div>
+        <div class="hint">Optionnel. Clique sur « Pas concerné » si tu ne l'utilises pas.</div>
+      </div>
+
+      <div class="card">
+        <fieldset><legend>Tu recommanderais la DHA à un proche ?</legend>
+          <div class="rec" style="margin-top:10px">
+            <input type="radio" name="rec" id="r1" value="oui"><label for="r1">👍 Oui</label>
+            <input type="radio" name="rec" id="r2" value="peut-etre"><label for="r2">🤔 Peut-être</label>
+            <input type="radio" name="rec" id="r3" value="non"><label for="r3">👎 Non</label>
+          </div>
+        </fieldset>
+      </div>
+
+      <div class="card">
+        <label class="q" for="com" style="display:block">Ton avis sur la DHA</label>
+        <div class="hint">Ce qui t'a plu, ce que la DHA t'a apporté… (obligatoire)</div>
+        <textarea id="com" maxlength="2000" placeholder="Ex. : La formation est super claire, j'ai enfin compris comment…"></textarea>
+        <div class="cnt" id="cnt" aria-live="polite">0 / 2000</div>
+        <label class="q" for="ame" style="display:block;margin-top:14px">Une chose à améliorer ?</label>
+        <div class="hint">Optionnel, reste entre nous.</div>
+        <textarea id="ame" maxlength="2000" style="min-height:80px" placeholder="Ex. : plus de lives le week-end…"></textarea>
+      </div>
+
+      <div class="card">
+        <label class="chk"><input type="checkbox" id="pub" checked><span>J'accepte que mon avis (prénom, pseudo et note) soit affiché sur le site de la DHA.</span></label>
+      </div>
+
+      <button type="submit" class="btn" id="go">⭐ ENVOYER MON AVIS</button>
+      <div class="err" id="err" role="alert"></div>
+    </form>
+  </div>
+</div>
+<script>
+(function(){
+  var m=null; try{ m=JSON.parse(localStorage.getItem('dha_member')||'null'); }catch(e){}
+  if(!m){ location.replace('dha-connexion.html'); return; }
+  var LBL=['','Pas du tout','Bof','Correct','Très bien','Excellent'];
+  var CRIT={formation:'📚 La formation (cours, vidéos, quiz)',accompagnement:'🤝 L\'accompagnement (appels, réponses)',plateforme:'💻 La plateforme (facilité, design)',communaute:'👥 La communauté (squad, sorties)',copy:'📡 Le copy trading (canaux, tutos)'};
+  var PAR_PACK={copy:['plateforme','copy'],'180':['formation','plateforme','copy']};
+  var crits=PAR_PACK[m.pack]||['formation','accompagnement','plateforme','communaute','copy'];
+  var V={note:0}, NA={};
+  var box=document.getElementById('crits');
+  crits.forEach(function(k){
+    var d=document.createElement('fieldset'); d.className='crit';
+    d.innerHTML='<div class="crit-h"><legend style="font-weight:600;font-size:15px">'+CRIT[k]+'</legend><button type="button" class="na" aria-pressed="false" data-na="'+k+'">Pas concerné</button></div><div class="rate" data-k="'+k+'"></div>';
+    box.appendChild(d); V[k]=0;
+  });
+  document.querySelectorAll('.rate').forEach(function(s){
+    var k=s.getAttribute('data-k'), h='';
+    for(var i=1;i<=5;i++) h+='<input type="radio" name="s_'+k+'" id="s_'+k+i+'" value="'+i+'"><label for="s_'+k+i+'" data-i="'+i+'" aria-label="'+i+' étoile'+(i>1?'s':'')+' : '+LBL[i]+'">★</label>';
+    s.innerHTML=h+'<span class="lbl" aria-hidden="true"></span>';
+    var labels=s.querySelectorAll('label'), lbl=s.querySelector('.lbl');
+    function peindre(n){ labels.forEach(function(l){ l.classList.toggle('on', +l.getAttribute('data-i')<=n); }); lbl.textContent=n?LBL[n]:''; }
+    s.addEventListener('change',function(e){ V[k]=+e.target.value; NA[k]=false; var b=document.querySelector('[data-na="'+k+'"]'); if(b) b.setAttribute('aria-pressed','false'); peindre(V[k]); document.getElementById('err').textContent=''; });
+    labels.forEach(function(l){ l.addEventListener('mouseenter',function(){ peindre(+l.getAttribute('data-i')); }); });
+    s.addEventListener('mouseleave',function(){ peindre(V[k]); });
+  });
+  document.querySelectorAll('.na').forEach(function(b){ b.onclick=function(){ var k=b.getAttribute('data-na'), on=b.getAttribute('aria-pressed')!=='true'; b.setAttribute('aria-pressed',on); NA[k]=on; if(on){ V[k]=0; document.querySelectorAll('[name="s_'+k+'"]').forEach(function(i){ i.checked=false; }); document.querySelectorAll('.rate[data-k="'+k+'"] label').forEach(function(l){ l.classList.remove('on'); }); document.querySelector('.rate[data-k="'+k+'"] .lbl').textContent=''; } }; });
+  var com=document.getElementById('com'), cnt=document.getElementById('cnt');
+  com.addEventListener('input',function(){ cnt.textContent=com.value.length+' / 2000'; });
+  document.getElementById('f').addEventListener('submit', async function(e){
+    e.preventDefault(); var err=document.getElementById('err'), go=document.getElementById('go');
+    if(!V.note){ err.textContent='Choisis ta note globale (les étoiles en haut).'; document.querySelector('.card.main').scrollIntoView({behavior:'smooth',block:'center'}); return; }
+    if(com.value.trim().length<10){ err.textContent='Écris quelques mots sur ton avis (10 caractères minimum).'; com.focus(); return; }
+    var notes={}; crits.forEach(function(k){ if(V[k]) notes[k]=V[k]; });
+    var r=document.querySelector('[name="rec"]:checked');
+    go.disabled=true; go.textContent='ENVOI…'; err.textContent='';
+    try{
+      var res=await DHA.rpc('dha_avis_envoyer',{p_token:await DHA.token(),p_note:V.note,p_notes:notes,p_recommande:r?r.value:null,p_commentaire:com.value,p_ameliorer:document.getElementById('ame').value,p_public:document.getElementById('pub').checked});
+      if(res&&res.ok){
+        document.getElementById('vue').innerHTML='<div class="card merci"><div class="ic">🙏</div><h2>MERCI '+(m.prenom?String(m.prenom).toUpperCase().replace(/[<>&"]/g,''):'')+' !</h2><p>Ton avis est bien envoyé. Je le lis personnellement, ça compte beaucoup pour moi et pour la DHA.</p><a href="'+(m.pack==='copy'?'dha-espace-copy.html':'dha-dashboard.html')+'">← RETOUR À MON ESPACE</a></div>';
+        window.scrollTo(0,0); return;
+      }
+      err.textContent=res&&res.erreur==='session'?'Ta session a expiré, reconnecte-toi.':'Impossible d\'envoyer pour le moment, réessaie.';
+    }catch(x){ err.textContent='Connexion impossible, réessaie dans un instant.'; }
+    go.disabled=false; go.textContent='⭐ ENVOYER MON AVIS';
+  });
+})();
+</script>
+</body>
+</html>

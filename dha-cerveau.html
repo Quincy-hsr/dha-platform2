@@ -810,12 +810,12 @@ function schedule(){ if(raf) return; raf = requestAnimationFrame(function(){ raf
 
 var TABS = {
   more:'Plus', home:'Accueil', perdus:'Prospects perdus', stats:'Mes stats', cand:'Candidatures', membres:'Parrainages & comptes de la plateforme', copy:'Copy trading',
-  funnel:'Entonnoir', content:'Contenu', prospects:'Prospects', launches:'Lancements programmés', clients:'Membres', objectifs:'Objectifs', brain:'Analyse IA', retours:'Retours des membres'
+  funnel:'Entonnoir', content:'Contenu', prospects:'Prospects', launches:'Lancements programmés', clients:'Membres', objectifs:'Objectifs', brain:'Analyse IA', retours:'Retours des membres', avis:'Avis des membres'
 };
 
 var NAV_TABS = ['home','prospects','clients','cand','more'];
-var NAV_ICON = {copy:'📡', more:'☰', perdus:'🚫', home:'🏠', stats:'📊', cand:'📝', membres:'👥', objectifs:'🎯', funnel:'📉', prospects:'💬', clients:'🎓', content:'🎬', launches:'🚀', brain:'🤖', retours:'🛠️'};
-var NAV_SHORT = {copy:'Copy', more:'Plus', perdus:'Perdus', home:'Accueil', stats:'Stats', cand:'Candid.', membres:'Membres', objectifs:'Objectifs', funnel:'Entonnoir', prospects:'Prospects', clients:'Membres', content:'Contenu', launches:'Lancements', brain:'IA', retours:'Retours'};
+var NAV_ICON = {avis:'⭐', copy:'📡', more:'☰', perdus:'🚫', home:'🏠', stats:'📊', cand:'📝', membres:'👥', objectifs:'🎯', funnel:'📉', prospects:'💬', clients:'🎓', content:'🎬', launches:'🚀', brain:'🤖', retours:'🛠️'};
+var NAV_SHORT = {avis:'Avis', copy:'Copy', more:'Plus', perdus:'Perdus', home:'Accueil', stats:'Stats', cand:'Candid.', membres:'Membres', objectifs:'Objectifs', funnel:'Entonnoir', prospects:'Prospects', clients:'Membres', content:'Contenu', launches:'Lancements', brain:'IA', retours:'Retours'};
 function paintNav(){
   $('#nav').innerHTML = NAV_TABS.map(function(k){
     var n = k==='prospects' ? S.prospects.filter(function(p){ return needsFollowUp(p) || prospectDue(p); }).length : k==='cand' ? CAND.list.filter(function(c){ return (c.statut||'nouvelle')==='nouvelle'; }).length : k==='more' ? SIG.list.filter(function(x){ return x.statut==='nouveau'; }).length : 0;
@@ -1390,6 +1390,45 @@ function saveReplay(rid){
 function delReplay(rid){
   if(!confirm('Retirer ce replay de la plateforme ?')) return;
   DHA.admin('dha_admin_replay_del',{p_id:Number(rid)}).then(function(ok){ if(ok){ toast('Replay retiré'); loadLives(); } }).catch(function(){});
+}
+
+/* ---------- avis des membres (étoiles + commentaire) ---------- */
+var AVS = {list:[], ok:false}, AVF = 'all';
+var AV_CRIT = {formation:'Formation', accompagnement:'Accompagnement', plateforme:'Plateforme', communaute:'Communauté', copy:'Copy trading'};
+var AV_REC = {oui:'👍 Oui', 'peut-etre':'🤔 Peut-être', non:'👎 Non'};
+function loadAvis(){
+  if(!DHA.adminKey()) return Promise.resolve();
+  return DHA.admin('dha_admin_avis_liste').then(function(d){ if(Array.isArray(d)){ AVS.list = d; AVS.ok = true; schedule(); } }).catch(function(){});
+}
+loadAvis(); setInterval(function(){ if(document.visibilityState==='visible') loadAvis(); }, 120000);
+function etoiles(n){ n = Math.round(Number(n)||0); return '<span style="color:#FFB800;letter-spacing:1px" aria-label="'+n+' sur 5">'+'★'.repeat(n)+'<span style="opacity:.25">'+'★'.repeat(5-n)+'</span></span>'; }
+function skelAvis(){ return '<div class="stack"><div id="avbody"></div></div>'; }
+function paintAvis(){
+  var b = $('#avbody'); if(!b) return;
+  if(!AVS.ok){ b.innerHTML = '<section class="card"><div class="empty">Chargement…</div></section>'; return; }
+  var L = AVS.list, n = L.length;
+  var moy = n ? (L.reduce(function(a,x){ return a + x.note; },0)/n) : 0;
+  var crit = Object.keys(AV_CRIT).map(function(k){ var v = L.filter(function(x){ return x.notes && x.notes[k]; }).map(function(x){ return x.notes[k]; }); return v.length ? '<span class="chip" style="cursor:default">'+AV_CRIT[k]+' <b>'+(v.reduce(function(a,c){return a+c;},0)/v.length).toFixed(1)+'</b><small>'+v.length+'</small></span>' : ''; }).join('');
+  var rec = n ? Math.round(L.filter(function(x){ return x.recommande==='oui'; }).length*100/n) : 0;
+  var list = L.filter(function(x){ return AVF==='all' || (AVF==='pub' && x.publie) || (AVF==='ok' && x.public_ok && !x.publie) || (AVF==='bas' && x.note<=3); });
+  b.innerHTML = '<section class="card"><h3 style="margin:0 0 6px">⭐ Avis des membres</h3><p class="sub" style="margin:0 0 12px">La fenêtre s\'affiche 14 jours après l\'inscription. « Plus tard » la repousse de 7 jours.</p>'
+    + (n ? '<div style="display:flex;gap:18px;flex-wrap:wrap;align-items:center;margin-bottom:10px"><div><div style="font-size:34px;font-weight:800;line-height:1">'+moy.toFixed(1)+'<small style="font-size:15px;opacity:.6">/5</small></div>'+etoiles(moy)+'</div><div class="sub">'+n+' avis · '+rec+' % recommandent la DHA</div></div><div style="display:flex;gap:6px;flex-wrap:wrap">'+crit+'</div>' : '<div class="empty">Aucun avis pour l\'instant.</div>')
+    + '</section>'
+    + (n ? '<section class="card"><div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px">'+[['all','Tous'],['ok','Publiables'],['pub','Publiés'],['bas','3★ et moins']].map(function(f){ return '<button type="button" class="chip" data-act="avisf" data-v="'+f[0]+'" aria-pressed="'+(AVF===f[0])+'">'+f[1]+'</button>'; }).join('')+'</div>'
+    + (list.length ? list.map(function(x){
+        var d = new Date(x.created_at).toLocaleDateString('fr-FR',{day:'2-digit',month:'short',year:'numeric'});
+        var sub = Object.keys(AV_CRIT).filter(function(k){ return x.notes && x.notes[k]; }).map(function(k){ return AV_CRIT[k]+' '+x.notes[k]+'★'; }).join(' · ');
+        return '<article class="prow" style="display:block"><div style="display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;align-items:center"><b>'+etoiles(x.note)+' &nbsp;'+esc(x.prenom||'')+' @'+esc(x.pseudo||'?')+'</b><span class="sub" style="font-size:13px">'+esc(d)+(x.pack?' · '+esc(AV_PACK[x.pack]||x.pack):'')+'</span></div>'
+          + (sub?'<div class="sub" style="font-size:13px;margin:4px 0">'+esc(sub)+'</div>':'')
+          + '<div style="white-space:pre-wrap;word-break:break-word;margin:8px 0">« '+esc(x.commentaire||'')+' »</div>'
+          + (x.ameliorer?'<div class="sub" style="font-size:13px;white-space:pre-wrap;margin-bottom:8px">💡 À améliorer : '+esc(x.ameliorer)+'</div>':'')
+          + '<div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center"><span class="sub" style="font-size:13px">Recommande : '+(AV_REC[x.recommande]||'—')+'</span>'
+          + (x.public_ok ? (x.publie ? '<span class="badge" style="color:#1f9d55;border:1px solid currentColor;background:transparent">Publié</span><button type="button" class="btn small" data-act="avis-pub" data-aid="'+x.id+'" data-v="0">Retirer</button>' : '<button type="button" class="btn small primary" data-act="avis-pub" data-aid="'+x.id+'" data-v="1">Publier sur le site</button>') : '<span class="sub" style="font-size:13px">🔒 Le membre n\'a pas accepté l\'affichage public</span>')
+          + '</div></article>';
+      }).join('') : '<div class="empty">Rien ici.</div>') + '</section>' : '');
+}
+function pubAvis(id, v){
+  DHA.admin('dha_admin_avis_publier',{p_id:id, p_publie:v}).then(function(r){ if(r){ toast(v?'Avis publié':'Avis retiré'); loadAvis(); } else toast('Échec'); });
 }
 
 /* ---------- retours des membres : bugs, erreurs, idées ---------- */
@@ -2754,6 +2793,8 @@ document.addEventListener('click', function(ev){
     case 'lv-save': saveReplay(el.getAttribute('data-rid')); return;
     case 'lv-del': delReplay(el.getAttribute('data-rid')); return;
     case 'sig-save': saveSig(el.getAttribute('data-sid')); break;
+    case 'avis-pub': pubAvis(el.getAttribute('data-aid'), el.getAttribute('data-v')==='1'); break;
+    case 'avisf': AVF = el.getAttribute('data-v'); schedule(); break;
     case 'cand-det': openCand(id); break;
     case 'xp-open': ev.stopPropagation(); var xc = byId(S.clients); if(xc) openXp(xc); break;
     case 'rel-wa': marquerRelance(el.getAttribute('data-k')); return;
@@ -3003,7 +3044,7 @@ function quickPay(id, n){
   }).catch(function(){});
 }
 function openMore(){
-  var items = [['copy','Copy trading'],['objectifs','Objectifs'],['launches','Lancements programmés'],['content','Contenu'],['retours','Retours des membres'],['stats','Mes stats'],['funnel','Entonnoir'],['perdus','Prospects perdus'],['membres','Parrainages & comptes'],['brain','Analyse IA']];
+  var items = [['copy','Copy trading'],['objectifs','Objectifs'],['launches','Lancements programmés'],['content','Contenu'],['retours','Retours des membres'],['avis','Avis des membres'],['stats','Mes stats'],['funnel','Entonnoir'],['perdus','Prospects perdus'],['membres','Parrainages & comptes'],['brain','Analyse IA']];
   var nSig = SIG.list.filter(function(x){ return x.statut==='nouveau'; }).length;
   openDlg('<div class="dlg-body"><h2 id="dlgTitle">Plus</h2><div class="qk-grid">'+items.map(function(k){
     return '<button type="button" class="qk-tile" data-act="tab" data-tab="'+k[0]+'"><span class="qk-ic">'+NAV_ICON[k[0]]+'</span><b>'+esc(k[1])+'</b>'+(k[0]==='retours'&&nSig?'<small>'+nSig+' nouveau'+(nSig>1?'x':'')+'</small>':'')+'</button>';
@@ -3040,8 +3081,8 @@ document.addEventListener('click', function(ev){
 });
 
 /* ---------- démarrage ---------- */
-var SKEL = {copy:skelCopy, retours:skelRetours, cand:skelCand, perdus:skelLost, home:skelHome, stats:skelStats, membres:skelEmbed, funnel:skelFunnel, objectifs:skelGoals, launches:skelLaunches, prospects:skelProspects, content:skelContent, clients:skelClients, brain:skelBrain};
-var PAINT = {copy:paintCopyTab, retours:paintRetours, cand:paintCand, perdus:paintLost, home:paintHome, stats:paintStats, membres:function(){}, funnel:paintFunnel, objectifs:paintGoals, launches:paintLaunches, prospects:paintProspects, content:paintContent, clients:paintClients, brain:function(){}};
+var SKEL = {avis:skelAvis, copy:skelCopy, retours:skelRetours, cand:skelCand, perdus:skelLost, home:skelHome, stats:skelStats, membres:skelEmbed, funnel:skelFunnel, objectifs:skelGoals, launches:skelLaunches, prospects:skelProspects, content:skelContent, clients:skelClients, brain:skelBrain};
+var PAINT = {avis:paintAvis, copy:paintCopyTab, retours:paintRetours, cand:paintCand, perdus:paintLost, home:paintHome, stats:paintStats, membres:function(){}, funnel:paintFunnel, objectifs:paintGoals, launches:paintLaunches, prospects:paintProspects, content:paintContent, clients:paintClients, brain:function(){}};
 
 function use(name){
   try{ if(window.claude && typeof window.claude.use==='function') return Promise.resolve(window.claude.use(name)).catch(function(){ return null; }); }catch(e){}
