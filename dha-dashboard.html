@@ -522,6 +522,18 @@ const AVANTAGES=[
     rangMin:'HUSTLER',
     etapes:["Ouvre l'Instagram de la conciergerie (bouton ci-dessous)","Clique sur le lien WhatsApp dans sa bio","Envoie-lui un message en précisant que tu es membre de la DHA"],
     cta:{label:"J'EN PROFITE ✈️",href:'https://www.instagram.com/prestige_keyy/'}
+  },
+  {
+    icon:'👟',
+    tag:'MODE & LUXE · MR.BARRY',
+    titre:'Vêtements & accessoires de luxe en promo',
+    desc:"Grâce à notre partenariat avec MR.BARRY (sourcedbyvadaja), accède à un large catalogue de vêtements, sneakers, sacs et accessoires de grandes marques, avec une réduction réservée aux membres DHA.",
+    points:["De -5% à -20% sur tes commandes","Vêtements, sneakers, sacs, accessoires","Une pièce introuvable ? Il te la trouve","Livraison à domicile en 14 à 17 jours"],
+    images:['avantage-mode-1.jpg','avantage-mode-5.jpg','avantage-mode-2.jpg','avantage-mode-3.jpg','avantage-mode-4.jpg'],
+    rangMin:'HUSTLER',
+    etapes:["Regarde le catalogue sur son Instagram @sourcedbyvadaja","Envoie-lui un message WhatsApp (bouton ci-dessous) en précisant que tu es membre de la DHA","Dis-lui la pièce qui t'intéresse (photo, référence ou lien) : il te confirme le prix avec ta réduction et le délai"],
+    cta:{label:"J'EN PROFITE 👟",href:'https://wa.me/33758489689?text='+encodeURIComponent("Bonjour, je suis membre de la DHA et je souhaite profiter de la réduction membres 👟")},
+    cta2:{label:'VOIR LE CATALOGUE',href:'https://www.instagram.com/sourcedbyvadaja/'}
   }
 ];
 
@@ -562,7 +574,7 @@ function showAvantages(){
         <ul class="av-list">${av.points.map(p=>`<li>${p}</li>`).join('')}</ul>
         ${ok
           ?`${av.etapes?`<div class="av-steps"><div class="av-steps-title">COMMENT EN PROFITER</div>${av.etapes.map((e,i)=>`<div class="av-step"><span>${i+1}</span>${e}</div>`).join('')}</div>`:''}
-            <a class="av-cta" href="${av.cta.href}" target="_blank" rel="noopener">${av.cta.label}</a>`
+            <a class="av-cta" href="${av.cta.href}" target="_blank" rel="noopener">${av.cta.label}</a>${av.cta2?`<a class="av-cta" href="${av.cta2.href}" target="_blank" rel="noopener" style="margin-top:8px;background:transparent;border:1px solid rgba(255,215,0,0.45);color:#FFD700;">${av.cta2.label}</a>`:''}`
           :`<div class="av-lockbox">
               <div class="av-lockbox-title">🔒 DISPONIBLE À PARTIR DU RANG <span style="color:${req.color};">${req.icon} ${req.name}</span></div>
               <div style="font-size:11px;color:rgba(232,244,255,0.45);margin-top:6px;">Encore ${reste} XP pour débloquer cet avantage (${xp.toLocaleString('fr-FR')} / ${req.min.toLocaleString('fr-FR')} XP)</div>
