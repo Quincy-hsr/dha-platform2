@@ -44,6 +44,7 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
 .info-val{font-size:13px;color:var(--white);font-weight:600;}
 .calendly-wrap{background:var(--card);border:1px solid var(--border);border-radius:20px;overflow:hidden;min-height:700px;}
 .ct-vid{margin-top:14px;border-radius:14px;overflow:hidden;border:1px solid rgba(0,212,255,0.25);background:#000}.ct-vid-h{padding:8px 12px;font-family:'Orbitron',sans-serif;font-size:10px;letter-spacing:1.5px;color:var(--cyan);background:rgba(0,212,255,0.08)}.ct-vid video{display:block;width:100%;height:auto;aspect-ratio:4/3;background:#000}
+.wa-help{display:flex;align-items:center;gap:14px;margin:0 0 18px;padding:14px 16px;border-radius:14px;background:rgba(37,211,102,0.08);border:1px solid rgba(37,211,102,0.45)}.wa-help .ic{font-size:26px;flex-shrink:0}.wa-help b{display:block;color:#fff;font-size:14.5px}.wa-help span{display:block;color:var(--dim);font-size:13.5px;line-height:1.45;margin-top:2px}.wa-help a{flex-shrink:0;display:inline-flex;align-items:center;gap:6px;padding:11px 14px;border-radius:11px;background:#25D366!important;color:#02130A!important;font-family:'Orbitron',sans-serif;font-size:11px;font-weight:900;letter-spacing:1px;text-decoration:none;opacity:1!important;-webkit-text-fill-color:#02130A}.wa-help a:focus-visible{outline:2px solid var(--gold);outline-offset:2px}@media(max-width:560px){.wa-help{flex-wrap:wrap}.wa-help a{width:100%;justify-content:center}}
 .ct-must{margin-top:12px;padding:12px 14px;border-radius:12px;background:rgba(255,215,0,0.08);border:1px solid rgba(255,215,0,0.45);color:#FFE9A8;font-size:13.5px;line-height:1.55}.ct-must b{color:#FFD700}
 .ct-warn{padding:14px 16px;border-radius:14px;border:1px solid rgba(255,140,0,0.4);background:rgba(255,140,0,0.07);font-size:13px;line-height:1.6;color:rgba(232,244,255,0.8);margin-bottom:22px;}
 .ct-steps{display:flex;flex-direction:column;gap:14px;}
@@ -172,6 +173,7 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
     <button type="button" class="ct-tab" role="tab" id="tab-compte" aria-controls="pane-compte" data-p="compte">🧭 OUVRIR MON COMPTE</button>
     <button type="button" class="ct-tab" role="tab" id="tab-acces" aria-controls="pane-acces" data-p="acces">🔑 TES ACCÈS <span id="tab-acces-b"></span></button>
   </div>
+  <div class="wa-help" role="note"><div class="ic">🆘</div><div><b>Une difficulté ? Tu comprends pas un truc ?</b><span>Écris-moi directement sur WhatsApp, je te réponds et on règle ça ensemble.</span></div><a href="https://wa.me/qr/OCPS7DRIVP76L1" target="_blank" rel="noopener">💬 M'ÉCRIRE</a></div>
   <div id="pane-compte" role="tabpanel" aria-labelledby="tab-compte">
   <div class="header-card">
     <div class="header-glow"></div>
@@ -204,6 +206,7 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
     <div class="ct-step" id="ct-canal"><div class="ct-num">7</div><div><div class="ct-t">REJOINS LE CANAL</div><div class="ct-p">Chargement…</div></div></div>
     <div class="ct-step"><div class="ct-num">8</div><div><div class="ct-t">PRENDS UN TRADE DU SIGNAL</div>
       <div class="ct-vid" style="margin:0 0 14px"><div class="ct-vid-h">🎥 TUTO VIDÉO · COMMENT PRENDRE LES TRADES · 2 MIN</div><video controls playsinline preload="none" poster="videos/tuto-prendre-trades.jpg" aria-label="Tuto : comment prendre les trades du canal" style="aspect-ratio:9/16;max-width:360px;margin:0 auto"><source src="videos/tuto-prendre-trades.mp4" type="video/mp4"></video></div>
+      <div class="ct-vid" style="margin:0 0 14px"><div class="ct-vid-h">🎥 EXEMPLE CONCRET · UN TRADE DU CANAL PAS À PAS · 2 MIN 13</div><video controls playsinline preload="none" poster="videos/tuto-trade-exemple.jpg" aria-label="Exemple concret : prendre un trade du canal pas à pas" style="aspect-ratio:9/16;max-width:360px;margin:0 auto"><source src="videos/tuto-trade-exemple.mp4" type="video/mp4"></video></div>
       <div class="ct-p">Chaque signal ressemble à ça :</div>
       <div class="sig">📡 <b>XAUUSD</b> — <span class="buy">BUY NOW</span><br>Entrée : 4050 – 4046<br>TP1 : 4054<br>TP2 : 4058<br>TP3 : 4065<br><span class="sl">SL : 4040</span><br><small>Exemple, pas un vrai signal</small></div>
       <div class="m1-tip">💡 <b>Astuce : trade toujours en M1</b> (unité de temps 1 minute). Tu vois beaucoup mieux le prix bouger autour de la zone d'entrée, de ton SL et de tes TP.</div>
