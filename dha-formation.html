@@ -436,18 +436,18 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--white);min-
     <div class="cat-header"><div class="cat-header-icon">💰</div><div class="cat-header-title">ENCAISSER</div></div>
     <div class="modules-grid">
 
-      <div class="module-card locked" onclick="showLockedModule(15)">
+      <a href="dha-module19.html" class="module-card" style="text-decoration:none;">
         <div class="module-card-inner">
-          <div class="module-num locked" id="num-m15">15</div>
+          <div class="module-num active" id="num-m15">15</div>
           <div class="module-content">
             <div class="module-tag">MODULE 15 · RÉEL</div>
             <div class="module-title">Ouvrir un compte réel</div>
-            <div class="module-desc">Passer du démo au réel — les étapes pour ouvrir ton compte.</div>
-            <div class="module-meta"><div class="module-meta-item">📚 1 Bloc</div></div>
+            <div class="module-desc">Passer du démo au réel — toutes les étapes en vidéo pour ouvrir ton compte Vantage.</div>
+            <div class="module-meta"><div class="module-meta-item">📚 1 Bloc</div><div class="module-meta-item">⚡ 165 XP</div><div class="module-meta-item">⏱️ 15 min</div></div>
           </div>
-          <div class="module-right"><div class="module-badge locked" id="badge-m15">🔒 BIENTÔT</div></div>
+          <div class="module-right"><div class="module-badge available" id="badge-m15">▶ COMMENCER</div></div>
         </div>
-      </div>
+      </a>
 
       <a href="dha-module6.html" class="module-card" style="text-decoration:none;">
         <div class="module-card-inner">
@@ -510,7 +510,7 @@ const moduleKeys={
   m8:'bloc_m17', m9:'bloc_m11_b1', m10:'bloc_m12_b1', m11:'bloc_m13_b1', m12:'bloc_m14_b1',
   m13:'bloc_m18',
   m14:'bloc_m10_b1',
-  m15:null, m16:'bloc_m6', m17:'bloc_m15_b1'
+  m15:'bloc_m19', m16:'bloc_m6', m17:'bloc_m15_b1'
 };
 const categories={
   bases:['m1','m2','m3','m4'],

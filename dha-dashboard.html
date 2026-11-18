@@ -394,7 +394,7 @@ function renderMember(){
 async function updateFormationStat(){
   if(!member)return;
   const pseudo=member.pseudo||'guest';
-  const actionKeys=['bloc_m1','bloc_m2_b1','bloc_m4','bloc_m5','bloc_m6','bloc_m7_b1','bloc_m8_b1','bloc_m10_b1','bloc_m11_b1','bloc_m12_b1','bloc_m13_b1','bloc_m14_b1','bloc_m15_b1','bloc_m16','bloc_m17','bloc_m18'];
+  const actionKeys=['bloc_m1','bloc_m2_b1','bloc_m4','bloc_m5','bloc_m6','bloc_m7_b1','bloc_m8_b1','bloc_m10_b1','bloc_m11_b1','bloc_m12_b1','bloc_m13_b1','bloc_m14_b1','bloc_m15_b1','bloc_m16','bloc_m17','bloc_m18','bloc_m19'];
   try{
     const data=await DHA.historique({keys:actionKeys});
     console.log('Formation stat: pseudo=',pseudo,'lignes trouvees=',data);

@@ -11,7 +11,7 @@
 (function () {
   var XP_QUETE = 25, XP_BONUS = 100, XP_CONNEXION = 10, XP_PARRAIN = 150;
   var NB_QUETES = 4, NB_MODULES = 16;
-  var MODULES = ['bloc_m1','bloc_m2_b1','bloc_m4','bloc_m5','bloc_m6','bloc_m7_b1','bloc_m8_b1','bloc_m10_b1','bloc_m11_b1','bloc_m12_b1','bloc_m13_b1','bloc_m14_b1','bloc_m15_b1','bloc_m16','bloc_m17','bloc_m18'];
+  var MODULES = ['bloc_m1','bloc_m2_b1','bloc_m4','bloc_m5','bloc_m6','bloc_m7_b1','bloc_m8_b1','bloc_m10_b1','bloc_m11_b1','bloc_m12_b1','bloc_m13_b1','bloc_m14_b1','bloc_m15_b1','bloc_m16','bloc_m17','bloc_m18','bloc_m19'];
 
   // Actions qu'on peut faire tous les jours (les autres — séminaire, sortie, appel mentor, parrainage — n'entrent pas dans les quêtes)
   var POOL = [
