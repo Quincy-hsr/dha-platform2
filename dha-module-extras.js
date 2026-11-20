@@ -128,7 +128,8 @@
   window.dhaQuizRetakeReward = async function (cleQuiz) {
     var cle = cleQuiz + '_refait';
     var txt = document.getElementById('quiz-xp-text');
-    var gagne = await awardXP(cle, XP_REFAIT, '🔁 Quiz refait — Module ' + numModule);
+    var sc = ((document.getElementById('quiz-score') || {}).textContent || '').trim();
+    var gagne = await awardXP(cle, XP_REFAIT, '🔁 Quiz refait — Module ' + numModule + (/^\d+\/\d+$/.test(sc) ? ' (' + sc + ')' : ''));
     if (txt) txt.textContent = gagne
       ? '🔁 Quiz refait : +' + XP_REFAIT + ' XP gagnés !'
       : '🔁 Quiz refait — les ' + XP_REFAIT + ' XP de révision sont déjà gagnés sur ce module.';

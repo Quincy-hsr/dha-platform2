@@ -142,6 +142,20 @@ textarea{resize:vertical;min-height:84px}
 .plist{display:grid;gap:0}
 .prow{display:grid;grid-template-columns:minmax(150px,1.1fr) auto minmax(110px,.7fr) minmax(0,1.3fr);gap:10px 16px;align-items:center;padding:12px 0;border-bottom:1px solid var(--line)}
 .prow:last-child{border-bottom:0}
+.prow.prow2{display:block;padding:14px 0}
+.pr-top{display:flex;align-items:center;gap:10px}
+.pr-name{all:unset;cursor:pointer;flex:1;min-width:0;display:flex;flex-direction:column;gap:1px}
+.pr-name b{font-size:16px}.pr-name span{font-size:14px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pr-name:focus-visible,.pr-chat:focus-visible,.pr-det:focus-visible{outline:2px solid var(--focus);outline-offset:2px;border-radius:8px}
+.pr-chat{flex-shrink:0;width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;text-decoration:none;background:var(--soft);border:1px solid var(--line)}
+.pr-tags{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-top:8px}
+.pr-net,.pr-st{font-size:12px;font-weight:700;padding:4px 9px;border-radius:999px;border:1px solid var(--line);white-space:nowrap}
+.pr-rev{margin-left:0!important;font-size:12px!important;padding:4px 9px!important}
+.st-none{color:var(--muted)}.st-call{color:#2563eb;border-color:rgba(37,99,235,.45)}.st-think{color:#b7791f;border-color:rgba(183,121,31,.5)}.st-launch{color:#7c3aed;border-color:rgba(124,58,237,.45)}.st-ok{color:#1f9d55;border-color:rgba(31,157,85,.5)}.st-lost{color:#d33;border-color:rgba(221,51,51,.45)}
+.pr-det{all:unset;cursor:pointer;display:flex;justify-content:space-between;align-items:center;box-sizing:border-box;width:100%;margin-top:10px;padding:10px 12px;border-radius:10px;border:1px solid var(--line);font-size:14px;font-weight:600}
+.pd-steps button{font-size:13px}
+.ccheck{display:inline-flex;align-items:center;gap:6px;padding:7px 12px;border-radius:10px;border:1px solid var(--line);font-size:14px;font-weight:600;cursor:pointer}.ccheck input{width:18px;height:18px;margin:0;accent-color:var(--gain)}
+.obj-seg{display:flex;flex-wrap:wrap;gap:6px}.obj-seg button{flex:0 0 auto}
 .p-handle{all:unset;cursor:pointer;font-weight:600;font-size:15px;text-decoration:underline;text-decoration-color:var(--line);text-underline-offset:4px}
 .p-handle:hover{text-decoration-color:var(--ink)}
 .p-handle:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
@@ -158,8 +172,8 @@ textarea{resize:vertical;min-height:84px}
 .stepwrap{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-bottom:4px}
 .stage-done{font-weight:600;font-size:14px;color:var(--muted)}
 .rev-badge{font-size:11px;font-weight:700;padding:2px 8px;border-radius:999px;border:1px solid var(--line);background:var(--card);color:var(--muted);cursor:pointer;margin-left:6px;white-space:nowrap}
-.rev-badge.sdr{background:var(--gain-bg);color:var(--gain);border-color:transparent}
-.rev-badge.sr{background:var(--leak-bg);color:var(--leak);border-color:transparent}
+.rev-badge.rv-sdr{background:var(--gain-bg);color:var(--gain);border-color:transparent}
+.rev-badge.rv-sr{background:var(--leak-bg);color:var(--leak);border-color:transparent}
 .pcadence{display:flex;align-items:center;gap:8px;margin-top:6px;font-size:12px;color:var(--muted)}
 .pcadence .gauge{width:70px}
 .gauge.late i{background:var(--leak)}
@@ -304,6 +318,18 @@ input[type=range]{padding:0;border:0;accent-color:var(--gain)}
 .objn .pc{margin-left:auto;font:700 18px var(--f-display);color:var(--focus)}
 .objm{color:var(--muted);font-size:14px;margin-top:8px}
 .ktiles{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.pcprog .bar i{background:linear-gradient(90deg,#7c3aed,#a78bfa)}.pcprog .bar.late i{background:var(--leak)}.pcpct{font-size:13px;white-space:nowrap}.pcpct.ok,.pcprog .ok{color:var(--gain)}.pcpct.late{color:var(--leak)}
+.pg-row{display:flex;gap:12px;padding:10px 0;border-bottom:1px solid var(--line)}
+.pg-n{flex-shrink:0;width:30px;height:30px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;background:var(--soft);color:var(--muted)}
+.pg-row.done .pg-n{background:var(--gain-bg);color:var(--gain)}
+.pg-b{flex:1;min-width:0}.pg-b b{display:block;font-size:14.5px}.pg-b small{display:block;color:var(--muted);font-size:12.5px;margin-top:1px}
+.pg-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.pg-q,.pg-q2,.pg-e{font-size:12px;font-weight:700;padding:3px 8px;border-radius:999px;border:1px solid var(--line)}
+.pg-q{color:var(--gain)}.pg-q.low{color:var(--leak)}.pg-q2{color:#7c3aed;border-color:rgba(124,58,237,.4)}.none{color:var(--muted)!important;font-weight:500!important}
+.ktile.kcalls{grid-column:1/-1;border-color:rgba(0,200,120,.45)}
+.kc-row{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;flex-wrap:wrap}
+.kc-side{font-size:13px;color:var(--muted);text-align:right;line-height:1.5}
+.kc-more{display:block;margin-top:6px;font-weight:700}
 .ktile{all:unset;box-sizing:border-box;display:block;cursor:pointer;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px}
 .ktile:hover{border-color:var(--muted)}
 .ktile:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
@@ -559,11 +585,12 @@ function makeSupaDb(){
 }
 
 /* ---------- lien avec la plateforme DHA : modules faits ---------- */
-var PLAT = {members:[], done:{}, loaded:false, recent:{}};
+var PLAT = {members:[], done:{}, loaded:false, recent:{}, hist:{}, pcP1:[]};
 function memberOf(c){ if(!c || !c.pseudo) return null; var k = normPseudo(c.pseudo); return PLAT.members.filter(function(m){ return normPseudo(m.pseudo)===k; })[0] || null; }
 function levelOf(xp){ xp=Number(xp)||0; var l=1; while(l<100){ var n=l; if(xp < n*200+15*n*(n-1)/2) break; l++; } return l; }
 function normPseudo(p){ return String(p||'').trim().replace(/^@+/,'').toLowerCase(); }
 function loadPlatform(){
+  DHA.admin('dha_admin_pc_p1').then(function(ids){ if(Array.isArray(ids)){ PLAT.pcP1 = ids; schedule(); } }).catch(function(){});
   return DHA.admin('dha_admin_membres')
     .then(function(ms){
       PLAT.members = (Array.isArray(ms) ? ms : []).filter(function(m){ return m.plan!=='demo'; });
@@ -588,7 +615,9 @@ function loadPlatform(){
           // Activité récente sur la plateforme (tout ce qui rapporte de l'XP)
           var rec = {};
           all.slice(0,400).forEach(function(r){ var k = normPseudo(r.membre_pseudo); (rec[k] = rec[k] || []).push(r); });
-          PLAT.recent = rec; if(S.tab==='clients') schedule();
+          PLAT.recent = rec;
+          var hs = {}; all.forEach(function(r){ var k = normPseudo(r.membre_pseudo); (hs[k] = hs[k] || []).push(r); }); PLAT.hist = hs;
+          if(S.tab==='clients') schedule();
         });
     }).catch(function(){});
 }
@@ -747,9 +776,18 @@ function remainingOf(c){ return Math.max(0, (Number(c.price)||0) - paidOf(c)); }
 function modsDoneCount(c){ var n = 0, m = c.mods||{}; for(var i=1;i<=MODULES;i++){ if(isAutoMod(c,i) ? autoDone(c,i) : m['v'+i]) n++; } return n; }
 function modsMastered(c){ var n = 0, m = c.mods||{}; for(var i=1;i<=MODULES;i++){ if(m['x'+i]) n++; } return n; }
 function lastTouch(c){ var l = (c.checkins||[])[0]; return (l && l.at) || c.startAt || Date.now(); }
+function pcInfo(c){
+  if(!c || !c.pseudo) return null;
+  var h = PLAT.hist[normPseudo(c.pseudo)] || [], vu = {}, fin = false;
+  h.forEach(function(r){ if(r.action_key==='pc_fin') fin = true; else if(/^pc_/.test(r.action_key)) vu[r.action_key.slice(3)] = r; });
+  var tot = PLAT.pcP1.length, n = PLAT.pcP1.filter(function(id){ return vu[id]; }).length;
+  var pct = fin ? 100 : (tot ? Math.round(n*100/tot) : 0);
+  return {pct:pct, n:fin && tot ? tot : n, tot:tot, fin:fin, vu:vu};
+}
 function lateInfo(c){
-  var m = monthOf(c), mil = c.mil||{}, onb = c.onb||{};
-  if(Date.now()-(c.startAt||Date.now()) > 7*DAY && !onb.awareness) return 'Prise de conscience non terminée';
+  var m = monthOf(c), mil = c.mil||{}, onb = c.onb||{}, pi = pcInfo(c);
+  if(pi && pi.tot){ /* compte relié : la prise de conscience suit la plateforme, affichée en % sur la carte */ }
+  else if(Date.now()-(c.startAt||Date.now()) > 7*DAY && !onb.awareness) return 'Prise de conscience non terminée';
   for(var i=1;i<=4;i++){ if(m>i && !mil['m'+i]) return 'En retard sur le mois '+i; }
   return '';
 }
@@ -1125,10 +1163,73 @@ function paintHome(){
   var actifs = S.clients.filter(function(c){ return (c.status||'actif')==='actif'; }).length;
   var nouv = CAND.list.filter(function(c){ return (c.statut||'nouvelle')==='nouvelle'; }).length;
   var tile = function(tab, ic, lbl, val, sub){ return '<button type="button" class="ktile" data-act="tab" data-tab="'+tab+'"><span class="ki" aria-hidden="true">'+ic+'</span><span class="kl">'+lbl+'</span><span class="kv">'+val+'</span><span class="ks">'+sub+'</span></button>'; };
-  $('#htiles').innerHTML = tile('prospects','💬','Prospects',fmtN(openP),'en cours')
+  var m0 = new Date(); m0.setDate(1); m0.setHours(0,0,0,0);
+  var callsMois = S.prospects.filter(function(p){ return p.heldAt && p.heldAt>=m0.getTime(); }).length;
+  var callsTot = S.prospects.filter(function(p){ return p.heldAt; }).length;
+  var aFaire = S.prospects.filter(function(p){ return p.status==='call'; });
+  var dernier = S.prospects.filter(function(p){ return p.heldAt; }).sort(function(a,b){ return b.heldAt-a.heldAt; })[0];
+  $('#htiles').innerHTML = tile('clients','🎓','Clients',fmtN(actifs), (function(){ var r = S.clients.filter(function(c){ return c.status!=='perdu'; }).reduce(function(t,c){ return t+remainingOf(c); },0); return r>0 ? '<b>'+euro(r)+' à encaisser</b>' : fmtN(S.clients.length)+' au total'; })())
+    + tile('prospects','💬','Prospects',fmtN(openP),'en cours')
     + tile('launches','🚀','Lancements programmés',fmtN(lanc.length), proch ? 'prochain le '+dShort(proch.launchAt) : 'aucun à venir')
-    + tile('clients','🎓','Membres',fmtN(actifs), (function(){ var r = S.clients.filter(function(c){ return c.status!=='perdu'; }).reduce(function(t,c){ return t+remainingOf(c); },0); return r>0 ? '<b>'+euro(r)+' à encaisser</b>' : fmtN(S.clients.length)+' au total'; })())
-    + tile('cand','📝','Candidatures reçues', CAND.ok ? fmtN(CAND.list.length) : '—', nouv ? '<b>'+nouv+' à traiter</b>' : 'tout est traité');
+    + tile('cand','📝','Candidatures reçues', CAND.ok ? fmtN(CAND.list.length) : '—', nouv ? '<b>'+nouv+' à traiter</b>' : 'tout est traité')
+    + '<button type="button" class="ktile kcalls" data-act="calls-open"><span class="ki" aria-hidden="true">📞</span><span class="kl">Appels</span>'
+    + '<span class="kc-row"><span><span class="kv">'+fmtN(callsMois)+'</span><span class="ks">faits ce mois · '+fmtN(callsTot)+' au total</span></span>'
+    + '<span class="kc-side">'+(aFaire.length?'<b>'+aFaire.length+' booké'+(aFaire.length>1?'s':'')+' à faire</b>':'aucun call booké')+(dernier?'<br>dernier : '+esc(dernier.prenom||('@'+dernier.handle))+', '+dShort(dernier.heldAt):'')+'</span></span>'
+    + '<span class="ks kc-more">Voir avec qui →</span></button>';
+}
+var MOD_T = ['','Introduction au Trading','Bougies japonaises','Les tendances','Stop Loss & Take Profit','BOS & CHOCH','Order Blocks','Imbalance / FVG','Compte démo & positions','Risk Management','Gestion d\'un trade','Plan de trading','Journal de trading','Sessions de trading','Annonces économiques','Ouvrir un compte réel','Utiliser les prop firms','Exécution complète'];
+function openProgress(c){
+  var h = (PLAT.hist[normPseudo(c.pseudo)] || []).slice().sort(function(a,b){ return new Date(a.created_at)-new Date(b.created_at); });
+  var by = {}; h.forEach(function(r){ (by[r.action_key] = by[r.action_key] || []).push(r); });
+  var note = function(r){ var m = r && String(r.raison||'').match(/\((\d+)\s*\/\s*(\d+)\)/); return m ? [Number(m[1]), Number(m[2])] : null; };
+  var dt = function(r){ return dShort(new Date(r.created_at).getTime()); };
+  var mem = memberOf(c), nb = 0, notes = [], exo = 0;
+  var rows = '';
+  for(var i=1;i<=MODULES;i++){
+    var bk = MOD_KEYS[i]; if(!bk) continue;
+    var qk = bk.replace(/^bloc_/,'quiz_'), ek = bk.replace(/^bloc_/,'exercice_');
+    var b = (by[bk]||[])[0], q = (by[qk]||[])[0], q2 = (by[qk+'_refait']||[])[0], e = (by[ek]||[])[0];
+    if(b) nb++; if(e) exo++;
+    var n1 = note(q), n2 = note(q2); if(n1) notes.push(n1[0]/n1[1]);
+    var quiz = q ? '<span class="pg-q'+(n1&&n1[0]/n1[1]<0.6?' low':'')+'">🧠 '+(n1?n1[0]+'/'+n1[1]:'fait')+'</span>' : '<span class="pg-q none">🧠 —</span>';
+    var quiz2 = q2 ? '<span class="pg-q2">🔁 2e : '+(n2?n2[0]+'/'+n2[1]:'refait')+'</span>' : '';
+    rows += '<div class="pg-row'+(b?' done':'')+'"><div class="pg-n">'+i+'</div><div class="pg-b"><b>'+esc(MOD_T[i]||('Module '+i))+'</b><small>'+(b?'✅ Terminé le '+dt(b):(q||e?'⏳ En cours':'Pas commencé'))+'</small><div class="pg-tags">'+quiz+quiz2+(e?'<span class="pg-e">💪 Exercice fait</span>':'<span class="pg-e none">💪 —</span>')+'</div></div></div>';
+  }
+  var moy = notes.length ? Math.round(notes.reduce(function(t,x){ return t+x; },0)/notes.length*100)/10 : null;
+  var pi = pcInfo(c) || {pct:0,n:0,tot:0,vu:{}};
+  var pcRows = Object.keys(pi.vu).map(function(id){ return pi.vu[id]; }).sort(function(a,b){ return new Date(b.created_at)-new Date(a.created_at); })
+    .map(function(r){ var id = r.action_key.slice(3), p1 = PLAT.pcP1.indexOf(id)>=0; return detRow(esc(String(r.raison||'Vidéo').replace(/^[^A-Za-zÀ-ÿ0-9]+/,'')), esc(dt(r)+(p1?' · Partie 1':' · Bibliothèque')), '+'+(r.xp_gagne||0)+' XP', '', ''); }).join('');
+  var autres = h.filter(function(r){ return !/^(bloc|quiz|exercice)_m|^pc_/.test(r.action_key); }).slice(-12).reverse()
+    .map(function(r){ return detRow(esc(r.raison||r.action_key), esc(dt(r)), '+'+(r.xp_gagne||0)+' XP', '', ''); }).join('');
+  openDlg('<div class="dlg-body"><h2 id="dlgTitle">📈 Progression de '+esc(c.name||c.pseudo)+'</h2><p class="sub" style="margin:-4px 0 10px">@'+esc(c.pseudo)+(mem?' · ⚡ '+fmtN(mem.xp||0)+' XP · niveau '+levelOf(mem.xp):'')+'</p>'
+    + '<div class="det-sum"><span class="chip" style="cursor:default">Modules<small>'+nb+'/'+MODULES+'</small></span><span class="chip" style="cursor:default">Moyenne quiz<small>'+(moy==null?'—':String(moy).replace('.',',')+'/10')+'</small></span><span class="chip" style="cursor:default">Exercices<small>'+exo+'</small></span><span class="chip" style="cursor:default">Prise de conscience<small>'+pi.pct+' %</small></span></div>'
+    + '<h3 style="margin:16px 0 4px;font-size:15px">📚 Formation</h3><div class="pg-list">'+rows+'</div>'
+    + '<h3 style="margin:18px 0 4px;font-size:15px">🧠 Prise de conscience · '+pi.n+'/'+pi.tot+' vidéos de la partie 1</h3><div class="gauge" style="margin:6px 0 8px"><i style="width:'+pi.pct+'%"></i></div>'
+    + (pcRows || '<p class="note">Aucune vidéo regardée pour l\'instant.</p>')
+    + (autres ? '<h3 style="margin:18px 0 4px;font-size:15px">⚡ Dernières actions</h3>'+autres : '')
+    + '<p class="note" style="margin-top:12px">Les notes viennent du 1er passage de chaque quiz. La 2e note s\'affiche quand le membre refait le quiz.</p>'
+    + '<div class="dlg-foot" style="margin-top:12px"><button type="button" class="btn" data-act="close">Fermer</button></div></div>');
+}
+var CALLF = 'mois';
+function openCalls(){
+  var m0 = new Date(); m0.setDate(1); m0.setHours(0,0,0,0); var deb = CALLF==='mois' ? m0.getTime() : 0;
+  var nom = function(p){ return (p.prenom?esc(p.prenom)+' · ':'')+'@'+esc(p.handle||'?'); };
+  var RES = function(p){ return p.status==='close' ? '<span style="color:#1f9d55">✅ Client</span>' : p.status==='perdu' ? '<span style="color:#d33">❌ Perdu</span>' : '<span class="sub">⏳ En réflexion</span>'; };
+  var faits = S.prospects.filter(function(p){ return p.heldAt && p.heldAt>=deb; }).sort(function(a,b){ return b.heldAt-a.heldAt; });
+  var booke = S.prospects.filter(function(p){ return p.status==='call'; }).sort(function(a,b){ return (a.callScheduledAt||9e15)-(b.callScheduledAt||9e15); });
+  var mem = []; S.clients.forEach(function(c){ (c.checkins||[]).forEach(function(k){ if(/appel|rdv/i.test(k.type||'') && (k.at||0)>=deb) mem.push({c:c, k:k}); }); });
+  mem.sort(function(a,b){ return (b.k.at||0)-(a.k.at||0); });
+  var clos = faits.filter(function(p){ return p.status==='close'; }).length, taux = faits.length ? Math.round(clos*100/faits.length) : 0;
+  var sec = function(t){ return '<h3 style="margin:18px 0 6px;font-size:15px">'+t+'</h3>'; };
+  openDlg('<div class="dlg-body"><h2 id="dlgTitle">📞 Mes appels</h2>'
+    + '<div style="display:flex;gap:6px;margin:6px 0 10px">'+[['mois','Ce mois'],['tout','Depuis le début']].map(function(x){ return '<button type="button" class="chip" data-act="calls-f" data-v="'+x[0]+'" aria-pressed="'+(CALLF===x[0])+'">'+x[1]+'</button>'; }).join('')+'</div>'
+    + '<div class="det-sum"><span class="chip" style="cursor:default">Calls faits<small>'+faits.length+'</small></span><span class="chip" style="cursor:default">Devenus clients<small>'+clos+'</small></span><span class="chip" style="cursor:default">Taux de closing<small>'+taux+' %</small></span><span class="chip" style="cursor:default">Avec les membres<small>'+mem.length+'</small></span></div>'
+    + (booke.length ? sec('📅 Bookés, à faire ('+booke.length+')') + booke.map(function(p){ return detRow(nom(p), esc((p.callScheduledAt?'prévu le '+new Date(p.callScheduledAt).toLocaleDateString('fr-FR',{weekday:'short',day:'numeric',month:'short'})+' à '+new Date(p.callScheduledAt).toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'}):'booké le '+dShort(p.callAt||Date.now())+' · date du call à remplir')+(p.platform?' · '+p.platform:'')+(p.source?' · '+p.source:'')), '', 'details-p', p.id); }).join('') : '')
+    + sec('✅ Calls de vente faits ('+faits.length+')')
+    + (faits.length ? faits.map(function(p){ return detRow(nom(p), esc(dShort(p.heldAt)+(p.platform?' · '+p.platform:'')+(p.source?' · '+p.source:'')), RES(p), 'details-p', p.id); }).join('') : '<p class="note">Aucun call fait sur cette période. Passe un prospect à l\'étape « Call fait » pour qu\'il apparaisse ici.</p>')
+    + sec('👥 Appels avec tes membres ('+mem.length+')')
+    + (mem.length ? mem.map(function(x){ return detRow(esc(x.c.name||'Sans nom')+(x.c.pseudo?' <span class="sub">@'+esc(x.c.pseudo)+'</span>':''), esc(dShort(x.k.at)+' · '+(x.k.type||'')+(x.k.note?' · '+String(x.k.note).slice(0,60):'')), '', 'open-client', x.c.id); }).join('') : '<p class="note">Aucun appel noté. Dans une fiche membre, ajoute un suivi « Appel individuel » ou « Appel de groupe ».</p>')
+    + '<div class="dlg-foot" style="margin-top:16px"><button type="button" class="btn" data-act="close">Fermer</button></div></div>');
 }
 function openObjectif(){
   var o = S.objectif || objDefaut();
@@ -1158,7 +1259,7 @@ document.addEventListener('change', function(ev){
 window.addEventListener('message', function(ev){ if(ev.data==='dha-cand-maj') loadCand(); });
 
 /* ---------- vue : candidatures ---------- */
-var CST = {nouvelle:['Nouvelle','#B7791F'], contactee:['Contactée','var(--focus)'], acceptee:['Acceptée','var(--gain)'], refusee:['Refusée','var(--leak)']};
+var CST = {nouvelle:['Nouvelle','#B7791F'], contactee:['Contactée','var(--focus)'], acceptee:['Acceptée','var(--gain)'], refusee:['Refusée','var(--leak)'], perdue:['Perdu','var(--muted)']};
 
 /* ---------- copy trading : réglages (page dha-copy-trading.html) ---------- */
 var COPY = {cfg:{}, ok:false};
@@ -1479,7 +1580,6 @@ function saveSig(sid){
     .then(function(ok){ if(ok){ toast('Enregistré'); loadSig(); } else toast('Échec de l\'enregistrement'); })
     .catch(function(){ toast('Échec de l\'enregistrement'); });
 }
-var CANDF = 'all';
 var CHAL = {chaud:['🔥 Chaud','#e8590c'], tiede:['🌤️ Tiède','#d29b00'], froid:['❄️ Froid','#4a90d9']};
 function chalRank(c){ return c.pret_payer ? 0 : c.chaleur==='chaud' ? 1 : c.chaleur==='tiede' ? 2 : c.chaleur==='froid' ? 3 : 4; }
 function candLink(c){
@@ -1521,7 +1621,7 @@ function candContactee(c){
 }
 function candProspect(c){ return S.prospects.filter(function(p){ return p.fromCand===c.id; })[0]; }
 function skelCand(){
-  return '<div class="stack"><section class="card" id="landing" aria-label="Page vidéo"></section><section class="card"><div id="cchips" style="display:flex;flex-wrap:wrap;gap:8px;margin:0 0 6px"></div><div class="plist" id="clist"></div></section></div>';
+  return '<div class="stack"><button type="button" class="btn statsbtn" data-act="lnd-open">📊 Voir les stats de la page vidéo →</button><section class="card"><div id="cchips" style="display:flex;flex-wrap:wrap;gap:8px;margin:0 0 6px"></div><div class="plist" id="clist"></div></section></div>';
 }
 /* ---------- page vidéo : conversion visiteurs → candidatures ---------- */
 var LND = {per:'30', d:null};
@@ -1557,25 +1657,114 @@ function paintLanding(){
   if(!v && !n) h += '<p class="sub" style="margin-top:10px">Pas encore de visite enregistrée. Les chiffres arrivent dès que la page vidéo est en ligne.</p>';
   box.innerHTML = h;
 }
+var CANDF = 'nouvelle';
+var LEADS = {list:[], ok:false};
+function loadLeads(){ if(!DHA.adminKey()) return; DHA.admin('dha_admin_vsl_leads').then(function(d){ if(Array.isArray(d)){ LEADS.list = d; LEADS.ok = true; schedule(); } }).catch(function(){}); }
+loadLeads(); setInterval(function(){ if(document.visibilityState==='visible') loadLeads(); }, 120000);
+function telKey(v){ var d = String(v||'').replace(/\D/g,''); return d.length>=9 ? d.slice(-9) : ''; }
+function leadsSansCand(){
+  var tels = {}, mails = {};
+  CAND.list.forEach(function(c){ var k = telKey(c.contact_valeur); if(k) tels[k] = 1; var m = String(c.contact_valeur||'').trim().toLowerCase(); if(m.indexOf('@')>0) mails[m] = 1; if(c.email) mails[String(c.email).toLowerCase()] = 1; });
+  return LEADS.list.filter(function(l){ return !(l.telephone && tels[telKey(l.telephone)]) && !(l.email && mails[String(l.email).toLowerCase()]); });
+}
+function candEtape(c){
+  var st = c.statut||'nouvelle', p = candProspect(c);
+  if(p){ if(p.status==='close') return 'client'; if(p.status==='perdu') return 'refus'; if(p.launchAt) return 'launch'; if(p.status==='held') return 'reflexion'; if(p.status==='call') return 'call'; }
+  if(st==='refusee') return 'refus';
+  if(st==='perdue') return 'perdu';
+  if(st==='acceptee') return p ? 'call' : 'contactee';
+  return st==='contactee' ? 'contactee' : 'nouvelle';
+}
+var CAND_ETAPES = [['nouvelle','🆕 Nouvelles'],['contactee','✅ Contactées'],['call','📅 Call booké'],['reflexion','⏳ En réflexion'],['launch','🚀 Lancement prog.'],['client','🎓 Clients'],['refus','❌ Refus'],['perdu','👻 Perdus'],['vus','👀 Ont juste regardé'],['all','Toutes']];
+var OBJECTIONS = ['Trop cher / pas le budget','Pas le temps','Pas confiance / a peur de se faire arnaquer','Doit en parler à quelqu\'un','Veut réfléchir','Pas sérieux / curieux','Ne répond plus','Autre'];
 function paintCand(){
-  paintLanding();
+  if($('#landing')) paintLanding();
   if(!$('#clist')) return;
-  var cnt = {all:CAND.list.length};
-  CAND.list.forEach(function(c){ var k = c.statut||'nouvelle'; cnt[k] = (cnt[k]||0)+1; if(candProspect(c)) cnt.pros = (cnt.pros||0)+1; if(c.chaleur==='chaud' && k!=='acceptee' && k!=='refusee') cnt.chaud = (cnt.chaud||0)+1; });
-  $('#cchips').innerHTML = [['all','Toutes'],['chaud','🔥 Chauds à appeler'],['nouvelle','Nouvelles'],['contactee','Contactées'],['pros','En prospect'],['acceptee','Acceptées'],['refusee','Refusées']].map(function(f){
+  var cnt = {all:CAND.list.length, vus:leadsSansCand().length};
+  CAND.list.forEach(function(c){ var k = candEtape(c); cnt[k] = (cnt[k]||0)+1; });
+  $('#cchips').innerHTML = CAND_ETAPES.map(function(f){
     return '<button type="button" class="chip" data-act="candf" data-v="'+f[0]+'" aria-pressed="'+(CANDF===f[0])+'">'+f[1]+'<small>'+(cnt[f[0]]||0)+'</small></button>';
   }).join('');
+  if(CANDF==='vus'){ paintLeads(); return; }
   if(!CAND.ok){ $('#clist').innerHTML = '<div class="empty">Chargement des candidatures…</div>'; return; }
-  var list = CAND.list.filter(function(c){ var st = c.statut||'nouvelle'; return CANDF==='all' || (CANDF==='pros' ? !!candProspect(c) : CANDF==='chaud' ? (c.chaleur==='chaud' && st!=='acceptee' && st!=='refusee') : st===CANDF); });
-  if(CANDF==='chaud' || CANDF==='nouvelle') list = list.slice().sort(function(a,b){ return chalRank(a)-chalRank(b) || (b.score||0)-(a.score||0); });
-  $('#clist').innerHTML = list.length ? list.map(function(c){
-    var st = CST[c.statut||'nouvelle']||CST.nouvelle, l = candLink(c);
-    return '<article class="prow" style="display:flex;align-items:center;gap:12px;flex-wrap:wrap"><div style="flex:1;min-width:160px"><button type="button" class="p-handle" data-act="cand-det" data-id="'+esc(c.id)+'">'+esc(c.prenom||'?')+(c.age?' · '+c.age+' ans':'')+(c.ville?' · '+esc(c.ville):'')+'</button>'+(c.created_at?' <span class="sub" style="font-size:13px">· reçue le '+esc(candWhen(c))+'</span>':'')
-      +(c.chaleur?' <span class="badge" style="color:'+CHAL[c.chaleur][1]+';border:1px solid currentColor;background:transparent" title="'+c.score+'/80">'+CHAL[c.chaleur][0]+'</span>':'')+(c.pret_payer?' <span class="badge ok">💰 Prêt à payer</span>':'')
-      +' <span class="badge" style="color:'+st[1]+';border:1px solid currentColor;background:transparent">'+st[0]+'</span>'+(candProspect(c)?' <span class="badge ok">✓ En prospect</span>':'')
-      +(c.note?'<div class="sub" style="font-size:13px;margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:520px">📝 '+esc(String(c.note).split('\n')[0])+'</div>':'')+'</div>'
-      +'<div class="p-actions" style="margin:0">'+(l?'<button type="button" class="btn small primary" data-act="cand-write" data-id="'+esc(c.id)+'">💬 Écrire</button>':'')+'<button type="button" class="btn small" data-act="cand-det" data-id="'+esc(c.id)+'">Voir les détails</button></div></article>';
-  }).join('') : '<div class="empty">'+(CAND.list.length?'Aucune candidature ici.':'Aucune candidature pour l\'instant.')+'</div>';
+  var list = CAND.list.filter(function(c){ return CANDF==='all' || candEtape(c)===CANDF; });
+  if(CANDF==='nouvelle' || CANDF==='contactee') list = list.slice().sort(function(a,b){ return chalRank(a)-chalRank(b) || (b.score||0)-(a.score||0); });
+  var vide = {nouvelle:'Aucune nouvelle candidature. Tout est traité 🔥', contactee:'Personne en attente de réponse.', call:'Aucun call booké en ce moment.', reflexion:'Personne en réflexion.', launch:'Aucun lancement programmé.', client:'Aucun client venu des candidatures pour l\'instant.', refus:'Aucun refus.', perdu:'Aucun contact perdu 💪'};
+  $('#clist').innerHTML = list.length ? list.map(candRow).join('') : '<div class="empty">'+(CAND.list.length?(vide[CANDF]||'Aucune candidature ici.'):'Aucune candidature pour l\'instant.')+'</div>';
+}
+function candRow(c){
+  var l = candLink(c), et = candEtape(c), p = candProspect(c);
+  var head = '<div style="flex:1;min-width:160px"><button type="button" class="p-handle" data-act="cand-det" data-id="'+esc(c.id)+'">'+esc(c.prenom||'?')+(c.age?' · '+c.age+' ans':'')+(c.ville?' · '+esc(c.ville):'')+'</button>'+(c.created_at?' <span class="sub" style="font-size:13px">· reçue le '+esc(candWhen(c))+'</span>':'')
+    +(c.chaleur?' <span class="badge" style="color:'+CHAL[c.chaleur][1]+';border:1px solid currentColor;background:transparent" title="'+c.score+'/80">'+CHAL[c.chaleur][0]+'</span>':'')+(c.pret_payer?' <span class="badge ok">💰 Prêt à payer</span>':'')
+    +(p&&et!=='contactee'&&et!=='nouvelle'?' <span class="pr-st st-'+prospectEtat(p)[1]+'">'+esc(prospectEtat(p)[0])+'</span>':'')
+    +(et==='refus'&&c.objection?' <span class="badge" style="background:transparent;border:1px solid var(--line)">Objection : '+esc(c.objection)+'</span>':'')
+    +(c.note?'<div class="sub" style="font-size:13px;margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:520px">📝 '+esc(String(c.note).split('\n').filter(Boolean).slice(-1)[0]||'')+'</div>':'')+'</div>';
+  var acts = (l?'<button type="button" class="btn small primary" data-act="cand-write" data-id="'+esc(c.id)+'">💬 Écrire</button>':'');
+  if(et==='nouvelle') acts += '<label class="ccheck"><input type="checkbox" data-act="cand-contacte" data-id="'+esc(c.id)+'"> Contacté</label>';
+  else if(et==='contactee') acts += '<button type="button" class="btn small" data-act="cand-call" data-id="'+esc(c.id)+'">📅 Call booké</button><button type="button" class="btn small" data-act="cand-refus" data-id="'+esc(c.id)+'">❌ Refus</button><button type="button" class="btn small" data-act="cand-perdu" data-id="'+esc(c.id)+'">👻 Perdu</button>';
+  else if(et==='perdu') acts += '<span class="badge" style="background:transparent;border:1px solid var(--line)">👻 '+esc(c.objection||'Perdu')+'</span><button type="button" class="btn small" data-act="cand-st" data-id="'+esc(c.id)+'" data-v="contactee">↩︎ Il a répondu</button>';
+  else if(p) acts += '<button type="button" class="btn small" data-act="details-p" data-id="'+esc(p.id)+'">📝 Fiche prospect</button>';
+  acts += '<button type="button" class="iconbtn" data-act="cand-det" data-id="'+esc(c.id)+'">Détails</button>';
+  return '<article class="prow" style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">'+head+'<div class="p-actions" style="margin:0">'+acts+'</div></article>';
+}
+function paintLeads(){
+  if(!LEADS.ok){ $('#clist').innerHTML = '<div class="empty">Chargement…</div>'; return; }
+  var L = leadsSansCand();
+  $('#clist').innerHTML = '<p class="note" style="margin:4px 0 8px">Ils ont laissé leurs coordonnées pour regarder la vidéo, mais n\'ont pas candidaté. Ceux qui ont candidaté n\'apparaissent pas ici.</p>'
+    + (L.length ? L.map(function(l){
+      var d = new Date(l.created_at), w = d.toLocaleDateString('fr-FR',{day:'numeric',month:'short'})+' à '+('0'+d.getHours()).slice(-2)+'h'+('0'+d.getMinutes()).slice(-2);
+      var wa = l.telephone ? 'https://wa.me/'+String(l.telephone).replace(/\D/g,'').replace(/^0(\d{9})$/,'33$1')+'?text='+encodeURIComponent('Salut '+(l.prenom||'')+' 👋 C\'est Quincy de la DHA. Tu as regardé la présentation, qu\'est-ce que tu en as pensé ? Tu as des questions avant de candidater ?') : (l.email?'mailto:'+l.email:'');
+      return '<article class="prow" style="display:flex;align-items:center;gap:12px;flex-wrap:wrap'+(l.contacte?';opacity:.6':'')+'"><div style="flex:1;min-width:160px"><b>'+esc(l.prenom||'?')+'</b> <span class="sub" style="font-size:13px">· a regardé le '+esc(w)+'</span><div class="sub" style="font-size:13px">'+esc([l.telephone,l.email].filter(Boolean).join(' · '))+'</div></div>'
+        +'<div class="p-actions" style="margin:0">'+(wa?'<a class="btn small primary" href="'+esc(wa)+'" target="_blank" rel="noopener">💬 Écrire</a>':'')+'<label class="ccheck"><input type="checkbox" data-act="lead-contacte" data-id="'+esc(l.id)+'"'+(l.contacte?' checked':'')+'> Contacté</label></div></article>';
+    }).join('') : '<div class="empty">Personne pour l\'instant. Dès que la vidéo demandera les coordonnées, ceux qui regardent sans candidater arriveront ici.</div>');
+}
+function candCallBooke(c){
+  var go = function(){ var p = candProspect(c); if(p){ changeStage(p.id,'call'); toast(c.prenom+' : call booké, il est dans tes prospects'); } };
+  if(candProspect(c)){ go(); return; }
+  var social = ['Instagram','TikTok','Snapchat'].indexOf(c.contact_canal)>-1;
+  var handle = social ? String(c.contact_valeur||'').replace(/^@+/,'') : (String(c.contact_valeur||'').replace(/[^\d+]/g,'') || String(c.prenom||'candidat').toLowerCase().replace(/\s+/g,''));
+  var src = c.source==='Ebook DHA' ? EBOOK : (c.source==='Un ami / un membre' ? 'Recommandation' : 'Autre');
+  var at = c.created_at ? new Date(c.created_at).getTime() : Date.now(), now = Date.now();
+  var note = 'Candidature du '+candWhen(c)+' · '+(c.contact_canal||'')+' : '+(c.contact_valeur||'')+(c.age?' · '+c.age+' ans':'')+(c.ville?' · '+c.ville+(c.pays?', '+c.pays:''):'')+(c.source?' · connu par '+c.source:'');
+  var o = {id:uid(), handle:handle, prenom:c.prenom||'', platform:(['Instagram','TikTok'].indexOf(c.contact_canal)>-1?c.contact_canal:'Autre'), source:src, variant:'Sans script', status:'call', dmAt:at, repliedAt:now, callAt:now, heldAt:null, wonAt:null, lostAt:null, lostStage:null, lostReason:'', notes:note, objectif:'', clientId:null, revenu:null, situation:c.situation||'', ville:c.ville||'', fromCand:c.id};
+  safe(put('prospects', o)).then(function(){ return patchCandDb(c,{statut:'acceptee'}); }).then(function(){ toast(c.prenom+' : call booké, il est dans tes prospects'); setTimeout(function(){ openProspectDetails(o.id); }, 300); }).catch(function(){});
+}
+function askObjection(kind, id){
+  var nom = kind==='cand' ? ((candById(id)||{}).prenom||'') : ((S.prospects.filter(function(x){ return x.id===id; })[0]||{}).prenom||'');
+  openDlg('<div class="dlg-body"><h2 id="dlgTitle">❌ Refus'+(nom?' de '+esc(nom):'')+'</h2><p class="sub" style="margin:0">Quelle est son objection ? Ça t\'aide à voir ce qui bloque le plus souvent.</p>'
+    +'<div class="seg obj-seg" role="group" aria-label="Objection">'+OBJECTIONS.map(function(o,i){ return '<button type="button" data-act="obj-pick" data-v="'+esc(o)+'" aria-pressed="false">'+esc(o)+'</button>'; }).join('')+'</div>'
+    +'<div><label for="objNote">Précision (optionnel)</label><textarea id="objNote" rows="2" placeholder="Ex. revient en janvier après sa prime"></textarea></div></div>'
+    +'<div class="dlg-foot"><button type="button" class="btn" data-act="close">Annuler</button><div class="r"><button type="button" class="btn danger" data-act="obj-ok" data-kind="'+kind+'" data-id="'+esc(id)+'">Confirmer le refus</button></div></div>');
+}
+function saveObjection(kind, id){
+  var sel = $('.obj-seg [aria-pressed="true"]'), o = sel ? sel.getAttribute('data-v') : 'Autre', nt = ($('#objNote').value||'').trim();
+  var txt = o + (nt?' · '+nt:'');
+  if(kind==='cand'){
+    var c = candById(id); if(!c) return;
+    var line = new Date().toLocaleDateString('fr-FR')+' · Refus : '+txt;
+    safe(patchCandDb(c,{statut:'refusee', objection:o, note:(c.note?c.note+'\n':'')+line})).then(function(){ closeDlg(); toast('Refus noté'); }).catch(function(){});
+  }else{
+    var p = S.prospects.filter(function(x){ return x.id===id; })[0]; if(!p) return;
+    var n = setStage(p,'perdu'); n.lostReason = txt;
+    safe(put('prospects', n)).then(function(){ var c2 = CAND.list.filter(function(x){ return x.id===p.fromCand; })[0]; if(c2) patchCandDb(c2,{objection:o}).catch(function(){}); closeDlg(); toast('Refus noté'); }).catch(function(){});
+  }
+}
+function askPerdu(id){
+  var c = candById(id); if(!c) return;
+  openDlg('<div class="dlg-body"><h2 id="dlgTitle">👻 '+esc(c.prenom||'Candidat')+' est perdu ?</h2><p class="sub" style="margin:0">Il sort de tes Contactées et part dans 👻 Perdus. Tu pourras le remettre s\'il revient.</p>'
+    +'<div class="seg obj-seg" role="group" aria-label="Raison"><button type="button" data-act="obj-pick" data-v="Ne répond plus" aria-pressed="true">🔕 Ne répond plus</button><button type="button" data-act="obj-pick" data-v="A supprimé la conversation" aria-pressed="false">🗑️ A supprimé la conversation</button><button type="button" data-act="obj-pick" data-v="M\'a bloqué" aria-pressed="false">🚫 M\'a bloqué</button></div>'
+    +'<div><label for="objNote">Précision (optionnel)</label><textarea id="objNote" rows="2" placeholder="Ex. relancé 3 fois, vu sans réponse"></textarea></div></div>'
+    +'<div class="dlg-foot"><button type="button" class="btn" data-act="close">Annuler</button><div class="r"><button type="button" class="btn danger" data-act="perdu-ok" data-id="'+esc(id)+'">Classer en perdu</button></div></div>');
+}
+function savePerdu(id){
+  var c = candById(id); if(!c) return;
+  var sel = $('.obj-seg [aria-pressed="true"]'), o = sel ? sel.getAttribute('data-v') : 'Ne répond plus', nt = ($('#objNote').value||'').trim();
+  var line = new Date().toLocaleDateString('fr-FR')+' · Perdu : '+o+(nt?' · '+nt:'');
+  safe(patchCandDb(c,{statut:'perdue', objection:o, note:(c.note?c.note+'\n':'')+line})).then(function(){ closeDlg(); toast((c.prenom||'Candidat')+' → 👻 Perdus'); }).catch(function(){});
+}
+function openLanding(){
+  openDlg('<div class="dlg-body"><section id="landing" aria-label="Page vidéo"></section></div><div class="dlg-foot"><span></span><div class="r"><button type="button" class="btn" data-act="close">Fermer</button></div></div>');
+  paintLanding();
 }
 function openCand(id){
   var c = CAND.list.filter(function(x){ return String(x.id)===String(id); })[0]; if(!c) return;
@@ -1588,11 +1777,19 @@ function openCand(id){
       +((c.statut||'nouvelle')!=='contactee'?'<button type="button" class="btn" data-act="cand-sent" data-id="'+esc(c.id)+'">✓ C\'est envoyé</button>':'')+'</div>'
       +'<button type="button" class="iconbtn" data-act="cand-tpl" style="justify-self:start">Garder ce texte comme message par défaut</button></div>':'')
     +'<dl class="pinfo">'+rows.map(function(r){ return '<dt>'+r[0]+'</dt><dd>'+esc(r[1])+'</dd>'; }).join('')+'</dl>'
-    +'<div><label>Statut</label><div class="seg" role="group" aria-label="Statut">'+Object.keys(CST).map(function(k){ return '<button type="button" data-act="cand-st" data-id="'+esc(c.id)+'" data-v="'+k+'" aria-pressed="'+((c.statut||'nouvelle')===k)+'">'+CST[k][0]+'</button>'; }).join('')+'</div></div>'
+    +(function(){ var et = candEtape(c), lab = (CAND_ETAPES.filter(function(x){ return x[0]===et; })[0]||[0,''])[1];
+        return '<div><label>Où il en est</label><p style="margin:2px 0 8px"><b>'+esc(lab)+'</b>'+(c.objection&&(et==='refus'||et==='perdu')?' · '+(et==='perdu'?'raison':'objection')+' : '+esc(c.objection):'')+'</p><div class="qk-row" style="flex-wrap:wrap;gap:8px">'
+          + (et==='nouvelle' ? '<button type="button" class="btn small" data-act="cand-st" data-id="'+esc(c.id)+'" data-v="contactee">✅ Contacté</button>' : '')
+          + (et==='nouvelle'||et==='contactee' ? '<button type="button" class="btn small primary" data-act="cand-call" data-id="'+esc(c.id)+'">📅 Call booké</button><button type="button" class="btn small" data-act="cand-refus" data-id="'+esc(c.id)+'">❌ Refus</button>' : '')
+          + (et==='contactee' ? '<button type="button" class="btn small" data-act="cand-perdu" data-id="'+esc(c.id)+'">👻 Perdu</button>' : '')
+          + (et==='perdu' ? '<button type="button" class="btn small primary" data-act="cand-st" data-id="'+esc(c.id)+'" data-v="contactee">↩︎ Il a répondu, remettre en contactée</button>' : '')
+          + (pr ? '<button type="button" class="btn small" data-act="details-p" data-id="'+esc(pr.id)+'">📝 Fiche prospect (call fait, client, lancement…)</button>' : '')
+          + (et==='refus' ? '<button type="button" class="btn small" data-act="cand-st" data-id="'+esc(c.id)+'" data-v="nouvelle">↩︎ Remettre en nouvelle</button>' : '')
+          + '</div></div>'; })()
     +'<div><label for="cnNote">Ajouter une note</label><textarea id="cnNote" rows="2" placeholder="Ex. appelé, intéressé par le 500€, rappeler vendredi"></textarea></div>'
     +'<div><label>Historique</label>'+(c.note?'<div class="tl">'+String(c.note).split('\n').filter(Boolean).map(function(l){ return '<div>'+esc(l)+'</div>'; }).join('')+'</div>':'<p class="sub" style="margin:0">Aucune note pour l\'instant.</p>')+'</div>'
     +'<button type="button" class="btn danger" data-act="cand-del" data-id="'+esc(c.id)+'" style="justify-self:start">🗑️ Supprimer la candidature</button></div>'
-    +'<div class="dlg-foot">'+(pr?'<span class="sub">✓ Déjà dans tes prospects</span>':'<button type="button" class="btn" data-act="cand-pros" data-id="'+esc(c.id)+'">➜ Passer en prospect</button>')
+    +'<div class="dlg-foot">'+(pr?'<span class="sub">✓ Dans tes prospects</span>':'<span></span>')
     +'<div class="r"><button type="button" class="btn" data-act="close">Fermer</button><button type="button" class="btn primary" data-act="cand-save" data-id="'+esc(c.id)+'">Ajouter la note</button></div></div>');
 }
 function askDelCand(id){
@@ -2000,13 +2197,13 @@ function paintProspects(){
   // Filtres : plusieurs choix possibles. Dans un même groupe = OU, entre les groupes = ET.
   var GROUPS = [
     ['act','À faire',[['contact','À contacter'],['relance','À relancer']]],
-    ['stage','Étape',[['reponse','Répondu'],['call','Call booké'],['held','Call fait']]],
+    ['stage','Étape',[['reponse','Aucun call booké'],['call','📅 Call booké'],['held','⏳ En réflexion'],['launch','🚀 Lancement programmé']]],
     ['rev','Revenus',[['sdr','Avec revenus'],['sr','Sans revenus'],['none','Non renseigné']]],
     ['src','Source',SOURCES.map(function(x){ return [x, x===EBOOK?'Ebook':x.replace('Like ou abonné de ','Like/abo ')]; })]
   ];
   var test = {
     act:function(p,v){ return v==='contact' ? prospectDue(p) : needsFollowUp(p); },
-    stage:function(p,v){ return p.status===v; },
+    stage:function(p,v){ return v==='launch' ? (!!p.launchAt && p.status!=='close' && p.status!=='perdu') : v==='held' ? (p.status==='held' && !p.launchAt) : p.status===v; },
     rev:function(p,v){ return v==='none' ? !p.revenu : p.revenu===v; },
     src:function(p,v){ return p.source===v; }
   };
@@ -2060,7 +2257,7 @@ function prow(p){
   }).join('') + '<button type="button" class="'+(lost?'now lost':'')+'" data-act="stage" data-id="'+esc(p.id)+'" data-stage="perdu" aria-pressed="'+lost+'">Perdu</button>';
   var meta = [p.platform, p.ville, p.situation, p.source, p.dmAt?'1er contact le '+dShort(p.dmAt):''].filter(Boolean).map(esc).join(', ');
   var revLabel = REV_LABEL[p.revenu] || 'Revenus ?';
-  var revCls = 'rev-badge'+(p.revenu==='sdr'?' sdr':p.revenu==='sr'?' sr':'');
+  var revCls = 'rev-badge'+(p.revenu==='sdr'?' rv-sdr':p.revenu==='sr'?' rv-sr':'');
   var revBtn = '<button type="button" class="'+revCls+'" data-act="cycle-rev" data-id="'+esc(p.id)+'" title="Source de revenus : clique pour changer">'+revLabel+'</button>';
   var fu = needsFollowUp(p);
   var relBtn = fu && p.status!=='perdu' && p.status!=='close' ? '<button type="button" class="btn small" data-act="relance" data-id="'+esc(p.id)+'">✓ Relancé</button>' : '';
@@ -2081,8 +2278,33 @@ function prow(p){
   var stepsBlock = expanded ? '<div class="pmore"><span class="sub">Étape actuelle : '+esc(STAGE_LABEL[p.status]||'')+'</span><div class="steps" role="group" aria-label="Étape de @'+esc(p.handle)+'">'+btns+'</div><div class="p-actions">'
     + (p.status!=='perdu' && p.status!=='close' && !fu ? '<button type="button" class="btn small" data-act="relance" data-id="'+esc(p.id)+'">À relancer</button>' : '')
     + '<button type="button" class="btn small" data-act="details-p" data-id="'+esc(p.id)+'">Détails et notes</button><button type="button" class="iconbtn" data-act="del-p" data-id="'+esc(p.id)+'">Supprimer</button></div></div>' : '';
-  return '<article class="prow"><div><button type="button" class="p-handle" data-act="edit-p" data-id="'+esc(p.id)+'">'+(p.prenom?esc(p.prenom)+' · ':'')+'@'+esc(p.handle)+'</button>'+revBtn+'</div>'
-    +quickStep+stepsBlock+'<div class="p-when">'+when+'</div></article>';
+  return prow2(p, revBtn, fu, due);
+}
+function contactUrl(p){
+  var h = String(p.handle||'').replace(/^@+/,'').trim(); if(!h) return '';
+  if(/^\+?[0-9 .]{9,}$/.test(h)) return 'https://wa.me/'+h.replace(/[^0-9]/g,'');
+  if(p.platform==='TikTok') return 'https://www.tiktok.com/@'+encodeURIComponent(h);
+  if(p.platform==='Instagram') return 'https://ig.me/m/'+encodeURIComponent(h);
+  return '';
+}
+function prospectEtat(p){
+  if(p.status==='perdu') return ['❌ Perdu','lost'];
+  if(p.status==='close') return ['✅ Client','ok'];
+  if(p.launchAt) return ['🚀 Lancement le '+dShort(p.launchAt),'launch'];
+  if(p.status==='held') return ['⏳ Call fait · en réflexion','think'];
+  if(p.status==='call') return ['📅 Call booké'+(p.callScheduledAt?' · '+new Date(p.callScheduledAt).toLocaleDateString('fr-FR',{day:'numeric',month:'short'})+' '+new Date(p.callScheduledAt).toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'}):''),'call'];
+  return ['Aucun call booké','none'];
+}
+var NET_IC = {Instagram:'📸', TikTok:'🎵'};
+function prow2(p, revBtn, fu, due){
+  var e = prospectEtat(p), url = contactUrl(p);
+  var bulle = url ? '<a class="pr-chat" href="'+esc(url)+'" target="_blank" rel="noopener" aria-label="Écrire à @'+esc(p.handle)+' sur '+esc(p.platform||'le réseau')+'">💬</a>' : '';
+  return '<article class="prow prow2">'
+    + '<div class="pr-top"><button type="button" class="pr-name" data-act="details-p" data-id="'+esc(p.id)+'"><b>'+(p.prenom?esc(p.prenom):'<span class="sub">Sans prénom</span>')+'</b><span>@'+esc(p.handle)+'</span></button>'+bulle+'</div>'
+    + '<div class="pr-tags"><span class="pr-net">'+(NET_IC[p.platform]||'🌐')+' '+esc(p.platform||'Réseau ?')+'</span>'+revBtn.replace('rev-badge','rev-badge pr-rev')+'<span class="pr-st st-'+e[1]+'">'+esc(e[0])+'</span>'
+    + (fu && p.status!=='perdu' && p.status!=='close' ? '<span class="badge">À relancer</span>' : due && p.status!=='perdu' && p.status!=='close' ? '<span class="badge">À contacter</span>' : '')+'</div>'
+    + '<button type="button" class="pr-det" data-act="details-p" data-id="'+esc(p.id)+'">📝 Détails et note<span aria-hidden="true">›</span></button>'
+    + '</article>';
 }
 function setStage(p, stage){
   var now = Date.now(), n = Object.assign({}, p);
@@ -2310,8 +2532,10 @@ function paintClients(){
     return '<div class="card ccard"><div style="display:flex;justify-content:space-between;gap:8px;align-items:flex-start"><h3>'+esc(c.name||'Sans nom')+' <span class="sub" style="font-weight:500;font-size:14px">· '+esc(offer)+'</span></h3><span class="badge'+(active?' ok':'')+'" style="margin:0">'+esc(stLabel)+'</span></div>'
       +'<div class="p-when" style="margin:0">'+plat+'</div>'
       +'<div class="prog"><span>'+md+'/'+MODULES+' modules</span><div class="bar"><i style="width:'+Math.round(md/MODULES*100)+'%"></i></div></div>'
+      +(function(){ var pi = pcInfo(c); if(!pi || !pi.tot) return ''; var ok = pi.pct>=100, late = !ok && Date.now()-(c.startAt||Date.now()) > 7*DAY;
+          return '<div class="prog pcprog"><span>🧠 Prise de conscience '+(ok?'<b class="ok">terminée</b>':pi.n+'/'+pi.tot+' vidéos')+'</span><div class="bar'+(late?' late':'')+'"><i style="width:'+pi.pct+'%"></i></div><b class="pcpct'+(ok?' ok':late?' late':'')+'">'+pi.pct+'&nbsp;%</b></div>'; })()
       +((money||alert)?'<div>'+money+(alert?'<span class="badge">'+esc(alert)+'</span>':'')+'</div>':'')
-      +'<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:auto">'+(m?'<button type="button" class="btn small primary" data-act="xp-open" data-id="'+esc(c.id)+'">⚡ Ajouter de l\'XP</button>':'')+'<button type="button" class="btn small" data-act="open-client" data-id="'+esc(c.id)+'">Voir les détails</button></div></div>';
+      +'<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:auto">'+(c.pseudo?'<button type="button" class="btn small" data-act="prog-open" data-id="'+esc(c.id)+'">📈 Progression</button>':'')+(m?'<button type="button" class="btn small primary" data-act="xp-open" data-id="'+esc(c.id)+'">⚡ Ajouter de l\'XP</button>':'')+'<button type="button" class="btn small" data-act="open-client" data-id="'+esc(c.id)+'">Voir les détails</button></div></div>';
   }).join('') + plats.map(platCard).join('');
 }
 
@@ -2580,7 +2804,13 @@ function openProspectDetails(id){
   }
   var info = [['Prénom',p.prenom],['Réseau',p.platform],['Ville',p.ville],['Situation',p.situation],['Revenus',REV_LABEL[p.revenu]||'Non renseigné'],['Source',p.source],['1er contact',p.dmAt?dShort(p.dmAt):''],['Réponse',p.repliedAt?ago(p.repliedAt):'']].filter(function(r){ return r[1]; });
   var infoH = '<dl class="pinfo">'+info.map(function(r){ return '<dt>'+r[0]+'</dt><dd>'+esc(r[1])+'</dd>'; }).join('')+'</dl>';
-  openDlg('<div class="dlg-body"><h2 id="dlgTitle">'+(p.prenom?esc(p.prenom)+' · ':'')+'@'+esc(p.handle)+'</h2>'+infoH+gauge
+  var ri = reachedIdx(p), lost = p.status==='perdu', url = contactUrl(p);
+  var stg = '<div><label>Où il en est</label><div class="steps pd-steps" role="group" aria-label="Étape de @'+esc(p.handle)+'">'
+    + [['reponse','Aucun call booké'],['call','📅 Call booké'],['held','⏳ Call fait · en réflexion'],['close','✅ Client']].map(function(x){ var i = STAGES.indexOf(x[0]); var on = !lost && (x[0]==='reponse' ? ri<=1 : ri===i); return '<button type="button" class="'+(on?'now'+(x[0]==='close'?' won':''):'')+'" data-act="pd-stage" data-id="'+esc(p.id)+'" data-stage="'+x[0]+'" aria-pressed="'+on+'">'+x[1]+'</button>'; }).join('')
+    + '<button type="button" class="'+(lost?'now lost':'')+'" data-act="pd-stage" data-id="'+esc(p.id)+'" data-stage="perdu" aria-pressed="'+lost+'">❌ Perdu</button></div>'
+    + '<p class="note" style="margin:6px 0 0">Pour un lancement programmé, remplis la date de lancement plus bas.</p></div>';
+  var pdTop = '<div style="display:flex;gap:8px;flex-wrap:wrap;margin:-4px 0 4px">'+(url?'<a class="btn small primary" href="'+esc(url)+'" target="_blank" rel="noopener">💬 Écrire sur '+esc(p.platform)+'</a>':'')+'<button type="button" class="btn small" data-act="edit-p" data-id="'+esc(p.id)+'">✏️ Prénom, pseudo, réseau</button><button type="button" class="btn small" data-act="cycle-rev-pd" data-id="'+esc(p.id)+'">💰 '+esc(REV_LABEL[p.revenu]||'Revenus ?')+'</button></div>';
+  openDlg('<div class="dlg-body"><h2 id="dlgTitle">'+(p.prenom?esc(p.prenom)+' · ':'')+'@'+esc(p.handle)+'</h2>'+pdTop+infoH+stg+gauge
     +'<div><label for="pdObj">Objectif</label><input id="pdObj" value="'+esc(p.objectif||'')+'" placeholder="Ex. Passer un challenge en 3 mois"></div>'
     +'<div><label for="pdSit">Note</label><textarea id="pdSit" rows="3" placeholder="Contexte, objections, où il en est">'+esc(p.notes||'')+'</textarea></div>'
     +'<div><label for="pdLaunch">Date de lancement prévue</label><input id="pdLaunch" type="date" value="'+(p.launchAt?ymd(p.launchAt):'')+'"><div id="pdLaunchLink" style="margin-top:8px"></div></div>'
@@ -2823,7 +3053,7 @@ document.addEventListener('click', function(ev){
     case 'relink': var rc = byId(S.clients); if(rc){ openClient(rc); setTimeout(function(){ var f = $('#cdPseudo'); if(f){ f.scrollIntoView({block:'center'}); f.select(); } }, 60); } break;
     case 'unlink-f': var f2 = $('#cdPseudo'); if(f2){ f2.value = ''; toast('Compte délié : clique sur « Enregistrer » pour valider.'); } break;
     case 'unlink': var uc = byId(S.clients); if(uc){ var row = el.closest('div'); safe(put('clients', Object.assign({}, uc, {pseudo:''}))).then(function(){ if(row) row.innerHTML = '<span class="sub">Liaison annulée pour '+esc(uc.name||'ce client')+'</span>'; }).catch(function(){}); } break;
-    case 'cand-st': var cs = candById(id); if(cs){ var v2 = el.getAttribute('data-v'); if(v2==='contactee'){ candContactee(cs); break; } safe(patchCandDb(cs,{statut:v2})).then(function(){ openCand(id); toast('Statut : '+CST[v2][0]); }).catch(function(){}); } break;
+    case 'cand-st': var cs = candById(id); if(cs){ var v2 = el.getAttribute('data-v');  safe(patchCandDb(cs,{statut:v2})).then(function(){ openCand(id); toast('Statut : '+CST[v2][0]); }).catch(function(){}); } break;
     case 'cand-write': var cw = candById(id); if(cw){ var mt = $('#cmMsg'); candWrite(cw, mt ? mt.value.trim() : candMsg(cw)); } break;
     case 'cand-sent': var cse = candById(id); if(cse) candContactee(cse); break;
     case 'cand-tpl': var mt2 = $('#cmMsg'), cc = candById(CAND.open);
@@ -2834,7 +3064,16 @@ document.addEventListener('click', function(ev){
       safe(patchCandDb(cn,{note:full})).then(function(){ openCand(id); toast('Note ajoutée'); }).catch(function(){}); } break;
     case 'cand-del': askDelCand(id); break;
     case 'cand-del-ok': delCand(id); break;
-    case 'cand-pros': var cp = candById(id); if(cp) candToProspect(cp); break;
+    case 'cand-pros': var cp = candById(id); if(cp) candCallBooke(cp); break;
+    case 'lnd-open': openLanding(); break;
+    case 'cand-contacte': var cc1 = candById(id); if(cc1){ safe(patchCandDb(cc1,{statut:'contactee'})).then(function(){ toast((cc1.prenom||'Candidat')+' → Contactées'); }).catch(function(){}); } break;
+    case 'cand-call': var cc2 = candById(id); if(cc2) candCallBooke(cc2); break;
+    case 'cand-refus': askObjection('cand', id); break;
+    case 'cand-perdu': askPerdu(id); break;
+    case 'perdu-ok': savePerdu(id); break;
+    case 'obj-pick': document.querySelectorAll('.obj-seg button').forEach(function(b){ b.setAttribute('aria-pressed', b===el ? 'true' : 'false'); }); break;
+    case 'obj-ok': saveObjection(el.getAttribute('data-kind'), id); break;
+    case 'lead-contacte': (function(){ var on = el.checked, l0 = LEADS.list.filter(function(x){ return String(x.id)===String(id); })[0]; if(l0) l0.contacte = on; DHA.admin('dha_admin_vsl_lead_update',{p_id:id, p_contacte:on, p_note:null}).then(function(){ schedule(); }).catch(function(){ toast('Échec'); }); })(); break;
     case 'add-dm': S.tab = 'prospects'; render(); setTimeout(function(){ openDmLogDialog(); }, 30); break;
     case 'open-dmlog': openDmLogDialog(); break;
     case 'open-reply': openReplyDialog(); break;
@@ -2856,6 +3095,11 @@ document.addEventListener('click', function(ev){
     case 'filter': S.filter = el.getAttribute('data-f'); S.limit = 60; paintProspects(); break;
     case 'more': S.limit += 60; paintProspects(); break;
     case 'stage': changeStage(id, el.getAttribute('data-stage')); break;
+    case 'pd-stage': if(el.getAttribute('data-stage')==='perdu'){ askObjection('p', id); break; } (function(){ var keep = {o:$('#pdObj')&&$('#pdObj').value, n:$('#pdSit')&&$('#pdSit').value};
+      changeStage(id, el.getAttribute('data-stage'));
+      setTimeout(function(){ openProspectDetails(id); if($('#pdObj')&&keep.o!=null) $('#pdObj').value = keep.o; if($('#pdSit')&&keep.n!=null) $('#pdSit').value = keep.n; }, 350); })(); break;
+    case 'cycle-rev-pd': (function(){ var rp3 = byId(S.prospects); if(!rp3) return; var ro = [null,'sdr','sr'], nr = ro[(ro.indexOf(rp3.revenu||null)+1)%ro.length];
+      safe(put('prospects', Object.assign({}, rp3, {revenu:nr}))).then(function(){ setTimeout(function(){ openProspectDetails(id); }, 200); }).catch(function(){}); })(); break;
     case 'cycle-rev':
       var rp2 = byId(S.prospects); if(!rp2) break;
       var revOrder = [null,'sdr','sr'], curRev = revOrder.indexOf(rp2.revenu||null), nextRev = revOrder[(curRev+1)%revOrder.length];
@@ -2874,6 +3118,9 @@ document.addEventListener('click', function(ev){
       break;
     case 'edit-p': var p = byId(S.prospects); if(p) openProspect(p, el.getAttribute('data-act')==='edit-p' && el.closest('.p-actions')); break;
     case 'details-p': openProspectDetails(id); break;
+    case 'calls-open': openCalls(); break;
+    case 'prog-open': var pc0 = byId(S.clients); if(pc0) openProgress(pc0); break;
+    case 'calls-f': CALLF = el.getAttribute('data-v'); openCalls(); break;
     case 'add-pint':
       var pin = $('#pdINote').value.trim();
       draft.interactions = [{at:Date.now(), type:$('#pdIType').value, note:pin}].concat(draft.interactions||[]);
