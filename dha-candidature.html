@@ -518,6 +518,7 @@ footer{text-align:center;font-family:'Chakra Petch',sans-serif;font-size:11px;le
     return {check:function(v){return check(v,true);},auto:auto,maj:maj};
   })();
 
+
   function suivant(){
     var s=steps[cur];
     if(!valider(s))return;
@@ -585,6 +586,19 @@ footer{text-align:center;font-family:'Chakra Petch',sans-serif;font-size:11px;le
     if(s.hasAttribute('data-send')||s.getAttribute('data-id')==='source'){if(!document.getElementById('send').disabled)envoyer();return;}
     if(s.getAttribute('data-id')==='intro'||s.querySelector('[data-next]'))suivant();
   });
+
+  /* ─── Déjà rempli sur la page vidéo (prénom, contact, situation) → on pré-remplit ─── */
+  (function(){
+    var L=null; try{L=JSON.parse(localStorage.getItem('dha_lead')||'null');}catch(e){}
+    if(!L)return;
+    if(L.prenom){var fp=document.getElementById('f-prenom'); if(fp&&!fp.value)fp.value=String(L.prenom).slice(0,40);}
+    var SIT={'Étudiant':'Étudiant(e)','Étudiant en alternance':'Étudiant(e) en alternance','Salarié':'Salarié(e)','Autre':'Autre'};
+    if(SIT[L.situation]) preselect('situation',SIT[L.situation]);
+    if((L.canal==='WhatsApp'||L.canal==='Téléphone')&&L.valeur){
+      var ch=document.querySelector('.chip[data-c="'+L.canal+'"]');
+      if(ch){ ch.click(); var fc=document.getElementById('f-contact'); fc.value=L.valeur; TEL.check(fc.value); if(document.activeElement===fc)fc.blur(); }
+    }
+  })();
 
   function chaleur(){
     var P={demarrage:{'Dès cette semaine':25,'Dans le mois':18,'Dans 1 à 3 mois':8},budget:{'Plus de 750 €':30,'Entre 500 et 750 €':25,'Entre 180 et 500 €':15,'Entre 80 et 180 €':6,"Je préfère en parler pendant l'appel":10},motivation:{'Je veux changer de vie, sortir de ma situation actuelle':15,"Je trade déjà mais je n'arrive pas à être régulier":15,'Je veux un revenu en plus à côté':12,'Par curiosité':3},temps_dispo:{'Plus de 2 h':10,'1 h à 2 h':10,'30 min à 1 h':8,'Moins de 30 min':2}};
