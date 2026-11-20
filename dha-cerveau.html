@@ -156,6 +156,7 @@ textarea{resize:vertical;min-height:84px}
 .pd-steps button{font-size:13px}
 .ccheck{display:inline-flex;align-items:center;gap:6px;padding:7px 12px;border-radius:10px;border:1px solid var(--line);font-size:14px;font-weight:600;cursor:pointer}.ccheck input{width:18px;height:18px;margin:0;accent-color:var(--gain)}
 .obj-seg{display:flex;flex-wrap:wrap;gap:6px}.obj-seg button{flex:0 0 auto}
+.rl-row{display:flex;align-items:center;gap:8px;margin-top:6px;flex-wrap:wrap}.rl-dots{display:inline-flex;gap:4px}.rl-dot{width:9px;height:9px;border-radius:50%;border:1.5px solid var(--muted);display:inline-block}.rl-dot.on{background:var(--gain);border-color:var(--gain)}.rl-st{font-size:13px;color:var(--muted)}.rl-st.due{color:#E8A33D;font-weight:700}
 .p-handle{all:unset;cursor:pointer;font-weight:600;font-size:15px;text-decoration:underline;text-decoration-color:var(--line);text-underline-offset:4px}
 .p-handle:hover{text-decoration-color:var(--ink)}
 .p-handle:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
@@ -1707,16 +1708,64 @@ function candRow(c){
   acts += '<button type="button" class="iconbtn" data-act="cand-det" data-id="'+esc(c.id)+'">Détails</button>';
   return '<article class="prow" style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">'+head+'<div class="p-actions" style="margin:0">'+acts+'</div></article>';
 }
+/* ─── Relances de ceux qui ont juste regardé : 4 messages (J0, J+1, J+3, J+7) ─── */
+var RELANCE_J = [0,1,3,7], RELANCE_N = ['Le jour même','J+1','J+3','J+7 · dernier'];
+var CAND_URL = 'https://digitalhustleracademy.digital/dha-candidature.html?src=relance';
+function leadR(l){ try{ var o = JSON.parse(l.note||'{}'); return Array.isArray(o.r) ? o.r : []; }catch(e){ return []; } }
+function leadNext(l){
+  var r = leadR(l), n = r.length;
+  if(l.contacte) return {n:n, fini:true, txt:'✅ Il a répondu'};
+  if(n>=4) return {n:n, fini:true, txt:'Relances terminées'};
+  var due = n===0 ? new Date(l.created_at).getTime() : r[0] + RELANCE_J[n]*86400000;
+  return {n:n, due:due, now:due<=Date.now()};
+}
+function leadMsg(l, n){
+  var p = l.prenom ? ' '+l.prenom : '', s = l.situation||'';
+  if(n===0) return 'Salut'+p+' 👋 C\'est Quincy de la DHA. J\'ai vu que tu as regardé la présentation. Qu\'est-ce qui t\'a le plus parlé ?';
+  if(n===1) return 'Tu as eu le temps d\'y repenser ? Si tu as une question, même bête, envoie-la, je te réponds direct 🙏';
+  if(n===2){
+    if(/tudiant/.test(s)) return 'Y\'a un de mes membres, étudiant comme toi, qui a commencé avec 50 € sur le copy trading. Il trade entre ses cours 📈 Tu veux que je t\'explique comment il s\'organise ?';
+    if(/Salari/.test(s)) return 'Beaucoup de mes membres bossent à côté. 30 min par jour suffisent pour avancer. Tu veux que je t\'explique comment ils s\'organisent ?';
+    if(/Sans situation/.test(s)) return 'C\'est justement le meilleur moment pour apprendre, tu as du temps devant toi 💪 Tu veux qu\'on en parle 10 min ?';
+    return 'J\'ai des membres qui sont partis de zéro et qui ont aujourd\'hui de vrais résultats 📈 Tu veux que je te montre comment ils ont fait ?';
+  }
+  return 'Je te laisse tranquille après ça 🙏 Si un jour tu veux te lancer, la candidature prend 3 min : '+CAND_URL+' Bonne continuation'+p+' !';
+}
+function leadLien(l, txt){
+  var tel = String(l.telephone||'').replace(/\D/g,'').replace(/^0(\d{9})$/,'33$1');
+  if(l.canal==='Mail' || !tel) return l.email ? 'mailto:'+l.email+'?subject='+encodeURIComponent('Quincy · DHA')+'&body='+encodeURIComponent(txt) : '';
+  if(l.canal==='Téléphone') return 'sms:+'+tel+'?&body='+encodeURIComponent(txt);
+  return 'https://wa.me/'+tel+'?text='+encodeURIComponent(txt);
+}
+function leadById(id){ return LEADS.list.filter(function(x){ return String(x.id)===String(id); })[0]; }
+function quand(t){ var d = new Date(t), j = Math.round((new Date(d).setHours(0,0,0,0) - new Date().setHours(0,0,0,0))/86400000); return j===0 ? 'aujourd\'hui' : j===1 ? 'demain' : d.toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'short'}); }
 function paintLeads(){
   if(!LEADS.ok){ $('#clist').innerHTML = '<div class="empty">Chargement…</div>'; return; }
-  var L = leadsSansCand();
-  $('#clist').innerHTML = '<p class="note" style="margin:4px 0 8px">Ils ont laissé leurs coordonnées pour regarder la vidéo, mais n\'ont pas candidaté. Ceux qui ont candidaté n\'apparaissent pas ici.</p>'
+  var L = leadsSansCand().slice().sort(function(a,b){ var x = leadNext(a), y = leadNext(b); return ((x.fini?1:0)-(y.fini?1:0)) || ((y.now?1:0)-(x.now?1:0)) || ((x.due||0)-(y.due||0)); });
+  var aFaire = L.filter(function(l){ return leadNext(l).now; }).length;
+  $('#clist').innerHTML = '<p class="note" style="margin:4px 0 8px">Ils ont laissé leurs coordonnées pour regarder la vidéo, mais n\'ont pas candidaté. 4 relances : le jour même, J+1, J+3, J+7. '+(aFaire?'<b>'+aFaire+' message'+(aFaire>1?'s':'')+' à envoyer maintenant.</b>':'Rien à envoyer pour l\'instant 👌')+'</p>'
     + (L.length ? L.map(function(l){
       var d = new Date(l.created_at), w = d.toLocaleDateString('fr-FR',{day:'numeric',month:'short'})+' à '+('0'+d.getHours()).slice(-2)+'h'+('0'+d.getMinutes()).slice(-2);
-      var wa = l.telephone ? 'https://wa.me/'+String(l.telephone).replace(/\D/g,'').replace(/^0(\d{9})$/,'33$1')+'?text='+encodeURIComponent('Salut '+(l.prenom||'')+' 👋 C\'est Quincy de la DHA. Tu as regardé la présentation, qu\'est-ce que tu en as pensé ? Tu as des questions avant de candidater ?') : (l.email?'mailto:'+l.email:'');
-      return '<article class="prow" style="display:flex;align-items:center;gap:12px;flex-wrap:wrap'+(l.contacte?';opacity:.6':'')+'"><div style="flex:1;min-width:160px"><b>'+esc(l.prenom||'?')+'</b>'+(l.situation?' <span class="badge" style="background:transparent;border:1px solid var(--line);color:inherit">'+esc(l.situation)+'</span>':'')+' <span class="sub" style="font-size:13px">· a regardé le '+esc(w)+(l.canal?' · préfère '+esc(l.canal==='Téléphone'?'un appel':l.canal):'')+'</span><div class="sub" style="font-size:13px">'+esc([l.telephone,l.email].filter(Boolean).join(' · '))+'</div></div>'
-        +'<div class="p-actions" style="margin:0">'+(l.canal==='Téléphone'&&l.telephone?'<a class="btn small primary" href="tel:'+esc(l.telephone)+'">📞 Appeler</a>':'')+(wa?'<a class="btn small'+(l.canal==='Téléphone'?'':' primary')+'" href="'+esc(wa)+'" target="_blank" rel="noopener">'+(l.telephone?'💬 WhatsApp':'✉️ Mail')+'</a>':'')+'<label class="ccheck"><input type="checkbox" data-act="lead-contacte" data-id="'+esc(l.id)+'"'+(l.contacte?' checked':'')+'> Contacté</label></div></article>';
-    }).join('') : '<div class="empty">Personne pour l\'instant. Dès que la vidéo demandera les coordonnées, ceux qui regardent sans candidater arriveront ici.</div>');
+      var nx = leadNext(l), dots = [0,1,2,3].map(function(i){ return '<i class="rl-dot'+(i<nx.n?' on':'')+'" title="'+RELANCE_N[i]+'"></i>'; }).join('');
+      var etat = nx.fini ? '<span class="rl-st">'+esc(nx.txt)+'</span>' : nx.now ? '<span class="rl-st due">🔔 Message '+(nx.n+1)+'/4 à envoyer</span>' : '<span class="rl-st">Prochain message '+quand(nx.due)+'</span>';
+      return '<article class="prow" style="display:flex;align-items:center;gap:12px;flex-wrap:wrap'+(nx.fini?';opacity:.6':'')+'"><div style="flex:1;min-width:160px"><b>'+esc(l.prenom||'?')+'</b>'+(l.situation?' <span class="badge" style="background:transparent;border:1px solid var(--line);color:inherit">'+esc(l.situation)+'</span>':'')+' <span class="sub" style="font-size:13px">· a regardé le '+esc(w)+(l.canal?' · préfère '+esc(l.canal==='Téléphone'?'un appel / SMS':l.canal):'')+'</span><div class="sub" style="font-size:13px">'+esc([l.telephone,l.email].filter(Boolean).join(' · '))+'</div><div class="rl-row"><span class="rl-dots" aria-label="'+nx.n+' relance'+(nx.n>1?'s':'')+' envoyée'+(nx.n>1?'s':'')+' sur 4">'+dots+'</span>'+etat+'</div></div>'
+        +'<div class="p-actions" style="margin:0">'+(l.canal==='Téléphone'&&l.telephone?'<a class="btn small" href="tel:'+esc(l.telephone)+'">📞 Appeler</a>':'')
+        +(!nx.fini?'<button type="button" class="btn small'+(nx.now?' primary':'')+'" data-act="lead-msg" data-id="'+esc(l.id)+'">💬 Message '+(nx.n+1)+'/4</button>':'')
+        +'<label class="ccheck"><input type="checkbox" data-act="lead-contacte" data-id="'+esc(l.id)+'"'+(l.contacte?' checked':'')+'> Il a répondu</label></div></article>';
+    }).join('') : '<div class="empty">Personne pour l\'instant. Ceux qui regardent la vidéo sans candidater arriveront ici.</div>');
+}
+function openLeadMsg(id){
+  var l = leadById(id); if(!l) return; var nx = leadNext(l), n = Math.min(nx.n,3);
+  var via = l.canal==='Mail'||!l.telephone ? 'par mail' : l.canal==='Téléphone' ? 'par SMS' : 'sur WhatsApp';
+  openDlg('<div class="dlg-body"><h2 id="dlgTitle">💬 Message '+(n+1)+'/4 à '+esc(l.prenom||'')+'</h2><p class="sub" style="margin:0">'+RELANCE_N[n]+(l.situation?' · '+esc(l.situation):'')+'. Modifie le texte si tu veux, puis envoie.</p>'
+    +'<div><label for="ldMsg">Message</label><textarea id="ldMsg" rows="5">'+esc(leadMsg(l,n))+'</textarea></div>'
+    +(n===0?'<p class="note" style="margin:0">💡 Un vocal WhatsApp de 20 secondes marche encore mieux pour ce premier message.</p>':'')+'</div>'
+    +'<div class="dlg-foot"><button type="button" class="btn" data-act="close">Annuler</button><div class="r"><button type="button" class="btn" data-act="lead-sent" data-id="'+esc(l.id)+'" title="Tu l\'as envoyé autrement (vocal…)">✓ Déjà envoyé</button><button type="button" class="btn primary" data-act="lead-send" data-id="'+esc(l.id)+'">Envoyer '+via+'</button></div></div>');
+}
+function leadSent(id){
+  var l = leadById(id); if(!l) return; var r = leadR(l); r.push(Date.now()); l.note = JSON.stringify({r:r});
+  closeDlg(); schedule(); toast('Message '+r.length+'/4 noté'+(r.length<4?' · prochain '+quand(r[0]+RELANCE_J[r.length]*86400000):''));
+  DHA.admin('dha_admin_vsl_lead_update',{p_id:id, p_contacte:null, p_note:l.note}).catch(function(){ toast('Échec de l\'enregistrement'); });
 }
 function candCallBooke(c){
   var go = function(){ var p = candProspect(c); if(p){ changeStage(p.id,'call'); toast(c.prenom+' : call booké, il est dans tes prospects'); } };
@@ -3073,6 +3122,9 @@ document.addEventListener('click', function(ev){
     case 'perdu-ok': savePerdu(id); break;
     case 'obj-pick': document.querySelectorAll('.obj-seg button').forEach(function(b){ b.setAttribute('aria-pressed', b===el ? 'true' : 'false'); }); break;
     case 'obj-ok': saveObjection(el.getAttribute('data-kind'), id); break;
+    case 'lead-msg': openLeadMsg(id); break;
+    case 'lead-send': var ls = leadById(id); if(ls){ var u = leadLien(ls, ($('#ldMsg').value||'').trim()); if(u) window.open(u, '_blank', 'noopener'); leadSent(id); } break;
+    case 'lead-sent': leadSent(id); break;
     case 'lead-contacte': (function(){ var on = el.checked, l0 = LEADS.list.filter(function(x){ return String(x.id)===String(id); })[0]; if(l0) l0.contacte = on; DHA.admin('dha_admin_vsl_lead_update',{p_id:id, p_contacte:on, p_note:null}).then(function(){ schedule(); }).catch(function(){ toast('Échec'); }); })(); break;
     case 'add-dm': S.tab = 'prospects'; render(); setTimeout(function(){ openDmLogDialog(); }, 30); break;
     case 'open-dmlog': openDmLogDialog(); break;
