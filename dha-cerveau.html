@@ -156,6 +156,7 @@ textarea{resize:vertical;min-height:84px}
 .pd-steps button{font-size:13px}
 .ccheck{display:inline-flex;align-items:center;gap:6px;padding:7px 12px;border-radius:10px;border:1px solid var(--line);font-size:14px;font-weight:600;cursor:pointer}.ccheck input{width:18px;height:18px;margin:0;accent-color:var(--gain)}
 .obj-seg{display:flex;flex-wrap:wrap;gap:6px}.obj-seg button{flex:0 0 auto}
+.badge.cnew{background:#2B6CFF;color:#fff;border:0}
 .rl-row{display:flex;align-items:center;gap:8px;margin-top:6px;flex-wrap:wrap}.rl-dots{display:inline-flex;gap:4px}.rl-dot{width:9px;height:9px;border-radius:50%;border:1.5px solid var(--muted);display:inline-block}.rl-dot.on{background:var(--gain);border-color:var(--gain)}.rl-st{font-size:13px;color:var(--muted)}.rl-st.due{color:#E8A33D;font-weight:700}
 .p-handle{all:unset;cursor:pointer;font-weight:600;font-size:15px;text-decoration:underline;text-decoration-color:var(--line);text-underline-offset:4px}
 .p-handle:hover{text-decoration-color:var(--ink)}
@@ -1658,7 +1659,7 @@ function paintLanding(){
   if(!v && !n) h += '<p class="sub" style="margin-top:10px">Pas encore de visite enregistrée. Les chiffres arrivent dès que la page vidéo est en ligne.</p>';
   box.innerHTML = h;
 }
-var CANDF = 'nouvelle';
+var CANDF = 'nouvelle', CANDTRI = 'recent';
 var LEADS = {list:[], ok:false};
 function loadLeads(){ if(!DHA.adminKey()) return; DHA.admin('dha_admin_vsl_leads').then(function(d){ if(Array.isArray(d)){ LEADS.list = d; LEADS.ok = true; schedule(); } }).catch(function(){}); }
 loadLeads(); setInterval(function(){ if(document.visibilityState==='visible') loadLeads(); }, 120000);
@@ -1689,13 +1690,15 @@ function paintCand(){
   if(CANDF==='vus'){ paintLeads(); return; }
   if(!CAND.ok){ $('#clist').innerHTML = '<div class="empty">Chargement des candidatures…</div>'; return; }
   var list = CAND.list.filter(function(c){ return CANDF==='all' || candEtape(c)===CANDF; });
-  if(CANDF==='nouvelle' || CANDF==='contactee') list = list.slice().sort(function(a,b){ return chalRank(a)-chalRank(b) || (b.score||0)-(a.score||0); });
+  var tDate = function(a,b){ return new Date(b.created_at||0)-new Date(a.created_at||0); };
+  list = list.slice().sort(CANDTRI==='chaud' && (CANDF==='nouvelle' || CANDF==='contactee') ? function(a,b){ return chalRank(a)-chalRank(b) || (b.score||0)-(a.score||0) || tDate(a,b); } : tDate);
+  var tri = (CANDF==='nouvelle' || CANDF==='contactee') && list.length>1 ? '<div class="seg cand-tri" role="group" aria-label="Trier" style="margin:0 0 8px"><button type="button" data-act="cand-tri" data-v="recent" aria-pressed="'+(CANDTRI==='recent')+'">🕒 Plus récentes</button><button type="button" data-act="cand-tri" data-v="chaud" aria-pressed="'+(CANDTRI==='chaud')+'">🔥 Plus chaudes</button></div>' : '';
   var vide = {nouvelle:'Aucune nouvelle candidature. Tout est traité 🔥', contactee:'Personne en attente de réponse.', call:'Aucun call booké en ce moment.', reflexion:'Personne en réflexion.', launch:'Aucun lancement programmé.', client:'Aucun client venu des candidatures pour l\'instant.', refus:'Aucun refus.', perdu:'Aucun contact perdu 💪'};
-  $('#clist').innerHTML = list.length ? list.map(candRow).join('') : '<div class="empty">'+(CAND.list.length?(vide[CANDF]||'Aucune candidature ici.'):'Aucune candidature pour l\'instant.')+'</div>';
+  $('#clist').innerHTML = list.length ? tri + list.map(candRow).join('') : '<div class="empty">'+(CAND.list.length?(vide[CANDF]||'Aucune candidature ici.'):'Aucune candidature pour l\'instant.')+'</div>';
 }
 function candRow(c){
   var l = candLink(c), et = candEtape(c), p = candProspect(c);
-  var head = '<div style="flex:1;min-width:160px"><button type="button" class="p-handle" data-act="cand-det" data-id="'+esc(c.id)+'">'+esc(c.prenom||'?')+(c.age?' · '+c.age+' ans':'')+(c.ville?' · '+esc(c.ville):'')+'</button>'+(c.created_at?' <span class="sub" style="font-size:13px">· reçue le '+esc(candWhen(c))+'</span>':'')
+  var head = '<div style="flex:1;min-width:160px"><button type="button" class="p-handle" data-act="cand-det" data-id="'+esc(c.id)+'">'+esc(c.prenom||'?')+(c.age?' · '+c.age+' ans':'')+(c.ville?' · '+esc(c.ville):'')+'</button>'+(c.created_at&&et==='nouvelle'&&Date.now()-new Date(c.created_at).getTime()<48*3600000?' <span class="badge cnew">NOUVEAU</span>':'')+(c.created_at?' <span class="sub" style="font-size:13px">· reçue le '+esc(candWhen(c))+'</span>':'')
     +(c.chaleur?' <span class="badge" style="color:'+CHAL[c.chaleur][1]+';border:1px solid currentColor;background:transparent" title="'+c.score+'/80">'+CHAL[c.chaleur][0]+'</span>':'')+(c.pret_payer?' <span class="badge ok">💰 Prêt à payer</span>':'')
     +(p&&et!=='contactee'&&et!=='nouvelle'?' <span class="pr-st st-'+prospectEtat(p)[1]+'">'+esc(prospectEtat(p)[0])+'</span>':'')
     +(et==='refus'&&c.objection?' <span class="badge" style="background:transparent;border:1px solid var(--line)">Objection : '+esc(c.objection)+'</span>':'')
@@ -3118,6 +3121,7 @@ document.addEventListener('click', function(ev){
     case 'cand-contacte': var cc1 = candById(id); if(cc1){ safe(patchCandDb(cc1,{statut:'contactee'})).then(function(){ toast((cc1.prenom||'Candidat')+' → Contactées'); }).catch(function(){}); } break;
     case 'cand-call': var cc2 = candById(id); if(cc2) candCallBooke(cc2); break;
     case 'cand-refus': askObjection('cand', id); break;
+    case 'cand-tri': CANDTRI = el.getAttribute('data-v'); paintCand(); break;
     case 'cand-perdu': askPerdu(id); break;
     case 'perdu-ok': savePerdu(id); break;
     case 'obj-pick': document.querySelectorAll('.obj-seg button').forEach(function(b){ b.setAttribute('aria-pressed', b===el ? 'true' : 'false'); }); break;
