@@ -724,15 +724,28 @@ var SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZ
     var fin = function(){ try { localStorage.setItem('dha_lead_ok','1'); localStorage.setItem('dha_lead', JSON.stringify({prenom:pr, canal:c, valeur:tel||mail, situation:s})); } catch(e){} gateClose(); lancer(); };
     try {
       fetch(SB_URL + '/rest/v1/rpc/dha_vsl_lead_add', { method:'POST', headers:{ 'apikey':SB_KEY, 'Authorization':'Bearer '+SB_KEY, 'Content-Type':'application/json' },
-        body: JSON.stringify({ p_prenom:pr, p_telephone:tel, p_email:mail||null, p_source:String(prov).slice(0,80), p_canal:c, p_situation:s }) }).catch(function(){}).then(fin);
+        body: JSON.stringify({ p_prenom:pr, p_telephone:tel, p_email:mail||null, p_source:String(prov).slice(0,80), p_canal:c, p_situation:s }) }).then(function(r){ return r.json(); }).then(function(d){ if(d && d.id){ try { localStorage.setItem('dha_lead_id', d.id); } catch(e){} } }).catch(function(){}).then(fin);
     } catch(err){ fin(); }
   });
   document.getElementById('play').addEventListener('click', function(){ if(deja()) lancer(); else gateOpen(); });
+  /* jusqu'où la personne regarde la vidéo → Cerveau « a vu X % » */
+  function suivreVu(v){
+    var lid = null; try { lid = localStorage.getItem('dha_lead_id'); } catch(e){}
+    if(!v || !lid) return;
+    var envoye = 0, PALIERS = [10,25,50,75,90,100];
+    function envoyer(pct){
+      var pal = 0; PALIERS.forEach(function(x){ if(pct >= x) pal = x; });
+      if(pal <= envoye) return; envoye = pal;
+      try { fetch(SB_URL + '/rest/v1/rpc/dha_vsl_lead_vu', { method:'POST', keepalive:true, headers:{ 'apikey':SB_KEY, 'Authorization':'Bearer '+SB_KEY, 'Content-Type':'application/json' }, body: JSON.stringify({ p_id: lid, p_pct: pal }) }).catch(function(){}); } catch(e){}
+    }
+    v.addEventListener('timeupdate', function(){ if(v.duration > 0) envoyer(Math.floor(v.currentTime / v.duration * 100)); });
+    v.addEventListener('ended', function(){ envoyer(100); });
+  }
   function lancer(){
     track('play', 'video');
     var id = ytId(VIDEO_URL);
     if (id) box.innerHTML = '<iframe src="https://www.youtube-nocookie.com/embed/' + id + '?autoplay=1&rel=0&modestbranding=1&playsinline=1" title="Quincy te présente la DHA" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>';
-    else if (/\.(mp4|webm|mov)(\?.*)?$/i.test(VIDEO_URL)) { box.innerHTML = '<video src="' + VIDEO_URL + '" controls autoplay playsinline poster="videos/vsl-dha.jpg" style="position:absolute;inset:0;width:100%;height:100%;background:#000"></video>'; }
+    else if (/\.(mp4|webm|mov)(\?.*)?$/i.test(VIDEO_URL)) { box.innerHTML = '<video src="' + VIDEO_URL + '" controls autoplay playsinline poster="videos/vsl-dha.jpg" style="position:absolute;inset:0;width:100%;height:100%;background:#000"></video>'; suivreVu(box.querySelector('video')); }
     else box.insertAdjacentHTML('beforeend', '<div style="position:absolute;inset:auto 12px 70px 12px;padding:12px 14px;border-radius:12px;background:rgba(5,9,20,0.9);border:1px solid rgba(255,215,0,0.5);color:#FFE58A;font-size:13px;text-align:center">Vidéo bientôt disponible. En attendant, découvre tout juste en dessous.</div>');
     ouvrir();
     setTimeout(function(){ document.getElementById('video').scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 50);

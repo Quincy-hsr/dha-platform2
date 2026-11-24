@@ -1724,7 +1724,7 @@ function leadNext(l){
 }
 function leadMsg(l, n){
   var p = l.prenom ? ' '+l.prenom : '', s = l.situation||'';
-  if(n===0) return 'Salut'+p+' 👋 C\'est Quincy de la DHA. T\'as pu regarder la vidéo jusqu\'au bout ?';
+  if(n===0) return (l.vu_pct>=90 ? 'Salut'+p+' 👋 C\'est Quincy de la DHA. Merci d\'avoir regardé la vidéo jusqu\'au bout 🙏 Qu\'est-ce qui t\'a le plus parlé ?' : 'Salut'+p+' 👋 C\'est Quincy de la DHA. T\'as pu regarder la vidéo jusqu\'au bout ?');
   if(n===1) return 'Tu as eu le temps d\'y repenser ? Si tu as une question, même bête, envoie-la, je te réponds direct 🙏';
   if(n===2){
     if(/tudiant/.test(s)) return 'Y\'a un de mes membres, étudiant comme toi, qui a commencé avec 50 € sur le copy trading. Il trade entre ses cours 📈 Tu veux que je t\'explique comment il s\'organise ?';
@@ -1740,6 +1740,11 @@ function leadLien(l, txt){
   if(l.canal==='Téléphone') return 'sms:+'+tel+'?&body='+encodeURIComponent(txt);
   return 'https://wa.me/'+tel+'?text='+encodeURIComponent(txt);
 }
+function vuBadge(l){
+  if(!l.vu_at && !l.vu_pct) return '';
+  var v = l.vu_pct||0, c = v>=90 ? 'var(--gain)' : v>=50 ? '#E8A33D' : 'var(--leak)';
+  return ' <span class="badge" style="background:transparent;border:1px solid '+c+';color:'+c+'" title="Jusqu\'où il a regardé la vidéo">👁 '+(v>=100?'a tout vu':'a vu '+v+' %')+'</span>';
+}
 function leadById(id){ return LEADS.list.filter(function(x){ return String(x.id)===String(id); })[0]; }
 function quand(t){ var d = new Date(t), j = Math.round((new Date(d).setHours(0,0,0,0) - new Date().setHours(0,0,0,0))/86400000); return j===0 ? 'aujourd\'hui' : j===1 ? 'demain' : d.toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'short'}); }
 function paintLeads(){
@@ -1751,7 +1756,7 @@ function paintLeads(){
       var d = new Date(l.created_at), w = d.toLocaleDateString('fr-FR',{day:'numeric',month:'short'})+' à '+('0'+d.getHours()).slice(-2)+'h'+('0'+d.getMinutes()).slice(-2);
       var nx = leadNext(l), dots = [0,1,2,3].map(function(i){ return '<i class="rl-dot'+(i<nx.n?' on':'')+'" title="'+RELANCE_N[i]+'"></i>'; }).join('');
       var etat = nx.fini ? '<span class="rl-st">'+esc(nx.txt)+'</span>' : nx.now ? '<span class="rl-st due">🔔 Message '+(nx.n+1)+'/4 à envoyer</span>' : '<span class="rl-st">Prochain message '+quand(nx.due)+'</span>';
-      return '<article class="prow" style="display:flex;align-items:center;gap:12px;flex-wrap:wrap'+(nx.fini?';opacity:.6':'')+'"><div style="flex:1;min-width:160px"><b>'+esc(l.prenom||'?')+'</b>'+(l.situation?' <span class="badge" style="background:transparent;border:1px solid var(--line);color:inherit">'+esc(l.situation)+'</span>':'')+' <span class="sub" style="font-size:13px">· a regardé le '+esc(w)+(l.canal?' · préfère '+esc(l.canal==='Téléphone'?'un appel / SMS':l.canal):'')+'</span><div class="sub" style="font-size:13px">'+esc([l.telephone,l.email].filter(Boolean).join(' · '))+'</div><div class="rl-row"><span class="rl-dots" aria-label="'+nx.n+' relance'+(nx.n>1?'s':'')+' envoyée'+(nx.n>1?'s':'')+' sur 4">'+dots+'</span>'+etat+'</div></div>'
+      return '<article class="prow" style="display:flex;align-items:center;gap:12px;flex-wrap:wrap'+(nx.fini?';opacity:.6':'')+'"><div style="flex:1;min-width:160px"><b>'+esc(l.prenom||'?')+'</b>'+(l.situation?' <span class="badge" style="background:transparent;border:1px solid var(--line);color:inherit">'+esc(l.situation)+'</span>':'')+' <span class="sub" style="font-size:13px">· a regardé le '+esc(w)+(l.canal?' · préfère '+esc(l.canal==='Téléphone'?'un appel / SMS':l.canal):'')+'</span>'+vuBadge(l)+'<div class="sub" style="font-size:13px">'+esc([l.telephone,l.email].filter(Boolean).join(' · '))+'</div><div class="rl-row"><span class="rl-dots" aria-label="'+nx.n+' relance'+(nx.n>1?'s':'')+' envoyée'+(nx.n>1?'s':'')+' sur 4">'+dots+'</span>'+etat+'</div></div>'
         +'<div class="p-actions" style="margin:0">'+(l.canal==='Téléphone'&&l.telephone?'<a class="btn small" href="tel:'+esc(l.telephone)+'">📞 Appeler</a>':'')
         +(!nx.fini?'<button type="button" class="btn small'+(nx.now?' primary':'')+'" data-act="lead-msg" data-id="'+esc(l.id)+'">💬 Message '+(nx.n+1)+'/4</button>':'')
         +'<label class="ccheck"><input type="checkbox" data-act="lead-contacte" data-id="'+esc(l.id)+'"'+(l.contacte?' checked':'')+'> Il a répondu</label></div></article>';
