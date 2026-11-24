@@ -1724,7 +1724,7 @@ function leadNext(l){
 }
 function leadMsg(l, n){
   var p = l.prenom ? ' '+l.prenom : '', s = l.situation||'';
-  if(n===0) return 'Salut'+p+' 👋 C\'est Quincy de la DHA. J\'ai vu que tu as regardé la présentation. Qu\'est-ce qui t\'a le plus parlé ?';
+  if(n===0) return 'Salut'+p+' 👋 C\'est Quincy de la DHA. T\'as pu regarder la vidéo jusqu\'au bout ?';
   if(n===1) return 'Tu as eu le temps d\'y repenser ? Si tu as une question, même bête, envoie-la, je te réponds direct 🙏';
   if(n===2){
     if(/tudiant/.test(s)) return 'Y\'a un de mes membres, étudiant comme toi, qui a commencé avec 50 € sur le copy trading. Il trade entre ses cours 📈 Tu veux que je t\'explique comment il s\'organise ?';
