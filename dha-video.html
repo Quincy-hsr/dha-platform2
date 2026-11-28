@@ -269,7 +269,8 @@ footer a{color:rgba(169,184,214,0.8);margin:0 6px;}
 .gate.on{display:flex;animation:gF .25s ease both}
 .gate-box{width:min(460px,100%);max-height:calc(100dvh - 32px);overflow:auto;padding:26px 22px 22px;border-radius:24px;background:linear-gradient(160deg,#0f1c42,#070c1c);border:1px solid rgba(0,212,255,.4);box-shadow:0 0 70px rgba(0,212,255,.18);position:relative;}
 .gate-x{position:absolute;top:10px;right:10px;width:40px;height:40px;border-radius:50%;border:1px solid var(--line);background:transparent;color:var(--dim);font-size:20px;cursor:pointer}
-.gate h2{font-family:Sora,sans-serif;font-size:21px;line-height:1.25;margin:0 36px 6px 0}
+.gate h2{font-family:Sora,sans-serif;font-size:21px;line-height:1.25;margin:0 36px 18px 0}
+select#g-sit{appearance:auto}select#g-sit option{color:#000}
 .gate .gsub{color:var(--dim);font-size:14.5px;line-height:1.5;margin-bottom:16px}
 .gf{display:block;margin-bottom:14px}
 .gf>span,.gf legend{display:block;font-family:Sora,sans-serif;font-weight:700;font-size:13px;margin-bottom:7px;color:#DCE8FF}
@@ -285,6 +286,7 @@ fieldset.gf{border:0;padding:0}
 .gate [hidden]{display:none!important}
 .gerr{color:#FF8A98;font-size:13px;margin:-6px 0 12px}.gerr:empty{display:none}.gf .gerr{margin:8px 0 0}.gok{color:var(--green);font-size:13px;margin-top:6px}
 .gate .btn{width:100%;padding:17px;font-size:16px;margin-top:4px}
+.gswap{display:block;margin:-4px 0 14px;padding:6px 0;border:0;background:none;color:var(--cyan);font:inherit;font-size:13.5px;text-decoration:underline;cursor:pointer}.gswap:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
 .gate .gfine{text-align:center;color:var(--dim);font-size:12.5px;margin-top:10px}
 @keyframes gF{from{opacity:0}to{opacity:1}}
 @media(prefers-reduced-motion:reduce){.gate.on{animation:none}}
@@ -620,24 +622,13 @@ fieldset.gf{border:0;padding:0}
 <div class="gate" id="gate" role="dialog" aria-modal="true" aria-labelledby="gate-t">
   <form class="gate-box" id="gate-f" novalidate>
     <button type="button" class="gate-x" id="gate-x" aria-label="Fermer">×</button>
-    <h2 id="gate-t">Avant de lancer la vidéo 🎬</h2>
-    <p class="gsub">Dis-moi qui tu es. Si tu as une question après la vidéo, je pourrai te répondre directement.</p>
-    <label class="gf"><span>Ton prénom</span><input class="gin" id="g-prenom" autocomplete="given-name" maxlength="40" placeholder="Ex. Yanis"/></label>
+    <h2 id="gate-t">Remplis ces infos pour accéder à la vidéo</h2>
+    <label class="gf"><span>Ton prénom</span><input class="gin" id="g-prenom" autocomplete="given-name" maxlength="40" enterkeyhint="next"/></label>
     <div class="gerr" id="ge-prenom"></div>
-    <fieldset class="gf"><legend>Où je peux te joindre ?</legend>
-      <div class="gchips" id="g-canal" role="group" aria-label="Moyen de contact">
-        <button type="button" data-v="WhatsApp" aria-pressed="true">💬 WhatsApp</button><button type="button" data-v="Téléphone" aria-pressed="false">📞 Numéro</button><button type="button" data-v="Mail" aria-pressed="false">✉️ Adresse mail</button>
-      </div>
-    </fieldset>
-    <div class="gf" id="g-telw"><span id="g-tell">Ton numéro WhatsApp</span><div class="gtel"><select class="gin" id="g-indic" aria-label="Indicatif du pays"></select><input class="gin" id="g-tel" type="tel" inputmode="tel" autocomplete="tel-national" placeholder="06 12 34 56 78" aria-labelledby="g-tell"/></div><div class="gok" id="g-telok"></div></div>
-    <label class="gf" id="g-mailw" hidden><span>Ton adresse mail</span><input class="gin" id="g-mail" type="email" inputmode="email" autocomplete="email" placeholder="ton@mail.com"/></label>
+    <div class="gf" id="g-telw"><span id="g-tell">Ton WhatsApp</span><div class="gtel"><select class="gin" id="g-indic" aria-label="Indicatif du pays"></select><input class="gin" id="g-tel" type="tel" inputmode="tel" autocomplete="tel-national" placeholder="06 12 34 56 78" aria-labelledby="g-tell" enterkeyhint="go"/></div><div class="gok" id="g-telok"></div></div>
     <div class="gerr" id="ge-contact"></div>
-    <fieldset class="gf"><legend>Ta situation</legend>
-      <div class="gchips" id="g-sit" role="group" aria-label="Ta situation">
-        <button type="button" data-v="Étudiant" aria-pressed="false">Étudiant</button><button type="button" data-v="Étudiant en alternance" aria-pressed="false">Étudiant en alternance</button><button type="button" data-v="Salarié" aria-pressed="false">Salarié</button><button type="button" data-v="Sans situation" aria-pressed="false">Sans situation</button><button type="button" data-v="Autre" aria-pressed="false">Autre</button>
-      </div>
-      <div class="gerr" id="ge-sit"></div>
-    </fieldset>
+    <button type="button" class="gswap" id="g-swap">Pas de WhatsApp ? Je préfère les SMS</button>
+    <label class="gf"><span>Ta situation <small style="font-weight:400;color:var(--dim)">(facultatif)</small></span><select class="gin" id="g-sit"><option value="">Choisis…</option><option>Étudiant</option><option value="Étudiant en alternance">Alternant</option><option>Salarié</option><option>Sans situation</option><option>Autre</option></select></label>
     <button type="submit" class="btn" id="g-go">▶ Regarder la vidéo</button>
     <p class="gfine">Gratuit · pas de spam · tes infos restent entre nous</p>
   </form>
@@ -687,11 +678,12 @@ var SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZ
   var gate = document.getElementById('gate'), gf = document.getElementById('gate-f'), lastFocus = null;
   var IND = [['🇫🇷 +33','33',9,1],['🇬🇵 +590','590',9,1],['🇲🇶 +596','596',9,1],['🇬🇫 +594','594',9,1],['🇷🇪 +262','262',9,1],['🇧🇪 +32','32',[8,9],1],['🇨🇭 +41','41',9,1],['🇱🇺 +352','352',[6,11],0],['🇨🇦 +1','1',10,0],['🇲🇦 +212','212',9,1],['🇩🇿 +213','213',9,1],['🇹🇳 +216','216',8,0],['🇸🇳 +221','221',9,0],['🇨🇮 +225','225',10,0],['🇨🇲 +237','237',9,0],['🇨🇩 +243','243',9,1],['🌍 Autre','',0,0]];
   var gi = document.getElementById('g-indic'); gi.innerHTML = IND.map(function(x,i){ return '<option value="'+i+'">'+x[0]+'</option>'; }).join('');
-  function canal(){ var b = document.querySelector('#g-canal [aria-pressed="true"]'); return b ? b.getAttribute('data-v') : 'WhatsApp'; }
-  function sit(){ var b = document.querySelector('#g-sit [aria-pressed="true"]'); return b ? b.getAttribute('data-v') : ''; }
+  var MODE = 'WhatsApp';
+  function canal(){ return MODE; }
+  function sit(){ return document.getElementById('g-sit').value; }
   function chips(id, after){ document.getElementById(id).addEventListener('click', function(e){ var b = e.target.closest('button'); if(!b) return; [].forEach.call(this.querySelectorAll('button'), function(x){ x.setAttribute('aria-pressed', x===b ? 'true' : 'false'); }); if(after) after(); }); }
-  chips('g-canal', function(){ var m = canal()==='Mail'; document.getElementById('g-telw').hidden = m; document.getElementById('g-mailw').hidden = !m; document.getElementById('g-tell').textContent = canal()==='WhatsApp' ? 'Ton numéro WhatsApp' : 'Ton numéro de téléphone'; document.getElementById('ge-contact').textContent = ''; (m ? document.getElementById('g-mail') : document.getElementById('g-tel')).focus(); });
-  chips('g-sit', function(){ document.getElementById('ge-sit').textContent = ''; });
+  document.getElementById('g-swap').addEventListener('click', function(){ MODE = MODE==='Téléphone' ? 'WhatsApp' : 'Téléphone'; var sms = MODE==='Téléphone'; document.getElementById('g-tell').textContent = sms ? 'Ton numéro (SMS)' : 'Ton WhatsApp'; this.textContent = sms ? 'Mettre plutôt mon WhatsApp' : 'Pas de WhatsApp ? Je préfère les SMS'; document.getElementById('g-tel').focus(); });
+  document.getElementById('g-prenom').addEventListener('keydown', function(e){ if(e.key==='Enter'){ e.preventDefault(); document.getElementById('g-tel').focus(); } });
   function telCheck(){
     var raw = document.getElementById('g-tel').value.trim(), d = raw.replace(/[^\d+]/g,''), x = IND[+gi.value];
     if(/^(\+|00)/.test(d)){ var n = d.replace(/^\+|^00/,''); return n.length>=8 && n.length<=15 ? '+'+n : null; }
@@ -705,7 +697,7 @@ var SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZ
   function telLive(){ var v = telCheck(); gt.classList.toggle('good', !!v); if(v) gt.classList.remove('bad'); gok.textContent = v ? '✓ Numéro valide' : ''; if(v) document.getElementById('ge-contact').textContent=''; }
   gt.addEventListener('input', telLive);
   document.getElementById('g-prenom').addEventListener('input', function(){ document.getElementById('ge-prenom').textContent=''; });
-  document.getElementById('g-mail').addEventListener('input', function(){ document.getElementById('ge-contact').textContent=''; }); gi.addEventListener('change', function(){ var x = IND[+gi.value]; gt.placeholder = x[1] ? (x[3]?'06 12 34 56 78':'Ton numéro') : '+indicatif et numéro'; telLive(); });
+ gi.addEventListener('change', function(){ var x = IND[+gi.value]; gt.placeholder = x[1] ? (x[3]?'06 12 34 56 78':'Ton numéro') : '+indicatif et numéro'; telLive(); });
   function deja(){ try { return localStorage.getItem('dha_lead_ok') === '1'; } catch(e){ return false; } }
   function gateOpen(){ lastFocus = document.activeElement; gate.classList.add('on'); document.body.style.overflow='hidden'; track('clic_cta','formulaire-video'); setTimeout(function(){ document.getElementById('g-prenom').focus(); }, 60); }
   function gateClose(){ gate.classList.remove('on'); document.body.style.overflow=''; if(lastFocus) lastFocus.focus(); }
@@ -718,7 +710,6 @@ var SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZ
     document.getElementById('ge-prenom').textContent = pr ? '' : 'Indique ton prénom.'; if(!pr) bad = true;
     if(c==='Mail'){ mail = document.getElementById('g-mail').value.trim().toLowerCase(); if(!/^[^@\s]+@[^@\s]+\.[^@\s]{2,}$/.test(mail)){ document.getElementById('ge-contact').textContent = 'Adresse mail invalide. Ex : ton@mail.com'; bad = true; } else document.getElementById('ge-contact').textContent = ''; }
     else { tel = telCheck(); if(!tel){ document.getElementById('ge-contact').textContent = 'Numéro invalide. Ex : 06 12 34 56 78. Numéro étranger : change le pays à gauche ou écris l\'indicatif (+…).'; gt.classList.add('bad'); bad = true; } else { document.getElementById('ge-contact').textContent=''; gt.classList.remove('bad'); } }
-    document.getElementById('ge-sit').textContent = s ? '' : 'Choisis ta situation.'; if(!s) bad = true;
     if(bad){ var f = gf.querySelector('.gerr:not(:empty)'); if(f){ var inp = f.previousElementSibling && f.previousElementSibling.querySelector('input'); (inp||f).scrollIntoView({block:'center'}); } return; }
     var btn = document.getElementById('g-go'); btn.disabled = true; btn.textContent = 'Un instant…';
     var fin = function(){ try { localStorage.setItem('dha_lead_ok','1'); localStorage.setItem('dha_lead', JSON.stringify({prenom:pr, canal:c, valeur:tel||mail, situation:s})); } catch(e){} gateClose(); lancer(); };
